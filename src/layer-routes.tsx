@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './pages/login'
 import Users from './pages/users'
+import 'shards-ui/dist/css/shards.min.css'
 
 export const LayerRoutes: FC = () => {
   return (
