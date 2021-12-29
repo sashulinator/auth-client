@@ -1,6 +1,7 @@
 import { FC } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import cx from 'clsx'
+import ROUTES from '../../constants/routes'
 
 type UsersProps = {
   className?: string
@@ -9,14 +10,10 @@ type UsersProps = {
 const Users: FC<UsersProps> = ({ className }): JSX.Element => {
   return (
     <div className={cx('Users', className)}>
+      <h1>Users</h1>
       <nav>
-        <Link to="me">My Profile</Link>
+        <Link to={ROUTES.LOGIN.buildURL()}>Login</Link>
       </nav>
-
-      <Routes>
-        <Route path=":id" element={<div>User Profile</div>} />
-        <Route path="me" element={<div>Own user profile</div>} />
-      </Routes>
     </div>
   )
 }
