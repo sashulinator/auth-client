@@ -20,6 +20,13 @@ const ROUTES = {
       return `/users${this.PATH}`
     },
   },
+  'USERS/CREATE': {
+    NAME: 'create user',
+    PATH: '/create',
+    buildURL() {
+      return `/users${this.PATH}`
+    },
+  },
 }
 
 export default ROUTES

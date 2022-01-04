@@ -28,7 +28,14 @@ const List: FC<UsersProps> = ({ className }): JSX.Element => {
     <div className={cx('Users', className)}>
       <h1>Users</h1>
       <nav>
-        <Link to={ROUTES.LOGIN.buildURL()}>Login</Link>
+        <ul>
+          <li>
+            <Link to={ROUTES.LOGIN.buildURL()}>Login</Link>
+          </li>
+          <li>
+            <Link to={ROUTES['USERS/CREATE'].buildURL()}>Create user</Link>
+          </li>
+        </ul>
       </nav>
       <Stack tokens={{ padding: '20px 40px' }}>
         <DetailsList
