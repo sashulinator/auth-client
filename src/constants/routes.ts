@@ -1,7 +1,7 @@
 const ROUTES = {
   LOGIN: {
     NAME: 'login',
-    PATH: '/auth/login',
+    PATH: '/login',
     buildURL() {
       return this.PATH
     },
