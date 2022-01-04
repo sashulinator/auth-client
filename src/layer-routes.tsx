@@ -13,10 +13,10 @@ export const LayerRoutes: FC = () => {
     <BrowserRouter>
       <Header />
       <main>
-        <Link to={ROUTES.USER.buildURL()}>User</Link>
+        <Link to={ROUTES['USERS/LIST'].buildURL()}>User</Link>
         <Routes>
           <Route path={ROUTES.LOGIN.PATH} element={<Login />} />
-          <Route path={ROUTES.USER.PATH} element={<Users />} />
+          <Route path={ROUTES.USERS.PATH} element={<Users />} />
         </Routes>
       </main>
     </BrowserRouter>

@@ -11,7 +11,7 @@ const Login: FC<LoginProps> = ({ className }): JSX.Element => {
   return (
     <div className={cx('Login', className)}>
       <h1>Login</h1>
-      <Link to={ROUTES.USER.buildURL()}>Users</Link>
+      <Link to={ROUTES['USERS/LIST'].buildURL()}>Users</Link>
     </div>
   )
 }

@@ -6,11 +6,18 @@ const ROUTES = {
       return this.PATH
     },
   },
-  USER: {
+  USERS: {
     NAME: 'users',
-    PATH: '/users',
+    PATH: '/users*',
     buildURL() {
       return this.PATH
+    },
+  },
+  'USERS/LIST': {
+    NAME: 'user list',
+    PATH: '/list',
+    buildURL() {
+      return `/users${this.PATH}`
     },
   },
 }
