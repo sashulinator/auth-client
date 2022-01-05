@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import cx from 'clsx'
-import ROUTES from '../../../constants/routes'
 import { DetailsList, SelectionMode } from '@fluentui/react/lib/DetailsList'
 import { Stack } from '@fluentui/react/lib/Stack'
 type UsersProps = {
@@ -26,17 +24,9 @@ const List: FC<UsersProps> = ({ className }): JSX.Element => {
   }
   return (
     <div className={cx('Users', className)}>
-      <h1>Users</h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to={ROUTES.LOGIN.buildURL()}>Login</Link>
-          </li>
-          <li>
-            <Link to={ROUTES['USERS/CREATE'].buildURL()}>Create user</Link>
-          </li>
-        </ul>
-      </nav>
+      <Stack tokens={{ padding: '20px 40px' }}>
+        <h1>Users</h1>
+      </Stack>
       <Stack tokens={{ padding: '20px 40px' }}>
         <DetailsList
           items={usersData.items}

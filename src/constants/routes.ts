@@ -9,9 +9,6 @@ const ROUTES = {
   USERS: {
     NAME: 'users',
     PATH: '/users*',
-    buildURL() {
-      return this.PATH
-    },
   },
   'USERS/LIST': {
     NAME: 'user list',

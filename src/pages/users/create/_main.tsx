@@ -23,6 +23,9 @@ const CreateUser: FC = (): JSX.Element => {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack tokens={{ padding: '20px 40px' }}>
+          <h1>Create user</h1>
+        </Stack>
         <Stack
           tokens={{ padding: '20px 40px', maxWidth: 400, childrenGap: 10 }}
         >
