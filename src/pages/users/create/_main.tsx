@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import FieldError from '../../../components/field-error'
 import { validate } from '../../../utils/validate'
 import { required } from '../../../utils/validators'
-import { User } from '../../../types/instances'
+import { User } from '../../../types/entities'
 
 const CreateUser: FC = (): JSX.Element => {
   const {

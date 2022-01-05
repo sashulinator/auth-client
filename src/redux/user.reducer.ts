@@ -1,7 +1,11 @@
 import * as CONSTANTS from './user.constants'
 import { combineReducers } from 'redux'
+import { StageAction } from '@savchenko91/rc-redux-api-mw'
+import { UserState } from '@/types/redux-state'
+import { FindManyResponse } from '@/types/transfer'
+import { User } from '@/types/entities'
 
-const initialState = {
+const getListInitialState: UserState['getList'] = {
   data: {
     total: 0,
     items: [],
@@ -10,7 +14,10 @@ const initialState = {
   error: '',
 }
 
-function getList(state = initialState, action: any) {
+function getList(
+  state = getListInitialState,
+  action: StageAction<{ error?: string } & FindManyResponse<User>>
+): typeof getListInitialState {
   switch (action.type) {
     case CONSTANTS.GET_LIST?.START:
       return {
@@ -22,19 +29,17 @@ function getList(state = initialState, action: any) {
       return {
         ...state,
         loading: false,
-        error: action.payload?.body?.error || '',
+        error: action.payload.body?.error || '',
       }
     case CONSTANTS.GET_LIST?.SUCCESS:
-      console.log('success', CONSTANTS.GET_LIST?.SUCCESS)
-
       return {
         ...state,
         loading: false,
         error: '',
-        data: action.payload.body || initialState.data,
+        data: action.payload.body || getListInitialState.data,
       }
     default:
-      return initialState
+      return getListInitialState
   }
 }
 

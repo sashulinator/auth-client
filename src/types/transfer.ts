@@ -9,3 +9,8 @@ export type OnStage<
   onFail?: OnFail<ResponseBody, RequestBody, Payload>
   onSuccess?: OnSuccess<ResponseBody, RequestBody, Payload>
 }
+
+export type FindManyResponse<T> = {
+  total: number
+  items: T[]
+}

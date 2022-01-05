@@ -1,3 +1,6 @@
+import { User } from './entities'
+import { FindManyResponse } from './transfer'
+
 export interface RootState {
   user: UserState
 }
@@ -5,10 +8,7 @@ export interface RootState {
 export interface UserState {
   getList: {
     loading: boolean
-    data: {
-      items: []
-      total: number
-    }
+    data: FindManyResponse<User>
     error: string
   }
 }
