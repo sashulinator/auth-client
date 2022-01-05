@@ -1,4 +1,6 @@
-html, body, #root  {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
 }
@@ -10,8 +12,8 @@ html, body, #root  {
     'main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
   grid-template-columns: 1fr;
-} 
-  
+}
+
 header {
   grid-area: header;
 }

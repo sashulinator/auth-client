@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom'
 import { LayerRoutes } from './layer-routes'
 import { Provider } from 'react-redux'
-import store from './app/redux-store'
+import store from './redux-store'
 
 export const App = () => {
   return (
