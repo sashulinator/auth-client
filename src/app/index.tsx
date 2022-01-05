@@ -1,12 +1,15 @@
 import ReactDOM from 'react-dom'
-import { LayerRoutes } from './layer-routes'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import RootLayer from './layer'
 import store from './redux-store'
 
 export const App = () => {
   return (
     <Provider store={store}>
-      <LayerRoutes />
+      <BrowserRouter>
+        <RootLayer />
+      </BrowserRouter>
     </Provider>
   )
 }
