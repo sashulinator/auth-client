@@ -1,4 +1,6 @@
-import { compose, createStore, combineReducers } from 'redux'
+import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
+import APIMiddleware from '@savchenko91/rc-redux-api-mw'
+import * as user from '../redux/user.reducer'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -9,9 +11,7 @@ const composeEnhancer =
   isDevelopment && !!devtoolsCompose ? devtoolsCompose : compose
 
 export default createStore(
-  combineReducers({
-    test: () => 'init',
-  }),
+  combineReducers(user),
   undefined,
-  composeEnhancer()
+  composeEnhancer(applyMiddleware(new APIMiddleware().middleware()))
 )

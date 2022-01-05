@@ -6,18 +6,14 @@ import { useForm } from 'react-hook-form'
 import FieldError from '../../../components/field-error'
 import { validate } from '../../../utils/validate'
 import { required } from '../../../utils/validators'
-
-interface IUser {
-  name: string
-  email: string
-}
+import { User } from '../../../types/instances'
 
 const CreateUser: FC = (): JSX.Element => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IUser>()
+  } = useForm<User>()
   const onSubmit = (data: any) => console.log(data)
 
   return (

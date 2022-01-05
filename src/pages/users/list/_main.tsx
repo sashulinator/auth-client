@@ -1,27 +1,25 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import cx from 'clsx'
 import { DetailsList, SelectionMode } from '@fluentui/react/lib/DetailsList'
 import { Stack } from '@fluentui/react/lib/Stack'
+import { useSelector } from 'react-redux'
+import * as userSelector from '../../../redux/user.selector'
+import * as userActions from '../../../redux/user.actions'
+import store from '../../../app/redux-store'
+
 type UsersProps = {
   className?: string
 }
 
 const List: FC<UsersProps> = ({ className }): JSX.Element => {
-  const [usersData, setUsers] = useState({ items: [], total: 0 })
+  const usersListState = useSelector(userSelector.getList)
 
   useEffect(getUsers, [])
 
   function getUsers() {
-    ;(async function () {
-      console.log('am i here&')
-
-      const res = await fetch('/api/v1/users')
-      const data = await res.json()
-      console.log('data', data)
-
-      setUsers(data)
-    })()
+    store.dispatch(userActions.getList())
   }
+
   return (
     <div className={cx('Users', className)}>
       <Stack tokens={{ padding: '20px 40px' }}>
@@ -29,7 +27,7 @@ const List: FC<UsersProps> = ({ className }): JSX.Element => {
       </Stack>
       <Stack tokens={{ padding: '20px 40px' }}>
         <DetailsList
-          items={usersData.items}
+          items={usersListState.data.items}
           columns={[
             {
               key: 'name',
