@@ -1,18 +1,13 @@
 import { FC, useEffect } from 'react'
-import cx from 'clsx'
 import { DetailsList, SelectionMode } from '@fluentui/react/lib/DetailsList'
 import { Stack } from '@fluentui/react/lib/Stack'
 import { useSelector } from 'react-redux'
-import * as userSelector from '../../../redux/user.selector'
-import * as userActions from '../../../redux/user.actions'
-import store from '../../../app/redux-store'
+import * as userSelectors from '@/redux/user.selector'
+import * as userActions from '@/redux/user.actions'
+import store from '@/app/redux-store'
 
-type UsersProps = {
-  className?: string
-}
-
-const List: FC<UsersProps> = ({ className }): JSX.Element => {
-  const usersListState = useSelector(userSelector.getList)
+const List: FC = (): JSX.Element => {
+  const userListState = useSelector(userSelectors.getList)
 
   useEffect(getUsers, [])
 
@@ -21,13 +16,13 @@ const List: FC<UsersProps> = ({ className }): JSX.Element => {
   }
 
   return (
-    <div className={cx('Users', className)}>
+    <div className="Users">
       <Stack tokens={{ padding: '20px 40px' }}>
         <h1>Users</h1>
       </Stack>
       <Stack tokens={{ padding: '20px 40px' }}>
         <DetailsList
-          items={usersListState.data.items}
+          items={userListState.data.items}
           columns={[
             {
               key: 'name',

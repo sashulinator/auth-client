@@ -3,13 +3,21 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
+    project: './tsconfig.json',
+    tsconfigRootDir: './',
   },
   settings: {
+    'import/resolver': {
+      typescript: {},
+    },
     react: {
       version: 'detect',
     },
   },
+  plugins: ['@typescript-eslint', 'import'],
   extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',

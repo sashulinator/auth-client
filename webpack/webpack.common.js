@@ -1,9 +1,18 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const resolveTsconfigPathsToAlias = require('./resolveTsconfigPathsToWebpackAlias.js')
+
+const tsconfigPathAliases = resolveTsconfigPathsToAlias({
+  tsconfigPath: '../tsconfig.json', // Using custom path
+  projectRoot: path.join(__dirname, '../'), // Using custom path
+})
 
 module.exports = {
   entry: path.resolve(__dirname, '..', './src/app/index.tsx'),
   resolve: {
+    alias: {
+      ...tsconfigPathAliases,
+    },
     extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
