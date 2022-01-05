@@ -4,6 +4,12 @@ export const GET = {
   FAIL: 'GET_USER/FAIL',
 }
 
+export const CREATE = {
+  START: 'CREATE_USER/START',
+  SUCCESS: 'CREATE_USER/SUCCESS',
+  FAIL: 'CREATE_USER/FAIL',
+}
+
 export const GET_LIST = {
   START: 'GET_USER_LIST/START',
   SUCCESS: 'GET_USER_LIST/SUCCESS',

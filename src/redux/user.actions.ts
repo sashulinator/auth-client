@@ -1,3 +1,4 @@
+import { User } from '@/types/entities'
 import {
   REDUX_API_MIDDLEWARE as type,
   APIActionAlt,
@@ -10,6 +11,21 @@ export function getList(onStage?: OnStage): APIActionAlt {
     url: `/api/v1/users`,
     method: 'get',
     stageActionTypes: CONSTANTS.GET_LIST,
+    type,
+    ...onStage,
+  }
+}
+
+export function create(body: User, onStage?: OnStage): APIActionAlt {
+  return {
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      Accept: '*/*',
+    },
+    url: `/api/v1/users`,
+    method: 'post',
+    body,
+    stageActionTypes: CONSTANTS.CREATE,
     type,
     ...onStage,
   }

@@ -7,6 +7,8 @@ import FieldError from '../../../components/field-error'
 import { validate } from '../../../utils/validate'
 import { required } from '../../../utils/validators'
 import { User } from '../../../types/entities'
+import * as userActions from '@/redux/user.actions'
+import store from '@/app/redux-store'
 
 const CreateUser: FC = (): JSX.Element => {
   const {
@@ -14,7 +16,10 @@ const CreateUser: FC = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
   } = useForm<User>()
-  const onSubmit = (data: any) => console.log(data)
+
+  function onSubmit(formData: User) {
+    store.dispatch(userActions.create(formData))
+  }
 
   return (
     <div>

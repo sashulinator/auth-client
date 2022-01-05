@@ -43,4 +43,39 @@ function getList(
   }
 }
 
-export const user = combineReducers({ getList })
+const createInitialState: UserState['create'] = {
+  data: null,
+  loading: false,
+  error: '',
+}
+
+function create(
+  state = createInitialState,
+  action: StageAction<{ error?: string } & User>
+): typeof createInitialState {
+  switch (action.type) {
+    case CONSTANTS.CREATE?.START:
+      return {
+        ...state,
+        loading: true,
+        error: '',
+      }
+    case CONSTANTS.CREATE?.FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.body?.error || '',
+      }
+    case CONSTANTS.CREATE?.SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: '',
+        data: action.payload.body || createInitialState.data,
+      }
+    default:
+      return createInitialState
+  }
+}
+
+export const user = combineReducers({ getList, create })

@@ -11,4 +11,9 @@ export interface UserState {
     data: FindManyResponse<User>
     error: string
   }
+  create: {
+    loading: boolean
+    data: User | null
+    error: string
+  }
 }
