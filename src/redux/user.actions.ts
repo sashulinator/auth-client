@@ -18,10 +18,6 @@ export function getList(onStage?: OnStage): APIActionAlt {
 
 export function create(body: User, onStage?: OnStage): APIActionAlt {
   return {
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      Accept: '*/*',
-    },
     url: `/api/v1/users`,
     method: 'post',
     body,

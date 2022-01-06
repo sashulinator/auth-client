@@ -12,7 +12,12 @@ type HeaderProps = {
 const Header: FC<HeaderProps> = ({ className }): JSX.Element => {
   return (
     <header className={cx('Header', className)}>
-      <Stack as="ul" horizontal tokens={{ childrenGap: 10 }}>
+      <Stack
+        as="ul"
+        horizontal
+        verticalAlign="center"
+        tokens={{ childrenGap: 10, padding: '15px 40px' }}
+      >
         <li>
           <Link to={ROUTES['USERS/LIST'].buildURL()}>users</Link>
         </li>
