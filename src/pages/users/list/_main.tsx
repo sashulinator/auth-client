@@ -49,19 +49,19 @@ const List: FC = (): JSX.Element => {
           <ActionButton
             onClick={() => history.push(ROUTES['USERS/CREATE'].buildURL())}
           >
-            Create
+            {t('buttons.create')}
           </ActionButton>
           <ActionButton
             // onClick={pruneMany}
             disabled={selectedItems.length !== 1}
           >
-            Edit
+            {t('buttons.edit')}
           </ActionButton>
           <ActionButton
             onClick={pruneMany}
             disabled={selectedItems.length <= 0}
           >
-            Remove
+            {t('buttons.remove')}
           </ActionButton>
         </Stack>
         <DetailsList
@@ -70,15 +70,29 @@ const List: FC = (): JSX.Element => {
           columns={[
             {
               key: 'name',
-              name: 'name',
-              minWidth: 300,
+              name: t('entities.user.name'),
+              minWidth: 100,
               fieldName: 'name',
             },
             {
               key: 'email',
-              name: 'email',
-              minWidth: 300,
+              name: t('entities.user.email'),
+              minWidth: 100,
               fieldName: 'email',
+            },
+            {
+              key: 'createdAt',
+              name: t('entities.user.createdAt'),
+              minWidth: 100,
+              fieldName: 'createdAt',
+              onRender: (user: User) => user.createdAt.slice(0, 10),
+            },
+            {
+              key: 'updatedAt',
+              name: t('entities.user.updatedAt'),
+              minWidth: 100,
+              fieldName: 'updatedAt',
+              onRender: (user: User) => user.updatedAt.slice(0, 10),
             },
           ]}
           selectionPreservedOnEmptyClick

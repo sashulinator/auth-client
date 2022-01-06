@@ -10,5 +10,14 @@
     "edit": "Редактировать",
     "create": "Создать",
     "remove": "Удалить"
+  },
+  "entities": {
+    "user": {
+      "name": "имя",
+      "email": "email",
+      "createdAt": "создан",
+      "updatedAt": "обновлен",
+      "id": "id"
+    }
   }
 }

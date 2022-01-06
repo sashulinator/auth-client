@@ -12,6 +12,8 @@ import store from '@/app/redux-store'
 import * as userSelectors from '@/redux/user.selector'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import history from '@/app/history'
+import ROUTES from '@/constants/routes'
 
 const CreateUser: FC = (): JSX.Element => {
   const { t } = useTranslation()
@@ -23,8 +25,12 @@ const CreateUser: FC = (): JSX.Element => {
     formState: { errors },
   } = useForm<User>()
 
+  function goToUserList() {
+    history.push(ROUTES['USERS/LIST'].buildURL())
+  }
+
   function onSubmit(formData: User) {
-    store.dispatch(userActions.create(formData))
+    store.dispatch(userActions.create(formData, { onSuccess: goToUserList }))
   }
 
   return (

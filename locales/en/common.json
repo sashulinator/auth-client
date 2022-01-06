@@ -10,5 +10,14 @@
     "edit": "Edit",
     "create": "Create",
     "remove": "Remove"
+  },
+  "entities": {
+    "user": {
+      "name": "name",
+      "email": "email",
+      "createdAt": "created",
+      "updatedAt": "updated",
+      "id": "id"
+    }
   }
 }
