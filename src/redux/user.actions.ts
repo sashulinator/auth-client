@@ -27,6 +27,17 @@ export function create(body: User, onStage?: OnStage): APIActionAlt {
   }
 }
 
+export function update(body: User, onStage?: OnStage): APIActionAlt {
+  return {
+    url: `/api/v1/users`,
+    method: 'PUT',
+    body,
+    stageActionTypes: CONSTANTS.UPDATE,
+    type,
+    ...onStage,
+  }
+}
+
 export function pruneMany(body: number[], onStage?: OnStage): APIActionAlt {
   return {
     url: `/api/v1/users`,

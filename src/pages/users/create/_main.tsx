@@ -12,11 +12,17 @@ import store from '@/app/redux-store'
 import * as userSelectors from '@/redux/user.selector'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import history from '@/app/history'
-import ROUTES from '@/constants/routes'
 
-const CreateUser: FC = (): JSX.Element => {
+interface Props {
+  defaultValues: undefined | User
+  onClose: () => void
+}
+
+const CreateUser: FC<Props> = (props): JSX.Element => {
   const { t } = useTranslation()
+
+  const isCreate = !props.defaultValues
+
   const userCreateState = useSelector(userSelectors.create)
 
   const {
@@ -25,26 +31,29 @@ const CreateUser: FC = (): JSX.Element => {
     formState: { errors },
   } = useForm<User>()
 
-  function goToUserList() {
-    history.push(ROUTES['USERS/LIST'].buildURL())
+  function onSuccess() {
+    props.onClose()
+    store.dispatch(userActions.getList())
   }
 
   function onSubmit(formData: User) {
-    store.dispatch(userActions.create(formData, { onSuccess: goToUserList }))
+    const userUpdate = { ...formData, id: props.defaultValues?.id as number }
+
+    isCreate
+      ? store.dispatch(userActions.create(formData, { onSuccess }))
+      : store.dispatch(userActions.update(userUpdate, { onSuccess }))
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack tokens={{ padding: '20px 40px' }}>
-          <h1>{t('pagesNames.createUser')}</h1>
-        </Stack>
         <Stack
-          tokens={{ padding: '20px 40px', maxWidth: 400, childrenGap: 10 }}
+          tokens={{ padding: '20px 0 0 0', maxWidth: 400, childrenGap: 10 }}
         >
           <div>
             <TextField
-              label="name"
+              label={t('entities.user.name')}
+              defaultValue={props.defaultValues?.name}
               aria-label="name"
               autoComplete="off"
               {...register('name', {
@@ -60,7 +69,8 @@ const CreateUser: FC = (): JSX.Element => {
           </div>
           <div>
             <TextField
-              label="email"
+              label={t('entities.user.email')}
+              defaultValue={props.defaultValues?.email}
               autoComplete="off"
               aria-label="email"
               {...register('email', {
@@ -75,7 +85,7 @@ const CreateUser: FC = (): JSX.Element => {
             />
           </div>
           <PrimaryButton disabled={userCreateState.loading} type="submit">
-            {userCreateState.loading ? 'Creating...' : 'Create'}
+            {userCreateState.loading ? 'Saving...' : 'Save'}
           </PrimaryButton>
         </Stack>
       </form>
