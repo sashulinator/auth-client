@@ -16,6 +16,7 @@ const createInitialState: UserState['create'] = {
   data: null,
   loading: false,
   error: '',
+  validationErrors: null,
 }
 
 export const user = combineReducers({

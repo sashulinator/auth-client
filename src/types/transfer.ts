@@ -14,3 +14,12 @@ export type FindManyResponse<T> = {
   total: number
   items: T[]
 }
+
+export interface ValidationError {
+  validatorName: string
+  message: string
+  key: string
+  value: unknown
+  key2?: string
+  value2?: unknown
+}

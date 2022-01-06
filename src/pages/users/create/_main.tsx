@@ -9,8 +9,12 @@ import { required } from '../../../utils/validators'
 import { User } from '../../../types/entities'
 import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
+import * as userSelectors from '@/redux/user.selector'
+import { useSelector } from 'react-redux'
 
 const CreateUser: FC = (): JSX.Element => {
+  const userCreateState = useSelector(userSelectors.create)
+
   const {
     register,
     handleSubmit,
@@ -39,7 +43,12 @@ const CreateUser: FC = (): JSX.Element => {
                 validate: validate([required]),
               })}
             />
-            <FieldError message={errors.name?.message} />
+            <FieldError
+              message={
+                errors.name?.message ||
+                userCreateState.validationErrors?.name?.message
+              }
+            />
           </div>
           <div>
             <TextField
@@ -50,9 +59,16 @@ const CreateUser: FC = (): JSX.Element => {
                 validate: validate([required]),
               })}
             />
-            <FieldError message={errors.email?.message} />
+            <FieldError
+              message={
+                errors.email?.message ||
+                userCreateState.validationErrors?.email?.message
+              }
+            />
           </div>
-          <PrimaryButton type="submit">Create</PrimaryButton>
+          <PrimaryButton disabled={userCreateState.loading} type="submit">
+            {userCreateState.loading ? 'Creating...' : 'Create'}
+          </PrimaryButton>
         </Stack>
       </form>
     </div>
