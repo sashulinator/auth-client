@@ -11,8 +11,10 @@ import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
 import * as userSelectors from '@/redux/user.selector'
 import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
 const CreateUser: FC = (): JSX.Element => {
+  const { t } = useTranslation()
   const userCreateState = useSelector(userSelectors.create)
 
   const {
@@ -29,7 +31,7 @@ const CreateUser: FC = (): JSX.Element => {
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack tokens={{ padding: '20px 40px' }}>
-          <h1>Create user</h1>
+          <h1>{t('pagesNames.createUser')}</h1>
         </Stack>
         <Stack
           tokens={{ padding: '20px 40px', maxWidth: 400, childrenGap: 10 }}

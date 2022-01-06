@@ -5,8 +5,10 @@ import { useSelector } from 'react-redux'
 import * as userSelectors from '@/redux/user.selector'
 import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
+import { useTranslation } from 'react-i18next'
 
 const List: FC = (): JSX.Element => {
+  const { t } = useTranslation()
   const userListState = useSelector(userSelectors.getList)
 
   useEffect(getUsers, [])
@@ -18,7 +20,7 @@ const List: FC = (): JSX.Element => {
   return (
     <div className="Users">
       <Stack tokens={{ padding: '20px 40px' }}>
-        <h1>Users</h1>
+        <h1>{t('pagesNames.userList')}</h1>
       </Stack>
       <Stack tokens={{ padding: '20px 40px' }}>
         <DetailsList

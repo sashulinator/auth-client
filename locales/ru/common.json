@@ -1,4 +1,9 @@
 {
+  "pagesNames": {
+    "createUser": "Создать пользователя",
+    "userList": "Список пользователей",
+    "login": "Логин"
+  },
   "buttons": {
     "ok": "Ок",
     "cancel": "Отмена"
