@@ -3,9 +3,6 @@ import { Route, Routes } from 'react-router-dom'
 import Login from '../pages/login'
 import Users from '../pages/users'
 import ROUTES from '../constants/routes'
-import './index.css'
-import './constants.css'
-import './reset.css'
 
 const RootRoutes: FC = () => {
   return (

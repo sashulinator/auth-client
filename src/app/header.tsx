@@ -1,20 +1,15 @@
 import { FC } from 'react'
-import cx from 'clsx'
 import './header.css'
 import { Link } from 'react-router-dom'
 import ROUTES from '../constants/routes'
 import { Stack } from '@fluentui/react/lib/Stack'
 import { useTranslation } from 'react-i18next'
 
-type HeaderProps = {
-  className?: string
-}
-
-const Header: FC<HeaderProps> = ({ className }): JSX.Element => {
+const Header: FC = (): JSX.Element => {
   const { t, i18n } = useTranslation()
 
   return (
-    <header className={cx('Header', className)}>
+    <Stack as="header" className="Header">
       <Stack
         as="ul"
         horizontal
@@ -40,7 +35,7 @@ const Header: FC<HeaderProps> = ({ className }): JSX.Element => {
           </button>
         </li>
       </Stack>
-    </header>
+    </Stack>
   )
 }
 
