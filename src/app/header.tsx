@@ -22,11 +22,6 @@ const Header: FC = (): JSX.Element => {
           </Link>
         </li>
         <li>
-          <Link to={ROUTES['USERS/CREATE'].buildURL()}>
-            {t('pagesNames.createUser')}
-          </Link>
-        </li>
-        <li>
           <Link to={ROUTES.LOGIN.buildURL()}>{t('pagesNames.login')}</Link>
         </li>
         <li>

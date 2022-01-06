@@ -26,3 +26,14 @@ export function create(body: User, onStage?: OnStage): APIActionAlt {
     ...onStage,
   }
 }
+
+export function pruneMany(body: number[], onStage?: OnStage): APIActionAlt {
+  return {
+    url: `/api/v1/users`,
+    method: 'DELETE',
+    body,
+    stageActionTypes: CONSTANTS.PRUNE_MANY,
+    type,
+    ...onStage,
+  }
+}

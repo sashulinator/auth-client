@@ -1,11 +1,14 @@
 {
   "pagesNames": {
     "createUser": "Create user",
-    "userList": "User list",
+    "userList": "Users",
     "login": "Login"
   },
   "buttons": {
     "ok": "Ok",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "create": "Create",
+    "remove": "Remove"
   }
 }
