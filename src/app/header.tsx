@@ -4,12 +4,16 @@ import './header.css'
 import { Link } from 'react-router-dom'
 import ROUTES from '../constants/routes'
 import { Stack } from '@fluentui/react/lib/Stack'
+import { useTranslation } from 'react-i18next'
+import { namespaces } from '@/app/i18n.constants'
 
 type HeaderProps = {
   className?: string
 }
 
 const Header: FC<HeaderProps> = ({ className }): JSX.Element => {
+  const { t, i18n } = useTranslation(namespaces.pages.hello)
+
   return (
     <header className={cx('Header', className)}>
       <Stack
@@ -26,6 +30,11 @@ const Header: FC<HeaderProps> = ({ className }): JSX.Element => {
         </li>
         <li>
           <Link to={ROUTES.LOGIN.buildURL()}>login</Link>
+        </li>
+        <li>
+          <button onClick={() => i18n.changeLanguage('ru')}>
+            {t('buttons.ok', { ns: namespaces.common })}
+          </button>
         </li>
       </Stack>
     </header>

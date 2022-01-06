@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const resolveTsconfigPathsToAlias = require('./resolveTsconfigPathsToWebpackAlias.js')
 
 const tsconfigPathAliases = resolveTsconfigPathsToAlias({
@@ -48,6 +49,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '..', './src/app/index.html'),
+    }),
+    new CopyPlugin({
+      patterns: [{ from: './locales', to: 'locales' }],
     }),
   ],
   stats: 'errors-only',
