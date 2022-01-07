@@ -17,6 +17,7 @@ import { clearValidationErrorsOnDestroy } from '@/helpers/clear-validation-error
 interface Props {
   defaultValues: undefined | User
   closeFormPanel: () => void
+  onSucces: () => void
 }
 
 const CreateUser: FC<Props> = (props): JSX.Element => {
@@ -32,7 +33,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
 
   function onSuccess() {
     props.closeFormPanel()
-    store.dispatch(userActions.getList())
+    props.onSucces()
   }
 
   function onSubmit(formData: User) {

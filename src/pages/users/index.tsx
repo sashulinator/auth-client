@@ -28,22 +28,22 @@ const List: FC = (): JSX.Element => {
 
   const userListState = useSelector(userSelectors.getList)
 
-  const perPage = 3
+  const perPage = 10
   const [currentPage, setCurrentPage] = useState(1)
 
   const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
 
   const { selectedItems: selectedUsers, selection } = useSelection<User>()
 
-  useEffect(getUsers, [currentPage])
+  useEffect(getUserList, [currentPage])
 
-  function getUsers() {
+  function getUserList() {
     store.dispatch(userActions.getList({ currentPage, perPage }))
   }
 
   function pruneMany() {
     const ids = selectedUsers.map((user) => user.id)
-    store.dispatch(userActions.pruneMany(ids, { onSuccess: getUsers }))
+    store.dispatch(userActions.pruneMany(ids, { onSuccess: getUserList }))
   }
 
   return (
@@ -56,6 +56,7 @@ const List: FC = (): JSX.Element => {
         closeButtonAriaLabel="Close"
       >
         <UserForm
+          onSucces={() => setCurrentPage(1)}
           defaultValues={selectedUsers[0]}
           closeFormPanel={closeFormPanel}
         />
@@ -91,25 +92,34 @@ const List: FC = (): JSX.Element => {
               {t('buttons.remove')}
             </ActionButton>
           </Stack>
-          <Pagination
-            onChange={setCurrentPage}
-            currentPage={currentPage}
-            totalItems={userListState.data.total}
-            perPage={perPage}
-            inputComponent={(inputProps) => (
-              <TextField
-                onKeyUp={inputProps.onKeyUp}
-                defaultValue={inputProps.value}
-                styles={{
-                  root: { maxWidth: 35 },
-                  field: { textAlign: 'center' },
-                }}
-              />
-            )}
-            buttonComponent={(buttonProps) => (
-              <ActionButton {...buttonProps} styles={buttonStyles} />
-            )}
-          />
+          <Stack
+            style={{ color: 'var(--neutralTertiaryAlt)' }}
+            horizontal
+            tokens={{ childrenGap: 20 }}
+            verticalAlign="center"
+          >
+            <div>users: {userListState.data.total}</div>
+            <div>pages: {Math.ceil(userListState.data.total / perPage)}</div>
+            <Pagination
+              onChange={setCurrentPage}
+              currentPage={currentPage}
+              totalItems={userListState.data.total}
+              perPage={perPage}
+              inputComponent={(inputProps) => (
+                <TextField
+                  onKeyUp={inputProps.onKeyUp}
+                  defaultValue={inputProps.value}
+                  styles={{
+                    root: { maxWidth: 35 },
+                    field: { textAlign: 'center' },
+                  }}
+                />
+              )}
+              buttonComponent={(buttonProps) => (
+                <ActionButton {...buttonProps} styles={buttonStyles} />
+              )}
+            />
+          </Stack>
         </Stack>
         <DetailsList
           selection={selection as Selection}
