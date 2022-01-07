@@ -16,25 +16,22 @@ import { clearValidationErrorsOnDestroy } from '@/helpers/clear-validation-error
 
 interface Props {
   defaultValues: undefined | User
-  closePanel: () => void
+  closeFormPanel: () => void
 }
 
 const CreateUser: FC<Props> = (props): JSX.Element => {
   const { t } = useTranslation()
 
   const actionName = !props.defaultValues ? 'create' : 'update'
+
   const userState = useSelector(userSelectors[actionName])
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isDirty },
-  } = useForm<User>()
+  const form = useForm<User>()
 
   useEffect(clearValidationErrorsOnDestroy, [])
 
   function onSuccess() {
-    props.closePanel()
+    props.closeFormPanel()
     store.dispatch(userActions.getList())
   }
 
@@ -45,7 +42,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <Stack
           tokens={{ padding: '20px 0 0 0', maxWidth: 400, childrenGap: 10 }}
         >
@@ -55,13 +52,13 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
               defaultValue={props.defaultValues?.name}
               aria-label="name"
               autoComplete="off"
-              {...register('name', {
+              {...form.register('name', {
                 validate: validate([required]),
               })}
             />
             <FieldError
               name="name"
-              formErrors={errors}
+              formErrors={form.formState.errors}
               serverErrors={userState}
             />
           </div>
@@ -71,17 +68,20 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
               defaultValue={props.defaultValues?.email}
               autoComplete="off"
               aria-label="email"
-              {...register('email', {
+              {...form.register('email', {
                 validate: validate([required]),
               })}
             />
             <FieldError
               name="email"
-              formErrors={errors}
+              formErrors={form.formState.errors}
               serverErrors={userState}
             />
           </div>
-          <PrimaryButton disabled={userState.loading || !isDirty} type="submit">
+          <PrimaryButton
+            disabled={userState.loading || !form.formState.isDirty}
+            type="submit"
+          >
             {userState.loading ? 'Saving...' : 'Save'}
           </PrimaryButton>
         </Stack>

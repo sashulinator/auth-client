@@ -1,35 +1,24 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Panel } from '@fluentui/react/lib/Panel'
-import {
-  Stack,
-  ActionButton,
-  DetailsList,
-  Selection,
-  SelectionMode,
-} from '@fluentui/react'
+import { Stack, ActionButton, DetailsList, Selection } from '@fluentui/react'
 import * as userSelectors from '@/redux/user.selector'
 import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
 import { User } from '@/types/entities'
 import UserForm from './form'
+import useBoolean from '@/utils/use-boolean'
+import { useSelection } from '@/utils/use-selection'
 
 const List: FC = (): JSX.Element => {
   const { t } = useTranslation()
 
   const userListState = useSelector(userSelectors.getList)
 
-  const [selectedItems, setSelectedItems] = useState<User[]>([])
-  const [isFormPanelOpen, setIsFormPanelOpen] = useState(false)
+  const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
 
-  const selection = new Selection<User>({
-    selectionMode: SelectionMode.multiple,
-    getKey: (user) => user.id.toString(),
-    onSelectionChanged: () => {
-      setSelectedItems(selection.getSelection())
-    },
-  })
+  const { selectedItems, selection } = useSelection<User>()
 
   useEffect(getUsers, [])
 
@@ -48,12 +37,12 @@ const List: FC = (): JSX.Element => {
         isLightDismiss
         headerText="Sample panel"
         isOpen={isFormPanelOpen}
-        onDismiss={() => setIsFormPanelOpen(false)}
+        onDismiss={closeFormPanel}
         closeButtonAriaLabel="Close"
       >
         <UserForm
           defaultValues={selectedItems[0]}
-          closePanel={() => setIsFormPanelOpen(false)}
+          closeFormPanel={closeFormPanel}
         />
       </Panel>
       <Stack tokens={{ padding: '20px 40px' }}>
@@ -63,12 +52,12 @@ const List: FC = (): JSX.Element => {
         <Stack horizontal>
           <ActionButton
             disabled={selectedItems.length > 0}
-            onClick={() => setIsFormPanelOpen(true)}
+            onClick={openFormPanel}
           >
             {t('buttons.create')}
           </ActionButton>
           <ActionButton
-            onClick={() => setIsFormPanelOpen(true)}
+            onClick={openFormPanel}
             disabled={selectedItems.length !== 1}
           >
             {t('buttons.edit')}
