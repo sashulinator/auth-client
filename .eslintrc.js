@@ -37,5 +37,12 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    /*  throws error if "allowComputed: false"
+        import * as a from './a'
+        function f(x) {
+          return a[x] // Unable to validate computed reference to imported namespace 'a'.
+        }
+    */
+    'import/namespace': [2, { allowComputed: true }],
   },
 }

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { TextField } from '@fluentui/react/lib/TextField'
 import { Stack } from '@fluentui/react/lib/Stack'
 import { PrimaryButton } from '@fluentui/react/lib/Button'
@@ -12,36 +12,35 @@ import store from '@/app/redux-store'
 import * as userSelectors from '@/redux/user.selector'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { clearValidationErrorsOnDestroy } from '@/helpers/clear-validation-errors'
 
 interface Props {
   defaultValues: undefined | User
-  onClose: () => void
+  closePanel: () => void
 }
 
 const CreateUser: FC<Props> = (props): JSX.Element => {
   const { t } = useTranslation()
 
-  const isCreate = !props.defaultValues
-
-  const userCreateState = useSelector(userSelectors.create)
+  const actionName = !props.defaultValues ? 'create' : 'update'
+  const userState = useSelector(userSelectors[actionName])
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<User>()
 
+  useEffect(clearValidationErrorsOnDestroy, [])
+
   function onSuccess() {
-    props.onClose()
+    props.closePanel()
     store.dispatch(userActions.getList())
   }
 
   function onSubmit(formData: User) {
-    const userUpdate = { ...formData, id: props.defaultValues?.id as number }
-
-    isCreate
-      ? store.dispatch(userActions.create(formData, { onSuccess }))
-      : store.dispatch(userActions.update(userUpdate, { onSuccess }))
+    const userInput = { ...formData, id: props.defaultValues?.id as number }
+    store.dispatch(userActions[actionName](userInput, { onSuccess }))
   }
 
   return (
@@ -61,10 +60,9 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
               })}
             />
             <FieldError
-              message={
-                errors.name?.message ||
-                userCreateState.validationErrors?.name?.message
-              }
+              name="name"
+              formErrors={errors}
+              serverErrors={userState}
             />
           </div>
           <div>
@@ -78,14 +76,13 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
               })}
             />
             <FieldError
-              message={
-                errors.email?.message ||
-                userCreateState.validationErrors?.email?.message
-              }
+              name="email"
+              formErrors={errors}
+              serverErrors={userState}
             />
           </div>
-          <PrimaryButton disabled={userCreateState.loading} type="submit">
-            {userCreateState.loading ? 'Saving...' : 'Save'}
+          <PrimaryButton disabled={userState.loading || !isDirty} type="submit">
+            {userState.loading ? 'Saving...' : 'Save'}
           </PrimaryButton>
         </Stack>
       </form>

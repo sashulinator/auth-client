@@ -4,7 +4,7 @@ import {
   APIActionAlt,
 } from '@savchenko91/rc-redux-api-mw'
 import { OnStage } from '../types/transfer'
-import * as CONSTANTS from './user.constants'
+import CONSTANTS from './user.constants'
 
 export function getList(onStage?: OnStage): APIActionAlt {
   return {

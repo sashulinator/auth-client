@@ -1,6 +1,8 @@
 import { ValidationError } from '@/types/transfer'
 import { StageAction, StageActionTypes } from '@savchenko91/rc-redux-api-mw'
 
+export const CLEAR_VALIDATION_ERRORS = 'COMMON/CLEAR_VALIDATION_ERRORS'
+
 interface State<D> {
   data: D
   loading: boolean
@@ -8,16 +10,27 @@ interface State<D> {
   validationErrors?: Record<string, ValidationError> | null
 }
 
+export type Reducer<Data> = (
+  state: State<Data>,
+  action: StageAction<
+    { error?: string; errors?: Record<string, ValidationError> } & Data
+  >
+) => State<Data> | void
+
 export function createAPIReducer<Data>(
   initState: State<Data>,
-  stageActionTypes: StageActionTypes
-) {
-  return (
-    state: State<Data>,
-    action: StageAction<
-      { error?: string; errors?: Record<string, ValidationError> } & Data
-    >
-  ): State<Data> => {
+  stageActionTypes: StageActionTypes,
+  customReducers: Reducer<Data>[] = []
+): Reducer<Data> {
+  return (state = initState, action): State<Data> => {
+    for (let index = 0; index < customReducers?.length; index++) {
+      const customReducer = customReducers[index]
+      const customState = customReducer(state, action)
+      if (customState) {
+        return customState
+      }
+    }
+
     switch (action.type) {
       case stageActionTypes.START: {
         const newState = {
@@ -61,9 +74,15 @@ export function createAPIReducer<Data>(
 
         return newState
       }
+      case CLEAR_VALIDATION_ERRORS: {
+        return {
+          ...state,
+          validationErrors: null,
+        }
+      }
 
       default:
-        return initState
+        return state
     }
   }
 }

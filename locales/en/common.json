@@ -19,5 +19,8 @@
       "updatedAt": "updated",
       "id": "id"
     }
-  }
+  },
+  "validateString": "is not a string",
+  "validateNotMoreThan": "more than {{- value2}}",
+  "validateByPattern": "does not match the {{key2}} pattern: {{- value2}}"
 }

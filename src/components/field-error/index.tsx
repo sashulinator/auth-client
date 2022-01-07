@@ -1,17 +1,42 @@
 import { FC } from 'react'
 import cx from 'clsx'
 import './index.css'
+import { ValidationError } from '@/types/transfer'
+import { useTranslation } from 'react-i18next'
 
 type FieldErrorProps = {
   className?: string
-  message?: string
+  name: string
+  formErrors?: Partial<Record<string, { message?: string }>>
+  serverErrors?: {
+    validationErrors?: Record<string, ValidationError> | null
+  }
 }
 
 const FieldError: FC<FieldErrorProps> = ({
   className,
-  message,
+  name,
+  serverErrors: stateWithServerErrors,
+  formErrors,
 }): JSX.Element => {
-  return <div className={cx('FieldError', className)}>{message}</div>
+  const { t } = useTranslation()
+
+  const formErrorMessage = formErrors?.[name]?.message
+
+  const validationError = stateWithServerErrors?.validationErrors?.[name]
+  console.log('validationError', validationError)
+  const serverErrorMessage = t(validationError?.validatorName || '', {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    ...validationError,
+    value2: (validationError?.value2 as string)?.toString(),
+    value: (validationError?.value as string)?.toString(),
+  })
+
+  return (
+    <div className={cx('FieldError', className)}>
+      {formErrorMessage || serverErrorMessage}
+    </div>
+  )
 }
 
 export default FieldError

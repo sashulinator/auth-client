@@ -53,7 +53,7 @@ const List: FC = (): JSX.Element => {
       >
         <UserForm
           defaultValues={selectedItems[0]}
-          onClose={() => setIsFormPanelOpen(false)}
+          closePanel={() => setIsFormPanelOpen(false)}
         />
       </Panel>
       <Stack tokens={{ padding: '20px 40px' }}>

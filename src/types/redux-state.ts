@@ -17,4 +17,10 @@ export interface UserState {
     error: string
     validationErrors: Record<keyof User, ValidationError> | null
   }
+  update: {
+    loading: boolean
+    data: User | null
+    error: string
+    validationErrors: Record<keyof User, ValidationError> | null
+  }
 }

@@ -1,29 +1,10 @@
-export const GET = {
-  START: 'GET_USER/START',
-  SUCCESS: 'GET_USER/SUCCESS',
-  FAIL: 'GET_USER/FAIL',
-}
+import { createAPIconstants } from '@/utils/create-api-constants'
 
-export const CREATE = {
-  START: 'CREATE_USER/START',
-  SUCCESS: 'CREATE_USER/SUCCESS',
-  FAIL: 'CREATE_USER/FAIL',
-}
-
-export const UPDATE = {
-  START: 'UPDATE_USER/START',
-  SUCCESS: 'UPDATE_USER/SUCCESS',
-  FAIL: 'UPDATE_USER/FAIL',
-}
-
-export const PRUNE_MANY = {
-  START: 'PRUNE_MANY_USER/START',
-  SUCCESS: 'PRUNE_MANY_USER/SUCCESS',
-  FAIL: 'PRUNE_MANY_USER/FAIL',
-}
-
-export const GET_LIST = {
-  START: 'GET_USER_LIST/START',
-  SUCCESS: 'GET_USER_LIST/SUCCESS',
-  FAIL: 'GET_USER_LIST/FAIL',
-}
+export default createAPIconstants(
+  'user',
+  'GET',
+  'CREATE',
+  'UPDATE',
+  'PRUNE_MANY',
+  'GET_LIST'
+)
