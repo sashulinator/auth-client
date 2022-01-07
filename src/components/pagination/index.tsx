@@ -1,21 +1,27 @@
 import { isNumber } from '@/utils/is-number'
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 import './index.css'
 
-type PaginationProps = {
+export interface PaginationInputProps {
+  ariaLabel?: string
+  value: string
+  onKeyUp: (e: React.KeyboardEvent) => void
+}
+export interface PaginationButtonProps {
+  onClick?: () => void
+  disabled: boolean
+  ariaLabel: string
+}
+
+export type PaginationProps = {
+  currentPageAriaLabel?: string
+  previousPageAriaLabel?: string
+  lastPagePageAriaLabel?: string
+  firstPageAriaLabel?: string
+  nextPageAriaLabel?: string
   className?: string
-  buttonComponent: React.ComponentType<{
-    ariaLabel?: string
-    'aria-label'?: string
-    onClick?: () => void
-    disabled: boolean
-  }>
-  inputComponent: React.ComponentType<{
-    ariaLabel?: string
-    'aria-label'?: string
-    value: string
-    onKeyUp: (e: React.KeyboardEvent) => void
-  }>
+  buttonComponent: React.ComponentType<PaginationButtonProps>
+  inputComponent: React.ComponentType<PaginationInputProps>
   totalItems?: number | string
   perPage?: number | string
   currentPage?: number | string
@@ -26,17 +32,19 @@ type PaginationProps = {
 const Pagination: FC<PaginationProps> = ({
   className = '',
   onChange,
-  buttonComponent,
-  inputComponent,
+  buttonComponent: Button,
+  inputComponent: Input,
   totalItems,
+  currentPageAriaLabel,
+  previousPageAriaLabel,
+  lastPagePageAriaLabel,
+  nextPageAriaLabel,
+  firstPageAriaLabel,
   perPage,
   currentPage,
 }): JSX.Element => {
   const parsedTotalItems = parseNumber(totalItems)
   const parsedPerPage = parseNumber(perPage)
-
-  const Input = useMemo(() => inputComponent, [inputComponent])
-  const Button = useMemo(() => buttonComponent, [buttonComponent])
 
   const totalPages = Math.ceil(parsedTotalItems / parsedPerPage)
 
@@ -62,27 +70,29 @@ const Pagination: FC<PaginationProps> = ({
       }
     }
   }
+  console.log('firstPageAriaLabel', firstPageAriaLabel)
 
   return (
     <div className={`Pagination ${className}`}>
       <Button
         disabled={parsedCurrentPage === 1}
         onClick={handleChange(1)}
-        ariaLabel="test"
-        aria-label="test"
+        ariaLabel={firstPageAriaLabel || 'Go to the first page'}
       >
         {'<<'}
       </Button>
       <Button
         disabled={parsedCurrentPage === 1}
         onClick={handleChange(parsedCurrentPage - 1)}
-        ariaLabel="test"
-        aria-label="test"
+        ariaLabel={previousPageAriaLabel || 'Go to the previous page'}
       >
         {'<'}
       </Button>
       <Input
-        aria-label="current page"
+        ariaLabel={
+          currentPageAriaLabel ||
+          'Current page. Press the Enter button to apply'
+        }
         onKeyUp={(e) => {
           if (e.key === 'Enter' || e.keyCode === 13) {
             handleChange(((e.target as unknown) as { value: number }).value)()
@@ -93,16 +103,14 @@ const Pagination: FC<PaginationProps> = ({
       <Button
         disabled={parsedCurrentPage >= totalPages}
         onClick={handleChange(parsedCurrentPage + 1)}
-        ariaLabel="test"
-        aria-label="test"
+        ariaLabel={nextPageAriaLabel || 'Go to the next page'}
       >
         {'>'}
       </Button>
       <Button
         disabled={parsedCurrentPage >= totalPages}
         onClick={handleChange(totalPages)}
-        ariaLabel="test"
-        aria-label="test"
+        ariaLabel={lastPagePageAriaLabel || 'Go to the last page'}
       >
         {'>>'}
       </Button>

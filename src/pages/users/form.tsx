@@ -49,6 +49,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
         >
           <div>
             <TextField
+              autoFocus={true}
               label={t('entities.user.name')}
               defaultValue={props.defaultValues?.name}
               aria-label="name"
@@ -83,7 +84,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
             disabled={userState.loading || !form.formState.isDirty}
             type="submit"
           >
-            {userState.loading ? 'Saving...' : 'Save'}
+            {userState.loading ? t('buttons.saving') : t('buttons.save')}
           </PrimaryButton>
         </Stack>
       </form>

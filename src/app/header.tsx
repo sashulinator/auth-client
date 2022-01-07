@@ -57,6 +57,7 @@ const Header: FC = (): JSX.Element => {
         </li>
         <li>
           <Dropdown
+            aria-label="Change language"
             onChange={selectLanguage}
             styles={{ dropdown: { borderColor: 'red' } }}
             defaultValue={i18n.language}

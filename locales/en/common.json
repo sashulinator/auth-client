@@ -4,14 +4,32 @@
     "userList": "Users",
     "login": "Login"
   },
+  "userPage": {
+    "searchByNameEmail": "Search by name or email",
+    "createUser": "Create user",
+    "editUser": "Edit user",
+    "users": "users",
+    "pages": "pages"
+  },
   "buttons": {
     "ok": "Ok",
     "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "toggleSelection": "Toggle selection",
+    "toggleSelectionForAll": "Toggle selection for all items",
     "edit": "Edit",
     "create": "Create",
     "filter": "Filter",
     "close": "Close",
     "remove": "Remove"
+  },
+  "pagination": {
+    "firstPage": "Go to the first page",
+    "previousPage": "Go to the previous page",
+    "currentPage": "Current page",
+    "nextPage": "Go to the next page",
+    "lastPage": "Go to the last page"
   },
   "entities": {
     "user": {
@@ -22,7 +40,6 @@
       "id": "id"
     }
   },
-  "searchByNameEmail": "Search by name or email",
   "validateString": "is not a string",
   "validateNotMoreThan": "more than {{- value2}}",
   "validateByPattern": "does not match the {{key2}} pattern: {{- value2}}"

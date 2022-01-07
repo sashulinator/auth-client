@@ -17,12 +17,55 @@ import { User } from '@/types/entities'
 import UserForm from './form'
 import useBoolean from '@/utils/use-boolean'
 import { useSelection } from '@/utils/use-selection'
-import Pagination from '@/components/pagination'
+import Pagination, {
+  PaginationInputProps,
+  PaginationButtonProps,
+} from '@/components/pagination'
 import { useDebounce } from '@/utils/use-debaunce'
 
 const buttonStyles = {
   root: { color: 'var(--themeDark)' },
   rootDisabled: { color: 'var(--themeTertiary)' },
+}
+
+const PaginationButton: FC<PaginationButtonProps> = (props) => {
+  return <ActionButton {...props} styles={buttonStyles} />
+}
+
+// TODO: Sorry for this ugly component but it's all because of
+// fluentui specific behavior with value :(
+const PaginationInput: FC<PaginationInputProps> = (props) => {
+  const [value, setValue] = useState(props.value)
+  const [currentPage, setCurrentPage] = useState(props.value)
+
+  useEffect(() => {
+    if (currentPage !== props.value) {
+      setValue(props.value)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.value])
+
+  return (
+    <TextField
+      ariaLabel={props.ariaLabel}
+      onKeyUp={(e) => {
+        if (e.key === 'Enter') {
+          const newCurrentPage = ((e.target as unknown) as { value: string })
+            .value
+          setCurrentPage(newCurrentPage)
+          props.onKeyUp(e)
+        }
+      }}
+      onChange={(e) =>
+        setValue(((e.target as unknown) as { value: string }).value)
+      }
+      value={value}
+      styles={{
+        root: { maxWidth: 35 },
+        field: { textAlign: 'center' },
+      }}
+    />
+  )
 }
 
 const List: FC = (): JSX.Element => {
@@ -67,7 +110,9 @@ const List: FC = (): JSX.Element => {
     <div className="Users">
       <Panel
         isLightDismiss
-        headerText="Sample panel"
+        headerText={
+          selectedUsers[0] ? t('userPage.editUser') : t('userPage.createUser')
+        }
         isOpen={isFormPanelOpen}
         onDismiss={closeFormPanel}
         closeButtonAriaLabel="Close"
@@ -87,11 +132,11 @@ const List: FC = (): JSX.Element => {
             {isFilterVisible ? (
               <>
                 <SearchBox
-                  // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
+                  ariaLabel={t('userPage.searchByNameEmail')}
                   onChange={(e) => setSearchQueryWithDelay(e?.target.value)}
                   showIcon={false}
-                  placeholder={t('searchByNameEmail')}
+                  placeholder={t('userPage.searchByNameEmail')}
                   underlined={true}
                   styles={{ root: { width: '300px' } }}
                 />
@@ -145,26 +190,25 @@ const List: FC = (): JSX.Element => {
             tokens={{ childrenGap: 20 }}
             verticalAlign="center"
           >
-            <div>users: {userListState.data.total}</div>
-            <div>pages: {Math.ceil(userListState.data.total / perPage)}</div>
+            <div>
+              {t('userPage.users')}: {userListState.data.total}
+            </div>
+            <div>
+              {t('userPage.pages')}:{' '}
+              {Math.ceil(userListState.data.total / perPage)}
+            </div>
             <Pagination
+              currentPageAriaLabel={t('pagination.currentPage')}
+              previousPageAriaLabel={t('pagination.previousPage')}
+              lastPagePageAriaLabel={t('pagination.lastPage')}
+              firstPageAriaLabel={t('pagination.firstPage')}
+              nextPageAriaLabel={t('pagination.nextPage')}
               onChange={setCurrentPage}
               currentPage={currentPage}
               totalItems={userListState.data.total}
               perPage={perPage}
-              inputComponent={(inputProps) => (
-                <TextField
-                  onKeyUp={inputProps.onKeyUp}
-                  defaultValue={inputProps.value}
-                  styles={{
-                    root: { maxWidth: 35 },
-                    field: { textAlign: 'center' },
-                  }}
-                />
-              )}
-              buttonComponent={(buttonProps) => (
-                <ActionButton {...buttonProps} styles={buttonStyles} />
-              )}
+              inputComponent={PaginationInput}
+              buttonComponent={PaginationButton}
             />
           </Stack>
         </Stack>
@@ -201,8 +245,8 @@ const List: FC = (): JSX.Element => {
           ]}
           selectionPreservedOnEmptyClick
           setKey="set"
-          ariaLabelForSelectionColumn="Toggle selection"
-          ariaLabelForSelectAllCheckbox="Toggle selection for all items"
+          ariaLabelForSelectionColumn={t('buttons.toggleSelection')}
+          ariaLabelForSelectAllCheckbox={t('buttons.toggleSelectionForAll')}
           checkButtonAriaLabel="select row"
         />
       </Stack>

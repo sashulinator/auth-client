@@ -4,14 +4,32 @@
     "userList": "Пользователи",
     "login": "Логин"
   },
+  "userPage": {
+    "searchByNameEmail": "Искать по имени и email",
+    "createUser": "Создать пользователя",
+    "editUser": "Редактировать пользователя",
+    "users": "пользователей",
+    "pages": "страниц"
+  },
   "buttons": {
     "ok": "Ок",
     "cancel": "Отмена",
     "edit": "Редактировать",
     "create": "Создать",
+    "save": "Сохранить",
+    "saving": "Сохраняется...",
+    "toggleSelection": "Переключить выделение",
+    "toggleSelectionForAll": "Переключить выделение для всего списка",
     "filter": "Фильтр",
     "close": "Закрыть",
     "remove": "Удалить"
+  },
+  "pagination": {
+    "firstPage": "Перейти на первую страницу",
+    "previousPage": "Перейти на предыдущую страницу",
+    "currentPage": "Текущая страница",
+    "nextPage": "Перейти на следующую страницу",
+    "lastPage": "Перейти на последнюю страницу"
   },
   "entities": {
     "user": {

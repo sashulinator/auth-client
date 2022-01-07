@@ -44,5 +44,6 @@ module.exports = {
         }
     */
     'import/namespace': [2, { allowComputed: true }],
+    'jsx-a11y/no-autofocus': ['off'],
   },
 }
