@@ -1,5 +1,5 @@
 import { isNumber } from '@/utils/is-number'
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import './index.css'
 
 type PaginationProps = {
@@ -26,14 +26,17 @@ type PaginationProps = {
 const Pagination: FC<PaginationProps> = ({
   className = '',
   onChange,
-  buttonComponent: Botton,
-  inputComponent: Input,
+  buttonComponent,
+  inputComponent,
   totalItems,
   perPage,
   currentPage,
 }): JSX.Element => {
   const parsedTotalItems = parseNumber(totalItems)
   const parsedPerPage = parseNumber(perPage)
+
+  const Input = useMemo(() => inputComponent, [inputComponent])
+  const Button = useMemo(() => buttonComponent, [buttonComponent])
 
   const totalPages = Math.ceil(parsedTotalItems / parsedPerPage)
 
@@ -62,22 +65,22 @@ const Pagination: FC<PaginationProps> = ({
 
   return (
     <div className={`Pagination ${className}`}>
-      <Botton
+      <Button
         disabled={parsedCurrentPage === 1}
         onClick={handleChange(1)}
         ariaLabel="test"
         aria-label="test"
       >
         {'<<'}
-      </Botton>
-      <Botton
+      </Button>
+      <Button
         disabled={parsedCurrentPage === 1}
         onClick={handleChange(parsedCurrentPage - 1)}
         ariaLabel="test"
         aria-label="test"
       >
         {'<'}
-      </Botton>
+      </Button>
       <Input
         aria-label="current page"
         onKeyUp={(e) => {
@@ -87,22 +90,22 @@ const Pagination: FC<PaginationProps> = ({
         }}
         value={parsedCurrentPage.toString()}
       />
-      <Botton
+      <Button
         disabled={parsedCurrentPage >= totalPages}
         onClick={handleChange(parsedCurrentPage + 1)}
         ariaLabel="test"
         aria-label="test"
       >
         {'>'}
-      </Botton>
-      <Botton
+      </Button>
+      <Button
         disabled={parsedCurrentPage >= totalPages}
         onClick={handleChange(totalPages)}
         ariaLabel="test"
         aria-label="test"
       >
         {'>>'}
-      </Botton>
+      </Button>
     </div>
   )
 }
