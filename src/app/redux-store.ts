@@ -1,6 +1,7 @@
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
 import APIMiddleware from './api-middleware'
 import * as user from '../redux/user.reducer'
+import queryMiddleware from '@savchenko91/rc-redux-api-mw-query'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
@@ -14,5 +15,7 @@ const composeEnhancer =
 export default createStore(
   combineReducers(user),
   undefined,
-  composeEnhancer(applyMiddleware(APIMiddleware.middleware()))
+  composeEnhancer(
+    applyMiddleware(queryMiddleware(), APIMiddleware.middleware())
+  )
 )

@@ -18,6 +18,7 @@ import UserForm from './form'
 import useBoolean from '@/utils/use-boolean'
 import { useSelection } from '@/utils/use-selection'
 import Pagination from '@/components/pagination'
+import { useDebounce } from '@/utils/use-debaunce'
 
 const buttonStyles = {
   root: { color: 'var(--themeDark)' },
@@ -31,6 +32,9 @@ const List: FC = (): JSX.Element => {
 
   const perPage = 10
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchQuery, setSearchQueryWithDelay, setSearchQuery] = useDebounce<
+    undefined | string
+  >(undefined, 500)
 
   const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
   const [isFilterVisible, setFilterVisible, unsetFilterVisible] = useBoolean(
@@ -39,10 +43,10 @@ const List: FC = (): JSX.Element => {
 
   const { selectedItems: selectedUsers, selection } = useSelection<User>()
 
-  useEffect(getUserList, [currentPage])
+  useEffect(getUserList, [currentPage, searchQuery])
 
   function getUserList() {
-    store.dispatch(userActions.getList({ currentPage, perPage }))
+    store.dispatch(userActions.getList({ currentPage, perPage, searchQuery }))
   }
 
   function pruneMany() {
@@ -52,6 +56,11 @@ const List: FC = (): JSX.Element => {
 
   function onFormSuccess() {
     currentPage === 1 ? getUserList() : setCurrentPage(1)
+  }
+
+  function closeFilter() {
+    setSearchQuery(undefined)
+    unsetFilterVisible()
   }
 
   return (
@@ -80,13 +89,14 @@ const List: FC = (): JSX.Element => {
                 <SearchBox
                   // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
+                  onChange={(e) => setSearchQueryWithDelay(e?.target.value)}
                   showIcon={false}
                   placeholder={t('searchByNameEmail')}
                   underlined={true}
                   styles={{ root: { width: '300px' } }}
                 />
                 <ActionButton
-                  onClick={unsetFilterVisible}
+                  onClick={closeFilter}
                   styles={buttonStyles}
                   ariaLabel={t('buttons.close')}
                 >

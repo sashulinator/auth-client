@@ -9,6 +9,7 @@ import CONSTANTS from './user.constants'
 interface GetListParams {
   perPage: number
   currentPage: number
+  searchQuery?: string
 }
 
 export function getList(
@@ -16,8 +17,10 @@ export function getList(
   onStage?: OnStage
 ): APIActionAlt {
   const skip = params.perPage * (params.currentPage - 1)
+
   return {
-    url: `/api/v1/users?take=${params.perPage}&skip=${skip}`,
+    url: '/api/v1/users',
+    query: { skip, take: params.perPage, searchQuery: params.searchQuery },
     method: 'get',
     stageActionTypes: CONSTANTS.GET_LIST,
     type,
