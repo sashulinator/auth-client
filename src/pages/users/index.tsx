@@ -96,17 +96,18 @@ const List: FC = (): JSX.Element => {
             currentPage={currentPage}
             totalItems={userListState.data.total}
             perPage={perPage}
-            inputComponent={(props) => (
+            inputComponent={(inputProps) => (
               <TextField
-                defaultValue={props.value}
+                onKeyUp={inputProps.onKeyUp}
+                defaultValue={inputProps.value}
                 styles={{
                   root: { maxWidth: 35 },
                   field: { textAlign: 'center' },
                 }}
               />
             )}
-            buttonComponent={(props) => (
-              <ActionButton {...props} styles={buttonStyles} />
+            buttonComponent={(buttonProps) => (
+              <ActionButton {...buttonProps} styles={buttonStyles} />
             )}
           />
         </Stack>

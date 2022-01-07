@@ -14,6 +14,7 @@ type PaginationProps = {
     ariaLabel?: string
     'aria-label'?: string
     value: string
+    onKeyUp: (e: React.KeyboardEvent) => void
   }>
   totalItems?: number | string
   perPage?: number | string
@@ -48,7 +49,12 @@ const Pagination: FC<PaginationProps> = ({
 
   function handleChange(newPage: number) {
     return () => {
-      if (newPage !== currentPage && onChange) {
+      if (
+        newPage !== currentPage &&
+        onChange &&
+        newPage >= 1 &&
+        newPage <= totalPages
+      ) {
         onChange?.(newPage)
       }
     }
@@ -72,7 +78,15 @@ const Pagination: FC<PaginationProps> = ({
       >
         {'<'}
       </Botton>
-      <Input aria-label="current page" value={parsedCurrentPage.toString()} />
+      <Input
+        aria-label="current page"
+        onKeyUp={(e) => {
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            handleChange(((e.target as unknown) as { value: number }).value)()
+          }
+        }}
+        value={parsedCurrentPage.toString()}
+      />
       <Botton
         disabled={parsedCurrentPage >= totalPages}
         onClick={handleChange(parsedCurrentPage + 1)}
