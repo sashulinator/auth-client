@@ -24,13 +24,11 @@ const FieldError: FC<FieldErrorProps> = ({
   const formErrorMessage = formErrors?.[name]?.message
 
   const validationError = stateWithServerErrors?.validationErrors?.[name]
-  console.log('validationError', validationError)
-  const serverErrorMessage = t(validationError?.validatorName || '', {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-    ...validationError,
-    value2: (validationError?.value2 as string)?.toString(),
-    value: (validationError?.value as string)?.toString(),
-  })
+
+  const serverErrorMessage = t(
+    validationError?.validatorName || '',
+    validationError
+  )
 
   return (
     <div className={cx('FieldError', className)}>

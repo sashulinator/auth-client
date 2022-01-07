@@ -11,6 +11,11 @@ import UserForm from './form'
 import useBoolean from '@/utils/use-boolean'
 import { useSelection } from '@/utils/use-selection'
 
+const buttonStyles = {
+  root: { color: 'var(--themeDark)' },
+  rootDisabled: { color: 'var(--themeTertiary)' },
+}
+
 const List: FC = (): JSX.Element => {
   const { t } = useTranslation()
 
@@ -53,18 +58,21 @@ const List: FC = (): JSX.Element => {
           <ActionButton
             disabled={selectedItems.length > 0}
             onClick={openFormPanel}
+            styles={buttonStyles}
           >
             {t('buttons.create')}
           </ActionButton>
           <ActionButton
             onClick={openFormPanel}
             disabled={selectedItems.length !== 1}
+            styles={buttonStyles}
           >
             {t('buttons.edit')}
           </ActionButton>
           <ActionButton
             onClick={pruneMany}
             disabled={selectedItems.length <= 0}
+            styles={buttonStyles}
           >
             {t('buttons.remove')}
           </ActionButton>
