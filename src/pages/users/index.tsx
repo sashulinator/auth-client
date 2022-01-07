@@ -1,8 +1,14 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Panel } from '@fluentui/react/lib/Panel'
-import { Stack, ActionButton, DetailsList, Selection } from '@fluentui/react'
+import {
+  Stack,
+  ActionButton,
+  DetailsList,
+  Selection,
+  TextField,
+} from '@fluentui/react'
 import * as userSelectors from '@/redux/user.selector'
 import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
@@ -10,6 +16,7 @@ import { User } from '@/types/entities'
 import UserForm from './form'
 import useBoolean from '@/utils/use-boolean'
 import { useSelection } from '@/utils/use-selection'
+import Pagination from '@/components/pagination'
 
 const buttonStyles = {
   root: { color: 'var(--themeDark)' },
@@ -21,18 +28,21 @@ const List: FC = (): JSX.Element => {
 
   const userListState = useSelector(userSelectors.getList)
 
+  const perPage = 3
+  const [currentPage, setCurrentPage] = useState(1)
+
   const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
 
-  const { selectedItems, selection } = useSelection<User>()
+  const { selectedItems: selectedUsers, selection } = useSelection<User>()
 
-  useEffect(getUsers, [])
+  useEffect(getUsers, [currentPage])
 
   function getUsers() {
-    store.dispatch(userActions.getList())
+    store.dispatch(userActions.getList({ currentPage, perPage }))
   }
 
   function pruneMany() {
-    const ids = selectedItems.map((user) => user.id)
+    const ids = selectedUsers.map((user) => user.id)
     store.dispatch(userActions.pruneMany(ids, { onSuccess: getUsers }))
   }
 
@@ -46,7 +56,7 @@ const List: FC = (): JSX.Element => {
         closeButtonAriaLabel="Close"
       >
         <UserForm
-          defaultValues={selectedItems[0]}
+          defaultValues={selectedUsers[0]}
           closeFormPanel={closeFormPanel}
         />
       </Panel>
@@ -54,28 +64,51 @@ const List: FC = (): JSX.Element => {
         <h1>{t('pagesNames.userList')}</h1>
       </Stack>
       <Stack tokens={{ padding: '20px 40px' }}>
-        <Stack horizontal>
-          <ActionButton
-            disabled={selectedItems.length > 0}
-            onClick={openFormPanel}
-            styles={buttonStyles}
-          >
-            {t('buttons.create')}
-          </ActionButton>
-          <ActionButton
-            onClick={openFormPanel}
-            disabled={selectedItems.length !== 1}
-            styles={buttonStyles}
-          >
-            {t('buttons.edit')}
-          </ActionButton>
-          <ActionButton
-            onClick={pruneMany}
-            disabled={selectedItems.length <= 0}
-            styles={buttonStyles}
-          >
-            {t('buttons.remove')}
-          </ActionButton>
+        <Stack horizontal horizontalAlign="space-between">
+          <Stack horizontal>
+            <ActionButton
+              disabled={selectedUsers.length > 0}
+              onClick={openFormPanel}
+              styles={buttonStyles}
+              ariaLabel={t('buttons.create')}
+            >
+              {t('buttons.create')}
+            </ActionButton>
+            <ActionButton
+              onClick={openFormPanel}
+              disabled={selectedUsers.length !== 1}
+              styles={buttonStyles}
+              ariaLabel={t('buttons.edit')}
+            >
+              {t('buttons.edit')}
+            </ActionButton>
+            <ActionButton
+              onClick={pruneMany}
+              disabled={selectedUsers.length <= 0}
+              styles={buttonStyles}
+              ariaLabel={t('buttons.remove')}
+            >
+              {t('buttons.remove')}
+            </ActionButton>
+          </Stack>
+          <Pagination
+            onChange={setCurrentPage}
+            currentPage={currentPage}
+            totalItems={userListState.data.total}
+            perPage={perPage}
+            inputComponent={(props) => (
+              <TextField
+                defaultValue={props.value}
+                styles={{
+                  root: { maxWidth: 35 },
+                  field: { textAlign: 'center' },
+                }}
+              />
+            )}
+            buttonComponent={(props) => (
+              <ActionButton {...props} styles={buttonStyles} />
+            )}
+          />
         </Stack>
         <DetailsList
           selection={selection as Selection}

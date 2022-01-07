@@ -6,9 +6,18 @@ import {
 import { OnStage } from '../types/transfer'
 import CONSTANTS from './user.constants'
 
-export function getList(onStage?: OnStage): APIActionAlt {
+interface GetListParams {
+  perPage: number
+  currentPage: number
+}
+
+export function getList(
+  params: GetListParams,
+  onStage?: OnStage
+): APIActionAlt {
+  const skip = params.perPage * (params.currentPage - 1)
   return {
-    url: `/api/v1/users`,
+    url: `/api/v1/users?take=${params.perPage}&skip=${skip}`,
     method: 'get',
     stageActionTypes: CONSTANTS.GET_LIST,
     type,
