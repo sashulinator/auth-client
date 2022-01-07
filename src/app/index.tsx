@@ -7,8 +7,11 @@ import RootLayer from './layer'
 import store from './redux-store'
 import history from './history'
 import './i18n'
+import { initializeIcons } from '@fluentui/react'
 
 export const App = () => {
+  initializeIcons()
+
   return (
     <Suspense fallback={<></>}>
       <Provider store={store}>
