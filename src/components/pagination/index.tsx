@@ -70,8 +70,6 @@ const Pagination: FC<PaginationProps> = ({
       }
     }
   }
-  console.log('firstPageAriaLabel', firstPageAriaLabel)
-
   return (
     <div className={`Pagination ${className}`}>
       <Button

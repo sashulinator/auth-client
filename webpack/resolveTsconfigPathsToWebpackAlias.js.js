@@ -10,9 +10,6 @@ function resolveTsconfigPathsToAlias({
   tsconfigPath = './tsconfig.json',
   projectRoot = __dirname,
 } = {}) {
-  console.log('tsconfigPath', tsconfigPath)
-  console.log('projectRoot', projectRoot)
-
   const { baseUrl, paths } = require(tsconfigPath).compilerOptions
 
   const aliases = {}

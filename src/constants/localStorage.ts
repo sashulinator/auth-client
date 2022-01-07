@@ -1,4 +1,4 @@
-export const TOKEN = 'token'
+export const ACCESS_TOKEN = 'token'
 
 export const ROLE = 'role'
 
