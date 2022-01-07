@@ -9,6 +9,8 @@
     "cancel": "Отмена",
     "edit": "Редактировать",
     "create": "Создать",
+    "filter": "Фильтр",
+    "close": "Закрыть",
     "remove": "Удалить"
   },
   "entities": {
@@ -20,6 +22,7 @@
       "id": "id"
     }
   },
+  "searchByNameEmail": "Поиск по имени и email",
   "validateString": "не является строкой",
   "validateNotMoreThan": "больше чем {{- value2}}",
   "validateByPattern": "не следует паттерну {{key2}}: {{- value2}}"

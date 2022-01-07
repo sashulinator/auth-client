@@ -8,6 +8,7 @@ import {
   DetailsList,
   Selection,
   TextField,
+  SearchBox,
 } from '@fluentui/react'
 import * as userSelectors from '@/redux/user.selector'
 import * as userActions from '@/redux/user.actions'
@@ -32,6 +33,9 @@ const List: FC = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1)
 
   const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
+  const [isFilterVisible, setFilterVisible, unsetFilterVisible] = useBoolean(
+    false
+  )
 
   const { selectedItems: selectedUsers, selection } = useSelection<User>()
 
@@ -46,6 +50,10 @@ const List: FC = (): JSX.Element => {
     store.dispatch(userActions.pruneMany(ids, { onSuccess: getUserList }))
   }
 
+  function onFormSuccess() {
+    currentPage === 1 ? getUserList() : setCurrentPage(1)
+  }
+
   return (
     <div className="Users">
       <Panel
@@ -56,7 +64,7 @@ const List: FC = (): JSX.Element => {
         closeButtonAriaLabel="Close"
       >
         <UserForm
-          onSucces={() => setCurrentPage(1)}
+          onSucces={onFormSuccess}
           defaultValues={selectedUsers[0]}
           closeFormPanel={closeFormPanel}
         />
@@ -67,30 +75,59 @@ const List: FC = (): JSX.Element => {
       <Stack tokens={{ padding: '20px 40px' }}>
         <Stack horizontal horizontalAlign="space-between">
           <Stack horizontal>
-            <ActionButton
-              disabled={selectedUsers.length > 0}
-              onClick={openFormPanel}
-              styles={buttonStyles}
-              ariaLabel={t('buttons.create')}
-            >
-              {t('buttons.create')}
-            </ActionButton>
-            <ActionButton
-              onClick={openFormPanel}
-              disabled={selectedUsers.length !== 1}
-              styles={buttonStyles}
-              ariaLabel={t('buttons.edit')}
-            >
-              {t('buttons.edit')}
-            </ActionButton>
-            <ActionButton
-              onClick={pruneMany}
-              disabled={selectedUsers.length <= 0}
-              styles={buttonStyles}
-              ariaLabel={t('buttons.remove')}
-            >
-              {t('buttons.remove')}
-            </ActionButton>
+            {isFilterVisible ? (
+              <>
+                <SearchBox
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus
+                  showIcon={false}
+                  placeholder={t('searchByNameEmail')}
+                  underlined={true}
+                  styles={{ root: { width: '300px' } }}
+                />
+                <ActionButton
+                  onClick={unsetFilterVisible}
+                  styles={buttonStyles}
+                  ariaLabel={t('buttons.close')}
+                >
+                  {t('buttons.close')}
+                </ActionButton>
+              </>
+            ) : (
+              <>
+                <ActionButton
+                  disabled={selectedUsers.length > 0}
+                  onClick={openFormPanel}
+                  styles={buttonStyles}
+                  ariaLabel={t('buttons.create')}
+                >
+                  {t('buttons.create')}
+                </ActionButton>
+                <ActionButton
+                  onClick={openFormPanel}
+                  disabled={selectedUsers.length !== 1}
+                  styles={buttonStyles}
+                  ariaLabel={t('buttons.edit')}
+                >
+                  {t('buttons.edit')}
+                </ActionButton>
+                <ActionButton
+                  onClick={pruneMany}
+                  disabled={selectedUsers.length <= 0}
+                  styles={buttonStyles}
+                  ariaLabel={t('buttons.remove')}
+                >
+                  {t('buttons.remove')}
+                </ActionButton>
+                <ActionButton
+                  onClick={setFilterVisible}
+                  styles={buttonStyles}
+                  ariaLabel={t('buttons.filter')}
+                >
+                  {t('buttons.filter')}
+                </ActionButton>
+              </>
+            )}
           </Stack>
           <Stack
             style={{ color: 'var(--neutralTertiaryAlt)' }}

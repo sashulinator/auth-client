@@ -9,6 +9,8 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "create": "Create",
+    "filter": "Filter",
+    "close": "Close",
     "remove": "Remove"
   },
   "entities": {
@@ -20,6 +22,7 @@
       "id": "id"
     }
   },
+  "searchByNameEmail": "Search by name or email",
   "validateString": "is not a string",
   "validateNotMoreThan": "more than {{- value2}}",
   "validateByPattern": "does not match the {{key2}} pattern: {{- value2}}"
