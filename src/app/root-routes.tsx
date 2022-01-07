@@ -6,12 +6,12 @@ import ROUTES from '../constants/routes'
 
 const RootRoutes: FC = () => {
   return (
-    <div>
+    <>
       <Routes>
         <Route path={ROUTES.LOGIN.PATH} element={<Login />} />
         <Route path={ROUTES.USERS.PATH} element={<Users />} />
       </Routes>
-    </div>
+    </>
   )
 }
 
