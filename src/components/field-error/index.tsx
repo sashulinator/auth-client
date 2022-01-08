@@ -21,7 +21,7 @@ const FieldError: FC<FieldErrorProps> = ({
 }): JSX.Element => {
   const { t } = useTranslation()
 
-  const formErrorMessage = formErrors?.[name]?.message
+  const formErrorMessage = t(formErrors?.[name]?.message || '')
 
   const validationError = stateWithServerErrors?.validationErrors?.[name]
 
