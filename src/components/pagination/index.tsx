@@ -1,11 +1,15 @@
 import { isNumber } from '@/utils/is-number'
 import React, { FC } from 'react'
 import './index.css'
+import { useInputValue } from './use-input-value'
 
 export interface PaginationInputProps {
   ariaLabel?: string
   value: string
-  onKeyUp: (e: React.KeyboardEvent) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onKeyUp: (e: { target: any; key: string }) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChange: (e: { target: any }) => void
 }
 export interface PaginationButtonProps {
   onClick?: () => void
@@ -29,6 +33,14 @@ export type PaginationProps = {
   currentText?: string
 }
 
+function parseNumber(num: string | number = '', defaultNumber = 0): number {
+  if (isNumber(num)) {
+    return num ?? defaultNumber
+  }
+
+  return parseInt(num, 10) || defaultNumber
+}
+
 const Pagination: FC<PaginationProps> = ({
   className = '',
   onChange,
@@ -43,20 +55,16 @@ const Pagination: FC<PaginationProps> = ({
   perPage,
   currentPage,
 }): JSX.Element => {
+  const [inputValue, onInputChange, onInputKeyUp] = useInputValue(
+    currentPage?.toString(),
+    handleChange
+  )
   const parsedTotalItems = parseNumber(totalItems)
   const parsedPerPage = parseNumber(perPage)
 
   const totalPages = Math.ceil(parsedTotalItems / parsedPerPage)
 
   const parsedCurrentPage = parseNumber(currentPage)
-
-  function parseNumber(num: string | number = '', defaultNumber = 0): number {
-    if (isNumber(num)) {
-      return num ?? defaultNumber
-    }
-
-    return parseInt(num, 10) || defaultNumber
-  }
 
   function handleChange(newPage: number) {
     return () => {
@@ -70,6 +78,7 @@ const Pagination: FC<PaginationProps> = ({
       }
     }
   }
+
   return (
     <div className={`Pagination ${className}`}>
       <Button
@@ -91,12 +100,9 @@ const Pagination: FC<PaginationProps> = ({
           currentPageAriaLabel ||
           'Current page. Press the Enter button to apply'
         }
-        onKeyUp={(e) => {
-          if (e.key === 'Enter' || e.keyCode === 13) {
-            handleChange(((e.target as unknown) as { value: number }).value)()
-          }
-        }}
-        value={parsedCurrentPage.toString()}
+        onKeyUp={onInputKeyUp}
+        onChange={onInputChange}
+        value={inputValue}
       />
       <Button
         disabled={parsedCurrentPage >= totalPages}

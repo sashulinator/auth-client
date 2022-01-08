@@ -32,38 +32,17 @@ const PaginationButton: FC<PaginationButtonProps> = (props) => {
   return <ActionButton {...props} styles={buttonStyles} />
 }
 
-// TODO: Sorry for this ugly component but it's all because of
-// fluentui specific behavior with value :(
 const PaginationInput: FC<PaginationInputProps> = (props) => {
-  const [value, setValue] = useState(props.value)
-  const [currentPage, setCurrentPage] = useState(props.value)
-
-  useEffect(() => {
-    if (currentPage !== props.value) {
-      setValue(props.value)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.value])
-
   return (
     <TextField
-      ariaLabel={props.ariaLabel}
-      onKeyUp={(e) => {
-        if (e.key === 'Enter') {
-          const newCurrentPage = ((e.target as unknown) as { value: string })
-            .value
-          setCurrentPage(newCurrentPage)
-          props.onKeyUp(e)
-        }
-      }}
-      onChange={(e) =>
-        setValue(((e.target as unknown) as { value: string }).value)
-      }
-      value={value}
+      value={props.value}
+      onChange={props.onChange}
+      onKeyUp={props.onKeyUp}
       styles={{
         root: { maxWidth: 35 },
         field: { textAlign: 'center' },
       }}
+      ariaLabel={props.ariaLabel}
     />
   )
 }
