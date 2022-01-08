@@ -16,7 +16,7 @@ export type FindManyResponse<T> = {
 }
 
 export interface ValidationError {
-  validatorName: string
+  errorCode: string
   message: string
   key: string
   value: unknown

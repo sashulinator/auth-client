@@ -26,7 +26,7 @@ const FieldError: FC<FieldErrorProps> = ({
   const validationError = stateWithServerErrors?.validationErrors?.[name]
 
   const serverErrorMessage = t(
-    validationError?.validatorName || '',
+    validationError?.errorCode || '',
     validationError
   )
 
