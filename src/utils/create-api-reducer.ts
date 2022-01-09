@@ -1,5 +1,6 @@
-import { ServerCollectableError } from '@/types/transfer'
 import { StageAction, StageActionTypes } from '@savchenko91/rc-redux-api-mw'
+
+import { ServerCollectableError } from '@/types/transfer'
 
 export const CLEAR_VALIDATION_ERRORS = 'COMMON/CLEAR_VALIDATION_ERRORS'
 
@@ -12,7 +13,11 @@ interface State<D> {
 
 export type Reducer<Data> = (
   state: State<Data>,
-  action: StageAction<{ error?: string; errors?: Record<string, ServerCollectableError> } & Data>
+  action: StageAction<
+    { error?: string; errors?: Record<string, ServerCollectableError> } & Data,
+    unknown,
+    Record<string, unknown>
+  >
 ) => State<Data> | void
 
 export function createAPIReducer<Data>(
@@ -33,6 +38,8 @@ export function createAPIReducer<Data>(
       case stageActionTypes.START: {
         const newState = {
           ...state,
+          ...action.payload.action.payload,
+          abortController: action.payload.abortController,
           loading: true,
           error: '',
         }

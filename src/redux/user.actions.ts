@@ -1,7 +1,9 @@
-import { CreateUserInput, UpdateUserInput } from '@/types/entities'
-import { REDUX_API_MIDDLEWARE as type, APIActionAlt } from '@savchenko91/rc-redux-api-mw'
+import { APIActionAlt, REDUX_API_MIDDLEWARE as type } from '@savchenko91/rc-redux-api-mw'
+
 import { OnStage, ServerError } from '../types/transfer'
 import CONSTANTS from './user.constants'
+
+import { CreateUserInput, UpdateUserInput } from '@/types/entities'
 
 interface GetListParams {
   perPage: number
@@ -10,11 +12,14 @@ interface GetListParams {
 }
 
 export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt {
+  const { perPage, currentPage, searchQuery } = params
+
   const skip = params.perPage * (params.currentPage - 1)
 
   return {
     url: '/api/v1/users',
-    query: { skip, take: params.perPage, searchQuery: params.searchQuery },
+    query: { skip, take: perPage, searchQuery: searchQuery },
+    payload: { currentPage },
     method: 'get',
     stageActionTypes: CONSTANTS.GET_LIST,
     type,

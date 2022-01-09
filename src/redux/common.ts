@@ -12,4 +12,5 @@ export const initStateWithDataAsEntityList = {
   },
   loading: false,
   error: '',
+  currentPage: 1,
 }

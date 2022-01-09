@@ -1,17 +1,21 @@
-import { FC, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
+import { ActionButton, DetailsList, SearchBox, Selection, Stack, TextField } from '@fluentui/react'
 import { Panel } from '@fluentui/react/lib/Panel'
-import { Stack, ActionButton, DetailsList, Selection, TextField, SearchBox } from '@fluentui/react'
-import * as userSelectors from '@/redux/user.selector'
-import * as userActions from '@/redux/user.actions'
-import store from '@/app/redux-store'
-import { User } from '@/types/entities'
+
 import UserForm from './form'
+import { FC, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+
+import store from '@/app/redux-store'
+import Pagination, { PaginationButtonProps, PaginationInputProps } from '@/components/pagination'
+import * as userActions from '@/redux/user.actions'
+import * as userSelectors from '@/redux/user.selector'
+import { User } from '@/types/entities'
 import useBoolean from '@/utils/use-boolean'
-import { useSelection } from '@/utils/use-selection'
-import Pagination, { PaginationInputProps, PaginationButtonProps } from '@/components/pagination'
 import { useDebounce } from '@/utils/use-debaunce'
+import { useSelection } from '@/utils/use-selection'
+
+const PER_PAGE = 10
 
 const buttonStyles = {
   root: { color: 'var(--themeDark)' },
@@ -42,33 +46,34 @@ const List: FC = (): JSX.Element => {
 
   const userListState = useSelector(userSelectors.getList)
 
-  const perPage = 10
-  const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQueryWithDelay, setSearchQuery] = useDebounce<undefined | string>(undefined, 500)
 
   const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
-  const [isFilterVisible, setFilterVisible, unsetFilterVisible] = useBoolean(false)
+  const [isFilterVisible, showFilter, hideFilter] = useBoolean(false)
 
   const { selectedItems: selectedUsers, selection } = useSelection<User & { password: string }>()
 
-  useEffect(getUserList, [currentPage, searchQuery])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(getUserList, [searchQuery])
 
-  function getUserList() {
-    store.dispatch(userActions.getList({ currentPage, perPage, searchQuery }))
+  function getUserList(page?: number) {
+    userListState?.abortController?.abort()
+    const currentPage = page || userListState.currentPage
+    store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery }))
   }
 
   function pruneMany() {
     const ids = selectedUsers.map((user) => user.id)
-    store.dispatch(userActions.pruneMany(ids, { onSuccess: getUserList }))
+    store.dispatch(userActions.pruneMany(ids, { onSuccess: () => getUserList() }))
   }
 
   function onFormSuccess() {
-    currentPage === 1 ? getUserList() : setCurrentPage(1)
+    getUserList(1)
   }
 
   function closeFilter() {
     setSearchQuery(undefined)
-    unsetFilterVisible()
+    hideFilter()
   }
 
   return (
@@ -129,7 +134,7 @@ const List: FC = (): JSX.Element => {
                 >
                   {t('buttons.remove')}
                 </ActionButton>
-                <ActionButton onClick={setFilterVisible} styles={buttonStyles} ariaLabel={t('buttons.filter')}>
+                <ActionButton onClick={showFilter} styles={buttonStyles} ariaLabel={t('buttons.filter')}>
                   {t('buttons.filter')}
                 </ActionButton>
               </>
@@ -145,7 +150,7 @@ const List: FC = (): JSX.Element => {
               {t('userPage.users')}: {userListState.data.total}
             </div>
             <div>
-              {t('userPage.pages')}: {Math.ceil(userListState.data.total / perPage)}
+              {t('userPage.pages')}: {Math.ceil(userListState.data.total / PER_PAGE)}
             </div>
             <Pagination
               currentPageAriaLabel={t('pagination.currentPage')}
@@ -153,10 +158,10 @@ const List: FC = (): JSX.Element => {
               lastPagePageAriaLabel={t('pagination.lastPage')}
               firstPageAriaLabel={t('pagination.firstPage')}
               nextPageAriaLabel={t('pagination.nextPage')}
-              onChange={setCurrentPage}
-              currentPage={currentPage}
+              onChange={getUserList}
+              currentPage={userListState.currentPage}
               totalItems={userListState.data.total}
-              perPage={perPage}
+              perPage={PER_PAGE}
               inputComponent={PaginationInput}
               buttonComponent={PaginationButton}
             />

@@ -10,6 +10,8 @@ export interface UserState {
     loading: boolean
     data: FindManyResponse<User>
     error: string
+    currentPage: number
+    abortController: AbortController
   }
   create: {
     loading: boolean
