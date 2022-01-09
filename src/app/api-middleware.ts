@@ -1,5 +1,6 @@
-import { ACCESS_TOKEN } from '@/constants/localStorage'
 import APIMiddleware from '@savchenko91/rc-redux-api-mw'
+
+import { ACCESS_TOKEN } from '@/constants/localStorage'
 
 export default new APIMiddleware({
   headers: () => {

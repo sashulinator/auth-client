@@ -20,7 +20,7 @@ import { validateNotUndefined } from '@/utils/errors/validators'
 import { hasId } from '@/utils/has-id'
 import { pick } from '@/utils/pick'
 
-type FormUserInput = CreateUserInput & UpdateUserInput & { id?: string }
+type FormUserInput = CreateUserInput & UpdateUserInput
 
 interface Props {
   initialValues: undefined | FormUserInput

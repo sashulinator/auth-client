@@ -5,6 +5,8 @@ import CONSTANTS from './user.constants'
 
 import { CreateUserInput, UpdateUserInput } from '@/types/entities'
 
+const USER_LIST_CACHE_KEY = 'userList'
+
 interface GetListParams {
   perPage: number
   currentPage: number
@@ -23,6 +25,11 @@ export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt 
     method: 'get',
     stageActionTypes: CONSTANTS.GET_LIST,
     type,
+    cashe: {
+      name: USER_LIST_CACHE_KEY,
+      key: currentPage,
+      expiresIn: 200_000,
+    },
     ...onStage,
   }
 }
@@ -33,6 +40,7 @@ export function create(body: CreateUserInput, onStage?: OnStage<ServerError>): A
     method: 'post',
     body,
     stageActionTypes: CONSTANTS.CREATE,
+    clearCacheByKey: USER_LIST_CACHE_KEY,
     type,
     ...onStage,
   }
@@ -44,6 +52,7 @@ export function update(body: UpdateUserInput, onStage?: OnStage<ServerError>): A
     method: 'PUT',
     body,
     stageActionTypes: CONSTANTS.UPDATE,
+    clearCacheByKey: USER_LIST_CACHE_KEY,
     type,
     ...onStage,
   }
