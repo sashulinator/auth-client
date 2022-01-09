@@ -1,21 +1,25 @@
 import { FC, useEffect } from 'react'
-import { TextField } from '@fluentui/react/lib/TextField'
+import { Form, Field, FormProps } from 'react-final-form'
 import { Stack } from '@fluentui/react/lib/Stack'
 import { PrimaryButton } from '@fluentui/react/lib/Button'
-import { useForm } from 'react-hook-form'
 import FieldError from '../../components/field-error'
-import { validate } from '../../utils/validate'
-import { required } from '../../utils/validators'
-import { User } from '../../types/entities'
+import { CreateUserInput, UpdateUserInput } from '../../types/entities'
 import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
 import * as userSelectors from '@/redux/user.selector'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { clearValidationErrorsOnDestroy } from '@/helpers/clear-validation-errors'
+import CustomTextField from '@/components/text-field'
+import { OnFail } from '@savchenko91/rc-redux-api-mw'
+import { ServerError } from '@/types/transfer'
+import { hasId } from '@/utils/has-id'
+import { pick } from '@/utils/pick'
+
+type FormUserInput = CreateUserInput & UpdateUserInput & { id?: string }
 
 interface Props {
-  defaultValues: undefined | User
+  initialValues: undefined | FormUserInput
   closeFormPanel: () => void
   onSucces: () => void
 }
@@ -23,71 +27,102 @@ interface Props {
 const CreateUser: FC<Props> = (props): JSX.Element => {
   const { t } = useTranslation()
 
-  const actionName = !props.defaultValues ? 'create' : 'update'
+  const actionName = !props.initialValues ? 'create' : 'update'
 
   const userState = useSelector(userSelectors[actionName])
 
-  const form = useForm<User>()
+  const initialValues = pick(props.initialValues, ['username', 'name', 'password', 'email', 'id'])
 
   useEffect(clearValidationErrorsOnDestroy, [])
 
-  function onSuccess() {
-    props.closeFormPanel()
-    props.onSucces()
-  }
+  const onSubmit: FormProps<FormUserInput, FormUserInput>['onSubmit'] = (formData, formApi, setErrors) => {
+    const onSuccess = () => {
+      props.closeFormPanel()
+      props.onSucces()
+    }
 
-  function onSubmit(formData: User) {
-    const userInput = { ...formData, id: props.defaultValues?.id as number }
-    store.dispatch(userActions[actionName](userInput, { onSuccess }))
+    const onFail: OnFail<ServerError> = ({ body }) => {
+      if (body?.errors) {
+        setErrors?.(body?.errors)
+      }
+    }
+
+    if (hasId(formData)) {
+      store.dispatch(userActions.update(formData, { onSuccess, onFail }))
+    } else {
+      store.dispatch(userActions.create(formData, { onSuccess, onFail }))
+    }
   }
 
   return (
     <div>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Stack
-          tokens={{ padding: '20px 0 0 0', maxWidth: 400, childrenGap: 10 }}
-        >
-          <div>
-            <TextField
-              autoFocus={true}
-              label={t('entities.user.name')}
-              defaultValue={props.defaultValues?.name}
-              aria-label="name"
-              autoComplete="off"
-              {...form.register('name', {
-                validate: validate([required]),
-              })}
-            />
-            <FieldError
-              name="name"
-              formErrors={form.formState.errors}
-              serverErrors={userState}
-            />
-          </div>
-          <div>
-            <TextField
-              label={t('entities.user.email')}
-              defaultValue={props.defaultValues?.email}
-              autoComplete="off"
-              aria-label="email"
-              {...form.register('email', {
-                validate: validate([required]),
-              })}
-            />
-            <FieldError
-              name="email"
-              formErrors={form.formState.errors}
-              serverErrors={userState}
-            />
-          </div>
-          <PrimaryButton
-            disabled={userState.loading || !form.formState.isDirty}
-            type="submit"
-          >
-            {userState.loading ? t('buttons.saving') : t('buttons.save')}
-          </PrimaryButton>
-        </Stack>
-      </form>
+      <Form<FormUserInput, FormUserInput>
+        onSubmit={onSubmit}
+        initialValues={initialValues}
+        render={(formProps) => {
+          return (
+            <form onSubmit={formProps.handleSubmit}>
+              <Stack
+                tokens={{
+                  padding: '20px 0 0 0',
+                  maxWidth: 400,
+                  childrenGap: 10,
+                }}
+              >
+                <Field name="username">
+                  {({ input, meta }) => (
+                    <>
+                      <CustomTextField
+                        label={t(`entities.user.${input.name}`)}
+                        autoFocus
+                        autoFocusDelay={200}
+                        {...input}
+                      />
+                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+                    </>
+                  )}
+                </Field>
+                <Field name="name">
+                  {({ input, meta }) => (
+                    <>
+                      <CustomTextField label={t(`entities.user.${input.name}`)} {...input} />
+                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+                    </>
+                  )}
+                </Field>
+                <Field
+                  name="email"
+                  validate={(value) => {
+                    if (!value) {
+                      return {
+                        errorCode: 'required',
+                      }
+                    }
+                  }}
+                >
+                  {({ input, meta }) => (
+                    <>
+                      <CustomTextField label={t(`entities.user.${input.name}`)} {...input} />
+                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+                    </>
+                  )}
+                </Field>
+                <Field name="password">
+                  {({ input, meta }) => (
+                    <>
+                      <CustomTextField label={t(`entities.user.${input.name}`)} {...input} />
+                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+                    </>
+                  )}
+                </Field>
+                <PrimaryButton disabled={userState.loading || formProps.pristine} type="submit">
+                  {userState.loading ? t('buttons.saving') : t('buttons.save')}
+                </PrimaryButton>
+              </Stack>
+            </form>
+          )
+        }}
+      />
     </div>
   )
 }

@@ -2,14 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Panel } from '@fluentui/react/lib/Panel'
-import {
-  Stack,
-  ActionButton,
-  DetailsList,
-  Selection,
-  TextField,
-  SearchBox,
-} from '@fluentui/react'
+import { Stack, ActionButton, DetailsList, Selection, TextField, SearchBox } from '@fluentui/react'
 import * as userSelectors from '@/redux/user.selector'
 import * as userActions from '@/redux/user.actions'
 import store from '@/app/redux-store'
@@ -17,10 +10,7 @@ import { User } from '@/types/entities'
 import UserForm from './form'
 import useBoolean from '@/utils/use-boolean'
 import { useSelection } from '@/utils/use-selection'
-import Pagination, {
-  PaginationInputProps,
-  PaginationButtonProps,
-} from '@/components/pagination'
+import Pagination, { PaginationInputProps, PaginationButtonProps } from '@/components/pagination'
 import { useDebounce } from '@/utils/use-debaunce'
 
 const buttonStyles = {
@@ -54,16 +44,12 @@ const List: FC = (): JSX.Element => {
 
   const perPage = 10
   const [currentPage, setCurrentPage] = useState(1)
-  const [searchQuery, setSearchQueryWithDelay, setSearchQuery] = useDebounce<
-    undefined | string
-  >(undefined, 500)
+  const [searchQuery, setSearchQueryWithDelay, setSearchQuery] = useDebounce<undefined | string>(undefined, 500)
 
   const [isFormPanelOpen, openFormPanel, closeFormPanel] = useBoolean(false)
-  const [isFilterVisible, setFilterVisible, unsetFilterVisible] = useBoolean(
-    false
-  )
+  const [isFilterVisible, setFilterVisible, unsetFilterVisible] = useBoolean(false)
 
-  const { selectedItems: selectedUsers, selection } = useSelection<User>()
+  const { selectedItems: selectedUsers, selection } = useSelection<User & { password: string }>()
 
   useEffect(getUserList, [currentPage, searchQuery])
 
@@ -89,18 +75,12 @@ const List: FC = (): JSX.Element => {
     <div className="Users">
       <Panel
         isLightDismiss
-        headerText={
-          selectedUsers[0] ? t('userPage.editUser') : t('userPage.createUser')
-        }
+        headerText={selectedUsers[0] ? t('userPage.editUser') : t('userPage.createUser')}
         isOpen={isFormPanelOpen}
         onDismiss={closeFormPanel}
         closeButtonAriaLabel="Close"
       >
-        <UserForm
-          onSucces={onFormSuccess}
-          defaultValues={selectedUsers[0]}
-          closeFormPanel={closeFormPanel}
-        />
+        <UserForm onSucces={onFormSuccess} initialValues={selectedUsers[0]} closeFormPanel={closeFormPanel} />
       </Panel>
       <Stack tokens={{ padding: '20px 40px' }}>
         <h1>{t('pagesNames.userList')}</h1>
@@ -119,11 +99,7 @@ const List: FC = (): JSX.Element => {
                   underlined={true}
                   styles={{ root: { width: '300px' } }}
                 />
-                <ActionButton
-                  onClick={closeFilter}
-                  styles={buttonStyles}
-                  ariaLabel={t('buttons.close')}
-                >
+                <ActionButton onClick={closeFilter} styles={buttonStyles} ariaLabel={t('buttons.close')}>
                   {t('buttons.close')}
                 </ActionButton>
               </>
@@ -153,11 +129,7 @@ const List: FC = (): JSX.Element => {
                 >
                   {t('buttons.remove')}
                 </ActionButton>
-                <ActionButton
-                  onClick={setFilterVisible}
-                  styles={buttonStyles}
-                  ariaLabel={t('buttons.filter')}
-                >
+                <ActionButton onClick={setFilterVisible} styles={buttonStyles} ariaLabel={t('buttons.filter')}>
                   {t('buttons.filter')}
                 </ActionButton>
               </>
@@ -173,8 +145,7 @@ const List: FC = (): JSX.Element => {
               {t('userPage.users')}: {userListState.data.total}
             </div>
             <div>
-              {t('userPage.pages')}:{' '}
-              {Math.ceil(userListState.data.total / perPage)}
+              {t('userPage.pages')}: {Math.ceil(userListState.data.total / perPage)}
             </div>
             <Pagination
               currentPageAriaLabel={t('pagination.currentPage')}
@@ -195,6 +166,12 @@ const List: FC = (): JSX.Element => {
           selection={selection as Selection}
           items={userListState.data.items}
           columns={[
+            {
+              key: 'username',
+              name: t('entities.user.username'),
+              minWidth: 100,
+              fieldName: 'username',
+            },
             {
               key: 'name',
               name: t('entities.user.name'),

@@ -37,6 +37,7 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
     /*  throws error if "allowComputed: false"
         import * as a from './a'
         function f(x) {

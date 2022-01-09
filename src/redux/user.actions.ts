@@ -1,9 +1,6 @@
-import { User } from '@/types/entities'
-import {
-  REDUX_API_MIDDLEWARE as type,
-  APIActionAlt,
-} from '@savchenko91/rc-redux-api-mw'
-import { OnStage } from '../types/transfer'
+import { CreateUserInput, UpdateUserInput } from '@/types/entities'
+import { REDUX_API_MIDDLEWARE as type, APIActionAlt } from '@savchenko91/rc-redux-api-mw'
+import { OnStage, ServerError } from '../types/transfer'
 import CONSTANTS from './user.constants'
 
 interface GetListParams {
@@ -12,10 +9,7 @@ interface GetListParams {
   searchQuery?: string
 }
 
-export function getList(
-  params: GetListParams,
-  onStage?: OnStage
-): APIActionAlt {
+export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt {
   const skip = params.perPage * (params.currentPage - 1)
 
   return {
@@ -28,7 +22,7 @@ export function getList(
   }
 }
 
-export function create(body: User, onStage?: OnStage): APIActionAlt {
+export function create(body: CreateUserInput, onStage?: OnStage<ServerError>): APIActionAlt<ServerError> {
   return {
     url: `/api/v1/users`,
     method: 'post',
@@ -39,7 +33,7 @@ export function create(body: User, onStage?: OnStage): APIActionAlt {
   }
 }
 
-export function update(body: User, onStage?: OnStage): APIActionAlt {
+export function update(body: UpdateUserInput, onStage?: OnStage<ServerError>): APIActionAlt<ServerError> {
   return {
     url: `/api/v1/users`,
     method: 'PUT',
@@ -50,7 +44,7 @@ export function update(body: User, onStage?: OnStage): APIActionAlt {
   }
 }
 
-export function pruneMany(body: number[], onStage?: OnStage): APIActionAlt {
+export function pruneMany(body: string[], onStage?: OnStage): APIActionAlt {
   return {
     url: `/api/v1/users`,
     method: 'DELETE',

@@ -1,5 +1,5 @@
 import { User } from './entities'
-import { FindManyResponse, ValidationError } from './transfer'
+import { FindManyResponse, ServerCollectableError } from './transfer'
 
 export interface RootState {
   user: UserState
@@ -15,12 +15,12 @@ export interface UserState {
     loading: boolean
     data: User | null
     error: string
-    validationErrors: Record<keyof User, ValidationError> | null
+    validationErrors: Record<keyof User, ServerCollectableError> | null
   }
   update: {
     loading: boolean
     data: User | null
     error: string
-    validationErrors: Record<keyof User, ValidationError> | null
+    validationErrors: Record<keyof User, ServerCollectableError> | null
   }
 }
