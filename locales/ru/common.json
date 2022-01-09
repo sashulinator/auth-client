@@ -42,10 +42,10 @@
       "id": "id"
     }
   },
-  "required": "обязательно",
   "conflict": "уже существует",
   "searchByNameEmail": "Поиск по имени и email",
   "validateString": "не является строкой",
   "validateNotMoreThan": "больше чем {{- value2}}",
+  "validateNotUndefined": "обязательно",
   "validateByPattern": "не следует паттерну {{key2}}: {{- value2}}"
 }

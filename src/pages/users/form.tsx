@@ -15,6 +15,8 @@ import { OnFail } from '@savchenko91/rc-redux-api-mw'
 import { ServerError } from '@/types/transfer'
 import { hasId } from '@/utils/has-id'
 import { pick } from '@/utils/pick'
+import { validateNotUndefined } from '@/utils/errors/validators'
+import { createFieldError } from '@/helpers/create-field-error'
 
 type FormUserInput = CreateUserInput & UpdateUserInput & { id?: string }
 
@@ -69,51 +71,35 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
                   childrenGap: 10,
                 }}
               >
-                <Field name="username">
-                  {({ input, meta }) => (
-                    <>
-                      <CustomTextField
-                        label={t(`entities.user.${input.name}`)}
-                        autoFocus
-                        autoFocusDelay={200}
-                        {...input}
-                      />
-                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-                    </>
-                  )}
+                <Field name="username" validate={createFieldError('email', validateNotUndefined)}>
+                  {({ input, meta }) => [
+                    <CustomTextField
+                      key="1"
+                      label={t(`entities.user.${input.name}`)}
+                      autoFocus
+                      autoFocusDelay={200}
+                      {...input}
+                    />,
+                    <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                  ]}
                 </Field>
                 <Field name="name">
-                  {({ input, meta }) => (
-                    <>
-                      <CustomTextField label={t(`entities.user.${input.name}`)} {...input} />
-                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-                    </>
-                  )}
+                  {({ input, meta }) => [
+                    <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
+                    <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                  ]}
                 </Field>
-                <Field
-                  name="email"
-                  validate={(value) => {
-                    if (!value) {
-                      return {
-                        errorCode: 'required',
-                      }
-                    }
-                  }}
-                >
-                  {({ input, meta }) => (
-                    <>
-                      <CustomTextField label={t(`entities.user.${input.name}`)} {...input} />
-                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-                    </>
-                  )}
+                <Field name="email" validate={createFieldError('email', validateNotUndefined)}>
+                  {({ input, meta }) => [
+                    <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
+                    <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                  ]}
                 </Field>
-                <Field name="password">
-                  {({ input, meta }) => (
-                    <>
-                      <CustomTextField label={t(`entities.user.${input.name}`)} {...input} />
-                      <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-                    </>
-                  )}
+                <Field type="password" name="password" validate={createFieldError('email', validateNotUndefined)}>
+                  {({ input, meta }) => [
+                    <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
+                    <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                  ]}
                 </Field>
                 <PrimaryButton disabled={userState.loading || formProps.pristine} type="submit">
                   {userState.loading ? t('buttons.saving') : t('buttons.save')}
