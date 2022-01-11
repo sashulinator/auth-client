@@ -42,7 +42,7 @@
       "id": "id"
     }
   },
-  "conflict": "already exists",
+  "P2002": "already exists",
   "validateString": "is not a string",
   "validateNotMoreThan": "more than {{- value2}}",
   "validateNotUndefined": "required",

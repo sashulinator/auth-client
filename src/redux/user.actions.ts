@@ -22,14 +22,14 @@ export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt 
     url: '/api/v1/users',
     query: { skip, take: perPage, searchQuery: searchQuery },
     payload: { currentPage },
-    method: 'get',
+    method: 'GET',
     stageActionTypes: CONSTANTS.GET_LIST,
     type,
-    cashe: {
-      name: USER_LIST_CACHE_KEY,
-      key: currentPage,
-      expiresIn: 200_000,
-    },
+    // cashe: {
+    //   name: USER_LIST_CACHE_KEY,
+    //   key: currentPage,
+    //   expiresIn: 200_000,
+    // },
     ...onStage,
   }
 }
@@ -37,7 +37,7 @@ export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt 
 export function create(body: CreateUserInput, onStage?: OnStage<ServerError>): APIActionAlt<ServerError> {
   return {
     url: `/api/v1/users`,
-    method: 'post',
+    method: 'POST',
     body,
     stageActionTypes: CONSTANTS.CREATE,
     clearCacheByKey: USER_LIST_CACHE_KEY,

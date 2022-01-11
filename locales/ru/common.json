@@ -42,7 +42,7 @@
       "id": "id"
     }
   },
-  "conflict": "уже существует",
+  "P2002": "уже существует",
   "searchByNameEmail": "Поиск по имени и email",
   "validateString": "не является строкой",
   "validateNotMoreThan": "больше чем {{- value2}}",

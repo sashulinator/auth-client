@@ -1,0 +1,26 @@
+.LoadingAria {
+  position: relative;
+}
+
+.spinnerContainer {
+  /* display: none; */
+  opacity: 0;
+  left: 50%;
+  transition: 0.3s opacity;
+  position: absolute;
+  z-index: 100;
+}
+
+.LoadingAria--loading > .spinnerContainer {
+  display: flex;
+  opacity: 1;
+}
+
+.contentContainer {
+  transition: 0.5s opacity;
+}
+
+.LoadingAria--loading > .contentContainer {
+  opacity: 0.5;
+  pointer-events: none;
+}

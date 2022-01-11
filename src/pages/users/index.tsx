@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import store from '@/app/redux-store'
+import LoadingAria from '@/components/loading-aria'
 import Pagination, { PaginationButtonProps, PaginationInputProps } from '@/components/pagination'
 import * as userActions from '@/redux/user.actions'
 import * as userSelectors from '@/redux/user.selector'
@@ -54,12 +55,12 @@ const List: FC = (): JSX.Element => {
   const { selectedItems: selectedUsers, selection } = useSelection<User & { password: string }>()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(getUserList, [searchQuery])
+  useEffect(() => getUserList(1), [searchQuery])
 
   function getUserList(page?: number) {
     userListState?.abortController?.abort()
     const currentPage = page || userListState.currentPage
-    store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery }))
+    setTimeout(() => store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery })))
   }
 
   function pruneMany() {
@@ -167,49 +168,51 @@ const List: FC = (): JSX.Element => {
             />
           </Stack>
         </Stack>
-        <DetailsList
-          selection={selection as Selection}
-          items={userListState.data.items}
-          columns={[
-            {
-              key: 'username',
-              name: t('entities.user.username'),
-              minWidth: 100,
-              fieldName: 'username',
-            },
-            {
-              key: 'name',
-              name: t('entities.user.name'),
-              minWidth: 100,
-              fieldName: 'name',
-            },
-            {
-              key: 'email',
-              name: t('entities.user.email'),
-              minWidth: 100,
-              fieldName: 'email',
-            },
-            {
-              key: 'createdAt',
-              name: t('entities.user.createdAt'),
-              minWidth: 100,
-              fieldName: 'createdAt',
-              onRender: (user: User) => user.createdAt.slice(0, 10),
-            },
-            {
-              key: 'updatedAt',
-              name: t('entities.user.updatedAt'),
-              minWidth: 100,
-              fieldName: 'updatedAt',
-              onRender: (user: User) => user.updatedAt.slice(0, 10),
-            },
-          ]}
-          selectionPreservedOnEmptyClick
-          setKey="set"
-          ariaLabelForSelectionColumn={t('buttons.toggleSelection')}
-          ariaLabelForSelectAllCheckbox={t('buttons.toggleSelectionForAll')}
-          checkButtonAriaLabel="select row"
-        />
+        <LoadingAria loading={userListState.loading}>
+          <DetailsList
+            selection={selection as Selection}
+            items={userListState.data.items}
+            columns={[
+              {
+                key: 'username',
+                name: t('entities.user.username'),
+                minWidth: 100,
+                fieldName: 'username',
+              },
+              {
+                key: 'name',
+                name: t('entities.user.name'),
+                minWidth: 100,
+                fieldName: 'name',
+              },
+              {
+                key: 'email',
+                name: t('entities.user.email'),
+                minWidth: 100,
+                fieldName: 'email',
+              },
+              {
+                key: 'createdAt',
+                name: t('entities.user.createdAt'),
+                minWidth: 100,
+                fieldName: 'createdAt',
+                onRender: (user: User) => user.createdAt.slice(0, 10),
+              },
+              {
+                key: 'updatedAt',
+                name: t('entities.user.updatedAt'),
+                minWidth: 100,
+                fieldName: 'updatedAt',
+                onRender: (user: User) => user.updatedAt.slice(0, 10),
+              },
+            ]}
+            selectionPreservedOnEmptyClick
+            setKey="set"
+            ariaLabelForSelectionColumn={t('buttons.toggleSelection')}
+            ariaLabelForSelectAllCheckbox={t('buttons.toggleSelectionForAll')}
+            checkButtonAriaLabel="select row"
+          />
+        </LoadingAria>
       </Stack>
     </div>
   )
