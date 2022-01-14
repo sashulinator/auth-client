@@ -25,11 +25,11 @@ export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt 
     method: 'GET',
     stageActionTypes: CONSTANTS.GET_LIST,
     type,
-    // cashe: {
-    //   name: USER_LIST_CACHE_KEY,
-    //   key: currentPage,
-    //   expiresIn: 200_000,
-    // },
+    cashe: {
+      name: USER_LIST_CACHE_KEY,
+      key: currentPage,
+      expiresIn: 200_000,
+    },
     ...onStage,
   }
 }

@@ -3,10 +3,9 @@
 }
 
 .spinnerContainer {
-  /* display: none; */
   opacity: 0;
   left: 50%;
-  transition: 0.3s opacity;
+  transition: 0.3s opacity ease-in;
   position: absolute;
   z-index: 100;
 }
