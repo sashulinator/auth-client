@@ -43,8 +43,8 @@
     }
   },
   "P2002": "already exists",
-  "validateString": "is not a string",
-  "validateNotMoreThan": "more than {{- value2}}",
-  "validateNotUndefined": "required",
-  "validateByPattern": "does not match the {{key2}} pattern: {{- value2}}"
+  "assertString": "is not a string",
+  "assertNotMoreThan": "more than {{- value2}}",
+  "assertNotUndefined": "required",
+  "assertByPattern": "does not match the {{key2}} pattern: {{- value2}}"
 }

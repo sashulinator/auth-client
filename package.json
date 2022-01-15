@@ -22,6 +22,7 @@
     "@fluentui/react": "8.49.0",
     "@savchenko91/rc-redux-api-mw": "2.0.6",
     "@savchenko91/rc-redux-api-mw-query": "^2.0.6",
+    "@savchenko91/schema-validator": "^0.0.0",
     "clsx": "1.1.1",
     "final-form": "^4.20.6",
     "i18next": "^21.6.5",
@@ -32,7 +33,8 @@
     "react-i18next": "^11.15.3",
     "react-redux": "7.2.6",
     "react-router-dom": "6.1.1",
-    "redux": "4.1.2"
+    "redux": "4.1.2",
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
     "@babel/core": "7.12.16",
@@ -66,7 +68,6 @@
     "prettier": "2.2.1",
     "react-refresh": "0.9.0",
     "style-loader": "2.0.0",
-    "typescript": "4.1.5",
     "webpack": "5.21.2",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.2",

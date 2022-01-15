@@ -1,8 +1,9 @@
-import { FC } from 'react'
-import cx from 'clsx'
 import './index.css'
-import { ServerCollectableError } from '@/types/transfer'
+import cx from 'clsx'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { ServerCollectableError } from '@/types/transfer'
 
 type FieldErrorProps = {
   className?: string
@@ -12,7 +13,7 @@ type FieldErrorProps = {
 const FieldError: FC<FieldErrorProps> = ({ className, error }): JSX.Element => {
   const { t } = useTranslation()
 
-  const formErrorMessage = t(error?.errorCode || '', error)
+  const formErrorMessage = t(error?._code || '', error)
 
   return <div className={cx('FieldError', className)}>{formErrorMessage}</div>
 }

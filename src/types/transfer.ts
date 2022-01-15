@@ -1,4 +1,4 @@
-import { OnSuccess, OnStart, OnFail } from '@savchenko91/rc-redux-api-mw'
+import { OnFail, OnStart, OnSuccess } from '@savchenko91/rc-redux-api-mw'
 
 export type OnStage<ResponseBody = unknown, RequestBody = unknown, Payload = unknown> = {
   onStart?: OnStart<ResponseBody, RequestBody, Payload>
@@ -26,20 +26,20 @@ export interface ErrorWithCode {
   // depending on a context on a client side
   // example: you try to create a user and receive { errorCode: CONFLICT }
   // so you can show the message "Such user already exists"
-  errorCode: string
+  _code: string
 }
 
 export interface ServerCollectableError extends ErrorWithCode {
-  message: string
-  key: string
-  value: unknown
-  key2?: string
-  value2?: unknown
+  _message: string
+  _key: string
+  _value: unknown
+  _key2?: string
+  _value2?: unknown
 }
 
 export interface ServerError extends ErrorWithCode {
-  errors?: ServerCollectableError[]
-  message: string
-  timestamp: string
-  status: number
+  _errors?: ServerCollectableError[]
+  _message: string
+  _timestamp: string
+  _status: number
 }
