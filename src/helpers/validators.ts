@@ -1,5 +1,5 @@
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator/dist/assertions'
-import { EmitAssertValidation, StructureSchema } from '@savchenko91/schema-validator/dist/types'
+import { EmitAssertValidation, Schema, StructureSchema } from '@savchenko91/schema-validator/dist/types'
 import { validate } from '@savchenko91/schema-validator/dist/validate'
 
 import { FieldValidator } from 'final-form'
@@ -13,15 +13,16 @@ export interface FindManyParams {
   skip: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const validateAdapter = <Value = unknown>(
-  schema: Record<string, EmitAssertValidation>
-): FieldValidator<Value> => (value, allValues, meta) => {
-  if (!meta?.name || Array.isArray(schema) || typeof schema?.[meta?.name] !== 'function') {
+export const validateAdapter = <Value = unknown>(schema: Schema): FieldValidator<Value> => (value, allValues, meta) => {
+  const name = meta?.name as keyof Schema
+
+  if (!meta?.name || Array.isArray(schema) || typeof schema?.[name] !== 'function') {
     return
   }
 
-  return schema[meta?.name](value, meta?.name, false)
+  const validation = schema[name] as EmitAssertValidation
+
+  return validation(value, name, false)
 }
 
 // TODO add assertMatchPattern
