@@ -1,16 +1,5 @@
-## Download the starter kit
-
-npx degit https://github.com/gopinav/React-TypeScript-Webpack-Starter my-app
-
-## Install dependencies
-
-cd my-app &&
-yarn
-
-## Run dev server
-
-yarn start
-
-## Build
-
-yarn build
+### Subtree
+This repo has a subtree repository
+```
+git subtree [push, pull] --prefix=src/common git@github.com:savchenko91/auth-common.git <branch>
+```
