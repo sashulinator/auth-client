@@ -77,7 +77,7 @@ const List: FC = (): JSX.Element => {
     hideFilter()
   }
 
-  const formComponent = (
+  const userForm = (
     <UserForm onSucces={onFormSuccess} initialValues={selectedUsers[0]} closeFormPanel={closeFormPanel} />
   )
 
@@ -90,7 +90,7 @@ const List: FC = (): JSX.Element => {
         onDismiss={closeFormPanel}
         closeButtonAriaLabel="Close"
       >
-        {formComponent}
+        {userForm}
       </Panel>
       <Stack tokens={{ padding: '20px 40px' }}>
         <h1>{t('pagesNames.userList')}</h1>
