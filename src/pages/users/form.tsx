@@ -86,7 +86,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                 ]}
               </Field>
-              <Field<string> name="name" validate={by(userSchema)}>
+              <Field<string> name="fullname" validate={by(userSchema)}>
                 {({ input, meta }) => [
                   <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,

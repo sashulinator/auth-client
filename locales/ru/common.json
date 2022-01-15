@@ -33,7 +33,7 @@
   },
   "entities": {
     "user": {
-      "name": "имя",
+      "fullname": "имя",
       "username": "имя пользователя",
       "password": "пароль",
       "email": "email",

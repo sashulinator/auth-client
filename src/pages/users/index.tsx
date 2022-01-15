@@ -77,6 +77,10 @@ const List: FC = (): JSX.Element => {
     hideFilter()
   }
 
+  const formComponent = (
+    <UserForm onSucces={onFormSuccess} initialValues={selectedUsers[0]} closeFormPanel={closeFormPanel} />
+  )
+
   return (
     <div className="Users">
       <Panel
@@ -86,7 +90,7 @@ const List: FC = (): JSX.Element => {
         onDismiss={closeFormPanel}
         closeButtonAriaLabel="Close"
       >
-        <UserForm onSucces={onFormSuccess} initialValues={selectedUsers[0]} closeFormPanel={closeFormPanel} />
+        {formComponent}
       </Panel>
       <Stack tokens={{ padding: '20px 40px' }}>
         <h1>{t('pagesNames.userList')}</h1>
@@ -180,10 +184,10 @@ const List: FC = (): JSX.Element => {
                 fieldName: 'username',
               },
               {
-                key: 'name',
-                name: t('entities.user.name'),
+                key: 'fullname',
+                name: t('entities.user.fullname'),
                 minWidth: 100,
-                fieldName: 'name',
+                fieldName: 'fullname',
               },
               {
                 key: 'email',

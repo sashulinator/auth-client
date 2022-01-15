@@ -33,7 +33,7 @@
   },
   "entities": {
     "user": {
-      "name": "name",
+      "fullname": "name",
       "username": "username",
       "password": "password",
       "email": "email",
