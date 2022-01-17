@@ -44,7 +44,7 @@
   },
   "P2002": "уже существует",
   "searchByNameEmail": "Поиск по имени и email",
-  "assertString": "не является строкой",
+  "assertString": "обязательно",
   "assertNotMoreThan": "больше чем {{- _value2}}",
   "assertNotUndefined": "обязательно",
   "assertMatchPattern": "не следует паттерну: {{- _value2}}"

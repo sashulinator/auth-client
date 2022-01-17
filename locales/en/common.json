@@ -43,7 +43,7 @@
     }
   },
   "P2002": "already exists",
-  "assertString": "is not a string",
+  "assertString": "required",
   "assertNotMoreThan": "more than {{- _value2}}",
   "assertNotUndefined": "required",
   "assertMatchPattern": "does not match the pattern: {{- _value2}}"

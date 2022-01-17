@@ -28,10 +28,6 @@ export const validateAdapter = <Value = unknown>(schema: Schema): FieldValidator
   const validation = schema[name] as EmitAssertValidation
 
   const error = validation(value, name, false)
-
-  if (error?._code === 'assertString') {
-    return
-  }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return error
 }
