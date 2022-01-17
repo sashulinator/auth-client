@@ -1385,7 +1385,7 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@savchenko91/rc-redux-api-mw-query@^2.0.6":
+"@savchenko91/rc-redux-api-mw-query@2.0.6":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@savchenko91/rc-redux-api-mw-query/-/rc-redux-api-mw-query-2.0.6.tgz#5a5c7b9b7e75653a0eb1e903136c9e989278eded"
   integrity sha512-gr/jJhyZ1x6DF97OZDaZt6v+OduN4G5naU+EEY6JDj7X71ZNjGuFJe1rJ9gLhO1A3xZf9Dd3AwwL8fIFMYG5xA==
@@ -1398,12 +1398,12 @@
   resolved "https://registry.yarnpkg.com/@savchenko91/rc-redux-api-mw/-/rc-redux-api-mw-2.0.6.tgz#20cf2caa2b85461f60eb6e5be73c82ba0cd37379"
   integrity sha512-8zKBHnfPGb+njkjEQT+MTa9jj30TrLkBTwmKatPs7+/IpMGQjq+OKjGDRIv9rvzWbKSiPxoGnKr2WA9NE8H3aA==
 
-"@savchenko91/schema-validator@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.0.1.tgz#a9c452fa833d60dc36129bb83f311501be4e85c3"
-  integrity sha512-7vCGYqA4qIkElHt02BnUVFNV8AH2Ufe35f+jCcZZkdJkzNgBwQRaRqftFM1SWHM1ZQCexlr3WNIBbTaBFHtuzw==
+"@savchenko91/schema-validator@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.0.11.tgz#9e738a07d8e4f13d3c848907a07cba6da4779338"
+  integrity sha512-r3BSgqnai2u1biSOxzW4pyQ7vzYKEiNvpCANFBsncwhCthtteXEP5hP20RN782vqioFKE2zxOV34xJZYlErUKw==
 
-"@trivago/prettier-plugin-sort-imports@^3.1.1":
+"@trivago/prettier-plugin-sort-imports@3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@trivago/prettier-plugin-sort-imports/-/prettier-plugin-sort-imports-3.1.1.tgz#101e34eadb252572ec32aea6d5487d93b90a0037"
   integrity sha512-T9EJNEOugWts4WxdmpWeY+sp+2fUHhvGh9QSBCowEGJfcbnu355HQRqok5bKwejdieMaI1+uGZhuTNMZwjqOCQ==
@@ -1566,7 +1566,7 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
-"@typescript-eslint/eslint-plugin@^5.9.0":
+"@typescript-eslint/eslint-plugin@5.9.0":
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.9.0.tgz#382182d5cb062f52aac54434cfc47c28898c8006"
   integrity sha512-qT4lr2jysDQBQOPsCCvpPUZHjbABoTJW8V9ZzIYKHMfppJtpdtzszDYsldwhFxlhvrp7aCHeXD1Lb9M1zhwWwQ==
@@ -1593,7 +1593,7 @@
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-"@typescript-eslint/parser@^5.9.0":
+"@typescript-eslint/parser@5.9.0":
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.9.0.tgz#fdbb08767a4caa6ca6ccfed5f9ffe9387f0c7d97"
   integrity sha512-/6pOPz8yAxEt4PLzgbFRDpZmHnXCeZgPDrh/1DaVKOjvn/UPMlWhbx/gA96xRi2JxY1kBl2AmwVbyROUqys5xQ==
@@ -3083,7 +3083,7 @@ eslint-import-resolver-node@^0.3.6:
     debug "^3.2.7"
     resolve "^1.20.0"
 
-eslint-import-resolver-typescript@^2.5.0:
+eslint-import-resolver-typescript@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/eslint-import-resolver-typescript/-/eslint-import-resolver-typescript-2.5.0.tgz#07661966b272d14ba97f597b51e1a588f9722f0a"
   integrity sha512-qZ6e5CFr+I7K4VVhQu3M/9xGv9/YmwsEXrsm3nimw8vWaVHRDrQRp26BgCypTxBp3vUp4o5aVEJRiy0F2DFddQ==
@@ -5721,14 +5721,14 @@ react-dom@17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
-react-final-form@^6.5.7:
+react-final-form@6.5.7:
   version "6.5.7"
   resolved "https://registry.yarnpkg.com/react-final-form/-/react-final-form-6.5.7.tgz#0c1098accf0f0011adee5a46076ed1b99ed1b1ea"
   integrity sha512-o7tvJXB+McGiXOILqIC8lnOcX4aLhIBiF/Xi9Qet35b7XOS8R7KL8HLRKTfnZWQJm6MCE15v1U0SFive0NcxyA==
   dependencies:
     "@babel/runtime" "^7.15.4"
 
-react-i18next@^11.15.3:
+react-i18next@11.15.3:
   version "11.15.3"
   resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.15.3.tgz#7608fb3cacc02ac75a62fc2d68b579f140b198dd"
   integrity sha512-RSUEM4So3Tu2JHV0JsZ5Yje+4nz66YViMfPZoywxOy0xyn3L7tE2CHvJ7Y9LUsrTU7vGmZ5bwb8PpjnkatdIxg==

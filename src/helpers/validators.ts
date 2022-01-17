@@ -1,6 +1,11 @@
-import { assertNotUndefined, assertString } from '@savchenko91/schema-validator/dist/assertions'
-import { EmitAssertValidation, Schema, StructureSchema } from '@savchenko91/schema-validator/dist/types'
-import { validate } from '@savchenko91/schema-validator/dist/validate'
+import {
+  EmitAssertValidation,
+  Schema,
+  StructureSchema,
+  assertNotUndefined,
+  assertString,
+  validate,
+} from '@savchenko91/schema-validator'
 
 import { FieldValidator } from 'final-form'
 
@@ -22,7 +27,13 @@ export const validateAdapter = <Value = unknown>(schema: Schema): FieldValidator
 
   const validation = schema[name] as EmitAssertValidation
 
-  return validation(value, name, false)
+  const error = validation(value, name, false)
+
+  if (error?._code === 'assertString') {
+    return
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return error
 }
 
 // TODO add assertMatchPattern
