@@ -1,7 +1,8 @@
-import { isNumber } from '@/utils/is-number'
-import React, { FC } from 'react'
 import './index.css'
 import { useInputValue } from './use-input-value'
+import React, { FC } from 'react'
+
+import { isNumber } from '@/utils/is-number'
 
 export interface PaginationInputProps {
   ariaLabel?: string
@@ -55,10 +56,7 @@ const Pagination: FC<PaginationProps> = ({
   perPage,
   currentPage,
 }): JSX.Element => {
-  const [inputValue, onInputChange, onInputKeyUp] = useInputValue(
-    currentPage?.toString(),
-    handleChange
-  )
+  const [inputValue, onInputChange, onInputKeyUp] = useInputValue(currentPage?.toString(), handleChange)
   const parsedTotalItems = parseNumber(totalItems)
   const parsedPerPage = parseNumber(perPage)
 
@@ -68,12 +66,7 @@ const Pagination: FC<PaginationProps> = ({
 
   function handleChange(newPage: number) {
     return () => {
-      if (
-        newPage !== currentPage &&
-        onChange &&
-        newPage >= 1 &&
-        newPage <= totalPages
-      ) {
+      if (newPage !== currentPage && onChange && newPage >= 1 && newPage <= totalPages) {
         onChange?.(newPage)
       }
     }
@@ -96,10 +89,7 @@ const Pagination: FC<PaginationProps> = ({
         {'<'}
       </Button>
       <Input
-        ariaLabel={
-          currentPageAriaLabel ||
-          'Current page. Press the Enter button to apply'
-        }
+        ariaLabel={currentPageAriaLabel || 'Current page. Press the Enter button to apply'}
         onKeyUp={onInputKeyUp}
         onChange={onInputChange}
         value={inputValue}

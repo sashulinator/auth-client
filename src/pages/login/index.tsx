@@ -1,8 +1,8 @@
-import { FC } from 'react'
-import cx from 'clsx'
-import { Link } from 'react-router-dom'
 import ROUTES from '../../constants/routes'
+import cx from 'clsx'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 type LoginProps = {
   className?: string

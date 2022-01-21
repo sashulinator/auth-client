@@ -1,10 +1,11 @@
-import { FC } from 'react'
-import './header.css'
-import { Link } from 'react-router-dom'
-import ROUTES from '../constants/routes'
-import { Stack } from '@fluentui/react/lib/Stack'
-import { useTranslation } from 'react-i18next'
 import { Dropdown, IDropdownOption, IDropdownProps } from '@fluentui/react'
+import { Stack } from '@fluentui/react/lib/Stack'
+
+import ROUTES from '../constants/routes'
+import './header.css'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 
 const options: IDropdownOption[] = [
   {
@@ -28,30 +29,13 @@ const Header: FC = (): JSX.Element => {
   }
 
   return (
-    <Stack
-      as="header"
-      horizontal
-      horizontalAlign="space-between"
-      className="Header"
-    >
-      <Stack
-        as="ul"
-        horizontal
-        verticalAlign="center"
-        tokens={{ childrenGap: 10, padding: '15px 40px' }}
-      >
+    <Stack as="header" horizontal horizontalAlign="space-between" className="Header">
+      <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 10, padding: '15px 40px' }}>
         <li>
-          <Link to={ROUTES['USERS/LIST'].buildURL()}>
-            {t('pagesNames.userList')}
-          </Link>
+          <Link to={ROUTES['USERS/LIST'].buildURL()}>{t('pagesNames.userList')}</Link>
         </li>
       </Stack>
-      <Stack
-        as="ul"
-        horizontal
-        verticalAlign="center"
-        tokens={{ childrenGap: 20, padding: '15px 40px' }}
-      >
+      <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 20, padding: '15px 40px' }}>
         <li>
           <Link to={ROUTES.LOGIN.buildURL()}>{t('pagesNames.login')}</Link>
         </li>

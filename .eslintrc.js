@@ -41,7 +41,6 @@ module.exports = {
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
-
     /*  throws error if "allowComputed: false"
         import * as a from './a'
         function f(x) {

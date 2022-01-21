@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-export function useInputValue(
-  clientValue = '',
-  handleChange: (num: number) => () => void
-) {
+export function useInputValue(clientValue = '', handleChange: (num: number) => () => void) {
   // value that you can change typing
   const [value, setValue] = useState(clientValue)
   // value that you set when press enter

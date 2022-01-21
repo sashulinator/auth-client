@@ -1,13 +1,14 @@
-import { Suspense } from 'react'
-import ReactDOM from 'react-dom'
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom'
-import ThemeProvider from './themeProvider'
-import { Provider } from 'react-redux'
-import RootLayer from './layer'
-import store from './redux-store'
+import { initializeIcons } from '@fluentui/react'
+
 import history from './history'
 import './i18n'
-import { initializeIcons } from '@fluentui/react'
+import RootLayer from './layer'
+import store from './redux-store'
+import ThemeProvider from './themeProvider'
+import { Suspense } from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom'
 
 export const App = () => {
   initializeIcons()

@@ -1,10 +1,11 @@
-import { FC } from 'react'
 import { Stack } from '@fluentui/react'
-import RootRoutes from './root-routes'
+
+import './common.css'
 import Header from './header'
 import './index.css'
 import './reset.css'
-import './common.css'
+import RootRoutes from './root-routes'
+import { FC } from 'react'
 
 const RootLayer: FC = () => {
   return (

@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@fluentui/react'
-import React, { FC } from 'react'
+
 import { darkTheme } from './themes'
+import React, { FC } from 'react'
 
 const MyThemeProvider: FC = ({ children }) => {
   setCSSVariables({
@@ -16,9 +17,7 @@ const setCSSVariable = (key: string, value?: number | string) => {
   value && document.body.style.setProperty(`--${key}`, value.toString())
 }
 
-export const setCSSVariables = (
-  theme: Record<string, string | number | undefined>
-): void => {
+export const setCSSVariables = (theme: Record<string, string | number | undefined>): void => {
   // setCurrentThemeName(themeName)
 
   // const theme = getAll()

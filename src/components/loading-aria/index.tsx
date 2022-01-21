@@ -2,7 +2,7 @@ import { Spinner, SpinnerSize } from '@fluentui/react'
 
 import './index.css'
 import cx from 'clsx'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 type LoadingAriaProps = {
   loading?: boolean
