@@ -6,13 +6,11 @@ const cache: {
   [cacheName: string]: {
     [cacheKey: string]: {
       [actionName in 'START' | 'SUCCESS']: APIAction
-    }
+    } & { cacheId: number }
   }
 } = {}
 
 const waitingStageActionTypes: Record<string, StageActionTypes> = {}
-
-let id = 0
 
 const cacheMiddleware = (): Middleware<Dispatch<APIAction>> => {
   return (api) => (next) => async (action: APIAction & EndAction) => {
@@ -38,6 +36,9 @@ const cacheMiddleware = (): Middleware<Dispatch<APIAction>> => {
 
     const isSuccess = action.type === waitingStageActionTypes?.[action?.payload?.action?.url]?.SUCCESS
     const isStart = action.type === waitingStageActionTypes?.[action?.payload?.action?.url]?.START
+
+    console.log('isStart || isSuccess', isStart, isSuccess)
+
     if (isStart || isSuccess) {
       const cacheKey = getCacheKey(action.payload.action)
       const cacheName = action.payload.action?.cashe?.name || ''
@@ -60,10 +61,12 @@ const cacheMiddleware = (): Middleware<Dispatch<APIAction>> => {
         }
       }
 
-      clearTimeout(id)
+      if (cache[cacheName][cacheKey].cacheId) {
+        clearTimeout(cache[cacheName][cacheKey].cacheId)
+      }
 
-      id = window.setTimeout(() => {
-        delete cache[cacheKey]
+      cache[cacheName][cacheKey].cacheId = window.setTimeout(() => {
+        delete cache[cacheName][cacheKey]
       }, action.payload.action.cashe?.expiresIn)
 
       return next(action)

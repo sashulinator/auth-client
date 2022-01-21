@@ -1,6 +1,4 @@
-import { assertString } from '@savchenko91/schema-validator/dist/assertions'
-import { StructureSchema } from '@savchenko91/schema-validator/dist/types'
-import { validate } from '@savchenko91/schema-validator/dist/validate'
+import { StructureSchema, assertString, primitive } from '@savchenko91/schema-validator'
 
 // TODO add assertMatchPattern
-export const idSchemaStructure: StructureSchema = { id: validate(assertString) }
+export const idSchemaStructure: StructureSchema = { id: primitive(assertString) }

@@ -4,7 +4,7 @@ import {
   assertUndefined,
   only,
   or,
-  validate,
+  primitive,
   withValue,
 } from '@savchenko91/schema-validator'
 
@@ -12,35 +12,35 @@ import { idSchemaStructure } from './validators'
 
 // prettier-ignore
 export const createUserSchema = only({
-  username: validate(
+  username: primitive(
     assertString,
     withValue(/^(\w*)$/, assertMatchPattern)
   ),
-  password: validate(assertString),
-  email: validate(
+  password: primitive(assertString),
+  email: primitive(
     assertString,
     withValue(/@.*\.*./, assertMatchPattern)
   ),
   fullname: or(
-    validate(assertString),
-    validate(assertUndefined)
+    primitive(assertString),
+    primitive(assertUndefined)
   )
 })
 
 // prettier-ignore
 export const updateUserSchema = only({
   ...idSchemaStructure,
-  username: validate(
+  username: primitive(
     assertString,
     withValue(/^(\w*)$/, assertMatchPattern)
   ),
-  password: or(validate(assertUndefined), validate(assertString)),
-  email: validate(
+  password: or(primitive(assertUndefined), primitive(assertString)),
+  email: primitive(
     assertString,
     withValue(/@.*\.*./, assertMatchPattern)
   ),
   fullname: or(
-    validate(assertString),
-    validate(assertUndefined)
+    primitive(assertString),
+    primitive(assertUndefined)
   )
 })

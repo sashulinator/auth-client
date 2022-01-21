@@ -28,7 +28,7 @@ export function getList(params: GetListParams, onStage?: OnStage): APIActionAlt 
     cashe: {
       name: USER_LIST_CACHE_KEY,
       key: currentPage,
-      expiresIn: 200_000,
+      expiresIn: 7_000,
     },
     ...onStage,
   }

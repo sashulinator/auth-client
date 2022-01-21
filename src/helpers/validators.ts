@@ -1,11 +1,4 @@
-import {
-  EmitAssertValidation,
-  Schema,
-  StructureSchema,
-  assertNotUndefined,
-  assertString,
-  validate,
-} from '@savchenko91/schema-validator'
+import { EmitAssertValidation, Schema } from '@savchenko91/schema-validator'
 
 import { FieldValidator } from 'final-form'
 
@@ -31,6 +24,3 @@ export const validateAdapter = <Value = unknown>(schema: Schema): FieldValidator
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return error
 }
-
-// TODO add assertMatchPattern
-export const idSchemaStructure: StructureSchema = { id: validate([assertNotUndefined, assertString]) }
