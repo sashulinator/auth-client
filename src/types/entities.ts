@@ -11,6 +11,11 @@ export type User = {
   updatedAt: string
 }
 
+export interface Credentials {
+  username: string
+  password: string
+}
+
 export interface CreateUserInput extends Omit<CreateInput<User>, 'phone'> {
   username: string
   password: string

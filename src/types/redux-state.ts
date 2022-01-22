@@ -3,25 +3,34 @@ import { FindManyResponse, ServerCollectableError } from './transfer'
 
 export interface RootState {
   user: UserState
+  auth: AuthState
 }
 
 export interface UserState {
   getList: {
-    loading: boolean
     data: FindManyResponse<User>
+    loading: boolean
     error: string
     currentPage: number
     abortController: AbortController
   }
   create: {
-    loading: boolean
     data: User | null
+    loading: boolean
     error: string
     validationErrors: Record<keyof User, ServerCollectableError> | null
   }
   update: {
-    loading: boolean
     data: User | null
+    loading: boolean
+    error: string
+    validationErrors: Record<keyof User, ServerCollectableError> | null
+  }
+}
+
+export interface AuthState {
+  login: {
+    loading: boolean
     error: string
     validationErrors: Record<keyof User, ServerCollectableError> | null
   }

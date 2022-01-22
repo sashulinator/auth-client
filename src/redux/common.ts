@@ -1,16 +1,19 @@
-export const initStateWithDataAsObject = {
-  data: null,
+export const initBaseState = {
   loading: false,
   error: '',
+}
+
+export const initStateWithDataAsObject = {
+  ...initBaseState,
+  data: null,
   validationErrors: null,
 }
 
 export const initStateWithDataAsEntityList = {
+  ...initBaseState,
   data: {
     total: 0,
     items: [],
   },
-  loading: false,
-  error: '',
   currentPage: 1,
 }
