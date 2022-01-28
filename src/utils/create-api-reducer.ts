@@ -27,7 +27,7 @@ export function createAPIReducer<Data>(
 ): Reducer<Data> {
   return (state = initState, action): State<Data> => {
     for (let index = 0; index < customReducers?.length; index++) {
-      const customReducer = customReducers[index]
+      const customReducer = customReducers[index] as Reducer<Data>
       const customState = customReducer(state, action)
       if (customState) {
         return customState

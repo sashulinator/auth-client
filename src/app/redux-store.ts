@@ -3,7 +3,6 @@ import queryMiddleware from '@savchenko91/rc-redux-api-mw-query'
 import * as auth from '../redux/auth.reducer'
 import * as user from '../redux/user.reducer'
 import APIMiddleware from './api-middleware'
-import cacheMiddleware from './api-mw-cache'
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
@@ -16,5 +15,5 @@ const composeEnhancer = isDevelopment && !!devtoolsCompose ? devtoolsCompose : c
 export default createStore(
   combineReducers({ ...user, ...auth }),
   undefined,
-  composeEnhancer(applyMiddleware(queryMiddleware(), cacheMiddleware(), APIMiddleware.middleware()))
+  composeEnhancer(applyMiddleware(queryMiddleware(), APIMiddleware.middleware()))
 )
