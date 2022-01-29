@@ -26,7 +26,6 @@ const Login: FC = (): JSX.Element => {
         setErrors?.(body?._errors)
       }
     }
-    console.log('allo')
 
     store.dispatch(actions.login(formData, { onFail }))
   }
