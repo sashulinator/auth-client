@@ -14,7 +14,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  plugins: [['@babel/plugin-proposal-decorators', { legacy: true }], '@typescript-eslint', 'import'],
+  plugins: ['@typescript-eslint', 'import'],
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',

@@ -11,15 +11,14 @@ import { useSelector } from 'react-redux'
 import store from '@/app/redux-store'
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
-import * as authActions from '@/redux/auth.actions'
-import * as authSelectors from '@/redux/auth.selectors'
+import { actions, selectors } from '@/redux/auth'
 import { Credentials } from '@/types/entities'
 import { ServerError } from '@/types/transfer'
 
 const Login: FC = (): JSX.Element => {
   const { t } = useTranslation()
 
-  const authLoginState = useSelector(authSelectors.login)
+  const authLoginState = useSelector(selectors.login)
 
   const onSubmit: FormProps<Credentials>['onSubmit'] = (formData, formApi, setErrors) => {
     const onFail: OnFail<ServerError> = ({ body }) => {
@@ -29,7 +28,7 @@ const Login: FC = (): JSX.Element => {
     }
     console.log('allo')
 
-    store.dispatch(authActions.login(formData, { onFail }))
+    store.dispatch(actions.login(formData, { onFail }))
   }
 
   return (
