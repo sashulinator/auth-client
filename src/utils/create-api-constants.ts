@@ -10,10 +10,10 @@ export function createAPIconstants<Args extends string[]>(
   }, {})
 }
 
-export function createAPIconstant(entityName: string, actionName: string) {
+export function createAPIconstant(entityName: string, actionName: string | number | symbol) {
   return {
-    START: `${entityName.toUpperCase()}.${actionName.toUpperCase()}/START`,
-    SUCCESS: `${entityName.toUpperCase()}.${actionName.toUpperCase()}/SUCCESS`,
-    FAIL: `${entityName.toUpperCase()}.${actionName.toUpperCase()}/FAIL`,
+    START: `${entityName.toUpperCase()}.${actionName.toString().toUpperCase()}/START`,
+    SUCCESS: `${entityName.toUpperCase()}.${actionName.toString().toUpperCase()}/SUCCESS`,
+    FAIL: `${entityName.toUpperCase()}.${actionName.toString().toUpperCase()}/FAIL`,
   }
 }

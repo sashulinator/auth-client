@@ -27,6 +27,7 @@ module.exports = {
             options: {
               loader: 'jsx',
               target: 'es2015',
+              sourcemap: true,
             },
           },
           {
@@ -47,6 +48,7 @@ module.exports = {
             options: {
               loader: 'jsx',
               target: 'es2015',
+              sourcemap: true,
             },
           },
           {
