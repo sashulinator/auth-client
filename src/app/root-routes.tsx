@@ -1,7 +1,7 @@
 import ROUTES from '../constants/routes'
 import Login from '../pages/login'
 import Users from '../pages/users'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 const RootRoutes: FC = () => {

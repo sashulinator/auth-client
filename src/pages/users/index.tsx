@@ -2,7 +2,7 @@ import { ActionButton, DetailsList, SearchBox, Selection, Stack, TextField } fro
 import { Panel } from '@fluentui/react/lib/Panel'
 
 import UserForm from './form'
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 

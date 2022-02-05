@@ -5,7 +5,7 @@ import Header from './header'
 import './index.css'
 import './reset.css'
 import RootRoutes from './root-routes'
-import { FC } from 'react'
+import React, { FC } from 'react'
 
 const RootLayer: FC = () => {
   return (

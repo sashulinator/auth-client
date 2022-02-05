@@ -1,4 +1,4 @@
-import { MutableRefObject, LegacyRef, RefCallback, ForwardedRef, useRef } from 'react'
+import { ForwardedRef, LegacyRef, MutableRefObject, RefCallback, useRef } from 'react'
 
 export interface AutoFocusProps {
   isAutoFocus?: boolean

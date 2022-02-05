@@ -19,14 +19,46 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|js)x?$/,
-        exclude: /node_modules/,
+        test: /\.ts$/i,
+        exclude: [/node_modules/],
         use: [
           {
-            loader: 'babel-loader',
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'jsx',
+              target: 'es2015',
+            },
+          },
+          {
+            loader: 'esbuild-typescript-loader',
+            options: {
+              loader: 'ts',
+              sourcemap: true,
+            },
           },
         ],
       },
+      {
+        test: /\.tsx$/i,
+        exclude: [/node_modules/],
+        use: [
+          {
+            loader: 'esbuild-loader',
+            options: {
+              loader: 'jsx',
+              target: 'es2015',
+            },
+          },
+          {
+            loader: 'esbuild-typescript-loader',
+            options: {
+              loader: 'tsx',
+              sourcemap: true,
+            },
+          },
+        ],
+      },
+
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],

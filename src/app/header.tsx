@@ -3,7 +3,7 @@ import { Stack } from '@fluentui/react/lib/Stack'
 
 import ROUTES from '../constants/routes'
 import './header.css'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 

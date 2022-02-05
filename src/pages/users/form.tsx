@@ -2,7 +2,7 @@ import { PrimaryButton } from '@fluentui/react/lib/Button'
 import { Stack } from '@fluentui/react/lib/Stack'
 import { OnFail } from '@savchenko91/rc-redux-api-mw'
 
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Field, Form, FormProps } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'

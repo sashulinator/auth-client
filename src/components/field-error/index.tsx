@@ -1,6 +1,6 @@
 import './index.css'
 import cx from 'clsx'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ServerCollectableError } from '@/types/transfer'
