@@ -1,8 +1,8 @@
-import { OnStage, ServerError } from '../types/transfer'
+import { ServerError } from '../types/transfer'
 import { initStateWithDataAsObject } from './common'
 import { combineReducers } from 'redux'
 
-import { Credentials } from '@/types/entities'
+import { Credentials, User } from '@/types/entities'
 import { AuthState, RootState } from '@/types/redux-state'
 import { RawAPIAction, createApiActions } from '@/utils/create-api-actions'
 import { createAPIconstants } from '@/utils/create-api-constants'
@@ -19,12 +19,11 @@ export const selectors = {
 }
 
 const rawActions = {
-  login(body: Credentials, onStage?: OnStage<ServerError>): RawAPIAction<ServerError> {
+  login(body: Credentials): RawAPIAction<ServerError & User> {
     return {
       url: `/api/v1/local-auth`,
       method: 'POST',
       body,
-      ...onStage,
     }
   },
 }

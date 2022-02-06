@@ -1,5 +1,4 @@
 import { PrimaryButton, Stack } from '@fluentui/react'
-import { OnFail } from '@savchenko91/rc-redux-api-mw'
 
 import './index.css'
 import React, { FC } from 'react'
@@ -12,7 +11,6 @@ import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
 import { actions, selectors } from '@/redux/auth'
 import { Credentials } from '@/types/entities'
-import { ServerError } from '@/types/transfer'
 
 const Login: FC = (): JSX.Element => {
   const { t } = useTranslation()
@@ -20,13 +18,10 @@ const Login: FC = (): JSX.Element => {
   const authLoginState = useSelector(selectors.login)
 
   const onSubmit: FormProps<Credentials>['onSubmit'] = (formData, formApi, setErrors) => {
-    const onFail: OnFail<ServerError> = ({ body }) => {
-      if (body?._errors) {
-        setErrors?.(body?._errors)
-      }
-    }
-    throw new Error('dsdsdsd')
-    store.dispatch(actions.login(formData, { onFail }))
+    const action = actions.login(formData, {
+      onFail: ({ body }) => setErrors?.(body?._errors),
+    })
+    store.dispatch(action)
   }
 
   return (
