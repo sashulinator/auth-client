@@ -44,7 +44,8 @@
   },
   "P2002": "already exists",
   "assertString": "required",
-  "assertNotMoreThan": "more than {{- _value2}}",
+  "assertNotMoreThan": "more than {{- _input2}}",
   "assertNotUndefined": "required",
-  "assertMatchPattern": "does not match the pattern: {{- _value2}}"
+  "assertMatchPattern": "does not match the pattern: {{- _input2}}",
+  "assertMatchPattern/@.*\\.*./": "does not match email pattern"
 }
