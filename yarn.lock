@@ -1472,10 +1472,10 @@
   resolved "https://registry.yarnpkg.com/@savchenko91/rc-redux-api-mw/-/rc-redux-api-mw-2.0.6.tgz#20cf2caa2b85461f60eb6e5be73c82ba0cd37379"
   integrity sha512-8zKBHnfPGb+njkjEQT+MTa9jj30TrLkBTwmKatPs7+/IpMGQjq+OKjGDRIv9rvzWbKSiPxoGnKr2WA9NE8H3aA==
 
-"@savchenko91/schema-validator@0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.0.13.tgz#5ff971dcd4c3ee78c4d1c9cc75934b3bc2cc27ed"
-  integrity sha512-942HItf3aqfjK+dDbh3ZuwOj0QphIOi43QIAzwT5Unh0kAQTrN1PdHPvAJRX4wJWsoIrtF+Vq5kidwaZJC4sJA==
+"@savchenko91/schema-validator@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.0.0.tgz#baa5957b4731e3e1c45d54402b12ccd6ac6ad448"
+  integrity sha512-RZ5uO4dfNumA+KB/R75I2lFCVZFk6U9n3QYZELbdtna4ZZu7C7FWBt2jqrToswWtm4YqUlBYQdcCktW+nK6/AQ==
 
 "@trivago/prettier-plugin-sort-imports@3.1.1":
   version "3.1.1"
@@ -6003,13 +6003,12 @@ react-router@6.1.1:
   dependencies:
     history "^5.1.0"
 
-react@17.0.1:
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-17.0.1.tgz#6e0600416bd57574e3f86d92edba3d9008726127"
-  integrity sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
+react@^18.0.0:
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-18.0.0.tgz#b468736d1f4a5891f38585ba8e8fb29f91c3cb96"
+  integrity sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A==
   dependencies:
     loose-envify "^1.1.0"
-    object-assign "^4.1.1"
 
 readable-stream@^2.0.1, readable-stream@^2.0.2:
   version "2.3.7"
