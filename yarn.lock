@@ -1472,10 +1472,10 @@
   resolved "https://registry.yarnpkg.com/@savchenko91/rc-redux-api-mw/-/rc-redux-api-mw-2.0.6.tgz#20cf2caa2b85461f60eb6e5be73c82ba0cd37379"
   integrity sha512-8zKBHnfPGb+njkjEQT+MTa9jj30TrLkBTwmKatPs7+/IpMGQjq+OKjGDRIv9rvzWbKSiPxoGnKr2WA9NE8H3aA==
 
-"@savchenko91/schema-validator@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.1.tgz#dc87f6b429c184d57406575804aac5a5654e17d2"
-  integrity sha512-gnX9ffyKBeZCdFAl3bKCHKbkjRhFn0lUVAlht5gOlSLFDk7SkvAKBabUkofF5tymjp8RMdLmqrRkK/dIjZKXoQ==
+"@savchenko91/schema-validator@0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.4.tgz#3467ff6782e0f57d57223a81fec69dde7d6848ff"
+  integrity sha512-U+m6KDjO/RaOu38aLsxViIjLP9cjgvD231As/iy7Rj9qIe/Zdsfwuzu4l7vPITCfsELpueP588FBDasihVch9Q==
 
 "@trivago/prettier-plugin-sort-imports@3.1.1":
   version "3.1.1"
