@@ -57,10 +57,10 @@ const List: FC = (): JSX.Element => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getUserList(1), [searchQuery])
 
-  function getUserList() {
+  function getUserList(page?: number) {
     userListState?.abortController?.abort()
-    // const currentPage = page || userListState.currentPage
-    // setTimeout(() => store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery })))
+    const currentPage = page || userListState.currentPage
+    store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery }))
   }
 
   function pruneMany() {

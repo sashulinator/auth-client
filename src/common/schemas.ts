@@ -32,7 +32,11 @@ export const createUserValidator = bindedWrap(
 
 export const updateUserValidator = bindedWrap(
   only<UpdateUser>({
-    id: string,
     ...createUserValidator,
+    id: string,
+    password: or(
+      and(withValue(/[A-Z]/, matchPattern), withValue(/[a-z]/, matchPattern), withValue(/[0-9]/, matchPattern)),
+      _undefined
+    ),
   })
 )
