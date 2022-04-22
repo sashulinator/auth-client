@@ -2,7 +2,8 @@
   "pagesNames": {
     "createUser": "Create user",
     "userList": "Users",
-    "login": "Login"
+    "login": "Login",
+    "formConstructor": "Form constructor"
   },
   "userPage": {
     "searchByNameEmail": "Search by name or email",

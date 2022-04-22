@@ -2,7 +2,8 @@
   "pagesNames": {
     "createUser": "Создать пользователя",
     "userList": "Пользователи",
-    "login": "Логин"
+    "login": "Логин",
+    "formConstructor": "Конструктор форм"
   },
   "userPage": {
     "searchByNameEmail": "Искать по имени и email",

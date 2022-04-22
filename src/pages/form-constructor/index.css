@@ -1,0 +1,15 @@
+.FormConstructor {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.TreePanel {
+  background-color: rgba(127, 255, 212, 0.093);
+  position: absolute;
+  width: 200px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 300;
+}
