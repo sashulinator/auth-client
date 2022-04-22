@@ -1,0 +1,96 @@
+{
+  "id": "ee4254ef-a9a3-4243-be68-51ce733b338e",
+  "name": "Button",
+  "title": "Button",
+  "description": "button",
+  "children": [
+    {
+      "name": "TextField",
+      "type": "input",
+      "path": "children[0]",
+      "props": {
+        "placeholder": "надпись"
+      }
+    },
+    {
+      "name": "Checkbox",
+      "type": "input",
+      "path": "disabled",
+      "props": {
+        "label": "неактивный"
+      }
+    }
+  ],
+  "createdAt": "2018-10-12T11:24:12.187Z",
+  "updatedAt": "2019-12-17T08:04:28.605Z",
+  "uiConfig": {
+    "root": [
+      {
+        "type": "group",
+        "title": "",
+        "children": [
+          {
+            "name": "sync",
+            "type": "field",
+            "title": "Включить синхронизацию табов"
+          },
+          {
+            "name": "tabs[]",
+            "type": "field",
+            "title": "Список табов"
+          },
+          {
+            "name": "background",
+            "type": "field",
+            "title": "Фон блока"
+          }
+        ]
+      }
+    ],
+    "tabs[]": [
+      {
+        "type": "group",
+        "title": "",
+        "children": [
+          {
+            "name": "tabs[].name",
+            "type": "field",
+            "title": "Текст таба"
+          },
+          {
+            "name": "tabs[].blocksId[]",
+            "type": "field",
+            "title": "Список блоков для таба"
+          }
+        ]
+      }
+    ],
+    "tabs[].blocksId[]": [
+      {
+        "type": "group",
+        "title": "",
+        "children": [
+          {
+            "name": "tabs[].blocksId[].guid",
+            "type": "field",
+            "title": "guid блока, который показываем в табе"
+          }
+        ]
+      }
+    ]
+  },
+  "previewConfig": {
+    "expander": {
+      "active": false,
+      "targetFieldName": ""
+    },
+    "paginator": {
+      "active": false,
+      "targetFieldName": ""
+    }
+  },
+  "nestingSetting": "ALL",
+  "nestingSettingBlocks": [],
+  "categories": [],
+  "version": "1.0"
+}
