@@ -23,3 +23,12 @@
   background-color: rgba(137, 43, 226, 0.099);
   margin: 50px;
 }
+
+.PropertyPanel {
+  position: absolute;
+  height: 100%;
+  width: 300px;
+  background-color: rgba(165, 42, 42, 0.179);
+  top: 0;
+  right: 0;
+}
