@@ -9,7 +9,7 @@ export const propertiesState = atom({
       name: 'PrimaryButton',
       title: 'Button',
       description: 'button',
-      children: [
+      schema: [
         {
           path: 'children[0]',
           name: 'TextField',

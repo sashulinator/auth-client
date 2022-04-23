@@ -5,7 +5,8 @@ import React, { FC } from 'react'
 import { useRecoilState } from 'recoil'
 
 import CustomTextField from '@/components/text-field'
-import { formSchemaState } from '@/recoil/form-schema'
+import { formSchemaData, formSchemaState } from '@/recoil/form-schema'
+import { NormSchema } from '@/types/entities'
 
 const hashComponents = {
   Stack,
@@ -16,9 +17,29 @@ const hashComponents = {
 } as any
 
 const Preview: FC = (): JSX.Element => {
-  const [formSchema] = useRecoilState(formSchemaState)
+  const [formState] = useRecoilState(formSchemaState)
+  return <div className="Preview">{formSchemaData.schema.map(drawChildren)}</div>
 
-  return <div className="Preview">{formSchema.children.map(drawChildren)}</div>
+  function drawChildren(rawItem?: any, i?: number) {
+    if (rawItem === undefined) {
+      return null
+    }
+    if (isString(rawItem)) {
+      return rawItem
+    }
+    const item = formState[rawItem.id] as NormSchema
+    const Comp = hashComponents[item?.name]
+    let drawedChildren
+    if (item.children) {
+      drawedChildren = item.children.map(drawChildren)
+    }
+
+    return (
+      <Comp key={i} {...item?.props}>
+        {drawedChildren}
+      </Comp>
+    )
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

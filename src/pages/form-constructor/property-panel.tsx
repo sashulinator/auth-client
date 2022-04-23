@@ -20,7 +20,8 @@ const PropertyPanel: FC = (): JSX.Element => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onSubmit(newSchemaItemProps: any) {
-    setFormSchema({ ...formSchema, children: replace(formSchema.children, 0, newSchemaItemProps) })
+    const newSchema = { ...formSchema, [newSchemaItemProps.id]: newSchemaItemProps }
+    setFormSchema(newSchema)
     // console.log({ ...formSchema, children: replace(formSchema.children, 0, formSchema as any) })
   }
 
@@ -33,7 +34,7 @@ const PropertyPanel: FC = (): JSX.Element => {
         render={(formProps) => {
           return (
             <form onSubmit={formProps.handleSubmit}>
-              {selectedProperty?.children.map(drawProperty)}
+              {selectedProperty?.schema.map(drawProperty)}
               <Stack tokens={{ padding: '40px 0' }}>
                 <PrimaryButton type="submit">{t('buttons.save')}</PrimaryButton>
               </Stack>
