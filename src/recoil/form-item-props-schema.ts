@@ -7,6 +7,8 @@ export interface FormItemPropsSchema {
   id: string
   name: string
   title: string
+  actions: string[]
+  events: string[]
   description: string
   schema: SchemaItem[]
 }
@@ -73,15 +75,17 @@ export const formItemPropsSchemaData = [
     name: 'TextField',
     title: 'TextField',
     description: 'text input',
+    events: ['onClick', 'onChange'],
+    actions: ['setValue'],
     schema: [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
         formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-        path: 'props.value',
+        path: 'path',
         name: 'TextField',
         type: 'input',
         props: {
-          label: 'значение по-умолчанию',
+          label: 'путь',
         },
       },
     ],

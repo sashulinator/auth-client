@@ -1,6 +1,7 @@
-import { PrimaryButton, Stack } from '@fluentui/react'
+import { Dropdown, PrimaryButton, Stack } from '@fluentui/react'
+import { isString } from '@savchenko91/schema-validator'
 
-import { drawChildren } from './preview'
+import { hashComponents } from './preview'
 import React, { FC, Fragment } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -10,31 +11,111 @@ import FieldError from '@/components/field-error'
 import { selectedFormItemPropsSchemaState } from '@/recoil/form-item-props-schema'
 import { formSchemaState, selectedSchemaItemState } from '@/recoil/form-schema'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const drawChildren = (item?: any, i?: number) => {
+  if (item === undefined) {
+    return null
+  }
+  if (isString(item)) {
+    return item
+  }
+  const Comp = hashComponents[item?.name]
+  let drawedChildren
+  if (item.children) {
+    drawedChildren = item.children.map(drawChildren)
+  }
+
+  return (
+    <Comp key={item?.path || i} {...item?.props}>
+      {drawedChildren}
+    </Comp>
+  )
+}
+
 const ComponentPropsPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
 
   const selectedFormItemPropsSchema = useRecoilValue(selectedFormItemPropsSchemaState)
   const selectedSchemaItem = useRecoilValue(selectedSchemaItemState)
-  console.log('formSchema', formSchema)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onSubmit(newSchemaItemProps: any) {
     const newSchema = { ...formSchema, [newSchemaItemProps.id]: newSchemaItemProps }
     setFormSchema(newSchema)
-    // console.log({ ...formSchema, children: replace(formSchema.children, 0, formSchema as any) })
+    console.log('newSchema', newSchemaItemProps)
   }
 
   return (
     <div className="PropertyPanel">
       <Stack as="h2">{selectedFormItemPropsSchema?.name}</Stack>
+      <div>prop: {selectedFormItemPropsSchema?.id}</div>
+      <div>item id {selectedSchemaItem?.id}</div>
       <Form
+        key={JSON.stringify(selectedSchemaItem)}
         initialValues={selectedSchemaItem}
         onSubmit={onSubmit}
         render={(formProps) => {
           return (
             <form onSubmit={formProps.handleSubmit}>
               {selectedFormItemPropsSchema?.schema?.map(drawProperty)}
+              <Field name={'event'}>
+                {({ input, meta }) => [
+                  <Dropdown
+                    key="1"
+                    placeholder="events"
+                    options={
+                      selectedFormItemPropsSchema?.events?.map((opt) => ({
+                        key: opt,
+                        text: opt,
+                      })) || []
+                    }
+                    {...input}
+                    onChange={(e, selected) => {
+                      input.onChange(selected?.key)
+                    }}
+                  />,
+                  <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                ]}
+              </Field>
+              <Field name={'actions'}>
+                {({ input, meta }) => [
+                  <Dropdown
+                    key="1"
+                    placeholder="actions"
+                    options={
+                      selectedFormItemPropsSchema?.actions?.map((opt) => ({
+                        key: opt,
+                        text: opt,
+                      })) || []
+                    }
+                    {...input}
+                    onChange={(e, selected) => {
+                      input.onChange(selected?.key)
+                    }}
+                  />,
+                  <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                ]}
+              </Field>
+              <Field name={'impactOnFormItemId[0]'}>
+                {({ input, meta }) => [
+                  <Dropdown
+                    key="1"
+                    placeholder="form item"
+                    options={
+                      Object.keys(formSchema).map((opt) => ({
+                        key: opt,
+                        text: opt,
+                      })) || []
+                    }
+                    {...input}
+                    onChange={(e, selected) => {
+                      input.onChange(selected?.key)
+                    }}
+                  />,
+                  <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                ]}
+              </Field>
               <Stack tokens={{ padding: '40px 0' }}>
                 <PrimaryButton type="submit">{t('buttons.save')}</PrimaryButton>
               </Stack>
@@ -50,7 +131,7 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
 function drawProperty(item: any) {
   if (item.type === 'input' || item.type === 'checkbox') {
     return (
-      <Field defaultValue={item.value} type={item.type} name={item.path} key={item.path}>
+      <Field type={item.type} name={item.path} key={item.path}>
         {({ input, meta }) => [
           <Fragment key="1">{drawChildren({ ...item, props: { ...item?.props, ...input } })}</Fragment>,
           <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,

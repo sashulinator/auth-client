@@ -12,9 +12,9 @@ export const formSchemaData = {
       id: 'ee4254ef-7878-4243-be68-51ce733b338e',
       formItemPropsSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
       name: 'Stack',
+      path: 'hello',
       type: 'component',
       props: {
-        disabled: true,
         as: 'ul',
         horizontal: true,
         verticalAlign: 'center',
@@ -25,18 +25,21 @@ export const formSchemaData = {
       },
       children: [
         {
+          path: 'hello12',
           id: 'ee4254ef-9009-4243-be68-51ce733b338e',
           formItemPropsSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
           name: 'PrimaryButton',
           type: 'button',
           props: {
             disabled: false,
+            type: 'submit',
           },
           children: ['hello'],
         },
         {
           id: 'ee4254ef-5555-4243-be68-51ce733b338e',
           formItemPropsSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
+          path: 'world',
           name: 'PrimaryButton',
           type: 'button',
           props: {
@@ -45,13 +48,23 @@ export const formSchemaData = {
           children: ['koko'],
         },
         {
-          id: 'ee4234ef-9099-8943-8968-54ce733b870',
+          id: 'ee4234ef-9099-8943-8968-54ce7subject',
           formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+          path: 'funny',
           name: 'TextField',
           type: 'input',
-          props: {
-            disabled: false,
+          bindings: {
+            event: 'onChange',
+            actions: ['setValue'],
+            impactOnFormItemIds: ['ee4234ef-9099-8943-8968-54ce73object'],
           },
+        },
+        {
+          id: 'ee4234ef-9099-8943-8968-54ce73object',
+          formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+          path: 'kuku',
+          name: 'TextField',
+          type: 'input',
         },
       ],
     },

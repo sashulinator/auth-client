@@ -20,15 +20,13 @@ export interface SchemaItem {
   name: string
   formItemPropsSchemaId: string
   id: string
+  path: string
+  type: string
   props?: Record<string, unknown>
   children?: SchemaItem[] | string[]
 }
 
-export interface NormSchema {
-  formItemPropsSchemaId: string
-  id: string
-  name: string
-  props?: Record<string, unknown>
+export type NormSchema = SchemaItem & {
   children?: SchemaItem[]
 }
 
