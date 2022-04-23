@@ -9,16 +9,6 @@ export const formSchemaData = {
   description: 'some description',
   schema: [
     {
-      formItemPropsSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
-      id: 'ee4254ef-9099-4243-be68-51ce733b338e',
-      name: 'PrimaryButton',
-      type: 'button',
-      props: {
-        disabled: false,
-      },
-      children: ['first'],
-    },
-    {
       id: 'ee4254ef-7878-4243-be68-51ce733b338e',
       formItemPropsSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
       name: 'Stack',
@@ -30,7 +20,7 @@ export const formSchemaData = {
         verticalAlign: 'center',
         tokens: {
           childrenGap: 10,
-          padding: '15px 40px',
+          padding: '45px 40px',
         },
       },
       children: [
@@ -54,11 +44,21 @@ export const formSchemaData = {
           },
           children: ['koko'],
         },
+        {
+          id: 'ee4234ef-9099-8943-8968-54ce733b870',
+          formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+          name: 'TextField',
+          type: 'input',
+          props: {
+            disabled: false,
+          },
+        },
       ],
     },
   ],
 }
 
+// TODO: rename to normFormSchemaState
 export const formSchemaState = atom({
   key: 'formSchemaState',
   default: normalizeToHashSchema(formSchemaData.schema),

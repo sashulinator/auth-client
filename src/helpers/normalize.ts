@@ -6,9 +6,11 @@ export function normalizeSchema(schemas: SchemaItem[]): NormSchema[] | undefined
   }
 
   const childrenArr = schemas.reduce<NormSchema[]>((acc, schemaItem) => {
-    const normSchema = normalizeSchema(schemaItem.children as NormSchema[])
-    if (normSchema) {
-      return [...acc, ...normSchema]
+    if (schemaItem.children) {
+      const normSchema = normalizeSchema(schemaItem.children as NormSchema[])
+      if (normSchema) {
+        return [...acc, ...normSchema]
+      }
     }
     return acc
   }, [])

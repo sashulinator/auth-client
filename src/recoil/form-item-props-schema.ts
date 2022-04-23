@@ -40,6 +40,52 @@ export const formItemPropsSchemaData = [
       },
     ],
   },
+  {
+    id: 'ee4254ef-9099-4289-be68-51ce733b3376',
+    name: 'Stack',
+    title: 'Stack',
+    description: 'stack',
+    schema: [
+      {
+        id: 'ee4254ef-9099-5543-be68-51ce733b3367',
+        formItemPropsSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        path: 'props.horizontal',
+        name: 'Checkbox',
+        type: 'input',
+        props: {
+          label: 'горизонтально',
+        },
+      },
+      {
+        id: 'ee4254ef-9099-5543-be68-51ce733b3367',
+        formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        path: 'props.tokens.padding',
+        name: 'TextField',
+        type: 'input',
+        props: {
+          label: 'отступ',
+        },
+      },
+    ],
+  },
+  {
+    id: 'ee4234ef-9099-8943-8968-51ce733b870',
+    name: 'TextField',
+    title: 'TextField',
+    description: 'text input',
+    schema: [
+      {
+        id: 'ee4254ef-9099-5543-be68-51ce733b3367',
+        formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        path: 'props.value',
+        name: 'TextField',
+        type: 'input',
+        props: {
+          label: 'значение по-умолчанию',
+        },
+      },
+    ],
+  },
 ]
 
 export const formItemPropsSchemaState = atom({
