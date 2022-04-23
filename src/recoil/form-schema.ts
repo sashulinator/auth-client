@@ -52,6 +52,7 @@ export const formSchemaData = {
           formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
           path: 'funny',
           name: 'TextField',
+          defaultValue: 'init',
           type: 'input',
           bindings: {
             event: 'onChange',

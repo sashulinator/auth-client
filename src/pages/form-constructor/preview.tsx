@@ -28,7 +28,7 @@ const Preview: FC = (): JSX.Element => {
       <Form
         onSubmit={onSubmit}
         render={(formProps) => {
-          return <form onSubmit={formProps.handleSubmit}>{formSchemaData.schema.map(drawFormSchema)}</form>
+          return <form onSubmit={formProps.handleSubmit}>{formSchemaData.schema.map(drawFormSchema as any)}</form>
         }}
       />
     </div>
@@ -47,6 +47,7 @@ function drawFormSchema(schemaItem?: SchemaItem | string) {
 }
 
 export const SchemaItemComponent: FC<{ schemaItem: SchemaItem }> = (props) => {
+  // TODO попробовать наисать селектор и выбирать из него
   const form = useForm()
   const [formSchema] = useRecoilState(formSchemaState)
   const Component = hashComponents[props.schemaItem?.name]
@@ -57,6 +58,7 @@ export const SchemaItemComponent: FC<{ schemaItem: SchemaItem }> = (props) => {
         type={props.schemaItem.type}
         name={props.schemaItem.path}
         key={props.schemaItem.path}
+        defaultValue={props.schemaItem.defaultValue}
         {...props.schemaItem.props}
       >
         {({ input, meta }) => {

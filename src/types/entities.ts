@@ -21,6 +21,7 @@ export interface SchemaItem {
   formItemPropsSchemaId: string
   id: string
   path: string
+  defaultValue: string
   type: string
   props?: Record<string, unknown>
   children?: SchemaItem[] | string[]

@@ -88,6 +88,16 @@ export const formItemPropsSchemaData = [
           label: 'путь',
         },
       },
+      {
+        id: 'rr4254ef-9099-5643-be68-51ce733b3360',
+        formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        path: 'defaultValue',
+        name: 'TextField',
+        type: 'input',
+        props: {
+          label: 'значение по умолчанию',
+        },
+      },
     ],
   },
 ]
