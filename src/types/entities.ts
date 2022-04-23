@@ -16,18 +16,20 @@ export interface Credentials {
   password: string
 }
 
-export interface Schema {
+export interface SchemaItem {
   name: string
+  formItemPropsSchemaId: string
   id: string
-  props: Record<string, unknown>
-  children: Schema[] | string[]
+  props?: Record<string, unknown>
+  children?: SchemaItem[] | string[]
 }
 
 export interface NormSchema {
+  formItemPropsSchemaId: string
   id: string
   name: string
-  props: Record<string, unknown>
-  children: Schema[]
+  props?: Record<string, unknown>
+  children?: SchemaItem[]
 }
 
 export interface CreateUserInput extends Omit<CreateInput<User>, 'phone'> {

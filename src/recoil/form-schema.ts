@@ -9,6 +9,7 @@ export const formSchemaData = {
   description: 'some description',
   schema: [
     {
+      formItemPropsSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
       id: 'ee4254ef-9099-4243-be68-51ce733b338e',
       name: 'PrimaryButton',
       type: 'button',
@@ -19,6 +20,7 @@ export const formSchemaData = {
     },
     {
       id: 'ee4254ef-7878-4243-be68-51ce733b338e',
+      formItemPropsSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
       name: 'Stack',
       type: 'component',
       props: {
@@ -34,6 +36,7 @@ export const formSchemaData = {
       children: [
         {
           id: 'ee4254ef-9009-4243-be68-51ce733b338e',
+          formItemPropsSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
           name: 'PrimaryButton',
           type: 'button',
           props: {
@@ -43,6 +46,7 @@ export const formSchemaData = {
         },
         {
           id: 'ee4254ef-5555-4243-be68-51ce733b338e',
+          formItemPropsSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
           name: 'PrimaryButton',
           type: 'button',
           props: {

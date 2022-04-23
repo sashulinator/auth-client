@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import FieldError from '@/components/field-error'
+import { selectedFormItemPropsSchemaState } from '@/recoil/form-item-props-schema'
 import { formSchemaState, selectedSchemaItemState } from '@/recoil/form-schema'
-import { selectedPropertyState } from '@/recoil/properties'
 
-const PropertyPanel: FC = (): JSX.Element => {
+const ComponentPropsPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
 
-  const selectedProperty = useRecoilValue(selectedPropertyState)
+  const selectedFormItemPropsSchema = useRecoilValue(selectedFormItemPropsSchemaState)
   const selectedSchemaItem = useRecoilValue(selectedSchemaItemState)
   console.log('formSchema', formSchema)
 
@@ -27,14 +27,14 @@ const PropertyPanel: FC = (): JSX.Element => {
 
   return (
     <div className="PropertyPanel">
-      <Stack as="h2">{selectedProperty?.name}</Stack>
+      <Stack as="h2">{selectedFormItemPropsSchema?.name}</Stack>
       <Form
         initialValues={selectedSchemaItem}
         onSubmit={onSubmit}
         render={(formProps) => {
           return (
             <form onSubmit={formProps.handleSubmit}>
-              {selectedProperty?.schema.map(drawProperty)}
+              {selectedFormItemPropsSchema?.schema?.map(drawProperty)}
               <Stack tokens={{ padding: '40px 0' }}>
                 <PrimaryButton type="submit">{t('buttons.save')}</PrimaryButton>
               </Stack>
@@ -66,4 +66,4 @@ export function replace<T>(array: T[], index: number, ...items: T[]): T[] {
   return [...array.slice(0, index), ...items, ...array.slice(index + 1)]
 }
 
-export default PropertyPanel
+export default ComponentPropsPanel
