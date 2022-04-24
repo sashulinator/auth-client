@@ -14,6 +14,7 @@ export interface ActionProps {
 export type ActionFunc = (props: ActionProps) => unknown
 
 export function runAction(actionName: string, props: ActionProps) {
+  // TODO schemaItems сейчас для всех байндингов, сделать для каждого отдельно
   const { schemaItem, schemaItems, form } = props
   return (event?: unknown) => {
     setTimeout(() => {
@@ -21,7 +22,6 @@ export function runAction(actionName: string, props: ActionProps) {
 
       props.schemaItem.bindings?.forEach((binding) => {
         if (binding.events.includes(actionName)) {
-          // TODO schemaItems сейчас для всех байндингов, сделать для каждого отдельно
           binding.actions.reduce((newValue, action) => {
             return hashActions[action]?.({ schemaItem, schemaItems, form, event, value: newValue })
           }, value)
