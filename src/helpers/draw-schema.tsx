@@ -1,7 +1,7 @@
 import { isString } from '@savchenko91/schema-validator'
 
-import React, { FC } from 'react'
-import { Field, useForm } from 'react-final-form'
+import React, { FC, memo } from 'react'
+import { Field } from 'react-final-form'
 import { useRecoilState } from 'recoil'
 
 import FieldError from '@/components/field-error'
@@ -17,47 +17,69 @@ export function drawSchema(schemaItem?: SchemaItem | string) {
     return schemaItem
   }
 
-  return <SchemaItemComponent schemaItem={schemaItem} />
+  return <SchemaItemComponent key={schemaItem.path} schemaItem={schemaItem} />
 }
 
 export const SchemaItemComponent: FC<{ schemaItem: SchemaItem }> = (props) => {
-  // TODO попробовать наисать селектор и выбирать из него
-  const form = useForm()
   const [formSchema] = useRecoilState(formSchemaState)
-  const Component = hashComponents[props.schemaItem?.name]
+  const schemaItem = formSchema[props.schemaItem.id]
 
-  if (props.schemaItem.type === 'input' || props.schemaItem.type === 'checkbox') {
-    return (
-      <Field
-        type={props.schemaItem.type}
-        name={props.schemaItem.path}
-        key={props.schemaItem.path}
-        defaultValue={props.schemaItem.defaultValue}
-        {...props.schemaItem.props}
-      >
-        {({ input, meta }) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          function onChange(event: any, value: any) {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const test = props.schemaItem as any
-
-            if (test?.bindings?.event?.includes?.('onChange')) {
-              const formItem = formSchema[test.bindings.componentIds[0]]
-              form.change(formItem?.path || '', value)
-            }
-            input?.onChange(event)
-          }
-
-          return (
-            <>
-              <Component {...input} onChange={onChange} />
-              <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-            </>
-          )
-        }}
-      </Field>
-    )
+  if (schemaItem === undefined) {
+    return null
   }
 
-  return <Component {...props.schemaItem.props}>{props.schemaItem.children?.map(drawSchema)}</Component>
+  const Component = hashComponents[schemaItem?.name]
+
+  if (schemaItem.type === 'input' || schemaItem.type === 'checkbox') {
+    return <MemoFieldComponent schemaItem={schemaItem} Component={Component} />
+  }
+
+  return <MemoSimpleComponent schemaItem={schemaItem} Component={Component} />
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const FieldComponent: FC<{ schemaItem: SchemaItem; Component: any }> = (props) => {
+  // const form = useForm()
+  const { schemaItem, Component } = props
+
+  return (
+    <Field
+      type={schemaItem.type}
+      name={schemaItem.path}
+      key={schemaItem.path}
+      defaultValue={schemaItem.defaultValue}
+      {...schemaItem.props}
+    >
+      {({ input, meta }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        function onChange(event: any) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const test = schemaItem as any
+
+          if (test?.bindings?.event?.includes?.('onChange')) {
+            // const formItem = formSchema[test.bindings.componentIds[0]]
+            // form.change(formItem?.path || '', value)
+          }
+          input?.onChange(event)
+        }
+
+        return (
+          <>
+            <Component {...input} onChange={onChange} />
+            <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+          </>
+        )
+      }}
+    </Field>
+  )
+}
+const MemoFieldComponent = memo(FieldComponent)
+
+export const SimpleComponent: FC<{ schemaItem: SchemaItem; Component: any }> = (props) => {
+  console.log('renderssss')
+
+  const { schemaItem, Component } = props
+
+  return <Component {...schemaItem.props}>{schemaItem.children?.map(drawSchema)}</Component>
+}
+const MemoSimpleComponent = memo(SimpleComponent)
