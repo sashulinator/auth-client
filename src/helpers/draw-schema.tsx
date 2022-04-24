@@ -46,7 +46,7 @@ export const SchemaItemComponent: FC<{
     return null
   }
 
-  const Component = hashComponents[schemaItem?.name]
+  const Component = hashComponents[schemaItem?.componentName]
 
   if (schemaItem.type === 'input' || schemaItem.type === 'checkbox') {
     return <MemoFieldComponent schemaItem={schemaItem} schemaItems={schemaItems} Component={Component} />
@@ -85,19 +85,25 @@ const FieldComponent: FC<{
       {({ input, meta }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         function onChange(event: any) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const test = schemaItem as any
-
-          if (test?.bindings?.event?.includes?.('onChange')) {
-            // const formItem = formSchema[test.bindings.componentIds[0]]
-            // form.change(formItem?.path || '', value)
-          }
+          runAction('onChange', { form, schemaItem, schemaItems })()
           input?.onChange(event)
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        function onBlur(event: any) {
+          runAction('onBlur', { form, schemaItem, schemaItems })()
+          input?.onBlur(event)
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        function onFocus(event: any) {
+          runAction('onFocus', { form, schemaItem, schemaItems })()
+          input?.onFocus(event)
         }
 
         return (
           <>
-            <Component {...schemaItem.props} {...input} onChange={onChange} />
+            <Component {...schemaItem.props} {...input} onChange={onChange} onBlur={onBlur} onFocus={onFocus} />
             <FieldError error={meta.touched && (meta.error || meta.submitError)} />
           </>
         )
@@ -107,11 +113,11 @@ const FieldComponent: FC<{
 }
 const MemoFieldComponent = memo(FieldComponent)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const SimpleComponent: FC<{
   normSchema: Record<string, FormSchemaItem>
   schemaItem: FormSchemaItem
   schemaItems?: FormSchemaItem[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Component: any
   schema?: (FormSchemaItem | string)[]
 }> = (props) => {

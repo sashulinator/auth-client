@@ -1,13 +1,15 @@
+import { isString } from '@savchenko91/schema-validator'
+
 import { FormSchemaItem } from '@/types/entities'
 
-export function normalizeSchema(schemas: FormSchemaItem[]): FormSchemaItem[] {
+export function flatSchema(schemas: FormSchemaItem[]): FormSchemaItem[] {
   if (typeof schemas?.[0] === 'string') {
     return schemas
   }
 
   const childrenArr = schemas.reduce<FormSchemaItem[]>((acc, schemaItem) => {
     if (schemaItem.children) {
-      const normSchema = normalizeSchema(schemaItem.children as FormSchemaItem[])
+      const normSchema = flatSchema(schemaItem.children as FormSchemaItem[])
       if (normSchema) {
         return [...acc, ...normSchema]
       }
@@ -19,7 +21,10 @@ export function normalizeSchema(schemas: FormSchemaItem[]): FormSchemaItem[] {
 }
 
 export function normalizeToHashSchema(schema: FormSchemaItem[]): Record<string, FormSchemaItem> {
-  const res = normalizeSchema(schema)?.reduce<Record<string, FormSchemaItem>>((acc, schemaItem) => {
+  const res = flatSchema(schema)?.reduce<Record<string, FormSchemaItem>>((acc, schemaItem) => {
+    if (isString(schemaItem)) {
+      return acc
+    }
     acc[schemaItem.id] = schemaItem
     return acc
   }, {})

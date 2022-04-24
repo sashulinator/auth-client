@@ -12,7 +12,12 @@
     "users": "пользователей",
     "pages": "страниц"
   },
+  "formConstructorPage": {
+    "bindings": "Связывание",
+    "addBindings": "Добавить связывание"
+  },
   "buttons": {
+    "add": "Добавить",
     "ok": "Ок",
     "cancel": "Отмена",
     "edit": "Редактировать",

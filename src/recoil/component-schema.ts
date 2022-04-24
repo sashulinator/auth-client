@@ -12,9 +12,10 @@ export const componentSchemaData = [
     schema: [
       {
         id: 'ee4254ef-9099-8943-be68-51ce733b390',
+        name: 'ТестИнпут1',
+        componentName: 'TextField',
         componentSchemaId: 'ee4254ef-9099-8943-be68-51ce733b870',
         path: 'children[0]',
-        name: 'TextField',
         type: 'input',
         props: {
           placeholder: 'надпись',
@@ -22,9 +23,10 @@ export const componentSchemaData = [
       },
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
+        name: 'ТестЧекбокс1',
+        componentName: 'Checkbox',
         componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
         path: 'props.disabled',
-        name: 'Checkbox',
         type: 'input',
         props: {
           label: 'неактивный',
@@ -41,6 +43,7 @@ export const componentSchemaData = [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
         componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        componentName: 'Checkbox',
         path: 'props.horizontal',
         name: 'Checkbox',
         type: 'input',
@@ -51,6 +54,7 @@ export const componentSchemaData = [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
         componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        componentName: 'TextField',
         path: 'props.tokens.padding',
         name: 'TextField',
         type: 'input',
@@ -65,12 +69,13 @@ export const componentSchemaData = [
     name: 'TextField',
     title: 'TextField',
     description: 'text input',
-    events: ['onClick', 'onChange'],
+    events: ['onInit', 'onClick', 'onChange', 'onFocus', 'onBlur'],
     actions: ['setValue'],
     schema: [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
         componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        componentName: 'TextField',
         path: 'path',
         name: 'TextField',
         type: 'input',
@@ -82,6 +87,7 @@ export const componentSchemaData = [
         id: 'rr4254ef-9099-5643-be68-51ce733b3360',
         componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
         path: 'defaultValue',
+        componentName: 'TextField',
         name: 'TextField',
         type: 'input',
         props: {

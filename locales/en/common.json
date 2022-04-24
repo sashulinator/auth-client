@@ -12,7 +12,12 @@
     "users": "users",
     "pages": "pages"
   },
+  "formConstructorPage": {
+    "bindings": "Bindings",
+    "addBindings": "Add bindings"
+  },
   "buttons": {
+    "add": "Add",
     "ok": "Ok",
     "cancel": "Cancel",
     "save": "Save",

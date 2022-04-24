@@ -35,6 +35,8 @@ export interface BaseSchema {
 
 export interface ComponentSchema extends BaseSchema {
   schema: ComponentSchemaItem[]
+  events: string[]
+  actions: string[]
 }
 
 export interface BaseSchemaItem {
@@ -49,6 +51,7 @@ export interface BaseSchemaItem {
 
 export interface FormSchemaItem extends BaseSchemaItem {
   children?: FormSchemaItem[] | string[]
+  componentName: string
   bindings?: {
     events: string[]
     actions: string[]
