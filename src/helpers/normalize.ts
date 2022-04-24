@@ -1,13 +1,13 @@
-import { FormSchemaItem, NormSchemaItem } from '@/types/entities'
+import { FormSchemaItem } from '@/types/entities'
 
-export function normalizeSchema(schemas: FormSchemaItem[]): NormSchemaItem[] | undefined {
+export function normalizeSchema(schemas: FormSchemaItem[]): FormSchemaItem[] {
   if (typeof schemas?.[0] === 'string') {
-    return undefined
+    return schemas
   }
 
-  const childrenArr = schemas.reduce<NormSchemaItem[]>((acc, schemaItem) => {
+  const childrenArr = schemas.reduce<FormSchemaItem[]>((acc, schemaItem) => {
     if (schemaItem.children) {
-      const normSchema = normalizeSchema(schemaItem.children as NormSchemaItem[])
+      const normSchema = normalizeSchema(schemaItem.children as FormSchemaItem[])
       if (normSchema) {
         return [...acc, ...normSchema]
       }
@@ -15,11 +15,11 @@ export function normalizeSchema(schemas: FormSchemaItem[]): NormSchemaItem[] | u
     return acc
   }, [])
 
-  return [...schemas, ...childrenArr] as NormSchemaItem[]
+  return [...schemas, ...childrenArr] as FormSchemaItem[]
 }
 
-export function normalizeToHashSchema(schema: FormSchemaItem[]): Record<string, NormSchemaItem> {
-  const res = normalizeSchema(schema)?.reduce<Record<string, NormSchemaItem>>((acc, schemaItem) => {
+export function normalizeToHashSchema(schema: FormSchemaItem[]): Record<string, FormSchemaItem> {
+  const res = normalizeSchema(schema)?.reduce<Record<string, FormSchemaItem>>((acc, schemaItem) => {
     acc[schemaItem.id] = schemaItem
     return acc
   }, {})

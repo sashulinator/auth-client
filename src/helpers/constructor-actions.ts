@@ -1,12 +1,12 @@
 import { FormApi } from 'final-form'
 
-import { NormSchemaItem } from '@/types/entities'
+import { FormSchemaItem } from '@/types/entities'
 
 export interface ActionProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: FormApi<Record<string, any>, Partial<Record<string, any>>>
-  schemaItem: NormSchemaItem
-  schemaItems?: NormSchemaItem[]
+  schemaItem: FormSchemaItem
+  schemaItems?: FormSchemaItem[]
   value?: unknown
   event?: unknown
 }

@@ -1,21 +1,12 @@
-import { Checkbox, PrimaryButton, Stack } from '@fluentui/react'
-
 import React, { FC } from 'react'
 import { Form } from 'react-final-form'
+import { useRecoilState } from 'recoil'
 
-import CustomTextField from '@/components/text-field'
 import { drawSchema } from '@/helpers/draw-schema'
-import { formSchemaData } from '@/recoil/form-schema'
-
-export const hashComponents = {
-  Stack,
-  Checkbox,
-  TextField: CustomTextField,
-  PrimaryButton,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any
+import { formSchemaData, formSchemaState } from '@/recoil/form-schema'
 
 const Preview: FC = (): JSX.Element => {
+  const [formSchema] = useRecoilState(formSchemaState)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onSubmit(data: any) {
     console.log('data', data)
@@ -26,7 +17,7 @@ const Preview: FC = (): JSX.Element => {
       <Form
         onSubmit={onSubmit}
         render={(formProps) => {
-          return <form onSubmit={formProps.handleSubmit}>{formSchemaData.schema.map(drawSchema)}</form>
+          return <form onSubmit={formProps.handleSubmit}>{drawSchema(formSchema, formSchemaData.schema)}</form>
         }}
       />
     </div>
