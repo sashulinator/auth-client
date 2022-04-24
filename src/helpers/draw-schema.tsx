@@ -1,6 +1,6 @@
 import { isString } from '@savchenko91/schema-validator'
 
-import { hashActions } from './constructor-actions'
+import { runAction } from './constructor-actions'
 import React, { FC, memo, useEffect } from 'react'
 import { Field, useForm } from 'react-final-form'
 import { useRecoilState } from 'recoil'
@@ -47,18 +47,9 @@ export const SchemaItemComponent: FC<{ schemaItem: FormSchemaItem }> = (props) =
 const FieldComponent: FC<{ schemaItem: NormSchemaItem; schemaItems?: NormSchemaItem[]; Component: any }> = (props) => {
   const { schemaItem, Component, schemaItems } = props
   const form = useForm()
-  const value = form.getFieldState(schemaItem.path)?.value
 
-  useEffect(() => {
-    schemaItem.bindings?.forEach((binding) => {
-      if (binding.events.includes('onInit')) {
-        // TODO schemaItems сейчас для всех байндингов, сделать для каждого отдельно
-        binding.actions.reduce((newValue, action) => {
-          return hashActions[action]?.({ schemaItem, schemaItems, form, value: newValue })
-        }, value)
-      }
-    })
-  }, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(runAction('onInit', { form, schemaItem, schemaItems }), [])
 
   return (
     <Field
@@ -93,6 +84,7 @@ const FieldComponent: FC<{ schemaItem: NormSchemaItem; schemaItems?: NormSchemaI
 }
 const MemoFieldComponent = memo(FieldComponent)
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const SimpleComponent: FC<{ schemaItem: NormSchemaItem; schemaItems?: NormSchemaItem[]; Component: any }> = (
   props
 ) => {
