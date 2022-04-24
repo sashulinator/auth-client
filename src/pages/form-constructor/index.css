@@ -5,10 +5,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #454544;
 }
 
 .TreePanel {
-  background-color: rgba(127, 255, 212, 0.093);
+  background-color: rgba(31, 28, 28, 0.429);
+  border-right: 1px solid rgba(133, 133, 20, 0.447);
   position: absolute;
   width: 200px;
   height: 100%;
@@ -20,17 +22,17 @@
 .Preview {
   height: calc(100% - 60px);
   width: 700px;
-  background-color: rgba(137, 43, 226, 0.099);
+  transform: translateX(-60px);
+  background-color: var(--neutralLighter);
   margin: 50px;
 }
 
-.PropertyPanel {
+.ComponentPanel {
+  border-left: 1px solid rgba(133, 133, 20, 0.447);
   position: absolute;
   height: 100%;
   width: 300px;
-  background-color: rgba(165, 42, 42, 0.179);
+  background-color: rgba(31, 28, 28, 0.429);
   top: 0;
   right: 0;
-  /* display: flex; */
-  padding: 20px 20px 60px;
 }
