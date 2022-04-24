@@ -1,6 +1,6 @@
 import './index.css'
 
-import ComponentPropsPanel from './form-item-props-panel'
+import ComponentPropsPanel from './component-panel'
 import Preview from './preview'
 import TreePanel from './tree-panel'
 import React, { FC } from 'react'

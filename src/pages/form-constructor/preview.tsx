@@ -68,7 +68,7 @@ export const SchemaItemComponent: FC<{ schemaItem: SchemaItem }> = (props) => {
             const test = props.schemaItem as any
 
             if (test?.bindings?.event?.includes?.('onChange')) {
-              const formItem = formSchema[test.bindings.impactOnFormItemIds[0]]
+              const formItem = formSchema[test.bindings.componentIds[0]]
               form.change(formItem?.path || '', value)
             }
             input?.onChange(event)

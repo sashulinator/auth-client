@@ -16,21 +16,6 @@ export interface Credentials {
   password: string
 }
 
-export interface SchemaItem {
-  name: string
-  formItemPropsSchemaId: string
-  id: string
-  path: string
-  defaultValue: string
-  type: string
-  props?: Record<string, unknown>
-  children?: SchemaItem[] | string[]
-}
-
-export type NormSchema = SchemaItem & {
-  children?: SchemaItem[]
-}
-
 export interface CreateUserInput extends Omit<CreateInput<User>, 'phone'> {
   username: string
   password: string
@@ -41,5 +26,30 @@ export interface UpdateUserInput extends Omit<UpdateInput<User>, 'phone'> {
   password: string
 }
 
-// export type CreateUserInput = Omit<CreateInput<User>, 'phone'> & { username: string; password: string }
-// export type UpdateUserInput = Omit<UpdateInput<User>, 'phone'> & { username: string; password: string }
+export interface BaseSchema {
+  id: string
+  name: string
+  title: string
+  description: string
+}
+
+export interface ComponentSchema extends BaseSchema {
+  actions?: string[]
+  events?: string[]
+  schema: SchemaItem[]
+}
+
+export interface SchemaItem {
+  id: string
+  componentSchemaId: string
+  name: string
+  type: string
+  path: string
+  defaultValue?: string
+  props?: Record<string, unknown>
+  children?: SchemaItem[] | string[]
+}
+
+export type NormSchemaItem = SchemaItem & {
+  children?: SchemaItem[]
+}

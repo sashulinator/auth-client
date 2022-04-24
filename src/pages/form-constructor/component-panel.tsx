@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import FieldError from '@/components/field-error'
-import { selectedFormItemPropsSchemaState } from '@/recoil/form-item-props-schema'
+import { selectedComponentSchemaState } from '@/recoil/component-schema'
 import { formSchemaState, selectedSchemaItemState } from '@/recoil/form-schema'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,7 +36,7 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
 
-  const selectedFormItemPropsSchema = useRecoilValue(selectedFormItemPropsSchemaState)
+  const selectedComponentSchema = useRecoilValue(selectedComponentSchemaState)
   const selectedSchemaItem = useRecoilValue(selectedSchemaItemState)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,8 +48,8 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
 
   return (
     <div className="PropertyPanel">
-      <Stack as="h2">{selectedFormItemPropsSchema?.name}</Stack>
-      <div>prop: {selectedFormItemPropsSchema?.id}</div>
+      <Stack as="h2">{selectedComponentSchema?.name}</Stack>
+      <div>prop: {selectedComponentSchema?.id}</div>
       <div>item id {selectedSchemaItem?.id}</div>
       <Form
         key={JSON.stringify(selectedSchemaItem)}
@@ -58,14 +58,14 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
         render={(formProps) => {
           return (
             <form onSubmit={formProps.handleSubmit}>
-              {selectedFormItemPropsSchema?.schema?.map(drawProperty)}
+              {selectedComponentSchema?.schema?.map(drawProperty)}
               <Field name={'event'}>
                 {({ input, meta }) => [
                   <Dropdown
                     key="1"
                     placeholder="events"
                     options={
-                      selectedFormItemPropsSchema?.events?.map((opt) => ({
+                      selectedComponentSchema?.events?.map((opt) => ({
                         key: opt,
                         text: opt,
                       })) || []
@@ -84,7 +84,7 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
                     key="1"
                     placeholder="actions"
                     options={
-                      selectedFormItemPropsSchema?.actions?.map((opt) => ({
+                      selectedComponentSchema?.actions?.map((opt) => ({
                         key: opt,
                         text: opt,
                       })) || []
@@ -97,7 +97,7 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                 ]}
               </Field>
-              <Field name={'impactOnFormItemId[0]'}>
+              <Field name={'componentIds[0]'}>
                 {({ input, meta }) => [
                   <Dropdown
                     key="1"

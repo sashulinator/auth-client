@@ -1,19 +1,9 @@
 import { selectedSchemaItemState } from './form-schema'
 import { atom, selector } from 'recoil'
 
-import { SchemaItem } from '@/types/entities'
+import { ComponentSchema } from '@/types/entities'
 
-export interface FormItemPropsSchema {
-  id: string
-  name: string
-  title: string
-  actions: string[]
-  events: string[]
-  description: string
-  schema: SchemaItem[]
-}
-
-export const formItemPropsSchemaData = [
+export const componentSchemaData = [
   {
     id: 'ee4254ef-9099-4243-be68-51ce733b3376',
     name: 'PrimaryButton',
@@ -22,7 +12,7 @@ export const formItemPropsSchemaData = [
     schema: [
       {
         id: 'ee4254ef-9099-8943-be68-51ce733b390',
-        formItemPropsSchemaId: 'ee4254ef-9099-8943-be68-51ce733b870',
+        componentSchemaId: 'ee4254ef-9099-8943-be68-51ce733b870',
         path: 'children[0]',
         name: 'TextField',
         type: 'input',
@@ -32,7 +22,7 @@ export const formItemPropsSchemaData = [
       },
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
-        formItemPropsSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
         path: 'props.disabled',
         name: 'Checkbox',
         type: 'input',
@@ -50,7 +40,7 @@ export const formItemPropsSchemaData = [
     schema: [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
-        formItemPropsSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
         path: 'props.horizontal',
         name: 'Checkbox',
         type: 'input',
@@ -60,7 +50,7 @@ export const formItemPropsSchemaData = [
       },
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
-        formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
         path: 'props.tokens.padding',
         name: 'TextField',
         type: 'input',
@@ -80,7 +70,7 @@ export const formItemPropsSchemaData = [
     schema: [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
-        formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
         path: 'path',
         name: 'TextField',
         type: 'input',
@@ -90,7 +80,7 @@ export const formItemPropsSchemaData = [
       },
       {
         id: 'rr4254ef-9099-5643-be68-51ce733b3360',
-        formItemPropsSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
         path: 'defaultValue',
         name: 'TextField',
         type: 'input',
@@ -102,23 +92,23 @@ export const formItemPropsSchemaData = [
   },
 ]
 
-export const formItemPropsSchemaState = atom({
-  key: 'formItemPropsSchemaState',
-  default: formItemPropsSchemaData.reduce<Record<string, FormItemPropsSchema>>((acc, schemaItem) => {
+export const componentSchemaState = atom({
+  key: 'componentSchemaState',
+  default: componentSchemaData.reduce<Record<string, ComponentSchema>>((acc, schemaItem) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     acc[schemaItem.id] = schemaItem
     return acc
   }, {}),
 })
 
-export const selectedFormItemPropsSchemaState = selector({
-  key: 'selectedFormItemPropsSchemaState',
+export const selectedComponentSchemaState = selector({
+  key: 'selectedComponentSchemaState',
   get: ({ get }) => {
-    const formItemPropsSchemas = get(formItemPropsSchemaState)
+    const componentSchemas = get(componentSchemaState)
     const selectedSchemaItem = get(selectedSchemaItemState)
 
     if (selectedSchemaItem) {
-      return formItemPropsSchemas[selectedSchemaItem.formItemPropsSchemaId]
+      return componentSchemas[selectedSchemaItem.componentSchemaId]
     }
 
     return null
