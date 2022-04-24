@@ -34,12 +34,10 @@ export interface BaseSchema {
 }
 
 export interface ComponentSchema extends BaseSchema {
-  actions?: string[]
-  events?: string[]
-  schema: SchemaItem[]
+  schema: ComponentSchemaItem[]
 }
 
-export interface SchemaItem {
+export interface BaseSchemaItem {
   id: string
   componentSchemaId: string
   name: string
@@ -47,9 +45,21 @@ export interface SchemaItem {
   path: string
   defaultValue?: string
   props?: Record<string, unknown>
-  children?: SchemaItem[] | string[]
 }
 
-export type NormSchemaItem = SchemaItem & {
-  children?: SchemaItem[]
+export interface FormSchemaItem extends BaseSchemaItem {
+  children?: FormSchemaItem[] | string[]
+  bindings?: {
+    events: string[]
+    actions: string[]
+    componentIds: string[]
+  }[]
+}
+
+export interface ComponentSchemaItem extends BaseSchemaItem {
+  children?: FormSchemaItem[] | string[]
+}
+
+export type NormSchemaItem = FormSchemaItem & {
+  children?: FormSchemaItem[]
 }

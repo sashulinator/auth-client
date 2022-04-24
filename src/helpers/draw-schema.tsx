@@ -1,15 +1,16 @@
 import { isString } from '@savchenko91/schema-validator'
 
-import React, { FC, memo } from 'react'
-import { Field } from 'react-final-form'
+import { hashActions } from './constructor-actions'
+import React, { FC, memo, useEffect } from 'react'
+import { Field, useForm } from 'react-final-form'
 import { useRecoilState } from 'recoil'
 
 import FieldError from '@/components/field-error'
 import { hashComponents } from '@/pages/form-constructor/preview'
 import { formSchemaState } from '@/recoil/form-schema'
-import { SchemaItem } from '@/types/entities'
+import { FormSchemaItem, NormSchemaItem } from '@/types/entities'
 
-export function drawSchema(schemaItem?: SchemaItem | string) {
+export function drawSchema(schemaItem?: FormSchemaItem | string) {
   if (schemaItem === undefined) {
     return null
   }
@@ -20,9 +21,14 @@ export function drawSchema(schemaItem?: SchemaItem | string) {
   return <SchemaItemComponent key={schemaItem.path} schemaItem={schemaItem} />
 }
 
-export const SchemaItemComponent: FC<{ schemaItem: SchemaItem }> = (props) => {
+export const SchemaItemComponent: FC<{ schemaItem: FormSchemaItem }> = (props) => {
   const [formSchema] = useRecoilState(formSchemaState)
   const schemaItem = formSchema[props.schemaItem.id]
+
+  const schemaItems = schemaItem?.bindings?.reduce<NormSchemaItem[]>((acc, binding) => {
+    const foundSchemaItems = binding.componentIds.map((id) => formSchema[id]) as NormSchemaItem[]
+    return [...acc, ...foundSchemaItems]
+  }, [])
 
   if (schemaItem === undefined) {
     return null
@@ -31,16 +37,28 @@ export const SchemaItemComponent: FC<{ schemaItem: SchemaItem }> = (props) => {
   const Component = hashComponents[schemaItem?.name]
 
   if (schemaItem.type === 'input' || schemaItem.type === 'checkbox') {
-    return <MemoFieldComponent schemaItem={schemaItem} Component={Component} />
+    return <MemoFieldComponent schemaItem={schemaItem} schemaItems={schemaItems} Component={Component} />
   }
 
-  return <MemoSimpleComponent schemaItem={schemaItem} Component={Component} />
+  return <MemoSimpleComponent schemaItem={schemaItem} schemaItems={schemaItems} Component={Component} />
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const FieldComponent: FC<{ schemaItem: SchemaItem; Component: any }> = (props) => {
-  // const form = useForm()
-  const { schemaItem, Component } = props
+const FieldComponent: FC<{ schemaItem: NormSchemaItem; schemaItems?: NormSchemaItem[]; Component: any }> = (props) => {
+  const { schemaItem, Component, schemaItems } = props
+  const form = useForm()
+  const value = form.getFieldState(schemaItem.path)?.value
+
+  useEffect(() => {
+    schemaItem.bindings?.forEach((binding) => {
+      if (binding.events.includes('onInit')) {
+        // TODO schemaItems сейчас для всех байндингов, сделать для каждого отдельно
+        binding.actions.reduce((newValue, action) => {
+          return hashActions[action]?.({ schemaItem, schemaItems, form, value: newValue })
+        }, value)
+      }
+    })
+  }, [])
 
   return (
     <Field
@@ -75,10 +93,10 @@ const FieldComponent: FC<{ schemaItem: SchemaItem; Component: any }> = (props) =
 }
 const MemoFieldComponent = memo(FieldComponent)
 
-export const SimpleComponent: FC<{ schemaItem: SchemaItem; Component: any }> = (props) => {
-  console.log('renderssss')
-
-  const { schemaItem, Component } = props
+export const SimpleComponent: FC<{ schemaItem: NormSchemaItem; schemaItems?: NormSchemaItem[]; Component: any }> = (
+  props
+) => {
+  const { schemaItem: schemaItem, Component } = props
 
   return <Component {...schemaItem.props}>{schemaItem.children?.map(drawSchema)}</Component>
 }

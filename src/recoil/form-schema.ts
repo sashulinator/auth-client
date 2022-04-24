@@ -54,11 +54,13 @@ export const formSchemaData = {
           name: 'TextField',
           defaultValue: 'init',
           type: 'input',
-          bindings: {
-            event: 'onChange',
-            actions: ['setValue'],
-            componentIds: ['ee4234ef-9099-8943-8968-54ce73object'],
-          },
+          bindings: [
+            {
+              events: ['onInit'],
+              actions: ['setValue'],
+              componentIds: ['ee4234ef-9099-8943-8968-54ce73object'],
+            },
+          ],
         },
         {
           id: 'ee4234ef-9099-8943-8968-54ce73object',
