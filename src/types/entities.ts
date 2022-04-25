@@ -59,6 +59,8 @@ export interface FormSchemaItem extends BaseSchemaItem {
   }[]
 }
 
+export type NormFormSchema = Record<string, FormSchemaItem>
+
 export interface ComponentSchemaItem extends BaseSchemaItem {
   children?: FormSchemaItem[] | string[]
 }

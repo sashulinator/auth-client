@@ -19,6 +19,7 @@
   "author": "Vishwas",
   "license": "MIT",
   "dependencies": {
+    "@atlaskit/tree": "^8.6.0",
     "@fluentui/react": "8.49.0",
     "@savchenko91/rc-redux-api-mw": "2.0.6",
     "@savchenko91/rc-redux-api-mw-query": "2.0.6",
