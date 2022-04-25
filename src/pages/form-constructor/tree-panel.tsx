@@ -1,11 +1,11 @@
-import Tree, { RenderItemParams, TreeData } from '@atlaskit/tree'
+import Tree, { RenderItemParams, TreeData, TreeItem } from '@atlaskit/tree'
 import { ActionButton, Stack } from '@fluentui/react'
 
 import React, { FC, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { formSchemaState, selectedSchemaItemIdState } from '@/recoil/form-schema'
-import { FormSchemaItem, NormFormSchema } from '@/types/entities'
+import { formSchemaState, selectedCompIdState } from '@/recoil/form-schema'
+import { Comp } from '@/types/form-constructor'
 
 const PADDING_PER_LEVEL = 20
 
@@ -15,21 +15,17 @@ const buttonStyles = {
 }
 
 const TreePanel: FC = (): JSX.Element => {
-  const [selectedComponentId, setSelectedComponentId] = useRecoilState(selectedSchemaItemIdState)
+  const [selectedCompId, setSelectedCompId] = useRecoilState(selectedCompIdState)
   const [formSchema] = useRecoilState(formSchemaState)
 
   function selectComponent(key: string) {
-    return () => setSelectedComponentId(key)
+    return () => setSelectedCompId(key)
   }
 
-  function buildRootItem(schema: NormFormSchema): TreeData['items'] {
-    const formItems = Object.values(schema)
-
-    return formItems?.reduce((acc, formItem) => {
-      const children = (formItem?.children as FormSchemaItem[])?.reduce<string[]>((acc, child) => {
-        if (child.id) {
-          acc.push(child.id)
-        }
+  function buildRootItem(schema: Comp[]): TreeData['items'] {
+    return schema?.reduce<Record<string, TreeItem>>((acc, formItem) => {
+      const children = formItem?.children?.reduce<string[]>((acc, childId) => {
+        acc.push(childId)
         return acc
       }, [])
 
@@ -43,7 +39,7 @@ const TreePanel: FC = (): JSX.Element => {
     }, {})
   }
 
-  function buildTree(schema: NormFormSchema): TreeData {
+  function buildTree(schema: Comp[]): TreeData {
     const rootId = {
       id: 'rootId',
       isExpanded: true,
@@ -60,10 +56,10 @@ const TreePanel: FC = (): JSX.Element => {
     }
   }
 
-  const [tree] = useState(() => buildTree(formSchema))
+  const [tree] = useState(() => buildTree(formSchema.schema))
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
-    const isSelected = item.data?.id === selectedComponentId
+    const isSelected = item.data?.id === selectedCompId
     return (
       <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
         {/* <span>{getIcon(item, onExpand, onCollapse)}</span> */}

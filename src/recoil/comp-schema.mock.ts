@@ -1,9 +1,4 @@
-import { selectedSchemaItemState } from './form-schema'
-import { atom, selector } from 'recoil'
-
-import { ComponentSchema } from '@/types/entities'
-
-export const componentSchemaData = [
+export const compSchemaMock = [
   {
     id: 'ee4254ef-9099-4243-be68-51ce733b3376',
     name: 'PrimaryButton',
@@ -97,26 +92,3 @@ export const componentSchemaData = [
     ],
   },
 ]
-
-export const componentSchemaState = atom({
-  key: 'componentSchemaState',
-  default: componentSchemaData.reduce<Record<string, ComponentSchema>>((acc, schemaItem) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    acc[schemaItem.id] = schemaItem
-    return acc
-  }, {}),
-})
-
-export const selectedComponentSchemaState = selector({
-  key: 'selectedComponentSchemaState',
-  get: ({ get }) => {
-    const componentSchemas = get(componentSchemaState)
-    const selectedSchemaItem = get(selectedSchemaItemState)
-
-    if (selectedSchemaItem) {
-      return componentSchemas[selectedSchemaItem.componentSchemaId]
-    }
-
-    return null
-  },
-})

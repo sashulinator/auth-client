@@ -1,6 +1,6 @@
 import './index.css'
 
-import ComponentPanel from './component-panel'
+import CompPanel from './comp-panel'
 import Preview from './preview'
 import TreePanel from './tree-panel'
 import React, { FC } from 'react'
@@ -10,7 +10,7 @@ const FormConstructor: FC = (): JSX.Element => {
     <div className="FormConstructor">
       <TreePanel />
       <Preview />
-      <ComponentPanel />
+      <CompPanel />
     </div>
   )
 }

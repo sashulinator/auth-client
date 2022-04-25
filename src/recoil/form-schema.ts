@@ -1,101 +1,53 @@
+import { formSchemaMock } from './form-schema.mock'
 import { atom, selector } from 'recoil'
 
-import { normalizeToHashSchema } from '@/helpers/normalize'
+import { buildCompHierarchy } from '@/helpers/build-comp-hierarchy'
+import { NormComps } from '@/types/form-constructor'
 
-export const formSchemaData = {
-  id: 'ee4254ef-a9a3-4243-be68-51ce733b338e',
-  name: 'credentials',
-  title: 'Креды',
-  description: 'some description',
-  schema: [
-    {
-      id: 'ee4254ef-7878-4243-be68-51ce733b338e',
-      name: 'Блок1',
-      componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-      componentName: 'Stack',
-      path: 'hello',
-      type: 'component',
-      props: {
-        as: 'ul',
-        horizontal: true,
-        verticalAlign: 'center',
-        tokens: {
-          childrenGap: 10,
-          padding: '45px 40px',
-        },
-      },
-      children: [
-        {
-          path: 'hello12',
-          id: 'ee4254ef-9009-4243-be68-51ce733b338e',
-          name: 'КнопкаГлавная1',
-          componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
-          componentName: 'PrimaryButton',
-          type: 'button',
-          props: {
-            disabled: false,
-            type: 'submit',
-            children: 'hello',
-          },
-        },
-        {
-          id: 'ee4254ef-5555-4243-be68-51ce733b338e',
-          name: 'КнопкаГлавная2',
-          componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
-          componentName: 'PrimaryButton',
-          path: 'world',
-          type: 'button',
-          props: {
-            disabled: false,
-            children: 'koko',
-          },
-        },
-        {
-          id: 'ee4234ef-9099-8943-8968-54ce7subject',
-          name: 'ТекстовоеПоле1',
-          componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-          componentName: 'TextField',
-          path: 'funny',
-          defaultValue: 'init',
-          type: 'input',
-          bindings: [
-            {
-              events: ['onInit'],
-              actions: ['setValue'],
-              componentIds: ['ee4234ef-9099-8943-8968-54ce73object'],
-            },
-          ],
-        },
-        {
-          id: 'ee4234ef-9099-8943-8968-54ce73object',
-          name: 'ТекстовоеПоле2',
-          componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-          componentName: 'TextField',
-          path: 'kuku',
-          type: 'input',
-        },
-      ],
-    },
-  ],
-}
-
-// TODO: rename to normFormSchemaState
 export const formSchemaState = atom({
   key: 'formSchemaState',
-  default: normalizeToHashSchema(formSchemaData.schema),
+  default: formSchemaMock,
 })
 
-export const selectedSchemaItemIdState = atom({
-  key: 'selectedSchemaItemIdState',
+export const normFormSchemaState = selector({
+  key: 'normFormSchemaState',
+  get: ({ get }) => {
+    const formSchema = get(formSchemaState)
+
+    return {
+      ...formSchema,
+      schema: formSchema.schema.reduce<NormComps>((acc, comp) => {
+        acc[comp.id] = comp
+        return acc
+      }, {}),
+    }
+  },
+})
+
+export const hierarchyFormSchemaState = selector({
+  key: 'hierarchyFormSchemaState',
+  get: ({ get }) => {
+    const formSchema = get(formSchemaState)
+    const normFormSchema = get(normFormSchemaState)
+
+    return {
+      ...formSchema,
+      schema: buildCompHierarchy(formSchema.schema, normFormSchema.schema),
+    }
+  },
+})
+
+export const selectedCompIdState = atom({
+  key: 'selectedCompIdState',
   default: '',
 })
 
-export const selectedSchemaItemState = selector({
-  key: 'selectedSchemaItemState',
+export const selectedCompState = selector({
+  key: 'selectedCompState',
   get: ({ get }) => {
-    const formSchema = get(formSchemaState)
-    const selectedSchemaItemId = get(selectedSchemaItemIdState)
+    const normFormSchema = get(normFormSchemaState)
+    const selectedCompId = get(selectedCompIdState)
 
-    return formSchema?.[selectedSchemaItemId]
+    return normFormSchema.schema[selectedCompId]
   },
 })
