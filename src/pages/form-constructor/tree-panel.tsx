@@ -15,7 +15,7 @@ const buttonStyles = {
 }
 
 const TreePanel: FC = (): JSX.Element => {
-  const [, setSelectedComponentId] = useRecoilState(selectedSchemaItemIdState)
+  const [selectedComponentId, setSelectedComponentId] = useRecoilState(selectedSchemaItemIdState)
   const [formSchema] = useRecoilState(formSchemaState)
 
   function selectComponent(key: string) {
@@ -63,10 +63,11 @@ const TreePanel: FC = (): JSX.Element => {
   const [tree] = useState(() => buildTree(formSchema))
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
+    const isSelected = item.data?.id === selectedComponentId
     return (
       <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
         {/* <span>{getIcon(item, onExpand, onCollapse)}</span> */}
-        <ActionButton onClick={selectComponent(item.data.id)} styles={buttonStyles}>
+        <ActionButton onClick={selectComponent(item.data.id)} styles={!isSelected ? undefined : buttonStyles}>
           {item.data.name || ''}
         </ActionButton>
       </div>
