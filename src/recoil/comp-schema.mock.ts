@@ -10,7 +10,7 @@ export const compSchemaMock = [
         name: 'ТестИнпут1',
         componentName: 'TextField',
         componentSchemaId: 'ee4254ef-9099-8943-be68-51ce733b870',
-        path: 'children[0]',
+        path: 'props.children',
         type: 'input',
         props: {
           placeholder: 'надпись',

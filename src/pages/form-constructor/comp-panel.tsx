@@ -11,23 +11,19 @@ import { SchemaConstructor } from '@/components/schema-constructor'
 import CustomTextField from '@/components/text-field'
 import { selectedHierarchyCompSchemaState, selectedNormCompSchemaState } from '@/recoil/comp-schema'
 import { formSchemaState, selectedCompState } from '@/recoil/form-schema'
+import { replaceObjectInArray } from '@/utils/replace-object-in-array'
 
 const CompPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
-  const [
-    // formSchema,
-    //  setFormSchema
-  ] = useRecoilState(formSchemaState)
-  // const normFormSchema = useRecoilValue(normFormSchemaState)
+  const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
   const selectedHierarchyCompSchema = useRecoilValue(selectedHierarchyCompSchemaState)
   const selectedNormCompSchema = useRecoilValue(selectedNormCompSchemaState)
   const selectedComp = useRecoilValue(selectedCompState)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onSubmit(newSchemaItemProps: any) {
-    // const newSchema = { ...formSchema, schema: { ...formSchema.schema, [newSchemaItemProps.id]: newSchemaItemProps }}
-    // setFormSchema(newSchema)
-    console.log('newSchema', newSchemaItemProps)
+    const newSchema = replaceObjectInArray('id', formSchema.schema, newSchemaItemProps)
+    setFormSchema({ ...formSchema, schema: newSchema })
   }
 
   return (
