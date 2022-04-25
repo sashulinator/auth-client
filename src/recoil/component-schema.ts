@@ -27,7 +27,7 @@ export const componentSchemaData = [
         componentName: 'Checkbox',
         componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
         path: 'props.disabled',
-        type: 'input',
+        type: 'checkbox',
         props: {
           label: 'неактивный',
         },

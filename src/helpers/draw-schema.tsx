@@ -25,6 +25,9 @@ export function drawSchema(normSchema: Record<string, FormSchemaItem>, schema?: 
     if (isString(schemaItem)) {
       return schemaItem
     }
+    if (/checkbox/.test(schemaItem.componentName) && schemaItem.type !== 'checkbox') {
+      throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
+    }
 
     return <SchemaItemComponent key={schemaItem.path} normSchema={normSchema} schemaItem={schemaItem} />
   })
