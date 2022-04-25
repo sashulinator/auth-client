@@ -52,25 +52,6 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
                 <Stack tokens={{ padding: '20px 20px' }}>
                   <BindingsSection componentSchema={selectedComponentSchema} />
                 </Stack>
-                {/* <Field name={'componentIds[0]'}>
-                    {({ input, meta }) => [
-                      <Dropdown
-                        key="1"
-                        placeholder="form item"
-                        options={
-                          Object.keys(formSchema).map((opt) => ({
-                            key: opt,
-                            text: opt,
-                          })) || []
-                        }
-                        {...input}
-                        onChange={(e, selected) => {
-                          input.onChange(selected?.key)
-                        }}
-                      />,
-                      <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
-                    ]}
-                  </Field> */}
                 <Stack tokens={{ padding: '20px 20px' }}>
                   <PrimaryButton type="submit">{t('buttons.save')}</PrimaryButton>
                 </Stack>
