@@ -17,20 +17,29 @@ export const hashComponents: Record<string, any> = {
   PrimaryButton,
 }
 
-export function drawSchema(normSchema: Record<string, FormSchemaItem>, schema?: (FormSchemaItem | string)[]) {
-  return schema?.map((schemaItem) => {
-    if (schemaItem === undefined) {
-      return null
-    }
-    if (isString(schemaItem)) {
-      return schemaItem
-    }
-    if (/checkbox/.test(schemaItem.componentName) && schemaItem.type !== 'checkbox') {
-      throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
-    }
+export interface SchemaConstructorProps {
+  normSchema: Record<string, FormSchemaItem>
+  schema?: (FormSchemaItem | string)[]
+}
 
-    return <SchemaItemComponent key={schemaItem.path} normSchema={normSchema} schemaItem={schemaItem} />
-  })
+export function SchemaConstructor({ normSchema, schema }: SchemaConstructorProps): JSX.Element {
+  return (
+    <>
+      {schema?.map((schemaItem) => {
+        if (schemaItem === undefined) {
+          return null
+        }
+        if (isString(schemaItem)) {
+          return schemaItem
+        }
+        if (/checkbox/.test(schemaItem.componentName) && schemaItem.type !== 'checkbox') {
+          throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
+        }
+
+        return <SchemaItemComponent key={schemaItem.path} normSchema={normSchema} schemaItem={schemaItem} />
+      })}
+    </>
+  )
 }
 
 export const SchemaItemComponent: FC<{
@@ -126,6 +135,10 @@ export const SimpleComponent: FC<{
 }> = (props) => {
   const { schemaItem: schemaItem, Component } = props
 
-  return <Component {...schemaItem.props}>{drawSchema(props.normSchema, schemaItem.children)}</Component>
+  return (
+    <Component {...schemaItem.props}>
+      <SchemaConstructor normSchema={props.normSchema} schema={schemaItem.children} />
+    </Component>
+  )
 }
 const MemoSimpleComponent = memo(SimpleComponent)

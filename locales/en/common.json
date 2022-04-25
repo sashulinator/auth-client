@@ -1,4 +1,7 @@
 {
+  "fieldNames": {
+    "name": "name"
+  },
   "pagesNames": {
     "createUser": "Create user",
     "userList": "Users",

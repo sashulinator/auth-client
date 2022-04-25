@@ -1,4 +1,7 @@
 {
+  "fieldNames": {
+    "name": "имя"
+  },
   "pagesNames": {
     "createUser": "Создать пользователя",
     "userList": "Пользователи",

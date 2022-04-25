@@ -8,7 +8,9 @@ import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import DropdownMultipleSelect from '@/components/dropdown/dropdown-multiple-select'
-import { drawSchema } from '@/helpers/draw-schema'
+import FieldError from '@/components/field-error'
+import CustomTextField from '@/components/text-field'
+import { SchemaConstructor } from '@/helpers/draw-schema'
 import { normalizeToHashSchema } from '@/helpers/normalize'
 import { selectedComponentSchemaState } from '@/recoil/component-schema'
 import { formSchemaState, selectedSchemaItemState } from '@/recoil/form-schema'
@@ -42,11 +44,17 @@ const ComponentPropsPanel: FC = (): JSX.Element => {
             const normSchema = normalizeToHashSchema(selectedComponentSchema.schema)
             return (
               <form onSubmit={formProps.handleSubmit}>
-                <Stack tokens={{ padding: '20px 20px' }}>
-                  <Stack as="h2">{selectedComponentSchema?.name}</Stack>
+                <Stack tokens={{ padding: '20px 20px 0' }}>
+                  <Stack as="h2">{selectedSchemaItem?.name}</Stack>
                 </Stack>
                 <Stack tokens={{ padding: '20px 20px' }}>
-                  {drawSchema(normSchema, selectedComponentSchema?.schema)}
+                  <Field<string> name="name">
+                    {({ input, meta }) => [
+                      <CustomTextField key="1" label={t(`fieldNames.name`)} {...input} />,
+                      <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
+                    ]}
+                  </Field>
+                  <SchemaConstructor normSchema={normSchema} schema={selectedComponentSchema?.schema} />
                 </Stack>
                 <hr />
                 <Stack tokens={{ padding: '20px 20px' }}>
