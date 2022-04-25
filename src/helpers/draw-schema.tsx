@@ -135,10 +135,14 @@ export const SimpleComponent: FC<{
 }> = (props) => {
   const { schemaItem: schemaItem, Component } = props
 
-  return (
-    <Component {...schemaItem.props}>
-      <SchemaConstructor normSchema={props.normSchema} schema={schemaItem.children} />
-    </Component>
-  )
+  if (schemaItem?.props?.children === undefined) {
+    return (
+      <Component {...schemaItem.props}>
+        <SchemaConstructor normSchema={props.normSchema} schema={schemaItem.children} />
+      </Component>
+    )
+  }
+
+  return <Component {...schemaItem.props}>{schemaItem?.props?.children}</Component>
 }
 const MemoSimpleComponent = memo(SimpleComponent)

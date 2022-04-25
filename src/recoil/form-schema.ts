@@ -35,8 +35,8 @@ export const formSchemaData = {
           props: {
             disabled: false,
             type: 'submit',
+            children: 'hello',
           },
-          children: ['hello'],
         },
         {
           id: 'ee4254ef-5555-4243-be68-51ce733b338e',
@@ -47,8 +47,8 @@ export const formSchemaData = {
           type: 'button',
           props: {
             disabled: false,
+            children: 'koko',
           },
-          children: ['koko'],
         },
         {
           id: 'ee4234ef-9099-8943-8968-54ce7subject',
