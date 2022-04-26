@@ -22,6 +22,7 @@ export interface Comp extends BaseComp {
 
 export interface NormComp extends BaseComp {
   children?: string[]
+  indexInArray: number
 }
 
 export interface HierarchyComp extends BaseComp {
@@ -48,5 +49,5 @@ export interface CompSchema extends BaseSchema {
 export type NormCompSchemas = Record<string, CompSchema>
 
 export interface NormFormSchema extends BaseSchema {
-  children: NormComps
+  schema: NormComps
 }
