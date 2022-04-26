@@ -1,9 +1,18 @@
 import { Comp, NormComps } from '@/types/form-constructor'
-import { remove, replace } from '@/utils/change-unmutable'
+import { insert, remove, replace } from '@/utils/change-unmutable'
 
 // returnsParentComps
-export function removeCompsFromParent(parentId: string | number, indexes: number[], normComps: NormComps): Comp[] {
-  const newSourceParentComps: Comp[] = []
+export function removeCompsFromParent(
+  parentId: string | number,
+  currentCompId: string,
+  indexes: number[],
+  normComps: NormComps
+): Comp {
+  let newParentComp: Comp
+
+  if (indexes.length === 0) {
+    throw new Error('System error')
+  }
 
   indexes.forEach((index) => {
     const sourceParentNormComp = normComps[parentId]
@@ -15,7 +24,6 @@ export function removeCompsFromParent(parentId: string | number, indexes: number
       throw new Error('System error')
     }
 
-    const currentCompId = sourceParentNormComp?.children?.[index] ?? ''
     const currentNormComp = normComps[currentCompId]
 
     if (!currentNormComp) {
@@ -24,27 +32,66 @@ export function removeCompsFromParent(parentId: string | number, indexes: number
 
     const newSourceParentCompChildren = remove(sourceParentNormComp?.children, index)
 
-    let newSourceParentComp: Comp
-
     if (newSourceParentCompChildren.length === 0) {
-      newSourceParentComp = remove(sourceParentNormComp, 'children')
+      newParentComp = remove(sourceParentNormComp, 'children')
     } else {
-      newSourceParentComp = replace(sourceParentNormComp, 'children', newSourceParentCompChildren)
+      newParentComp = replace(sourceParentNormComp, 'children', newSourceParentCompChildren)
     }
-
-    newSourceParentComps.push(newSourceParentComp)
   })
 
-  return newSourceParentComps
+  // @ts-expect-error because ts does not see that indexes are not empty
+  return newParentComp
 }
 
 // returnsParentComp
-export function removeCompFromParent(parentId: string | number, index: number, normComps: NormComps): Comp {
-  const comp = removeCompsFromParent(parentId, [index], normComps)[0]
+export function removeCompFromParent(
+  parentId: string | number,
+  currentCompId: string,
+  index: number,
+  normComps: NormComps
+): Comp {
+  return removeCompsFromParent(parentId, currentCompId, [index], normComps)
+}
 
-  if (!comp) {
+export function addCompsToParent(
+  parentId: string | number,
+  currentCompId: string,
+  indexes: number[],
+  normComps: NormComps
+): Comp {
+  let newParentComp: Comp
+
+  if (indexes.length === 0) {
     throw new Error('System error')
   }
 
-  return comp
+  indexes.forEach((index) => {
+    const destinationParentNormComp = normComps[parentId]
+
+    if (!destinationParentNormComp) {
+      throw new Error('System error')
+    }
+
+    if (destinationParentNormComp?.children === undefined) {
+      newParentComp = replace(destinationParentNormComp, 'children', [currentCompId])
+      console.log('destinationParentComp.children', newParentComp)
+    } else {
+      const newDestinationParentCompChildren = insert(destinationParentNormComp.children, index, currentCompId)
+      console.log('newDestinationParentCompChildren', index, currentCompId)
+
+      newParentComp = replace(destinationParentNormComp, 'children', newDestinationParentCompChildren)
+    }
+  })
+
+  // @ts-expect-error because ts does not see that indexes are not empty
+  return newParentComp
+}
+
+export function addCompToParent(
+  parentId: string | number,
+  currentCompId: string,
+  index: number,
+  normComps: NormComps
+): Comp {
+  return addCompsToParent(parentId, currentCompId, [index], normComps)
 }

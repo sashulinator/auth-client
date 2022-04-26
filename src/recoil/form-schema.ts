@@ -2,7 +2,7 @@ import { formSchemaMock } from './form-schema.mock'
 import { atom, selector } from 'recoil'
 
 import { buildCompHierarchy } from '@/helpers/build-comp-hierarchy'
-import { NormComps } from '@/types/form-constructor'
+import { normalizeWithIndex } from '@/utils/normalize'
 
 export const formSchemaState = atom({
   key: 'formSchemaState',
@@ -16,10 +16,7 @@ export const normFormSchemaState = selector({
 
     return {
       ...formSchema,
-      schema: formSchema.schema.reduce<NormComps>((acc, comp) => {
-        acc[comp.id] = comp
-        return acc
-      }, {}),
+      schema: normalizeWithIndex(formSchema.schema),
     }
   },
 })

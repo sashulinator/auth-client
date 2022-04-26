@@ -5,8 +5,26 @@ export const formSchemaMock = {
   description: 'some description',
   schema: [
     {
-      id: 'ee4254ef-7878-4243-be68-51ce733b338e',
-      name: 'Блок1',
+      id: 'stackRootId',
+      name: 'stackRoot',
+      componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+      componentName: 'Stack',
+      path: 'hello',
+      type: 'component',
+      props: {
+        as: 'ul',
+        horizontal: true,
+        verticalAlign: 'center',
+        tokens: {
+          childrenGap: 10,
+          padding: '45px 40px',
+        },
+      },
+      children: ['stackChild'],
+    },
+    {
+      id: 'stackChild',
+      name: 'stackChildName',
       componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
       componentName: 'Stack',
       path: 'hello',

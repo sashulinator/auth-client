@@ -1,11 +1,14 @@
 import Tree, { RenderItemParams, TreeData, TreeDestinationPosition, TreeItem, TreeSourcePosition } from '@atlaskit/tree'
 import { ActionButton, Stack } from '@fluentui/react'
 
-import React, { FC, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import React, { FC } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { formSchemaState, selectedCompIdState } from '@/recoil/form-schema'
+import { addCompToParent, removeCompFromParent } from '@/helpers/form-schema-state'
+import { formSchemaState, normFormSchemaState, selectedCompIdState } from '@/recoil/form-schema'
 import { Comp } from '@/types/form-constructor'
+import { replace } from '@/utils/change-unmutable'
+import { normalizeWithIndex } from '@/utils/normalize'
 
 const PADDING_PER_LEVEL = 20
 
@@ -16,7 +19,8 @@ const buttonStyles = {
 
 const TreePanel: FC = (): JSX.Element => {
   const [selectedCompId, setSelectedCompId] = useRecoilState(selectedCompIdState)
-  const [formSchema] = useRecoilState(formSchemaState)
+  const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
+  const normFormSchema = useRecoilValue(normFormSchemaState)
 
   function selectComponent(key: string) {
     return () => setSelectedCompId(key)
@@ -44,7 +48,7 @@ const TreePanel: FC = (): JSX.Element => {
       id: 'rootId',
       isExpanded: true,
       data: 'test',
-      children: ['ee4254ef-7878-4243-be68-51ce733b338e'],
+      children: ['stackRootId'],
     }
 
     return {
@@ -56,13 +60,27 @@ const TreePanel: FC = (): JSX.Element => {
     }
   }
 
-  function onDragEnd(sourcePosition: TreeSourcePosition, destinationPosition?: TreeDestinationPosition) {
-    if (destinationPosition?.index === undefined) {
+  function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
+    if (to?.index === undefined) {
       return
     }
-  }
 
-  const [tree] = useState(() => buildTree(formSchema.schema))
+    const fromParentNormComp = normFormSchema.schema[from.parentId]
+    const currentCompId = fromParentNormComp?.children?.[from.index] ?? ''
+
+    if (currentCompId === undefined) {
+      throw new Error('Systed error')
+    }
+
+    const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, normFormSchema.schema)
+    const newFromSchema = replace(formSchema.schema, fromParentNormComp?.indexInArray ?? 0, newFromParentComp)
+
+    const toParentNormComp = normFormSchema.schema[to.parentId]
+    const newToParentComp = addCompToParent(to.parentId, currentCompId, to.index, normalizeWithIndex(newFromSchema))
+    const newToSchema = replace(formSchema.schema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
+
+    setFormSchema({ ...formSchema, schema: newToSchema })
+  }
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
     const isSelected = item.data?.id === selectedCompId
@@ -80,7 +98,7 @@ const TreePanel: FC = (): JSX.Element => {
     <div className="TreePanel">
       <Stack>
         <Tree
-          tree={tree}
+          tree={buildTree(formSchema.schema)}
           renderItem={renderItem}
           // onExpand={() => {}}
           // onCollapse={() => {}}

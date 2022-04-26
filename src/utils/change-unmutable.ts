@@ -4,6 +4,14 @@ export function insert<T extends unknown[] | Record<string, unknown>>(
   newItem: unknown
 ): T {
   if (Array.isArray(arrOrObj)) {
+    if (indexOrKey === arrOrObj.length) {
+      return [...arrOrObj, newItem] as T
+    }
+
+    if (indexOrKey === 0) {
+      return [newItem, ...arrOrObj] as T
+    }
+
     return arrOrObj.reduce<unknown[]>((acc, item, i) => {
       if (i === indexOrKey) {
         acc.push(newItem)
