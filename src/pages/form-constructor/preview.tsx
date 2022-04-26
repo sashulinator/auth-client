@@ -12,10 +12,12 @@ const Preview: FC = (): JSX.Element => {
   function onSubmit(data: any) {
     console.log('data', data)
   }
+  console.log('hierarchyFormSchema', hierarchyFormSchema)
 
   return (
     <div className="Preview">
       <Form
+        key={JSON.stringify(normFormSchema)}
         onSubmit={onSubmit}
         render={(formProps) => {
           return (

@@ -43,11 +43,11 @@ export const formSchemaMock: FormSchema = {
       children: ['buttonOneId', 'buttonTwoId', 'textInputOneId', 'textInputTwoId'],
     },
     {
-      path: 'hello12',
       id: 'buttonOneId',
       name: 'КнопкаГлавная1',
       componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
       componentName: 'PrimaryButton',
+      path: 'hello12',
       type: 'button',
       props: {
         disabled: false,
