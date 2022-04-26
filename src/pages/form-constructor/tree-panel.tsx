@@ -1,4 +1,4 @@
-import Tree, { RenderItemParams, TreeData, TreeItem } from '@atlaskit/tree'
+import Tree, { RenderItemParams, TreeData, TreeDestinationPosition, TreeItem, TreeSourcePosition } from '@atlaskit/tree'
 import { ActionButton, Stack } from '@fluentui/react'
 
 import React, { FC, useState } from 'react'
@@ -56,6 +56,12 @@ const TreePanel: FC = (): JSX.Element => {
     }
   }
 
+  function onDragEnd(sourcePosition: TreeSourcePosition, destinationPosition?: TreeDestinationPosition) {
+    if (destinationPosition?.index === undefined) {
+      return
+    }
+  }
+
   const [tree] = useState(() => buildTree(formSchema.schema))
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
@@ -78,7 +84,7 @@ const TreePanel: FC = (): JSX.Element => {
           renderItem={renderItem}
           // onExpand={() => {}}
           // onCollapse={() => {}}
-          // onDragEnd={() => {}}
+          onDragEnd={onDragEnd}
           offsetPerLevel={PADDING_PER_LEVEL}
           isDragEnabled
         />
