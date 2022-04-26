@@ -4,15 +4,22 @@ export function insert<T extends unknown[] | Record<string, unknown>>(
   newItem: unknown
 ): T {
   if (Array.isArray(arrOrObj)) {
-    return [...arrOrObj.slice(0, indexOrKey as number), newItem, ...arrOrObj.slice(indexOrKey as number)] as T
+    return arrOrObj.reduce<unknown[]>((acc, item, i) => {
+      if (i === indexOrKey) {
+        acc.push(newItem)
+      }
+      acc.push(item)
+      return acc
+    }, []) as T
   }
 
   return { ...arrOrObj, [indexOrKey]: newItem }
 }
 
-export function remove<T extends unknown[] | Record<string, unknown>>(arrOrObj: T, indexOrKey: string | number): T {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function remove<T extends unknown[] | Record<string, any>>(arrOrObj: T, indexOrKey: string | number): T {
   if (Array.isArray(arrOrObj)) {
-    return [...arrOrObj.slice(0, (indexOrKey as number) - 1), ...arrOrObj.slice(indexOrKey as number)] as T
+    return arrOrObj.filter((elem, i) => i !== indexOrKey) as T
   }
 
   const newObj = { ...arrOrObj }
@@ -21,14 +28,19 @@ export function remove<T extends unknown[] | Record<string, unknown>>(arrOrObj: 
   return newObj
 }
 
-export function replace<T extends unknown[] | Record<string, unknown>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function replace<T extends unknown[] | Record<string, any>>(
   arrOrObj: T,
   indexOrKey: string | number,
   newItem: unknown
 ): T {
   if (Array.isArray(arrOrObj)) {
-    return [...arrOrObj.slice(0, (indexOrKey as number) - 1), newItem, ...arrOrObj.slice(indexOrKey as number)] as T
+    return arrOrObj.map((item, i) => {
+      if (i === indexOrKey) {
+        return newItem
+      }
+      return item
+    }) as T
   }
-
   return { ...arrOrObj, [indexOrKey]: newItem }
 }
