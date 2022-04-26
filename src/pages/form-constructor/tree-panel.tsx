@@ -74,10 +74,11 @@ const TreePanel: FC = (): JSX.Element => {
 
     const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, normFormSchema.schema)
     const newFromSchema = replace(formSchema.schema, fromParentNormComp?.indexInArray ?? 0, newFromParentComp)
+    const newNormFormSchema = normalizeWithIndex(newFromSchema)
 
     const toParentNormComp = normFormSchema.schema[to.parentId]
-    const newToParentComp = addCompToParent(to.parentId, currentCompId, to.index, normalizeWithIndex(newFromSchema))
-    const newToSchema = replace(formSchema.schema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
+    const newToParentComp = addCompToParent(to.parentId, currentCompId, to.index, newNormFormSchema)
+    const newToSchema = replace(newFromSchema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
 
     setFormSchema({ ...formSchema, schema: newToSchema })
   }
