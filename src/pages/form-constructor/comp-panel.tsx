@@ -26,12 +26,15 @@ const CompPanel: FC = (): JSX.Element => {
     setFormSchema({ ...formSchema, schema: newSchema })
   }
 
+  console.log('maxim privet', selectedComp)
+
   return (
     <div className="CompPanel">
       {selectedNormCompSchema && (
         <Form
           initialValues={selectedComp}
           mutators={{
+            // potentially other mutators could be merged here
             ...arrayMutators,
           }}
           onSubmit={onSubmit}
