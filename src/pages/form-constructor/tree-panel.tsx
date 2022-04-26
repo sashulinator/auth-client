@@ -1,5 +1,5 @@
 import Tree, { RenderItemParams, TreeData, TreeDestinationPosition, TreeItem, TreeSourcePosition } from '@atlaskit/tree'
-import { ActionButton, Stack } from '@fluentui/react'
+import { ActionButton, IconButton, Stack } from '@fluentui/react'
 
 import React, { FC } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -77,6 +77,9 @@ const TreePanel: FC = (): JSX.Element => {
 
   return (
     <div className="TreePanel">
+      <div className="addCompButton">
+        <IconButton iconProps={{ iconName: 'Add' }} />
+      </div>
       <Stack>
         <Tree
           tree={buildTree(formSchema.schema)}
