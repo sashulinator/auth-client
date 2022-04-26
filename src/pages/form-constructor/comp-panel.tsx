@@ -30,10 +30,8 @@ const CompPanel: FC = (): JSX.Element => {
     <div className="CompPanel">
       {selectedNormCompSchema && (
         <Form
-          key={JSON.stringify(selectedComp)}
           initialValues={selectedComp}
           mutators={{
-            // potentially other mutators could be merged here
             ...arrayMutators,
           }}
           onSubmit={onSubmit}
