@@ -111,6 +111,11 @@ export function moveComps(
 
   const fromParentNormComp = normComps[from.parentId]
   const currentCompId = fromParentNormComp?.children?.[from.index] ?? ''
+  const toParentNormComp = normComps[to.parentId]
+
+  if (toParentNormComp === undefined) {
+    return comps
+  }
 
   if (currentCompId === undefined) {
     throw new Error('Systed error')
@@ -120,7 +125,6 @@ export function moveComps(
   const newFromSchema = replace(comps, fromParentNormComp?.indexInArray ?? 0, newFromParentComp)
   const newNormFormSchema = normalizeWithIndex(newFromSchema)
 
-  const toParentNormComp = normComps[to.parentId]
   const newToParentComp = addCompToParent(to.parentId, currentCompId, to.index, newNormFormSchema)
   const newSchema = replace(newFromSchema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
 
