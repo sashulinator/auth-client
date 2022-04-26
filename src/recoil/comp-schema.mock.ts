@@ -36,12 +36,12 @@ export const compSchemaMock = [
     description: 'stack',
     schema: [
       {
-        id: 'ee4254ef-9099-5543-be68-51ce733b3367',
+        id: 'ee4254ef-9099-5sd3-be68-51ce733b3367',
         componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
         componentName: 'Checkbox',
         path: 'props.horizontal',
         name: 'Checkbox',
-        type: 'input',
+        type: 'checkbox',
         props: {
           label: 'горизонтально',
         },
