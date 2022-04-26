@@ -51,3 +51,7 @@ export type NormCompSchemas = Record<string, CompSchema>
 export interface NormFormSchema extends BaseSchema {
   schema: NormComps
 }
+
+export interface FormSchema extends BaseSchema {
+  schema: Comp[]
+}

@@ -1,5 +1,8 @@
+import { TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree'
+
 import { Comp, NormComps } from '@/types/form-constructor'
 import { insert, remove, replace } from '@/utils/change-unmutable'
+import { normalizeWithIndex } from '@/utils/normalize'
 
 // returnsParentComps
 export function removeCompsFromParent(
@@ -94,4 +97,32 @@ export function addCompToParent(
   normComps: NormComps
 ): Comp {
   return addCompsToParent(parentId, currentCompId, [index], normComps)
+}
+
+export function moveComps(
+  comps: Comp[],
+  normComps: NormComps,
+  from: TreeSourcePosition,
+  to?: TreeDestinationPosition
+): Comp[] {
+  if (to?.index === undefined) {
+    return comps
+  }
+
+  const fromParentNormComp = normComps[from.parentId]
+  const currentCompId = fromParentNormComp?.children?.[from.index] ?? ''
+
+  if (currentCompId === undefined) {
+    throw new Error('Systed error')
+  }
+
+  const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, normComps)
+  const newFromSchema = replace(comps, fromParentNormComp?.indexInArray ?? 0, newFromParentComp)
+  const newNormFormSchema = normalizeWithIndex(newFromSchema)
+
+  const toParentNormComp = normComps[to.parentId]
+  const newToParentComp = addCompToParent(to.parentId, currentCompId, to.index, newNormFormSchema)
+  const newSchema = replace(newFromSchema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
+
+  return newSchema
 }

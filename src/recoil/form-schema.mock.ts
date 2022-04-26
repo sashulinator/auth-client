@@ -1,4 +1,6 @@
-export const formSchemaMock = {
+import { FormSchema } from '@/types/form-constructor'
+
+export const formSchemaMock: FormSchema = {
   id: 'ee4254ef-a9a3-4243-be68-51ce733b338e',
   name: 'credentials',
   title: 'Креды',

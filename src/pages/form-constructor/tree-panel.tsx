@@ -4,11 +4,9 @@ import { ActionButton, Stack } from '@fluentui/react'
 import React, { FC } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { addCompToParent, removeCompFromParent } from '@/helpers/form-schema-state'
+import { moveComps as moveComp } from '@/helpers/form-schema-state'
 import { formSchemaState, normFormSchemaState, selectedCompIdState } from '@/recoil/form-schema'
 import { Comp } from '@/types/form-constructor'
-import { replace } from '@/utils/change-unmutable'
-import { normalizeWithIndex } from '@/utils/normalize'
 
 const PADDING_PER_LEVEL = 20
 
@@ -61,26 +59,8 @@ const TreePanel: FC = (): JSX.Element => {
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (to?.index === undefined) {
-      return
-    }
-
-    const fromParentNormComp = normFormSchema.schema[from.parentId]
-    const currentCompId = fromParentNormComp?.children?.[from.index] ?? ''
-
-    if (currentCompId === undefined) {
-      throw new Error('Systed error')
-    }
-
-    const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, normFormSchema.schema)
-    const newFromSchema = replace(formSchema.schema, fromParentNormComp?.indexInArray ?? 0, newFromParentComp)
-    const newNormFormSchema = normalizeWithIndex(newFromSchema)
-
-    const toParentNormComp = normFormSchema.schema[to.parentId]
-    const newToParentComp = addCompToParent(to.parentId, currentCompId, to.index, newNormFormSchema)
-    const newToSchema = replace(newFromSchema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
-
-    setFormSchema({ ...formSchema, schema: newToSchema })
+    const newSchema = moveComp(formSchema.schema, normFormSchema.schema, from, to)
+    setFormSchema({ ...formSchema, schema: newSchema })
   }
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
