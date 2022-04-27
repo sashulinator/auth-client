@@ -1,63 +1,77 @@
 import { compSchemaMock } from './comp-schema.mock'
-import { pickedFCompState } from './form-schema'
+import { pickedNormFCompState } from './form-schema'
 import { atom, selector } from 'recoil'
 
 import { buildCompHierarchy } from '@/helpers/build-comp-hierarchy'
-import { normalize } from '@/utils/normalize'
+import { normalizeWithIndex } from '@/utils/normalize'
 
 export const compSchemasState = atom({
   key: 'compSchemasState',
   default: compSchemaMock,
 })
 
-export const normCompSchemasState = selector({
-  key: 'normCompSchemasState',
+export const normCSchemasState = selector({
+  key: 'normCSchemasState',
   get: ({ get }) => {
     const compSchemas = get(compSchemasState)
 
-    return normalize(compSchemas)
+    const normCSchemas = compSchemas.map((compSchema) => ({
+      ...compSchema,
+      schema: normalizeWithIndex(compSchema.schema),
+    }))
+
+    return normalizeWithIndex(normCSchemas)
   },
 })
 
-export const normNormCompSchemasState = selector({
-  key: 'normNormCompSchemasState',
+export const pickedNormCSchemaState = selector({
+  key: 'pickedNormCSchemaState',
   get: ({ get }) => {
-    const compSchemas = get(compSchemasState)
+    const normCSchemas = get(normCSchemasState)
+    const pickedFComp = get(pickedNormFCompState)
 
-    const normComps = compSchemas.map((compSchema) => ({ ...compSchema, schema: normalize(compSchema.schema) }))
+    if (pickedFComp) {
+      const pickedNormCSchema = normCSchemas[pickedFComp.componentSchemaId]
 
-    return normalize(normComps)
-  },
-})
+      if (!pickedNormCSchema) {
+        throw new Error('System error')
+      }
 
-export const selectedNormCompSchemaState = selector({
-  key: 'selectedCompSchemaState',
-  get: ({ get }) => {
-    const normNormCompSchemas = get(normNormCompSchemasState)
-    const selectedComp = get(pickedFCompState)
-
-    if (selectedComp) {
-      return normNormCompSchemas[selectedComp.componentSchemaId]
+      return pickedNormCSchema
     }
 
     return null
   },
 })
 
-export const selectedHierarchyCompSchemaState = selector({
-  key: 'selectedHierarchyCompSchemaState',
+export const pickedCSchemaState = selector({
+  key: 'pickedCSchemaState',
   get: ({ get }) => {
-    const normCompSchemas = get(normCompSchemasState)
-    const normNormCompSchemas = get(normNormCompSchemasState)
-    const selectedComp = get(pickedFCompState)
-    const normCompSchema = normCompSchemas[selectedComp?.componentSchemaId || '']
-    const normNormCompSchema = normNormCompSchemas[selectedComp?.componentSchemaId || '']
+    const pickedNormCSchema = get(pickedNormCSchemaState)
+    const compSchemas = get(compSchemasState)
 
-    if (selectedComp && normCompSchema && normNormCompSchema) {
-      return {
-        ...normCompSchema,
-        schema: buildCompHierarchy(normCompSchema.schema, normNormCompSchema.schema),
+    if (pickedNormCSchema) {
+      const compSchema = compSchemas[pickedNormCSchema.indexInArray]
+
+      if (compSchema === undefined) {
+        throw new Error('System error')
       }
+
+      return compSchema
+    }
+
+    return null
+  },
+})
+
+export const pickedHierarchicalCCompsState = selector({
+  key: 'pickedHierarchicalCCompsState',
+  get: ({ get }) => {
+    const pickedCSchema = get(pickedCSchemaState)
+    const pickedNormCSchema = get(pickedNormCSchemaState)
+
+    if (pickedCSchema && pickedNormCSchema) {
+      return buildCompHierarchy(pickedCSchema?.schema, pickedNormCSchema?.schema)
     }
 
     return null

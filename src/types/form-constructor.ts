@@ -16,13 +16,16 @@ export interface BaseComp {
   }[]
 }
 
+export interface Norm {
+  indexInArray: number
+}
+
 export interface Comp extends BaseComp {
   children?: string[]
 }
 
-export interface NormComp extends BaseComp {
+export interface NormComp extends BaseComp, Norm {
   children?: string[]
-  indexInArray: number
 }
 
 export interface HierarchyComp extends BaseComp {
@@ -41,12 +44,17 @@ export interface BaseSchema {
 }
 
 export interface CompSchema extends BaseSchema {
-  schema: BaseComp[]
+  schema: Comp[]
 }
 
-export type NormCompSchemas = Record<string, CompSchema>
+// TODO удалить лишние
+export interface NormCompSchema extends BaseSchema {
+  schema: NormComp[]
+}
 
-export interface NormFormSchema extends BaseSchema {
+export type NormCompSchemas = Record<string, NormCompSchema>
+
+export interface NormFormSchema extends BaseSchema, Norm {
   schema: NormComps
 }
 

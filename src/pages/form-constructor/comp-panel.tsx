@@ -9,40 +9,55 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import FieldError from '@/components/field-error'
 import { SchemaConstructor } from '@/components/schema-constructor'
 import CustomTextField from '@/components/text-field'
-import { selectedHierarchyCompSchemaState, selectedNormCompSchemaState } from '@/recoil/comp-schema'
-import { formSchemaState, pickedFCompState } from '@/recoil/form-schema'
-import { replaceObjectInArray } from '@/utils/replace-object-in-array'
+import { findParentId, removeCompFromParent } from '@/helpers/form-schema-state'
+import { pickedHierarchicalCCompsState, pickedNormCSchemaState } from '@/recoil/comp-schema'
+import { formSchemaState, normFCompsState, pickedNormFCompState } from '@/recoil/form-schema'
+import { remove, replace } from '@/utils/change-unmutable'
 
 const CompPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
-  const selectedHierarchyCompSchema = useRecoilValue(selectedHierarchyCompSchemaState)
-  const selectedNormCompSchema = useRecoilValue(selectedNormCompSchemaState)
-  const selectedComp = useRecoilValue(pickedFCompState)
-
+  const normFComps = useRecoilValue(normFCompsState)
+  const pickedNormCSchema = useRecoilValue(pickedNormCSchemaState)
+  const pickedNormFComp = useRecoilValue(pickedNormFCompState)
+  const pickedHierarchicalCComps = useRecoilValue(pickedHierarchicalCCompsState)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function onSubmit(newSchemaItemProps: any) {
-    const newSchema = replaceObjectInArray('id', formSchema.schema, newSchemaItemProps)
-    setFormSchema({ ...formSchema, schema: newSchema })
-  }
-
-  console.log('maxim privet', selectedComp)
+  // function onSubmit(newSchemaItemProps: any) {
+  // const newSchema = replaceObjectInArray('id', formSchema.schema, newSchemaItemProps)
+  // setFormSchema({ ...formSchema, schema: newSchema })
+  // }
 
   return (
     <div className="CompPanel">
-      {selectedNormCompSchema && (
+      {pickedNormCSchema && pickedHierarchicalCComps && pickedNormFComp && (
         <Form
-          initialValues={selectedComp}
+          initialValues={pickedNormFComp}
           mutators={{
             // potentially other mutators could be merged here
             ...arrayMutators,
           }}
-          onSubmit={onSubmit}
+          // onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
+                <PrimaryButton
+                  onClick={() => {
+                    const parent = removeCompFromParent(
+                      findParentId(pickedNormFComp?.id || '', formSchema.schema),
+                      pickedNormFComp?.id || '',
+                      pickedNormFComp.id,
+                      normFComps
+                    )
+
+                    const newFromSchema = replace(formSchema.schema, normFComps[parent.id]?.indexInArray ?? 0, parent)
+                    const newNewFromSchema = remove(newFromSchema, pickedNormFComp?.indexInArray ?? 0)
+                    setFormSchema({ ...formSchema, schema: newNewFromSchema })
+                  }}
+                >
+                  delete
+                </PrimaryButton>
                 <Stack tokens={{ padding: '20px 20px 0' }}>
-                  <Stack as="h2">{selectedComp?.name}</Stack>
+                  <Stack as="h2">{pickedNormFComp?.name}</Stack>
                 </Stack>
                 <Stack tokens={{ padding: '20px 20px' }}>
                   <Field<string> name="name">
@@ -51,10 +66,7 @@ const CompPanel: FC = (): JSX.Element => {
                       <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                     ]}
                   </Field>
-                  <SchemaConstructor
-                    normComps={selectedNormCompSchema?.schema}
-                    hierarchyComps={selectedHierarchyCompSchema?.schema}
-                  />
+                  <SchemaConstructor normComps={pickedNormCSchema.schema} hierarchyComps={pickedHierarchicalCComps} />
                 </Stack>
                 <hr />
                 <Stack tokens={{ padding: '20px 20px' }}>

@@ -138,20 +138,6 @@ export function moveComps(
   return newSchema
 }
 
-// TODO должен искать в Comp и NormComp
-export function findParent(id: string, comps: Comp[]): Comp {
-  const comp = comps.find(({ children }) => children?.includes(id))
-
-  assertNotUndefined(comp)
-
-  return comp
-}
-
-// TODO должен искать в Comp и NormComp
-export function findParentId(id: string, comps: Comp[]): string {
-  return findParent(id, comps).id
-}
-
 export function buildNewComp(componentName: string): Comp {
   if (componentName === 'TextInput') {
     return {
@@ -196,4 +182,18 @@ export function addCompToParent(parentId: string, index: number, comp: Comp, nor
   denormalizedComps.push(comp)
 
   return denormalizedComps
+}
+
+// TODO должен искать в Comp и NormComp
+export function findParent(id: string, comps: Comp[]): Comp {
+  const comp = comps.find(({ children }) => children?.includes(id))
+
+  assertNotUndefined(comp)
+
+  return comp
+}
+
+// TODO должен искать в Comp и NormComp
+export function findParentId(id: string, comps: Comp[]): string {
+  return findParent(id, comps).id
 }

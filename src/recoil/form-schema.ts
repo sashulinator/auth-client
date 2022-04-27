@@ -32,7 +32,7 @@ export const pickedFCompIdState = atom({
   default: '',
 })
 
-export const pickedFCompState = selector({
+export const pickedNormFCompState = selector({
   key: 'pickedFCompState',
   get: ({ get }) => {
     const normFComps = get(normFCompsState)

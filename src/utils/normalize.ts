@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export function normalize<T extends { id: string }[]>(arrOfObj: T): Record<string, T[number]> {
   return arrOfObj.reduce<Record<string, T[number]>>((acc, item) => {
     acc[item.id] = item as T[number]
