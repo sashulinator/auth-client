@@ -4,8 +4,9 @@ import { ActionButton, IconButton, Modal, PrimaryButton, Stack } from '@fluentui
 import React, { FC } from 'react'
 import { useRecoilState } from 'recoil'
 
+import { ROOT_COMP_ID } from '@/constants/common'
 import { addCompToParent, buildNewComp, findParentId, moveComps as moveComp } from '@/helpers/form-schema-state'
-import { formSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
+import { FSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
 import { Norm } from '@/types/entities'
 import { Comp } from '@/types/form-constructor'
 import useBoolean from '@/utils/use-boolean'
@@ -19,7 +20,7 @@ const buttonStyles = {
 
 const TreePanel: FC = (): JSX.Element => {
   const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)
-  const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
+  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
 
   const [isPalleteModalOpen, openPalleteModal, closePalleteModal] = useBoolean(false)
 
@@ -49,7 +50,7 @@ const TreePanel: FC = (): JSX.Element => {
       id: 'rootId',
       isExpanded: true,
       data: 'test',
-      children: ['stackRootId'],
+      children: [ROOT_COMP_ID],
     }
 
     return {
@@ -62,8 +63,8 @@ const TreePanel: FC = (): JSX.Element => {
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    const newFormSchema = moveComp(formSchema.schema, from, to)
-    setFormSchema({ ...formSchema, schema: newFormSchema })
+    const newFormSchema = moveComp(FSchema.schema, from, to)
+    setFSchema({ ...FSchema, schema: newFormSchema })
   }
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
@@ -87,13 +88,13 @@ const TreePanel: FC = (): JSX.Element => {
         <PrimaryButton
           onClick={() => {
             const newFormSchema = addCompToParent(
-              pickedFCompId ? findParentId(pickedFCompId, formSchema.schema) : 'stackRootId',
+              pickedFCompId ? findParentId(pickedFCompId, FSchema.schema) : 'stackRootId',
               0,
               buildNewComp('TextInput'),
-              formSchema.schema
+              FSchema.schema
             )
 
-            setFormSchema({ ...formSchema, schema: newFormSchema })
+            setFSchema({ ...FSchema, schema: newFormSchema })
 
             closePalleteModal()
           }}
@@ -103,7 +104,7 @@ const TreePanel: FC = (): JSX.Element => {
       </Modal>
       <Stack>
         <Tree
-          tree={buildTree(formSchema.schema)}
+          tree={buildTree(FSchema.schema)}
           renderItem={renderItem}
           // onExpand={() => {}}
           // onCollapse={() => {}}

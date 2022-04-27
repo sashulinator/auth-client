@@ -1,13 +1,14 @@
+import { ROOT_COMP_ID } from '@/constants/common'
 import { Schema } from '@/types/form-constructor'
 
-export const formSchemaMock: Schema = {
+export const FSchemaMock: Schema = {
   id: 'ee4254ef-a9a3-4243-be68-51ce733b338e',
   name: 'credentials',
   title: 'Креды',
   description: 'some description',
   schema: {
-    stackRootId: {
-      id: 'stackRootId',
+    [ROOT_COMP_ID]: {
+      id: ROOT_COMP_ID,
       name: 'stackRoot',
       componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
       componentName: 'Stack',

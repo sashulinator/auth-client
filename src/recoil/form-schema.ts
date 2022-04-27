@@ -1,11 +1,11 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { formSchemaMock } from './form-schema.mock'
+import { FSchemaMock } from './form-schema.mock'
 import { atom, selector } from 'recoil'
 
-export const formSchemaState = atom({
-  key: 'formSchemaState',
-  default: formSchemaMock,
+export const FSchemaState = atom({
+  key: 'FSchemaState',
+  default: FSchemaMock,
 })
 
 export const pickedFCompIdState = atom({
@@ -16,10 +16,10 @@ export const pickedFCompIdState = atom({
 export const pickedFCompState = selector({
   key: 'pickedFCompState',
   get: ({ get }) => {
-    const formSchema = get(formSchemaState)
+    const FSchema = get(FSchemaState)
     const pickedFCompId = get(pickedFCompIdState)
 
-    const pickedFComp = formSchema.schema[pickedFCompId]
+    const pickedFComp = FSchema.schema[pickedFCompId]
 
     assertNotUndefined(pickedFComp)
 

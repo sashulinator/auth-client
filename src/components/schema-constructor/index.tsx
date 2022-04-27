@@ -1,130 +1,127 @@
 import { Checkbox, PrimaryButton, Stack } from '@fluentui/react'
-import { isString } from '@savchenko91/schema-validator'
+import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
-import { runAction } from '../../helpers/constructor-actions'
-import React, { FC, memo, useEffect } from 'react'
-import { Field, useForm } from 'react-final-form'
+// import { runAction } from '../../helpers/constructor-actions'
+import React, { FC, memo } from 'react'
+import { Field } from 'react-final-form'
 
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
-import { HierarchyComp, NormComp, NormComps } from '@/types/form-constructor'
+import { ROOT_COMP_ID } from '@/constants/common'
+import { Norm } from '@/types/entities'
+import { Comp } from '@/types/form-constructor'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const normComponents: Record<string, any> = {
+export const ReactComponents: Record<string, any> = {
   Stack,
   Checkbox,
   TextField: CustomTextField,
   PrimaryButton,
 }
 
-export interface SchemaConstructorProps {
-  normComps: NormComps
-  hierarchyComps?: HierarchyComp[]
+export interface CompDrawerProps {
+  comps: Norm<Comp>
 }
 
-export function SchemaConstructor({ normComps, hierarchyComps }: SchemaConstructorProps): JSX.Element {
-  return (
-    <>
-      {hierarchyComps?.map((comp) => {
-        if (comp === undefined) {
-          return null
-        }
-        if (isString(comp)) {
-          return comp
-        }
-        if (/checkbox/.test(comp.componentName) && comp.type !== 'checkbox') {
-          throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
-        }
+export interface DrawerComponentProps extends CompDrawerProps {
+  comp: Comp
+}
 
-        return <SchemaItemComponent key={comp.path} hierarchyComp={comp} normComps={normComps} />
+export function CompDrawer(props: CompDrawerProps): JSX.Element {
+  const rootComp = props.comps[ROOT_COMP_ID]
+
+  assertNotUndefined(rootComp)
+
+  return <CompComponentFactory comps={props.comps} compId={rootComp.id} />
+}
+
+//
+
+export const CompComponentFactory: FC<{
+  comps: Norm<Comp>
+  compId: string
+}> = (props) => {
+  const comp = props.comps[props.compId]
+
+  assertNotUndefined(comp)
+
+  if (isString(comp)) {
+    return comp
+  }
+  if (/checkbox/.test(comp.componentName) && comp.type !== 'checkbox') {
+    throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
+  }
+
+  if (comp.type === 'input' || comp.type === 'checkbox') {
+    return <FieldComponent comp={comp} comps={props.comps} />
+  }
+
+  return <ContentComponent comp={comp} comps={props.comps} />
+}
+
+//
+
+export const _ContentComponent = (props: DrawerComponentProps) => {
+  const Component = ReactComponents[props.comp.componentName]
+
+  if (props.comp.children === undefined) {
+    return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
+  }
+
+  return (
+    <Component {...props.comp.props}>
+      {props.comp.children.map((compId) => {
+        return <CompComponentFactory key={compId} comps={props.comps} compId={compId} />
       })}
-    </>
+    </Component>
   )
 }
+const ContentComponent = memo(_ContentComponent)
 
 //
 
-export const SchemaItemComponent: FC<{
-  hierarchyComp: HierarchyComp
-  normComps: NormComps
-}> = (props) => {
-  const normComp = props.normComps[props.hierarchyComp.id]
-
-  const bindingNormComps = normComp?.bindings?.reduce<NormComp[]>((acc, binding) => {
-    const foundSchemaItems = binding.componentIds.map((id) => props.normComps[id]) as NormComp[]
-    return [...acc, ...foundSchemaItems]
-  }, [])
-
-  if (normComp === undefined) {
-    return null
-  }
-
-  if (normComp.type === 'input' || normComp.type === 'checkbox') {
-    return <FieldComponent normComp={normComp} bindingNormComps={bindingNormComps} />
-  }
-
-  return <ContentComponent normComps={props.normComps} hierarchyComp={props.hierarchyComp} />
-}
-
-//
-
-export const _SimpleComponent = (props: { normComps: NormComps; hierarchyComp: HierarchyComp }) => {
-  const { hierarchyComp } = props
-  const Component = normComponents[hierarchyComp?.componentName]
-
-  if (hierarchyComp?.props?.children === undefined) {
-    return (
-      <Component {...hierarchyComp.props}>
-        <SchemaConstructor normComps={props.normComps} hierarchyComps={hierarchyComp.children} />
-      </Component>
-    )
-  }
-
-  return <Component {...hierarchyComp.props}>{hierarchyComp?.props?.children}</Component>
-}
-const ContentComponent = memo(_SimpleComponent)
-
-const _FieldComponent: FC<{
-  normComp: NormComp
-  bindingNormComps?: NormComp[]
-}> = (props) => {
-  const { normComp, bindingNormComps } = props
-  const Component = normComponents[normComp?.componentName]
-  const form = useForm()
+const _FieldComponent = (props: DrawerComponentProps) => {
+  const Component = ReactComponents[props.comp.componentName]
+  // const form = useForm()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(runAction('onInit', { form, schemaItem: normComp, schemaItems: bindingNormComps }), [])
+  // useEffect(runAction('onInit', { form, schemaItem: comp, schemaItems: bindingNormComps }), [])
 
   return (
     <Field
-      type={normComp.type}
-      name={normComp.path}
-      key={normComp.path}
-      defaultValue={normComp.defaultValue}
-      {...normComp.props}
+      type={props.comp.type}
+      name={props.comp.path}
+      key={props.comp.path}
+      defaultValue={props.comp.defaultValue}
+      {...props.comp.props}
     >
       {({ input, meta }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         function onChange(event: any) {
-          runAction('onChange', { form, schemaItem: normComp, schemaItems: bindingNormComps })()
+          // runAction('onChange', { form, schemaItem: comp, schemaItems: bindingNormComps })()
           input?.onChange(event)
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        function onBlur(...args: any[]) {
-          runAction('onBlur', { form, schemaItem: normComp, schemaItems: bindingNormComps })()
-          input?.onBlur(...args)
-        }
+        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // function onBlur(...args: any[]) {
+        //   runAction('onBlur', { form, schemaItem: comp, schemaItems: bindingNormComps })()
+        //   input?.onBlur(...args)
+        // }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        function onFocus(...args: any[]) {
-          runAction('onFocus', { form, schemaItem: normComp, schemaItems: bindingNormComps })()
-          input?.onFocus(...args)
-        }
+        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // function onFocus(...args: any[]) {
+        //   runAction('onFocus', { form, schemaItem: comp, schemaItems: bindingNormComps })()
+        //   input?.onFocus(...args)
+        // }
 
         return (
           <>
-            <Component {...normComp.props} {...input} onChange={onChange} onBlur={onBlur} onFocus={onFocus} />
+            <Component
+              {...props.comp.props}
+              {...input}
+              onChange={onChange}
+              // onBlur={onBlur} onFocus={onFocus}
+            />
             <FieldError error={meta.touched && (meta.error || meta.submitError)} />
           </>
         )
