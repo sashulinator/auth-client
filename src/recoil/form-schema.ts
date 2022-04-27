@@ -19,10 +19,14 @@ export const pickedFCompState = selector({
     const FSchema = get(FSchemaState)
     const pickedFCompId = get(pickedFCompIdState)
 
-    const pickedFComp = FSchema.schema[pickedFCompId]
+    if (pickedFCompId) {
+      const pickedFComp = FSchema.schema[pickedFCompId]
 
-    assertNotUndefined(pickedFComp)
+      assertNotUndefined(pickedFComp)
 
-    return pickedFComp
+      return pickedFComp
+    }
+
+    return null
   },
 })

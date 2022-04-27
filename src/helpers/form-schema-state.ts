@@ -10,7 +10,6 @@ import { insert, remove, replace } from '@/utils/change-unmutable'
  */
 export function removeCompsFromParent(
   parentId: string | number,
-  currentCompId: string,
   indexesOrIds: (number | string)[],
   normComps: Norm<Comp>
 ): Comp {
@@ -27,12 +26,6 @@ export function removeCompsFromParent(
       throw new Error('System error')
     }
     if (sourceParentNormComp?.children === undefined) {
-      throw new Error('System error')
-    }
-
-    const currentNormComp = normComps[currentCompId]
-
-    if (!currentNormComp) {
       throw new Error('System error')
     }
 
@@ -60,18 +53,17 @@ export function removeCompsFromParent(
  */
 export function removeCompFromParent(
   parentId: string | number,
-  currentCompId: string,
   indexOrId: number | string,
   normComps: Norm<Comp>
 ): Comp {
-  return removeCompsFromParent(parentId, currentCompId, [indexOrId], normComps)
+  return removeCompsFromParent(parentId, [indexOrId], normComps)
 }
 
 export function pasteCompsToParent(
   parentId: string | number,
   currentCompId: string,
   indexes: number[],
-  normComps: NormComps
+  normComps: Norm<Comp>
 ): Comp {
   let newParentComp: Comp
 
@@ -103,7 +95,7 @@ export function pasteCompToParent(
   parentId: string | number,
   currentCompId: string,
   index: number,
-  normComps: NormComps
+  normComps: Norm<Comp>
 ): Comp {
   return pasteCompsToParent(parentId, currentCompId, [index], normComps)
 }
@@ -166,6 +158,18 @@ export function addCompToParent(parentCompId: string, index: number, comp: Comp,
 
   const newComps = insert(comps, parentCompId, newParentComp)
   const newNewComps = insert(newComps, comp.id, comp)
+
+  return newNewComps
+}
+
+export function removeComp(compId: string, comps: Norm<Comp>) {
+  const parentComp = findParent(compId, comps)
+
+  const newParentComp = removeCompFromParent(findParentId(compId, comps), compId, comps)
+
+  const newComps = replace(comps, parentComp.id, newParentComp)
+
+  const newNewComps = remove(newComps, compId)
 
   return newNewComps
 }

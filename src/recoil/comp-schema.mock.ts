@@ -1,3 +1,4 @@
+import { ROOT_COMP_ID } from '@/constants/common'
 import { Schema } from '@/types/form-constructor'
 
 export const compSchemaMock: Record<string, Schema> = {
@@ -7,6 +8,20 @@ export const compSchemaMock: Record<string, Schema> = {
     title: 'Button',
     description: 'button',
     schema: {
+      [ROOT_COMP_ID]: {
+        id: ROOT_COMP_ID,
+        name: 'stackRoot',
+        componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        componentName: 'Stack',
+        path: 'hello',
+        type: 'component',
+        props: {
+          tokens: {
+            // childrenGap: 10,
+          },
+        },
+        children: ['ee4254ef-9099-8943-be68-51ce733b390', 'ee4254ef-9099-5543-be68-51ce733b3367'],
+      },
       'ee4254ef-9099-8943-be68-51ce733b390': {
         id: 'ee4254ef-9099-8943-be68-51ce733b390',
         name: 'ТестИнпут1',
@@ -37,6 +52,20 @@ export const compSchemaMock: Record<string, Schema> = {
     title: 'Stack',
     description: 'stack',
     schema: {
+      [ROOT_COMP_ID]: {
+        id: ROOT_COMP_ID,
+        name: 'stackRoot',
+        componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        componentName: 'Stack',
+        path: 'hello',
+        type: 'component',
+        props: {
+          tokens: {
+            // childrenGap: 10,
+          },
+        },
+        children: ['ee4254ef-9099-5sd3-be68-51ce733b3367', 'ee4254ef-9099-5543-be68-51ce733b3367'],
+      },
       'ee4254ef-9099-5sd3-be68-51ce733b3367': {
         id: 'ee4254ef-9099-5sd3-be68-51ce733b3367',
         componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
@@ -67,6 +96,20 @@ export const compSchemaMock: Record<string, Schema> = {
     title: 'TextField',
     description: 'text input',
     schema: {
+      [ROOT_COMP_ID]: {
+        id: ROOT_COMP_ID,
+        name: 'stackRoot',
+        componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        componentName: 'Stack',
+        path: 'hello',
+        type: 'component',
+        props: {
+          tokens: {
+            // childrenGap: 10,
+          },
+        },
+        children: ['ee4254ef-9099-5543-be68-51ce733b3367', 'rr4254ef-9099-5643-be68-51ce733b3360'],
+      },
       'ee4254ef-9099-5543-be68-51ce733b3367': {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
         componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
