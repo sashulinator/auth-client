@@ -30,7 +30,7 @@ const TreePanel: FC = (): JSX.Element => {
 
   function buildRootItem(comps: Norm<Comp>): TreeData['items'] {
     return Object.values(comps)?.reduce<Record<string, TreeItem>>((acc, comp) => {
-      const children = comp?.children?.reduce<string[]>((acc, childId) => {
+      const children = comp?.childCompIds?.reduce<string[]>((acc, childId) => {
         acc.push(childId)
         return acc
       }, [])

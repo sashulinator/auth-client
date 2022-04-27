@@ -25,22 +25,22 @@ export function removeCompsFromParent(
     if (!sourceParentNormComp && !sourceParentNormComp) {
       throw new Error('System error')
     }
-    if (sourceParentNormComp?.children === undefined) {
+    if (sourceParentNormComp?.childCompIds === undefined) {
       throw new Error('System error')
     }
 
     let newSourceParentCompChildren
     if (typeof indexOrId === 'number') {
-      newSourceParentCompChildren = remove(sourceParentNormComp?.children, indexOrId)
+      newSourceParentCompChildren = remove(sourceParentNormComp?.childCompIds, indexOrId)
     } else {
-      const index = sourceParentNormComp?.children.findIndex((id) => id === indexOrId)
-      newSourceParentCompChildren = remove(sourceParentNormComp?.children, index)
+      const index = sourceParentNormComp?.childCompIds.findIndex((id) => id === indexOrId)
+      newSourceParentCompChildren = remove(sourceParentNormComp?.childCompIds, index)
     }
 
     if (newSourceParentCompChildren.length === 0) {
-      newParentComp = remove(sourceParentNormComp, 'children')
+      newParentComp = remove(sourceParentNormComp, 'childCompIds')
     } else {
-      newParentComp = replace(sourceParentNormComp, 'children', newSourceParentCompChildren)
+      newParentComp = replace(sourceParentNormComp, 'childCompIds', newSourceParentCompChildren)
     }
   })
 
@@ -76,14 +76,14 @@ export function pasteCompsToParent(
       throw new Error('System error')
     }
 
-    if (destinationParentNormComp?.children === undefined) {
-      newParentComp = replace(destinationParentNormComp, 'children', [currentCompId])
+    if (destinationParentNormComp?.childCompIds === undefined) {
+      newParentComp = replace(destinationParentNormComp, 'childCompIds', [currentCompId])
       console.log('destinationParentComp.children', newParentComp)
     } else {
-      const newDestinationParentCompChildren = insert(destinationParentNormComp.children, index, currentCompId)
+      const newDestinationParentCompChildren = insert(destinationParentNormComp.childCompIds, index, currentCompId)
       console.log('newDestinationParentCompChildren', index, currentCompId)
 
-      newParentComp = replace(destinationParentNormComp, 'children', newDestinationParentCompChildren)
+      newParentComp = replace(destinationParentNormComp, 'childCompIds', newDestinationParentCompChildren)
     }
   })
 
@@ -106,7 +106,7 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   }
 
   const fromParentComp = comps[from.parentId]
-  const currentCompId = fromParentComp?.children?.[from.index]
+  const currentCompId = fromParentComp?.childCompIds?.[from.index]
   const toParentComp = comps[to.parentId]
 
   if (toParentComp === undefined) {
@@ -149,11 +149,11 @@ export function addCompToParent(parentCompId: string, index: number, comp: Comp,
 
   assertNotUndefined(destinationParentNormComp)
 
-  if (destinationParentNormComp?.children === undefined) {
-    newParentComp = replace(destinationParentNormComp, 'children', [comp.id])
+  if (destinationParentNormComp?.childCompIds === undefined) {
+    newParentComp = replace(destinationParentNormComp, 'childCompIds', [comp.id])
   } else {
-    const newDestinationParentCompChildren = insert(destinationParentNormComp.children, index, comp.id)
-    newParentComp = replace(destinationParentNormComp, 'children', newDestinationParentCompChildren)
+    const newDestinationParentCompChildren = insert(destinationParentNormComp.childCompIds, index, comp.id)
+    newParentComp = replace(destinationParentNormComp, 'childCompIds', newDestinationParentCompChildren)
   }
 
   const newComps = insert(comps, parentCompId, newParentComp)
@@ -175,7 +175,7 @@ export function removeComp(compId: string, comps: Norm<Comp>) {
 }
 
 export function findParent(id: string, comps: Norm<Comp>): Comp {
-  const comp = Object.values(comps).find(({ children }) => children?.includes(id))
+  const comp = Object.values(comps).find(({ childCompIds }) => childCompIds?.includes(id))
 
   assertNotUndefined(comp)
 

@@ -63,13 +63,13 @@ export const CompComponentFactory = (props: CompComponentFactory): JSX.Element =
 export const _ContentComponent = (props: DrawerComponentProps) => {
   const Component = ReactComponents[props.comp.componentName]
 
-  if (props.comp.children === undefined) {
+  if (props.comp.childCompIds === undefined) {
     return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
   }
 
   return (
     <Component {...props.comp.props}>
-      {props.comp.children.map((compId) => {
+      {props.comp.childCompIds.map((compId) => {
         return <CompComponentFactory key={compId} comps={props.comps} compId={compId} />
       })}
     </Component>

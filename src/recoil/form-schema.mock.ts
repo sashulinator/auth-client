@@ -23,7 +23,7 @@ export const FSchemaMock: Schema = {
           padding: '45px 40px',
         },
       },
-      children: ['stackChild'],
+      childCompIds: ['stackChild'],
     },
     stackChild: {
       id: 'stackChild',
@@ -41,7 +41,7 @@ export const FSchemaMock: Schema = {
           padding: '45px 40px',
         },
       },
-      children: ['buttonOneId', 'buttonTwoId', 'textInputOneId', 'textInputTwoId'],
+      childCompIds: ['buttonOneId', 'buttonTwoId', 'textInputOneId', 'textInputTwoId'],
     },
     buttonOneId: {
       id: 'buttonOneId',
