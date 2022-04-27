@@ -9,42 +9,35 @@ export const formSchemaState = atom({
   default: formSchemaMock,
 })
 
-export const normFormSchemaState = selector({
-  key: 'normFormSchemaState',
+export const normFCompsState = selector({
+  key: 'normFCompsState',
   get: ({ get }) => {
     const formSchema = get(formSchemaState)
-
-    return {
-      ...formSchema,
-      schema: normalizeWithIndex(formSchema.schema),
-    }
+    return normalizeWithIndex(formSchema.schema)
   },
 })
 
-export const hierarchyFormSchemaState = selector({
-  key: 'hierarchyFormSchemaState',
+export const hierarchicalFCompsState = selector({
+  key: 'hierarchicalFCompsState',
   get: ({ get }) => {
     const formSchema = get(formSchemaState)
-    const normFormSchema = get(normFormSchemaState)
+    const normFComps = get(normFCompsState)
 
-    return {
-      ...formSchema,
-      schema: buildCompHierarchy(formSchema.schema, normFormSchema.schema),
-    }
+    return buildCompHierarchy(formSchema.schema, normFComps)
   },
 })
 
-export const selectedCompIdState = atom({
-  key: 'selectedCompIdState',
+export const pickedFCompIdState = atom({
+  key: 'pickedFCompIdState',
   default: '',
 })
 
-export const selectedCompState = selector({
-  key: 'selectedCompState',
+export const pickedFCompState = selector({
+  key: 'pickedFCompState',
   get: ({ get }) => {
-    const normFormSchema = get(normFormSchemaState)
-    const selectedCompId = get(selectedCompIdState)
+    const normFComps = get(normFCompsState)
+    const pickedFCompId = get(pickedFCompIdState)
 
-    return normFormSchema.schema[selectedCompId]
+    return normFComps[pickedFCompId]
   },
 })

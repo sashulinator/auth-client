@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { addCompToParent, buildNewComp, findParentId, moveComps as moveComp } from '@/helpers/form-schema-state'
-import { formSchemaState, normFormSchemaState, selectedCompIdState } from '@/recoil/form-schema'
+import { formSchemaState, normFCompsState, pickedFCompIdState } from '@/recoil/form-schema'
 import { Comp } from '@/types/form-constructor'
 import useBoolean from '@/utils/use-boolean'
 
@@ -17,10 +17,10 @@ const buttonStyles = {
 }
 
 const TreePanel: FC = (): JSX.Element => {
-  const [selectedCompId, setSelectedCompId] = useRecoilState(selectedCompIdState)
+  const [selectedCompId, setSelectedCompId] = useRecoilState(pickedFCompIdState)
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
   const [isPallereModalOpen, openPalleteModal, closePalleteModal] = useBoolean(false)
-  const normFormSchema = useRecoilValue(normFormSchemaState)
+  const normFComps = useRecoilValue(normFCompsState)
 
   function selectComponent(key: string) {
     return () => setSelectedCompId(key)
@@ -61,7 +61,7 @@ const TreePanel: FC = (): JSX.Element => {
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    const newFormSchema = moveComp(formSchema.schema, normFormSchema.schema, from, to)
+    const newFormSchema = moveComp(formSchema.schema, normFComps, from, to)
     setFormSchema({ ...formSchema, schema: newFormSchema })
   }
 
@@ -89,7 +89,7 @@ const TreePanel: FC = (): JSX.Element => {
               selectedCompId ? findParentId(selectedCompId, formSchema.schema) : 'stackRootId',
               0,
               buildNewComp('TextInput'),
-              normFormSchema.schema
+              normFComps
             )
             setFormSchema({ ...formSchema, schema: newFormSchema })
 

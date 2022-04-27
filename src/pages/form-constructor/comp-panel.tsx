@@ -10,7 +10,7 @@ import FieldError from '@/components/field-error'
 import { SchemaConstructor } from '@/components/schema-constructor'
 import CustomTextField from '@/components/text-field'
 import { selectedHierarchyCompSchemaState, selectedNormCompSchemaState } from '@/recoil/comp-schema'
-import { formSchemaState, selectedCompState } from '@/recoil/form-schema'
+import { formSchemaState, pickedFCompState } from '@/recoil/form-schema'
 import { replaceObjectInArray } from '@/utils/replace-object-in-array'
 
 const CompPanel: FC = (): JSX.Element => {
@@ -18,7 +18,7 @@ const CompPanel: FC = (): JSX.Element => {
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
   const selectedHierarchyCompSchema = useRecoilValue(selectedHierarchyCompSchemaState)
   const selectedNormCompSchema = useRecoilValue(selectedNormCompSchemaState)
-  const selectedComp = useRecoilValue(selectedCompState)
+  const selectedComp = useRecoilValue(pickedFCompState)
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function onSubmit(newSchemaItemProps: any) {

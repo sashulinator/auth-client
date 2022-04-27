@@ -1,5 +1,5 @@
 import { compSchemaMock } from './comp-schema.mock'
-import { selectedCompState } from './form-schema'
+import { pickedFCompState } from './form-schema'
 import { atom, selector } from 'recoil'
 
 import { buildCompHierarchy } from '@/helpers/build-comp-hierarchy'
@@ -34,7 +34,7 @@ export const selectedNormCompSchemaState = selector({
   key: 'selectedCompSchemaState',
   get: ({ get }) => {
     const normNormCompSchemas = get(normNormCompSchemasState)
-    const selectedComp = get(selectedCompState)
+    const selectedComp = get(pickedFCompState)
 
     if (selectedComp) {
       return normNormCompSchemas[selectedComp.componentSchemaId]
@@ -49,7 +49,7 @@ export const selectedHierarchyCompSchemaState = selector({
   get: ({ get }) => {
     const normCompSchemas = get(normCompSchemasState)
     const normNormCompSchemas = get(normNormCompSchemasState)
-    const selectedComp = get(selectedCompState)
+    const selectedComp = get(pickedFCompState)
     const normCompSchema = normCompSchemas[selectedComp?.componentSchemaId || '']
     const normNormCompSchema = normNormCompSchemas[selectedComp?.componentSchemaId || '']
 
