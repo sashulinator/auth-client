@@ -1,5 +1,7 @@
 import { CreateInput, UpdateInput } from './transfer'
 
+export type Norm<T> = Record<string, T>
+
 export type User = {
   id: string
   username: string

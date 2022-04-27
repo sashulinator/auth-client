@@ -1,12 +1,12 @@
-import { FormSchema } from '@/types/form-constructor'
+import { Schema } from '@/types/form-constructor'
 
-export const formSchemaMock: FormSchema = {
+export const formSchemaMock: Schema = {
   id: 'ee4254ef-a9a3-4243-be68-51ce733b338e',
   name: 'credentials',
   title: 'Креды',
   description: 'some description',
-  schema: [
-    {
+  schema: {
+    stackRootId: {
       id: 'stackRootId',
       name: 'stackRoot',
       componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
@@ -24,7 +24,7 @@ export const formSchemaMock: FormSchema = {
       },
       children: ['stackChild'],
     },
-    {
+    stackChild: {
       id: 'stackChild',
       name: 'stackChildName',
       componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
@@ -42,7 +42,7 @@ export const formSchemaMock: FormSchema = {
       },
       children: ['buttonOneId', 'buttonTwoId', 'textInputOneId', 'textInputTwoId'],
     },
-    {
+    buttonOneId: {
       id: 'buttonOneId',
       name: 'КнопкаГлавная1',
       componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
@@ -55,7 +55,7 @@ export const formSchemaMock: FormSchema = {
         children: 'hello',
       },
     },
-    {
+    buttonTwoId: {
       id: 'buttonTwoId',
       name: 'КнопкаГлавная2',
       componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
@@ -67,7 +67,7 @@ export const formSchemaMock: FormSchema = {
         children: 'koko',
       },
     },
-    {
+    textInputOneId: {
       id: 'textInputOneId',
       name: 'ТекстовоеПоле1',
       componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
@@ -83,7 +83,7 @@ export const formSchemaMock: FormSchema = {
         },
       ],
     },
-    {
+    textInputTwoId: {
       id: 'textInputTwoId',
       name: 'ТекстовоеПоле2',
       componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
@@ -91,5 +91,5 @@ export const formSchemaMock: FormSchema = {
       path: 'kuku',
       type: 'input',
     },
-  ],
+  },
 }

@@ -1,9 +1,10 @@
-import { SchemaComponent } from '@/types/entities'
+import { Norm } from '@/types/entities'
+import { Comp } from '@/types/form-constructor'
 
-export function findRootComponentIds(schema: SchemaComponent[]): string[] {
+export function findRootComponentIds(comps: Norm<Comp>): string[] {
   let notParents: string[] = []
 
-  return schema.reduce<string[]>((acc, schemaComponent) => {
+  return Object.values(comps).reduce<string[]>((acc, schemaComponent) => {
     if (schemaComponent.children) {
       notParents = [...notParents, ...schemaComponent.children]
     }
