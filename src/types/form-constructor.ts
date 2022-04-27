@@ -42,8 +42,6 @@ export interface BaseSchema {
 
 export interface CompSchema extends BaseSchema {
   schema: BaseComp[]
-  events: string[]
-  actions: string[]
 }
 
 export type NormCompSchemas = Record<string, CompSchema>

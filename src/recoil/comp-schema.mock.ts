@@ -1,4 +1,6 @@
-export const compSchemaMock = [
+import { CompSchema } from '@/types/form-constructor'
+
+export const compSchemaMock: CompSchema[] = [
   {
     id: 'ee4254ef-9099-4243-be68-51ce733b3376',
     name: 'PrimaryButton',
@@ -64,8 +66,6 @@ export const compSchemaMock = [
     name: 'TextField',
     title: 'TextField',
     description: 'text input',
-    events: ['onInit', 'onClick', 'onChange', 'onFocus', 'onBlur'],
-    actions: ['setValue'],
     schema: [
       {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
