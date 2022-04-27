@@ -20,5 +20,5 @@ export interface Schema {
   name: string
   title: string
   description: string
-  schema: Record<string, Comp>
+  comps: Record<string, Comp>
 }

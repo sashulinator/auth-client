@@ -45,7 +45,7 @@ const TreePanel: FC = (): JSX.Element => {
     }, {})
   }
 
-  function buildTree(schema: Norm<Comp>): TreeData {
+  function buildTree(comps: Norm<Comp>): TreeData {
     const rootId = {
       id: 'rootId',
       isExpanded: true,
@@ -57,14 +57,14 @@ const TreePanel: FC = (): JSX.Element => {
       rootId: rootId.id,
       items: {
         rootId,
-        ...buildRootItem(schema),
+        ...buildRootItem(comps),
       },
     }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    const newFormSchema = moveComp(FSchema.schema, from, to)
-    setFSchema({ ...FSchema, schema: newFormSchema })
+    const newFormSchema = moveComp(FSchema.comps, from, to)
+    setFSchema({ ...FSchema, comps: newFormSchema })
   }
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
@@ -88,13 +88,13 @@ const TreePanel: FC = (): JSX.Element => {
         <PrimaryButton
           onClick={() => {
             const newFormSchema = addCompToParent(
-              pickedFCompId ? findParentId(pickedFCompId, FSchema.schema) : 'stackRootId',
+              pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId',
               0,
               buildNewComp('TextInput'),
-              FSchema.schema
+              FSchema.comps
             )
 
-            setFSchema({ ...FSchema, schema: newFormSchema })
+            setFSchema({ ...FSchema, comps: newFormSchema })
 
             closePalleteModal()
           }}
@@ -104,7 +104,7 @@ const TreePanel: FC = (): JSX.Element => {
       </Modal>
       <Stack>
         <Tree
-          tree={buildTree(FSchema.schema)}
+          tree={buildTree(FSchema.comps)}
           renderItem={renderItem}
           // onExpand={() => {}}
           // onCollapse={() => {}}

@@ -21,7 +21,7 @@ const Preview: FC = (): JSX.Element => {
         render={(formProps) => {
           return (
             <form onSubmit={formProps.handleSubmit}>
-              <CompDrawer comps={FSchema.schema} />
+              <CompDrawer comps={FSchema.comps} />
             </form>
           )
         }}

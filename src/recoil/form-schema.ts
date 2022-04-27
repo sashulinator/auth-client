@@ -20,7 +20,7 @@ export const pickedFCompState = selector({
     const pickedFCompId = get(pickedFCompIdState)
 
     if (pickedFCompId) {
-      const pickedFComp = FSchema.schema[pickedFCompId]
+      const pickedFComp = FSchema.comps[pickedFCompId]
 
       assertNotUndefined(pickedFComp)
 

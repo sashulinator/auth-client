@@ -6,7 +6,7 @@ export const FSchemaMock: Schema = {
   name: 'credentials',
   title: 'Креды',
   description: 'some description',
-  schema: {
+  comps: {
     [ROOT_COMP_ID]: {
       id: ROOT_COMP_ID,
       name: 'stackRoot',

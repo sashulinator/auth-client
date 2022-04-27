@@ -1,8 +1,8 @@
 import { Checkbox, PrimaryButton, Stack } from '@fluentui/react'
-import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 // import { runAction } from '../../helpers/constructor-actions'
-import React, { FC, memo } from 'react'
+import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
 import FieldError from '@/components/field-error'
@@ -37,17 +37,16 @@ export function CompDrawer(props: CompDrawerProps): JSX.Element {
 
 //
 
-export const CompComponentFactory: FC<{
-  comps: Norm<Comp>
+export interface CompComponentFactory {
   compId: string
-}> = (props) => {
+  comps: Norm<Comp>
+}
+
+export const CompComponentFactory = (props: CompComponentFactory): JSX.Element => {
   const comp = props.comps[props.compId]
 
   assertNotUndefined(comp)
 
-  if (isString(comp)) {
-    return comp
-  }
   if (/checkbox/.test(comp.componentName) && comp.type !== 'checkbox') {
     throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
   }

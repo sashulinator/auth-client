@@ -35,8 +35,8 @@ const CompPanel: FC = (): JSX.Element => {
               <form onSubmit={formProps.handleSubmit}>
                 <PrimaryButton
                   onClick={() => {
-                    const comps = removeComp(pickedFComp.id, FSchema.schema)
-                    setFSchema({ ...FSchema, schema: comps })
+                    const comps = removeComp(pickedFComp.id, FSchema.comps)
+                    setFSchema({ ...FSchema, comps: comps })
                     setPickedFCompId('')
                   }}
                 >
@@ -52,7 +52,7 @@ const CompPanel: FC = (): JSX.Element => {
                       <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                     ]}
                   </Field>
-                  <CompDrawer comps={pickedCSchema.schema} />
+                  <CompDrawer comps={pickedCSchema.comps} />
                 </Stack>
                 <Stack tokens={{ padding: '20px 20px' }}>
                   <PrimaryButton type="submit">save</PrimaryButton>

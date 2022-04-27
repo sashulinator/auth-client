@@ -7,7 +7,7 @@ export const compSchemaMock: Record<string, Schema> = {
     name: 'PrimaryButton',
     title: 'Button',
     description: 'button',
-    schema: {
+    comps: {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
         name: 'stackRoot',
@@ -51,7 +51,7 @@ export const compSchemaMock: Record<string, Schema> = {
     name: 'Stack',
     title: 'Stack',
     description: 'stack',
-    schema: {
+    comps: {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
         name: 'stackRoot',
@@ -95,7 +95,7 @@ export const compSchemaMock: Record<string, Schema> = {
     name: 'TextField',
     title: 'TextField',
     description: 'text input',
-    schema: {
+    comps: {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
         name: 'stackRoot',
