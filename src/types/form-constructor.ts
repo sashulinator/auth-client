@@ -12,7 +12,7 @@ export interface Comp {
     actions: string[]
     componentIds: string[]
   }[]
-  children: string[]
+  children?: string[]
 }
 
 export interface Schema {

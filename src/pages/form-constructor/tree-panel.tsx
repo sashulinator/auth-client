@@ -2,10 +2,11 @@ import Tree, { RenderItemParams, TreeData, TreeDestinationPosition, TreeItem, Tr
 import { ActionButton, IconButton, Modal, PrimaryButton, Stack } from '@fluentui/react'
 
 import React, { FC } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 import { addCompToParent, buildNewComp, findParentId, moveComps as moveComp } from '@/helpers/form-schema-state'
-import { formSchemaState, normFCompsState, pickedFCompIdState } from '@/recoil/form-schema'
+import { formSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
+import { Norm } from '@/types/entities'
 import { Comp } from '@/types/form-constructor'
 import useBoolean from '@/utils/use-boolean'
 
@@ -17,33 +18,33 @@ const buttonStyles = {
 }
 
 const TreePanel: FC = (): JSX.Element => {
-  const [selectedCompId, setSelectedCompId] = useRecoilState(pickedFCompIdState)
+  const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)
   const [formSchema, setFormSchema] = useRecoilState(formSchemaState)
-  const [isPallereModalOpen, openPalleteModal, closePalleteModal] = useBoolean(false)
-  const normFComps = useRecoilValue(normFCompsState)
 
-  function selectComponent(key: string) {
-    return () => setSelectedCompId(key)
+  const [isPalleteModalOpen, openPalleteModal, closePalleteModal] = useBoolean(false)
+
+  function pickComp(key: string) {
+    return () => setPickedCompId(key)
   }
 
-  function buildRootItem(schema: Comp[]): TreeData['items'] {
-    return schema?.reduce<Record<string, TreeItem>>((acc, formItem) => {
-      const children = formItem?.children?.reduce<string[]>((acc, childId) => {
+  function buildRootItem(comps: Norm<Comp>): TreeData['items'] {
+    return Object.values(comps)?.reduce<Record<string, TreeItem>>((acc, comp) => {
+      const children = comp?.children?.reduce<string[]>((acc, childId) => {
         acc.push(childId)
         return acc
       }, [])
 
-      acc[formItem.id] = {
-        id: formItem.id,
+      acc[comp.id] = {
+        id: comp.id,
         isExpanded: true,
         ...(children?.length === 0 || children ? { children } : { children: [] }),
-        data: formItem,
+        data: comp,
       }
       return acc
     }, {})
   }
 
-  function buildTree(schema: Comp[]): TreeData {
+  function buildTree(schema: Norm<Comp>): TreeData {
     const rootId = {
       id: 'rootId',
       isExpanded: true,
@@ -61,16 +62,16 @@ const TreePanel: FC = (): JSX.Element => {
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    const newFormSchema = moveComp(formSchema.schema, normFComps, from, to)
+    const newFormSchema = moveComp(formSchema.schema, from, to)
     setFormSchema({ ...formSchema, schema: newFormSchema })
   }
 
   const renderItem = ({ item, provided }: RenderItemParams) => {
-    const isSelected = item.data?.id === selectedCompId
+    const isSelected = item.data?.id === pickedFCompId
     return (
       <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
         {/* <span>{getIcon(item, onExpand, onCollapse)}</span> */}
-        <ActionButton onClick={selectComponent(item.data.id)} styles={!isSelected ? undefined : buttonStyles}>
+        <ActionButton onClick={pickComp(item.data.id)} styles={!isSelected ? undefined : buttonStyles}>
           {item.data.name || ''}
         </ActionButton>
       </div>
@@ -82,15 +83,16 @@ const TreePanel: FC = (): JSX.Element => {
       <div className="addCompButton">
         <IconButton iconProps={{ iconName: 'Add' }} onClick={openPalleteModal} />
       </div>
-      <Modal titleAriaId={'Add comp'} isOpen={isPallereModalOpen} onDismiss={closePalleteModal} isBlocking={false}>
+      <Modal titleAriaId={'Add comp'} isOpen={isPalleteModalOpen} onDismiss={closePalleteModal} isBlocking={false}>
         <PrimaryButton
           onClick={() => {
             const newFormSchema = addCompToParent(
-              selectedCompId ? findParentId(selectedCompId, formSchema.schema) : 'stackRootId',
+              pickedFCompId ? findParentId(pickedFCompId, formSchema.schema) : 'stackRootId',
               0,
               buildNewComp('TextInput'),
-              normFComps
+              formSchema.schema
             )
+
             setFormSchema({ ...formSchema, schema: newFormSchema })
 
             closePalleteModal()

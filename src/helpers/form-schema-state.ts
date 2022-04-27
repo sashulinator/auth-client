@@ -1,9 +1,9 @@
 import { TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree'
 import { assertNotEmptyArray, assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Comp, NormComps } from '@/types/form-constructor'
+import { Norm } from '@/types/entities'
+import { Comp } from '@/types/form-constructor'
 import { insert, remove, replace } from '@/utils/change-unmutable'
-import { normalizeWithIndex } from '@/utils/normalize'
 
 /**
  * ! Returns parent comp
@@ -12,7 +12,7 @@ export function removeCompsFromParent(
   parentId: string | number,
   currentCompId: string,
   indexesOrIds: (number | string)[],
-  normComps: NormComps
+  normComps: Norm<Comp>
 ): Comp {
   let newParentComp: Comp
 
@@ -62,7 +62,7 @@ export function removeCompFromParent(
   parentId: string | number,
   currentCompId: string,
   indexOrId: number | string,
-  normComps: NormComps
+  normComps: Norm<Comp>
 ): Comp {
   return removeCompsFromParent(parentId, currentCompId, [indexOrId], normComps)
 }
@@ -108,34 +108,29 @@ export function pasteCompToParent(
   return pasteCompsToParent(parentId, currentCompId, [index], normComps)
 }
 
-export function moveComps(
-  comps: Comp[],
-  normComps: NormComps,
-  from: TreeSourcePosition,
-  to?: TreeDestinationPosition
-): Comp[] {
+export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: TreeDestinationPosition): Norm<Comp> {
   if (to?.index === undefined) {
-    return comps
+    throw new Error('А когда такое бывает? интересненько')
   }
 
-  const fromParentNormComp = normComps[from.parentId]
-  const currentCompId = fromParentNormComp?.children?.[from.index] ?? ''
-  const toParentNormComp = normComps[to.parentId]
+  const fromParentComp = comps[from.parentId]
+  const currentCompId = fromParentComp?.children?.[from.index]
+  const toParentComp = comps[to.parentId]
 
-  if (toParentNormComp === undefined) {
-    return comps
+  if (toParentComp === undefined) {
+    throw new Error('А когда такое бывает? интересненько')
   }
 
   assertNotUndefined(currentCompId)
+  assertNotUndefined(fromParentComp)
 
-  const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, normComps)
-  const newFromSchema = replace(comps, fromParentNormComp?.indexInArray ?? 0, newFromParentComp)
-  const newNormFormSchema = normalizeWithIndex(newFromSchema)
+  const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, comps)
+  const newComps = replace(comps, fromParentComp.id, newFromParentComp)
 
-  const newToParentComp = pasteCompToParent(to.parentId, currentCompId, to.index, newNormFormSchema)
-  const newSchema = replace(newFromSchema, toParentNormComp?.indexInArray ?? 0, newToParentComp)
+  const newToParentComp = pasteCompToParent(to.parentId, currentCompId, to.index, newComps)
+  const newNewComps = replace(newComps, toParentComp?.id, newToParentComp)
 
-  return newSchema
+  return newNewComps
 }
 
 export function buildNewComp(componentName: string): Comp {
@@ -155,10 +150,10 @@ export function buildNewComp(componentName: string): Comp {
   throw new Error('Such component does not exist')
 }
 
-export function addCompToParent(parentId: string, index: number, comp: Comp, normComps: NormComps): Comp[] {
+export function addCompToParent(parentCompId: string, index: number, comp: Comp, comps: Norm<Comp>): Norm<Comp> {
   let newParentComp: Comp
 
-  const destinationParentNormComp = normComps[parentId]
+  const destinationParentNormComp = comps[parentCompId]
 
   assertNotUndefined(destinationParentNormComp)
 
@@ -169,31 +164,20 @@ export function addCompToParent(parentId: string, index: number, comp: Comp, nor
     newParentComp = replace(destinationParentNormComp, 'children', newDestinationParentCompChildren)
   }
 
-  // TODO написать функцию по денормализации
-  const denormalizedComps = Object.values(normComps).reduce<Comp[]>((acc, normComp) => {
-    if (newParentComp.id === normComp.id) {
-      acc.push(newParentComp)
-    } else {
-      acc.push({ ...normComp })
-    }
-    return acc
-  }, [])
+  const newComps = insert(comps, parentCompId, newParentComp)
+  const newNewComps = insert(newComps, comp.id, comp)
 
-  denormalizedComps.push(comp)
-
-  return denormalizedComps
+  return newNewComps
 }
 
-// TODO должен искать в Comp и NormComp
-export function findParent(id: string, comps: Comp[]): Comp {
-  const comp = comps.find(({ children }) => children?.includes(id))
+export function findParent(id: string, comps: Norm<Comp>): Comp {
+  const comp = Object.values(comps).find(({ children }) => children?.includes(id))
 
   assertNotUndefined(comp)
 
   return comp
 }
 
-// TODO должен искать в Comp и NormComp
-export function findParentId(id: string, comps: Comp[]): string {
+export function findParentId(id: string, comps: Norm<Comp>): string {
   return findParent(id, comps).id
 }
