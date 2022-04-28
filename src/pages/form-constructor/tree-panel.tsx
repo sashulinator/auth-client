@@ -1,7 +1,15 @@
-import Tree, { RenderItemParams, TreeData, TreeDestinationPosition, TreeItem, TreeSourcePosition } from '@atlaskit/tree'
+import Tree, {
+  RenderItemParams,
+  TreeData,
+  TreeDestinationPosition,
+  TreeItem,
+  TreeSourcePosition,
+  moveItemOnTree,
+  mutateTree,
+} from '@atlaskit/tree'
 import { ActionButton, IconButton, Modal, PrimaryButton, Stack } from '@fluentui/react'
 
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { ROOT_COMP_ID } from '@/constants/common'
@@ -22,25 +30,32 @@ const TreePanel: FC = (): JSX.Element => {
   const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
 
+  const [tree, setTree] = useState(() => buildTree(FSchema.comps))
+
   const [isPalleteModalOpen, openPalleteModal, closePalleteModal] = useBoolean(false)
 
   function pickComp(key: string) {
     return () => setPickedCompId(key)
   }
 
+  function onExpand(itemId: string | number) {
+    return () => setTree(mutateTree(tree, itemId, { isExpanded: true }))
+  }
+
+  function onCollapse(itemId: string | number) {
+    return () => setTree(mutateTree(tree, itemId, { isExpanded: false }))
+  }
+
   function buildRootItem(comps: Norm<Comp>): TreeData['items'] {
     return Object.values(comps)?.reduce<Record<string, TreeItem>>((acc, comp) => {
-      const children = comp?.childCompIds?.reduce<string[]>((acc, childId) => {
-        acc.push(childId)
-        return acc
-      }, [])
-
       acc[comp.id] = {
         id: comp.id,
         isExpanded: true,
-        ...(children?.length === 0 || children ? { children } : { children: [] }),
         data: comp,
+        children: comp.childCompIds || [],
+        hasChildren: comp.childCompIds !== undefined,
       }
+
       return acc
     }, {})
   }
@@ -63,18 +78,42 @@ const TreePanel: FC = (): JSX.Element => {
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
+    if (!to) {
+      return
+    }
+
+    const newTree = moveItemOnTree(tree, from, to)
+    setTree(newTree)
+
     const newFormSchema = moveComp(FSchema.comps, from, to)
     setFSchema({ ...FSchema, comps: newFormSchema })
   }
 
+  function ExpandIcon(props: { item: RenderItemParams['item'] }) {
+    if (!props.item.hasChildren) {
+      return null
+    }
+
+    return props.item.isExpanded ? (
+      <IconButton iconProps={{ iconName: 'ChevronDown' }} onClick={onCollapse(props.item.id)} />
+    ) : (
+      <IconButton iconProps={{ iconName: 'ChevronRight' }} onClick={onExpand(props.item.id)} />
+    )
+  }
+
   const renderItem = ({ item, provided }: RenderItemParams) => {
     const isSelected = item.data?.id === pickedFCompId
+
     return (
-      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-        {/* <span>{getIcon(item, onExpand, onCollapse)}</span> */}
-        <ActionButton onClick={pickComp(item.data.id)} styles={!isSelected ? undefined : buttonStyles}>
-          {item.data.name || ''}
-        </ActionButton>
+      <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+        <Stack horizontal>
+          <Stack className="leafIcons">
+            <ExpandIcon item={item} />
+          </Stack>
+          <ActionButton onClick={pickComp(item.data.id)} styles={!isSelected ? undefined : buttonStyles}>
+            {item.data.name || ''}
+          </ActionButton>
+        </Stack>
       </div>
     )
   }
@@ -102,17 +141,16 @@ const TreePanel: FC = (): JSX.Element => {
           TextInput
         </PrimaryButton>
       </Modal>
-      <Stack>
-        <Tree
-          tree={buildTree(FSchema.comps)}
-          renderItem={renderItem}
-          // onExpand={() => {}}
-          // onCollapse={() => {}}
-          onDragEnd={onDragEnd}
-          offsetPerLevel={PADDING_PER_LEVEL}
-          isDragEnabled
-        />
-      </Stack>
+      <Tree
+        tree={tree}
+        renderItem={renderItem}
+        // onExpand={() => {}}
+        // onCollapse={() => {}}
+        onDragEnd={onDragEnd}
+        offsetPerLevel={PADDING_PER_LEVEL}
+        isDragEnabled
+        isNestingEnabled
+      />
     </div>
   )
 }

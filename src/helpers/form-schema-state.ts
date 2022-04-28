@@ -74,11 +74,8 @@ export function pasteCompsToParent(
 
     if (destinationParentNormComp?.childCompIds === undefined) {
       newParentComp = replace(destinationParentNormComp, 'childCompIds', [currentCompId])
-      console.log('destinationParentComp.children', newParentComp)
     } else {
       const newDestinationParentCompChildren = insert(destinationParentNormComp.childCompIds, index, currentCompId)
-      console.log('newDestinationParentCompChildren', index, currentCompId)
-
       newParentComp = replace(destinationParentNormComp, 'childCompIds', newDestinationParentCompChildren)
     }
   })
