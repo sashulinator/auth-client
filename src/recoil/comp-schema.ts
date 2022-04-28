@@ -16,7 +16,7 @@ export const pickedCSchemaState = selector({
     const pickedFComp = get(pickedFCompState)
 
     if (pickedFComp) {
-      const pickedCSchema = compSchemas[pickedFComp.componentSchemaId]
+      const pickedCSchema = compSchemas[pickedFComp.compSchemaId]
 
       assertNotUndefined(pickedCSchema)
 

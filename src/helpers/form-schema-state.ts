@@ -51,12 +51,8 @@ export function removeCompsFromParent(
 /**
  * ! Returns parent comp
  */
-export function removeCompFromParent(
-  parentId: string | number,
-  indexOrId: number | string,
-  normComps: Norm<Comp>
-): Comp {
-  return removeCompsFromParent(parentId, [indexOrId], normComps)
+export function removeCompFromParent(parentId: string | number, indexOrId: number | string, comps: Norm<Comp>): Comp {
+  return removeCompsFromParent(parentId, [indexOrId], comps)
 }
 
 export function pasteCompsToParent(
@@ -116,7 +112,7 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   assertNotUndefined(currentCompId)
   assertNotUndefined(fromParentComp)
 
-  const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, from.index, comps)
+  const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, comps)
   const newComps = replace(comps, fromParentComp.id, newFromParentComp)
 
   const newToParentComp = pasteCompToParent(to.parentId, currentCompId, to.index, newComps)
@@ -130,8 +126,8 @@ export function buildNewComp(componentName: string): Comp {
     return {
       id: Math.random().toString(),
       name: 'TextInput',
-      componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-      componentName: 'TextField',
+      compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+      compName: 'TextField',
       // TODO строка initialPathPleaseChangeIt будет проверять валидатором
       // TODO такого значения быть не должно
       path: 'initialPathPleaseChangeIt' + Math.random().toString(),

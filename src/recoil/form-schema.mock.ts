@@ -10,8 +10,8 @@ export const FSchemaMock: Schema = {
     [ROOT_COMP_ID]: {
       id: ROOT_COMP_ID,
       name: 'stackRoot',
-      componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-      componentName: 'Stack',
+      compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+      compName: 'Stack',
       path: 'hello',
       type: 'component',
       props: {
@@ -28,8 +28,8 @@ export const FSchemaMock: Schema = {
     stackChild: {
       id: 'stackChild',
       name: 'stackChildName',
-      componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-      componentName: 'Stack',
+      compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+      compName: 'Stack',
       path: 'hello',
       type: 'component',
       props: {
@@ -46,8 +46,8 @@ export const FSchemaMock: Schema = {
     buttonOneId: {
       id: 'buttonOneId',
       name: 'КнопкаГлавная1',
-      componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
-      componentName: 'PrimaryButton',
+      compSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
+      compName: 'PrimaryButton',
       path: 'hello12',
       type: 'button',
       props: {
@@ -59,8 +59,8 @@ export const FSchemaMock: Schema = {
     buttonTwoId: {
       id: 'buttonTwoId',
       name: 'КнопкаГлавная2',
-      componentSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
-      componentName: 'PrimaryButton',
+      compSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
+      compName: 'PrimaryButton',
       path: 'world',
       type: 'button',
       props: {
@@ -71,24 +71,17 @@ export const FSchemaMock: Schema = {
     textInputOneId: {
       id: 'textInputOneId',
       name: 'ТекстовоеПоле1',
-      componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-      componentName: 'TextField',
+      compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+      compName: 'TextField',
       path: 'funny',
       defaultValue: 'init',
       type: 'input',
-      bindings: [
-        {
-          events: ['onInit'],
-          actions: ['setValue'],
-          componentIds: ['textInputTwoId'],
-        },
-      ],
     },
     textInputTwoId: {
       id: 'textInputTwoId',
       name: 'ТекстовоеПоле2',
-      componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-      componentName: 'TextField',
+      compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+      compName: 'TextField',
       path: 'kuku',
       type: 'input',
     },

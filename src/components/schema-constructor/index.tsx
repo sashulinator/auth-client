@@ -47,7 +47,7 @@ export const CompComponentFactory = (props: CompComponentFactory): JSX.Element =
 
   assertNotUndefined(comp)
 
-  if (/checkbox/.test(comp.componentName) && comp.type !== 'checkbox') {
+  if (/checkbox/.test(comp.compName) && comp.type !== 'checkbox') {
     throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
   }
 
@@ -61,7 +61,7 @@ export const CompComponentFactory = (props: CompComponentFactory): JSX.Element =
 //
 
 export const _ContentComponent = (props: DrawerComponentProps) => {
-  const Component = ReactComponents[props.comp.componentName]
+  const Component = ReactComponents[props.comp.compName]
 
   if (props.comp.childCompIds === undefined) {
     return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
@@ -80,7 +80,7 @@ const ContentComponent = memo(_ContentComponent)
 //
 
 const _FieldComponent = (props: DrawerComponentProps) => {
-  const Component = ReactComponents[props.comp.componentName]
+  const Component = ReactComponents[props.comp.compName]
   // const form = useForm()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

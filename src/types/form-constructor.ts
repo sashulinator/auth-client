@@ -1,17 +1,13 @@
 export interface Comp {
   id: string
-  componentSchemaId: string
-  componentName: string
+  compSchemaId: string
+  compName: string
   name: string
   type: string
   path: string
+  // дефвалуе вынести в пропс и юзер не должен в пас писать слово пропс для формы элемента
   defaultValue?: string
   props?: Record<string, unknown>
-  bindings?: {
-    events: string[]
-    actions: string[]
-    componentIds: string[]
-  }[]
   childCompIds?: string[]
 }
 

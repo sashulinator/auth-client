@@ -11,8 +11,8 @@ export const compSchemaMock: Record<string, Schema> = {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
         name: 'stackRoot',
-        componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-        componentName: 'Stack',
+        compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        compName: 'Stack',
         path: 'hello',
         type: 'component',
         props: {
@@ -20,13 +20,13 @@ export const compSchemaMock: Record<string, Schema> = {
             // childrenGap: 10,
           },
         },
-        children: ['ee4254ef-9099-8943-be68-51ce733b390', 'ee4254ef-9099-5543-be68-51ce733b3367'],
+        childCompIds: ['ee4254ef-9099-8943-be68-51ce733b390', 'ee4254ef-9099-5543-be68-51ce733b3367'],
       },
       'ee4254ef-9099-8943-be68-51ce733b390': {
         id: 'ee4254ef-9099-8943-be68-51ce733b390',
         name: 'ТестИнпут1',
-        componentName: 'TextField',
-        componentSchemaId: 'ee4254ef-9099-8943-be68-51ce733b870',
+        compName: 'TextField',
+        compSchemaId: 'ee4254ef-9099-8943-be68-51ce733b870',
         path: 'props.children',
         type: 'input',
         props: {
@@ -36,8 +36,8 @@ export const compSchemaMock: Record<string, Schema> = {
       'ee4254ef-9099-5543-be68-51ce733b3367': {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
         name: 'ТестЧекбокс1',
-        componentName: 'Checkbox',
-        componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        compName: 'Checkbox',
+        compSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
         path: 'props.disabled',
         type: 'checkbox',
         props: {
@@ -55,8 +55,8 @@ export const compSchemaMock: Record<string, Schema> = {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
         name: 'stackRoot',
-        componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-        componentName: 'Stack',
+        compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        compName: 'Stack',
         path: 'hello',
         type: 'component',
         props: {
@@ -64,12 +64,12 @@ export const compSchemaMock: Record<string, Schema> = {
             // childrenGap: 10,
           },
         },
-        children: ['ee4254ef-9099-5sd3-be68-51ce733b3367', 'ee4254ef-9099-5543-be68-51ce733b3367'],
+        childCompIds: ['ee4254ef-9099-5sd3-be68-51ce733b3367', 'ee4254ef-9099-5543-be68-51ce733b3367'],
       },
       'ee4254ef-9099-5sd3-be68-51ce733b3367': {
         id: 'ee4254ef-9099-5sd3-be68-51ce733b3367',
-        componentSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
-        componentName: 'Checkbox',
+        compSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        compName: 'Checkbox',
         path: 'props.horizontal',
         name: 'Checkbox',
         type: 'checkbox',
@@ -79,8 +79,8 @@ export const compSchemaMock: Record<string, Schema> = {
       },
       'ee4254ef-9099-5543-be68-51ce733b3367': {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
-        componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-        componentName: 'TextField',
+        compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        compName: 'TextField',
         path: 'props.tokens.padding',
         name: 'TextField',
         type: 'input',
@@ -99,8 +99,8 @@ export const compSchemaMock: Record<string, Schema> = {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
         name: 'stackRoot',
-        componentSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-        componentName: 'Stack',
+        compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        compName: 'Stack',
         path: 'hello',
         type: 'component',
         props: {
@@ -108,12 +108,12 @@ export const compSchemaMock: Record<string, Schema> = {
             // childrenGap: 10,
           },
         },
-        children: ['ee4254ef-9099-5543-be68-51ce733b3367', 'rr4254ef-9099-5643-be68-51ce733b3360'],
+        childCompIds: ['ee4254ef-9099-5543-be68-51ce733b3367', 'rr4254ef-9099-5643-be68-51ce733b3360'],
       },
       'ee4254ef-9099-5543-be68-51ce733b3367': {
         id: 'ee4254ef-9099-5543-be68-51ce733b3367',
-        componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-        componentName: 'TextField',
+        compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        compName: 'TextField',
         path: 'path',
         name: 'TextField',
         type: 'input',
@@ -123,9 +123,9 @@ export const compSchemaMock: Record<string, Schema> = {
       },
       'rr4254ef-9099-5643-be68-51ce733b3360': {
         id: 'rr4254ef-9099-5643-be68-51ce733b3360',
-        componentSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
+        compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
         path: 'defaultValue',
-        componentName: 'TextField',
+        compName: 'TextField',
         name: 'TextField',
         type: 'input',
         props: {
