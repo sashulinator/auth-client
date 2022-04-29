@@ -5,15 +5,15 @@ import Tree, {
   moveItemOnTree,
   mutateTree,
 } from '@atlaskit/tree'
-import { ActionButton, IconButton, Modal, PrimaryButton, Stack } from '@fluentui/react'
+import { ActionButton, IconButton, Stack } from '@fluentui/react'
 
+import { paletteModalState } from '../../palette-modal/model'
 import { buildTree } from '../lib/build-tree'
 import React, { FC, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { addCompToParent, buildNewComp, findParentId, moveComps as moveComp } from '@/helpers/form-schema-state'
+import { moveComps as moveComp } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
-import useBoolean from '@/utils/use-boolean'
 
 const PADDING_PER_LEVEL = 20
 
@@ -25,10 +25,8 @@ const buttonStyles = {
 const TreePanel: FC = (): JSX.Element => {
   const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-
+  const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(() => buildTree(FSchema.comps))
-
-  const [isPalleteModalOpen, openPalleteModal, closePalleteModal] = useBoolean(false)
 
   function pickComp(key: string) {
     return () => setPickedCompId(key)
@@ -86,26 +84,8 @@ const TreePanel: FC = (): JSX.Element => {
   return (
     <div className="TreePanel">
       <div className="addCompButton">
-        <IconButton iconProps={{ iconName: 'Add' }} onClick={openPalleteModal} />
+        <IconButton iconProps={{ iconName: 'Add' }} onClick={() => setPaletteOpen(true)} />
       </div>
-      <Modal titleAriaId={'Add comp'} isOpen={isPalleteModalOpen} onDismiss={closePalleteModal} isBlocking={false}>
-        <PrimaryButton
-          onClick={() => {
-            const newFormSchema = addCompToParent(
-              pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId',
-              0,
-              buildNewComp('TextInput'),
-              FSchema.comps
-            )
-
-            setFSchema({ ...FSchema, comps: newFormSchema })
-
-            closePalleteModal()
-          }}
-        >
-          TextInput
-        </PrimaryButton>
-      </Modal>
       <Tree
         tree={tree}
         renderItem={renderItem}

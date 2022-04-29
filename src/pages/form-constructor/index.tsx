@@ -1,8 +1,9 @@
 import './index.css'
 
 import CompPanel from './comp-panel'
+import PaletteModal from './palette-modal'
 import Preview from './preview'
-import TreePanel from './tree-panel/ui/tree-panel'
+import TreePanel from './tree-panel'
 import React, { FC } from 'react'
 
 const FormConstructor: FC = (): JSX.Element => {
@@ -11,6 +12,7 @@ const FormConstructor: FC = (): JSX.Element => {
       <TreePanel />
       <Preview />
       <CompPanel />
+      <PaletteModal />
     </div>
   )
 }

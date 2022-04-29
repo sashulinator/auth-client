@@ -118,7 +118,7 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   return newNewComps
 }
 
-export function buildNewComp(componentName: string): Comp {
+export function createNewComp(componentName: string): Comp {
   if (componentName === 'TextInput') {
     return {
       id: Math.random().toString(),
