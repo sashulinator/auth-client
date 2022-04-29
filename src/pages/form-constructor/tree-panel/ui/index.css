@@ -1,0 +1,69 @@
+.TreePanel {
+  background-color: rgba(31, 28, 28, 0.429);
+  border-right: 1px solid rgba(133, 133, 20, 0.447);
+  overflow: auto;
+  padding: 10px;
+}
+
+.TreePanel > .addCompButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 50%;
+  min-width: 50px;
+  max-width: 50px;
+  min-height: 50px;
+  max-height: 50px;
+  z-index: 2;
+}
+
+.TreePanel .TreeLeaf:focus {
+  outline: none !important;
+}
+
+.TreePanel .treeLeafContent {
+  position: relative;
+}
+
+.TreeLeaf .treeLeafBackgroundColor {
+  border: solid 2px transparent;
+  border-radius: 3px;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 4px);
+}
+
+.TreeLeaf.picked .TreeLeaf .treeLeafBackgroundColor {
+  background-color: var(--themePrimary);
+  z-index: 0;
+}
+
+.TreePanel .TreeLeaf:hover .treeLeafBackgroundColor {
+  background-color: rgba(255, 255, 255, 0.103);
+}
+
+.TreePanel .TreeLeaf:focus .treeLeafBackgroundColor {
+  border: solid 2px var(--themePrimary);
+}
+
+.TreePanel .treeLeafText {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  z-index: 1;
+  padding: 2px 2px 2px 2px;
+  height: 32px;
+}
+
+.TreeLeaf .treeLeafText {
+  padding-left: 36px;
+}
+
+.TreeLeaf.isExpandButton .treeLeafText {
+  padding-left: 2px;
+}
+
+.TreeLeaf .ExpandButton {
+  margin-left: 2px;
+}

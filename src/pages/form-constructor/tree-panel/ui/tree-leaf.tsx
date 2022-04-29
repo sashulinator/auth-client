@@ -1,28 +1,26 @@
-import { ActionButton, IconButton, Stack } from '@fluentui/react'
+import { IconButton, Stack, Text } from '@fluentui/react'
 
 import { TreeLeafProps } from '../types'
+import clsx from 'clsx'
 import React from 'react'
-
-const buttonStyles = {
-  root: { color: 'var(--themeDark)' },
-  rootDisabled: { color: 'var(--themeTertiary)' },
-}
 
 function TreeLeaf(p: TreeLeafProps): JSX.Element {
   const isPicked = p.item.data?.pickedFCompId === p.item.data?.comp.id
+  const isExpandButton = p.item.hasChildren
 
   return (
-    <div {...p.provided.draggableProps} {...p.provided.dragHandleProps} ref={p.provided.innerRef}>
-      <Stack horizontal>
-        <Stack className="leafIcons">
-          <ExpandIcon {...p} />
-        </Stack>
-        <ActionButton
-          onClick={() => p.item.data?.setPickedFCompId(p.item.data.comp.id)}
-          styles={isPicked ? buttonStyles : undefined}
-        >
+    <div
+      className={clsx('TreeLeaf', isPicked && 'picked', isExpandButton && 'isExpandButton')}
+      {...p.provided.draggableProps}
+      {...p.provided.dragHandleProps}
+      ref={p.provided.innerRef}
+    >
+      <Stack className="treeLeafContent" horizontal verticalAlign="center">
+        <div className="treeLeafBackgroundColor" />
+        {isExpandButton && <ExpandButton {...p} />}
+        <Text as="div" onClick={() => p.item.data?.setPickedFCompId(p.item.data.comp.id)} className="treeLeafText">
           {p.item.data?.comp.name || ''}
-        </ActionButton>
+        </Text>
       </Stack>
     </div>
   )
@@ -30,14 +28,16 @@ function TreeLeaf(p: TreeLeafProps): JSX.Element {
 
 export default TreeLeaf
 
-function ExpandIcon(p: TreeLeafProps) {
-  if (!p.item.hasChildren) {
-    return null
+function ExpandButton(p: TreeLeafProps) {
+  function toggle() {
+    p.item.isExpanded ? p.onCollapse(p.item.id) : p.onExpand(p.item.id)
   }
 
-  return p.item.isExpanded ? (
-    <IconButton iconProps={{ iconName: 'ChevronDown' }} onClick={() => p.onCollapse(p.item.id)} />
-  ) : (
-    <IconButton iconProps={{ iconName: 'ChevronRight' }} onClick={() => p.onExpand(p.item.id)} />
+  return (
+    <IconButton
+      className={clsx('ExpandButton', p.item.isExpanded && 'turnChildRight90', 'transitionChild01')}
+      iconProps={{ iconName: 'ChevronRight' }}
+      onClick={toggle}
+    />
   )
 }

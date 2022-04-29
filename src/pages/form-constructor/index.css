@@ -13,22 +13,10 @@
   border-right: 1px solid rgba(133, 133, 20, 0.447);
   position: absolute;
   width: 300px;
-  overflow: auto;
   height: 100%;
   top: 0;
   left: 0;
   z-index: 300;
-}
-
-.TreePanel > .addCompButton {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-}
-
-.TreePanel .leafIcons {
-  width: 32px;
-  height: 32px;
 }
 
 .Preview {
