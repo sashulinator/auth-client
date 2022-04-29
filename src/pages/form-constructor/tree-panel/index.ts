@@ -1,1 +1,1 @@
-export { default } from './ui/tree-panel'
+export { default } from './ui'

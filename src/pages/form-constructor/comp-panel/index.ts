@@ -1,1 +1,1 @@
-export { default } from './ui/comp-panel'
+export { default } from './ui'

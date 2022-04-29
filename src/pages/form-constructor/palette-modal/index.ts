@@ -1,1 +1,1 @@
-export { default } from './ui/palette-modal'
+export { default } from './ui'
