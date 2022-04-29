@@ -1,8 +1,9 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { compSchemaMock } from './comp-schema.mock'
-import { pickedFCompState } from './form-schema'
 import { atom, selector } from 'recoil'
+
+import { pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
 
 export const CSchemasState = atom({
   key: 'CSchemasState',

@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { moveComps as moveComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
+import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
 
 const PADDING_PER_LEVEL = 20
 

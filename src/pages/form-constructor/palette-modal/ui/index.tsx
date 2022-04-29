@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { addCompToParent, createNewComp, findParentId } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
+import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)

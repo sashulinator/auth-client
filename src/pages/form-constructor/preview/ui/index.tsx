@@ -3,7 +3,7 @@ import { Form } from 'react-final-form'
 import { useRecoilState } from 'recoil'
 
 import { CompDrawer } from '@/components/schema-constructor'
-import { FSchemaState } from '@/recoil/form-schema'
+import { FSchemaState } from '@/pages/form-constructor/preview/model/form-schema'
 
 const Preview: FC = (): JSX.Element => {
   const [FSchema] = useRecoilState(FSchemaState)

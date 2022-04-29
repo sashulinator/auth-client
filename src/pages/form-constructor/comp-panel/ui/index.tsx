@@ -1,5 +1,6 @@
 import { PrimaryButton, Stack } from '@fluentui/react'
 
+import { pickedCSchemaState } from '../model/comp-schema'
 import arrayMutators from 'final-form-arrays'
 import React, { FC } from 'react'
 import { Field, Form } from 'react-final-form'
@@ -10,8 +11,7 @@ import FieldError from '@/components/field-error'
 import { CompDrawer } from '@/components/schema-constructor'
 import CustomTextField from '@/components/text-field'
 import { removeComp } from '@/helpers/form-schema-state'
-import { pickedCSchemaState } from '@/recoil/comp-schema'
-import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/recoil/form-schema'
+import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
 
 const CompPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
