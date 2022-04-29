@@ -90,6 +90,39 @@ export const compSchemaMock: Record<string, Schema> = {
       },
     },
   },
+  checkboxCompSchemaId: {
+    id: 'checkboxCompSchemaId',
+    name: 'Checkbox',
+    title: 'Checkbox',
+    description: 'checkbox',
+    comps: {
+      [ROOT_COMP_ID]: {
+        id: ROOT_COMP_ID,
+        name: 'stackRoot',
+        compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        compName: 'Stack',
+        path: 'hello',
+        type: 'component',
+        props: {
+          tokens: {
+            // childrenGap: 10,
+          },
+        },
+        childCompIds: ['ee4254ef-9099-5543-be68-51ce733b3367'],
+      },
+      'ee4254ef-9099-5543-be68-51ce733b3367': {
+        id: 'ee4254ef-9099-5543-be68-51ce733b3367',
+        name: 'ТестЧекбокс1',
+        compName: 'Checkbox',
+        compSchemaId: 'ee4254ef-9099-8943-8968-51ce733b870',
+        path: 'props.disabled',
+        type: 'checkbox',
+        props: {
+          label: 'неактивный',
+        },
+      },
+    },
+  },
   'ee4254ef-9099-4289-be68-51ce733b3376': {
     id: 'ee4254ef-9099-4289-be68-51ce733b3376',
     name: 'Stack',

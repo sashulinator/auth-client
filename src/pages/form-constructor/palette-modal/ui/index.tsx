@@ -12,36 +12,24 @@ const PaletteModal: FC = (): JSX.Element => {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
 
+  function onAdd(componentName: string) {
+    const createdNewComp = createNewComp(componentName)
+    const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
+
+    const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
+
+    setFSchema({ ...FSchema, comps: newFormSchema })
+    setPickedCompId(createdNewComp.id)
+    setOpen(false)
+  }
+
   return (
     <Modal titleAriaId={'Add comp'} isOpen={isOpen} onDismiss={() => setOpen(false)} isBlocking={false}>
-      <PrimaryButton
-        onClick={() => {
-          const createdNewComp = createNewComp('TextInput')
-          const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
-
-          const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
-
-          setFSchema({ ...FSchema, comps: newFormSchema })
-          setPickedCompId(createdNewComp.id)
-          setOpen(false)
-        }}
-      >
-        TextInput
-      </PrimaryButton>
-      <PrimaryButton
-        onClick={() => {
-          const createdNewComp = createNewComp('PrimaryButton')
-          const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
-
-          const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
-
-          setFSchema({ ...FSchema, comps: newFormSchema })
-          setPickedCompId(createdNewComp.id)
-          setOpen(false)
-        }}
-      >
-        PrimaryButton
-      </PrimaryButton>
+      <PrimaryButton onClick={() => onAdd('TextInput')}>TextInput</PrimaryButton>
+      <PrimaryButton onClick={() => onAdd('PrimaryButton')}>PrimaryButton</PrimaryButton>
+      <PrimaryButton onClick={() => onAdd('Stack')}>Stack</PrimaryButton>
+      <PrimaryButton onClick={() => onAdd('Checkbox')}>Checkbox</PrimaryButton>
+      <PrimaryButton onClick={() => onAdd('Text')}>Text</PrimaryButton>
     </Modal>
   )
 }
