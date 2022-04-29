@@ -1,6 +1,5 @@
 .TreePanel {
-  background-color: rgba(31, 28, 28, 0.429);
-  border-right: 1px solid rgba(133, 133, 20, 0.447);
+  background-color: var(--white);
   overflow: auto;
   padding: 10px;
 }
