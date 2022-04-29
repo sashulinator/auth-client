@@ -2,7 +2,7 @@ import './index.css'
 
 import CompPanel from './comp-panel'
 import Preview from './preview'
-import TreePanel from './tree-panel'
+import TreePanel from './tree-panel/ui/tree-panel'
 import React, { FC } from 'react'
 
 const FormConstructor: FC = (): JSX.Element => {

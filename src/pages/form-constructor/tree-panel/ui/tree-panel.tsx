@@ -1,22 +1,18 @@
 import Tree, {
   RenderItemParams,
-  TreeData,
   TreeDestinationPosition,
-  TreeItem,
   TreeSourcePosition,
   moveItemOnTree,
   mutateTree,
 } from '@atlaskit/tree'
 import { ActionButton, IconButton, Modal, PrimaryButton, Stack } from '@fluentui/react'
 
+import { buildTree } from '../lib/build-tree'
 import React, { FC, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { ROOT_COMP_ID } from '@/constants/common'
 import { addCompToParent, buildNewComp, findParentId, moveComps as moveComp } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState } from '@/recoil/form-schema'
-import { Norm } from '@/types/entities'
-import { Comp } from '@/types/form-constructor'
 import useBoolean from '@/utils/use-boolean'
 
 const PADDING_PER_LEVEL = 20
@@ -44,37 +40,6 @@ const TreePanel: FC = (): JSX.Element => {
 
   function onCollapse(itemId: string | number) {
     return () => setTree(mutateTree(tree, itemId, { isExpanded: false }))
-  }
-
-  function buildRootItem(comps: Norm<Comp>): TreeData['items'] {
-    return Object.values(comps)?.reduce<Record<string, TreeItem>>((acc, comp) => {
-      acc[comp.id] = {
-        id: comp.id,
-        isExpanded: true,
-        data: comp,
-        children: comp.childCompIds || [],
-        hasChildren: comp.childCompIds !== undefined,
-      }
-
-      return acc
-    }, {})
-  }
-
-  function buildTree(comps: Norm<Comp>): TreeData {
-    const rootId = {
-      id: 'rootId',
-      isExpanded: true,
-      data: 'test',
-      children: [ROOT_COMP_ID],
-    }
-
-    return {
-      rootId: rootId.id,
-      items: {
-        rootId,
-        ...buildRootItem(comps),
-      },
-    }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
