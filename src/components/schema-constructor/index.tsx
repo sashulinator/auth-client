@@ -1,4 +1,4 @@
-import { Checkbox, PrimaryButton, Stack } from '@fluentui/react'
+import { Checkbox, PrimaryButton, Stack, Text } from '@fluentui/react'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 // import { runAction } from '../../helpers/constructor-actions'
@@ -17,6 +17,7 @@ export const ReactComponents: Record<string, any> = {
   Checkbox,
   TextField: CustomTextField,
   PrimaryButton,
+  Text,
 }
 
 export interface CompDrawerProps {
