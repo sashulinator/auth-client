@@ -28,6 +28,20 @@ const PaletteModal: FC = (): JSX.Element => {
       >
         TextInput
       </PrimaryButton>
+      <PrimaryButton
+        onClick={() => {
+          const createdNewComp = createNewComp('PrimaryButton')
+          const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
+
+          const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
+
+          setFSchema({ ...FSchema, comps: newFormSchema })
+          setPickedCompId(createdNewComp.id)
+          setOpen(false)
+        }}
+      >
+        PrimaryButton
+      </PrimaryButton>
     </Modal>
   )
 }

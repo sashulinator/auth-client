@@ -56,6 +56,17 @@ export const FSchemaMock: Schema = {
         children: 'hello',
       },
     },
+    textOneId: {
+      id: 'textOneId',
+      name: 'Текст1',
+      compSchemaId: 'textCompSchemaId',
+      compName: 'Text',
+      path: 'hello12',
+      type: 'component',
+      props: {
+        children: 'hello',
+      },
+    },
     buttonTwoId: {
       id: 'buttonTwoId',
       name: 'КнопкаГлавная2',

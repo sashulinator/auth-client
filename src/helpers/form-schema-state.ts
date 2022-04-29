@@ -132,6 +132,17 @@ export function createNewComp(componentName: string): Comp {
     }
   }
 
+  if (componentName === 'PrimaryButton') {
+    return {
+      id: Math.random().toString(),
+      name: 'КнопкаГлавная1',
+      compSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
+      compName: 'PrimaryButton',
+      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
+      type: 'button',
+    }
+  }
+
   throw new Error('Such component does not exist')
 }
 
