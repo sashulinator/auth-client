@@ -1,7 +1,7 @@
 import { PrimaryButton, Stack } from '@fluentui/react'
+import { assertNotNull } from '@savchenko91/schema-validator'
 
 import { pickedCSchemaState } from '../model/comp-schema'
-import arrayMutators from 'final-form-arrays'
 import React, { FC } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,8 @@ import { CompDrawer } from '@/components/schema-constructor'
 import CustomTextField from '@/components/text-field'
 import { removeComp } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
+import { Comp } from '@/types/form-constructor'
+import { replace } from '@/utils/change-unmutable'
 
 const CompPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
@@ -20,28 +22,29 @@ const CompPanel: FC = (): JSX.Element => {
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
 
+  function onSubmit(comp: Comp) {
+    const newComps = replace(FSchema.comps, comp.id, comp)
+    setFSchema({ ...FSchema, comps: newComps })
+  }
+
+  function onDelete() {
+    assertNotNull(pickedFComp)
+
+    const comps = removeComp(pickedFComp?.id, FSchema.comps)
+    setFSchema({ ...FSchema, comps: comps })
+    setPickedFCompId('')
+  }
+
   return (
     <div className="CompPanel">
       {pickedCSchema && pickedFComp && (
-        <Form
+        <Form<Comp, Comp>
           initialValues={pickedFComp}
-          mutators={{
-            // potentially other mutators could be merged here
-            ...arrayMutators,
-          }}
-          onSubmit={console.log}
+          onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                <PrimaryButton
-                  onClick={() => {
-                    const comps = removeComp(pickedFComp.id, FSchema.comps)
-                    setFSchema({ ...FSchema, comps: comps })
-                    setPickedFCompId('')
-                  }}
-                >
-                  delete
-                </PrimaryButton>
+                <PrimaryButton onClick={onDelete}>delete</PrimaryButton>
                 <Stack tokens={{ padding: '20px 20px 0' }}>
                   <Stack as="h2">{pickedFComp.name}</Stack>
                 </Stack>
