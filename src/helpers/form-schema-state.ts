@@ -132,6 +132,49 @@ export function createNewComp(componentName: string): Comp {
     }
   }
 
+  if (componentName === 'PrimaryButton') {
+    return {
+      id: Math.random().toString(),
+      name: 'КнопкаГлавная1',
+      compSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
+      compName: 'PrimaryButton',
+      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
+      type: 'button',
+    }
+  }
+
+  if (componentName === 'Stack') {
+    return {
+      id: Math.random().toString(),
+      name: 'stackChildName',
+      compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+      compName: 'Stack',
+      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
+      type: 'component',
+    }
+  }
+
+  if (componentName === 'Checkbox') {
+    return {
+      id: Math.random().toString(),
+      name: 'Checkbox',
+      compSchemaId: 'checkboxCompSchemaId',
+      compName: 'Checkbox',
+      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
+      type: 'checkbox',
+    }
+  }
+
+  if (componentName === 'Text') {
+    return {
+      id: Math.random().toString(),
+      name: 'Текст1',
+      compSchemaId: 'textCompSchemaId',
+      compName: 'Text',
+      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
+      type: 'component',
+    }
+  }
   throw new Error('Such component does not exist')
 }
 
