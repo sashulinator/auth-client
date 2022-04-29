@@ -1,16 +1,16 @@
 import { ThemeProvider } from '@fluentui/react'
 
-import { darkTheme } from './themes'
+import { defaultTheme } from './themes'
 import React, { FC } from 'react'
 
 const MyThemeProvider: FC = ({ children }) => {
   setCSSVariables({
-    ...darkTheme.palette,
+    ...defaultTheme.palette,
     headerHeight: 50,
     errorColor: '#ff8080',
   })
 
-  return <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>
+  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
 }
 
 const setCSSVariable = (key: string, value?: number | string) => {
