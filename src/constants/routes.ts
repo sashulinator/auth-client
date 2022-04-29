@@ -1,4 +1,11 @@
 const ROUTES = {
+  FORM_CONSTRUCTOR: {
+    NAME: 'form constructor',
+    PATH: '/form-constructor',
+    buildURL() {
+      return this.PATH
+    },
+  },
   LOGIN: {
     NAME: 'login',
     PATH: '/login',

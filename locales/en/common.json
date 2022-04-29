@@ -1,8 +1,12 @@
 {
+  "fieldNames": {
+    "name": "name"
+  },
   "pagesNames": {
     "createUser": "Create user",
     "userList": "Users",
-    "login": "Login"
+    "login": "Login",
+    "formConstructor": "Form constructor"
   },
   "userPage": {
     "searchByNameEmail": "Search by name or email",
@@ -11,7 +15,12 @@
     "users": "users",
     "pages": "pages"
   },
+  "formConstructorPage": {
+    "bindings": "Bindings",
+    "addBindings": "Add bindings"
+  },
   "buttons": {
+    "add": "Add",
     "ok": "Ok",
     "cancel": "Cancel",
     "save": "Save",
@@ -44,7 +53,11 @@
   },
   "P2002": "already exists",
   "assertString": "required",
-  "assertNotMoreThan": "more than {{- _value2}}",
+  "assertNotMoreThan": "more than {{- _input2}}",
   "assertNotUndefined": "required",
-  "assertMatchPattern": "does not match the pattern: {{- _value2}}"
+  "assertMatchPattern": "does not match the pattern: {{- _input2}}",
+  "assertMatchPattern/@.*\\.*./": "does not match email pattern",
+  "assertMatchPattern/[A-Z]/": "must contain uppercase letter",
+  "assertMatchPattern/[a-z]/": "must contain lowercase letter",
+  "assertMatchPattern/[0-9]/": "must contain number"
 }

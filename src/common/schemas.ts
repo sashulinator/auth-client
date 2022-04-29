@@ -1,46 +1,42 @@
 import {
-  assertMatchPattern,
-  assertString,
-  assertUndefined,
+  _undefined,
+  and,
+  buildErrorTree,
+  matchPattern,
+  notEmptyString,
   only,
   or,
-  primitive,
+  string,
   withValue,
+  wrap,
 } from '@savchenko91/schema-validator'
 
-import { idSchemaStructure } from './validators'
+import { CreateUser, UpdateUser } from './types'
 
-// prettier-ignore
-export const createUserSchema = only({
-  username: primitive(
-    assertString,
-    withValue(/^(\w*)$/, assertMatchPattern)
-  ),
-  password: primitive(assertString),
-  email: primitive(
-    assertString,
-    withValue(/@.*\.*./, assertMatchPattern)
-  ),
-  fullname: or(
-    primitive(assertString),
-    primitive(assertUndefined)
-  )
-})
+const bindedWrap = wrap.bind({ handleError: buildErrorTree })
 
-// prettier-ignore
-export const updateUserSchema = only({
-  ...idSchemaStructure,
-  username: primitive(
-    assertString,
-    withValue(/^(\w*)$/, assertMatchPattern)
-  ),
-  password: or(primitive(assertUndefined), primitive(assertString)),
-  email: primitive(
-    assertString,
-    withValue(/@.*\.*./, assertMatchPattern)
-  ),
-  fullname: or(
-    primitive(assertString),
-    primitive(assertUndefined)
-  )
-})
+export const createUserValidator = bindedWrap(
+  only<CreateUser>({
+    username: and(string, withValue(/^(\w*)$/, matchPattern)),
+    password: and(
+      string,
+      notEmptyString,
+      withValue(/[A-Z]/, matchPattern),
+      withValue(/[a-z]/, matchPattern),
+      withValue(/[0-9]/, matchPattern)
+    ),
+    email: and(string, withValue(/@.*\.*./, matchPattern)),
+    fullname: or(string, _undefined),
+  })
+)
+
+export const updateUserValidator = bindedWrap(
+  only<UpdateUser>({
+    ...createUserValidator,
+    id: string,
+    password: or(
+      and(withValue(/[A-Z]/, matchPattern), withValue(/[a-z]/, matchPattern), withValue(/[0-9]/, matchPattern)),
+      _undefined
+    ),
+  })
+)

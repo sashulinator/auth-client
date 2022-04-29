@@ -4,7 +4,6 @@ import { OnStage, ServerError } from '../types/transfer'
 import CONSTANTS from './user.constants'
 
 import { CreateUserInput, UpdateUserInput } from '@/types/entities'
-import { RawAPIAction } from '@/utils/create-api-actions'
 
 interface GetListParams {
   perPage: number
@@ -12,16 +11,18 @@ interface GetListParams {
   searchQuery?: string
 }
 
-export function getList(params: GetListParams, onStage?: OnStage): RawAPIAction {
+export function getList(params: GetListParams, onStage?: OnStage<ServerError>): APIActionAlt<ServerError> {
   const { perPage, currentPage, searchQuery } = params
 
   const skip = params.perPage * (params.currentPage - 1)
 
   return {
-    url: '/api/v1/users',
+    url: `/api/v1/users`,
+    method: 'GET',
     query: { skip, take: perPage, searchQuery: searchQuery },
     payload: { currentPage },
-    method: 'GET',
+    stageActionTypes: CONSTANTS.GET_LIST,
+    type,
     ...onStage,
   }
 }

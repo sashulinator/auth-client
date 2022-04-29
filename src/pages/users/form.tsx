@@ -8,11 +8,10 @@ import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 
 import store from '@/app/redux-store'
-import { createUserSchema, updateUserSchema } from '@/common/schemas'
+import { createUserValidator, updateUserValidator } from '@/common/schemas'
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
 import { clearValidationErrorsOnDestroy } from '@/helpers/clear-validation-errors'
-import { validateAdapter as by } from '@/helpers/validators'
 import * as userActions from '@/redux/user.actions'
 import * as userSelectors from '@/redux/user.selector'
 import { CreateUserInput, UpdateUserInput } from '@/types/entities'
@@ -25,17 +24,16 @@ type FormUserInput = CreateUserInput & UpdateUserInput
 interface Props {
   initialValues: undefined | FormUserInput
   closeFormPanel: () => void
-  onSucces: () => void
+  onSuccess: () => void
 }
 
 const CreateUser: FC<Props> = (props): JSX.Element => {
   const { t } = useTranslation()
 
   const actionName = !props.initialValues ? 'create' : 'update'
-
-  const userSchema = !props.initialValues ? createUserSchema : updateUserSchema
-
   const userState = useSelector(userSelectors[actionName])
+
+  const userValidator = !props.initialValues ? createUserValidator : updateUserValidator
 
   const initialValues = pick(props.initialValues, ['username', 'name', 'password', 'email', 'id'])
 
@@ -44,7 +42,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
   const onSubmit: FormProps<FormUserInput, FormUserInput>['onSubmit'] = (formData, formApi, setErrors) => {
     const onSuccess = () => {
       props.closeFormPanel()
-      props.onSucces()
+      props.onSuccess()
     }
 
     const onFail: OnFail<ServerError> = ({ body }) => {
@@ -63,6 +61,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
   return (
     <Form<FormUserInput, FormUserInput>
       onSubmit={onSubmit}
+      validate={userValidator}
       initialValues={initialValues}
       render={(formProps) => {
         return (
@@ -74,7 +73,7 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
                 childrenGap: 10,
               }}
             >
-              <Field<string> name="username" validate={by(userSchema)}>
+              <Field<string> name="username">
                 {({ input, meta }) => [
                   <CustomTextField
                     key="1"
@@ -86,19 +85,19 @@ const CreateUser: FC<Props> = (props): JSX.Element => {
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                 ]}
               </Field>
-              <Field<string> name="fullname" validate={by(userSchema)}>
+              <Field<string> name="fullname">
                 {({ input, meta }) => [
                   <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                 ]}
               </Field>
-              <Field<string> name="email" validate={by(userSchema)}>
+              <Field<string> name="email">
                 {({ input, meta }) => [
                   <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,
                 ]}
               </Field>
-              <Field<string> type="password" name="password" validate={by(userSchema)}>
+              <Field<string> type="password" name="password">
                 {({ input, meta }) => [
                   <CustomTextField key="1" label={t(`entities.user.${input.name}`)} {...input} />,
                   <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />,

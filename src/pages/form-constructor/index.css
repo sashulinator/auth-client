@@ -1,0 +1,50 @@
+.FormConstructor {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #454544;
+}
+
+.TreePanel {
+  background-color: rgba(31, 28, 28, 0.429);
+  border-right: 1px solid rgba(133, 133, 20, 0.447);
+  position: absolute;
+  width: 300px;
+  overflow: auto;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 300;
+}
+
+.TreePanel > .addCompButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.TreePanel .leafIcons {
+  width: 32px;
+  height: 32px;
+}
+
+.Preview {
+  height: calc(100% - 60px);
+  width: 700px;
+  transform: translateX(-60px);
+  background-color: var(--neutralLighter);
+  margin: 50px;
+}
+
+.CompPanel {
+  border-left: 1px solid rgba(133, 133, 20, 0.447);
+  position: absolute;
+  height: 100%;
+  width: 300px;
+  background-color: rgba(31, 28, 28, 0.429);
+  top: 0;
+  right: 0;
+}

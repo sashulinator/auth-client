@@ -9,6 +9,7 @@ import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom'
+import { RecoilRoot } from 'recoil'
 
 export const App = () => {
   initializeIcons()
@@ -16,11 +17,13 @@ export const App = () => {
   return (
     <Suspense fallback={<></>}>
       <Provider store={store}>
-        <ThemeProvider>
-          <HistoryRouter history={history}>
-            <RootLayer />
-          </HistoryRouter>
-        </ThemeProvider>
+        <RecoilRoot>
+          <ThemeProvider>
+            <HistoryRouter history={history}>
+              <RootLayer />
+            </HistoryRouter>
+          </ThemeProvider>
+        </RecoilRoot>
       </Provider>
     </Suspense>
   )

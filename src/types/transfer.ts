@@ -32,9 +32,9 @@ export interface ErrorWithCode {
 export interface ServerCollectableError extends ErrorWithCode {
   _message: string
   _key: string
-  _value: unknown
+  _input?: unknown
   _key2?: string
-  _value2?: unknown
+  _input2: unknown
 }
 
 export interface ServerError extends ErrorWithCode {

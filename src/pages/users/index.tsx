@@ -60,7 +60,7 @@ const List: FC = (): JSX.Element => {
   function getUserList(page?: number) {
     userListState?.abortController?.abort()
     const currentPage = page || userListState.currentPage
-    setTimeout(() => store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery })))
+    store.dispatch(userActions.getList({ currentPage, perPage: PER_PAGE, searchQuery }))
   }
 
   function pruneMany() {
@@ -78,7 +78,7 @@ const List: FC = (): JSX.Element => {
   }
 
   const userForm = (
-    <UserForm onSucces={onFormSuccess} initialValues={selectedUsers[0]} closeFormPanel={closeFormPanel} />
+    <UserForm onSuccess={onFormSuccess} initialValues={selectedUsers[0]} closeFormPanel={closeFormPanel} />
   )
 
   return (

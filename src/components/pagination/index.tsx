@@ -1,8 +1,9 @@
+import { isNumber } from '@savchenko91/schema-validator'
+
 import './index.css'
+
 import { useInputValue } from './use-input-value'
 import React, { FC } from 'react'
-
-import { isNumber } from '@/utils/is-number'
 
 export interface PaginationInputProps {
   ariaLabel?: string

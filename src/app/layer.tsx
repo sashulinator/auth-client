@@ -1,9 +1,11 @@
 import { Stack } from '@fluentui/react'
 
-import './common.css'
-import Header from './header'
-import './index.css'
 import './reset.css'
+
+import './common.css'
+import './index.css'
+
+import Header from './header'
 import RootRoutes from './root-routes'
 import React, { FC } from 'react'
 
