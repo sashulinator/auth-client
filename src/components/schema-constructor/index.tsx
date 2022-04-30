@@ -1,24 +1,13 @@
-import { Checkbox, PrimaryButton, Stack, Text } from '@fluentui/react'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import componentList from './lib/component-list'
 // import { runAction } from '../../helpers/constructor-actions'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
 import FieldError from '@/components/field-error'
-import CustomTextField from '@/components/text-field'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { Norm } from '@/types/entities'
-import { Comp } from '@/types/form-constructor'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const ReactComponents: Record<string, any> = {
-  Stack,
-  Checkbox,
-  TextField: CustomTextField,
-  PrimaryButton,
-  Text,
-}
+import { Comp, Norm } from '@/types/form-constructor'
 
 export interface CompDrawerProps {
   comps: Norm<Comp>
@@ -62,7 +51,7 @@ export const CompComponentFactory = (props: CompComponentFactory): JSX.Element =
 //
 
 export const _ContentComponent = (props: DrawerComponentProps) => {
-  const Component = ReactComponents[props.comp.compName]
+  const Component = componentList[props.comp.compName]
 
   if (props.comp.childCompIds === undefined) {
     return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
@@ -81,7 +70,7 @@ const ContentComponent = memo(_ContentComponent)
 //
 
 const _FieldComponent = (props: DrawerComponentProps) => {
-  const Component = ReactComponents[props.comp.compName]
+  const Component = componentList[props.comp.compName]
   // const form = useForm()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
