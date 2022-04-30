@@ -157,7 +157,7 @@ export function createNewComp(componentName: string): Comp {
     return {
       id: Math.random().toString(),
       name: 'Checkbox',
-      compSchemaId: 'checkboxCompSchemaId',
+      compSchemaId: 'ee4254ef-9099-9089-7468-89ce733b3376',
       compName: 'Checkbox',
       path: 'initialPathPleaseChangeIt' + Math.random().toString(),
       type: 'checkbox',

@@ -1,5 +1,3 @@
-import { assertNotUndefined } from '@savchenko91/schema-validator'
-
 import { atom, selector } from 'recoil'
 
 import { pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
@@ -19,7 +17,9 @@ export const pickedCSchemaState = selector({
     if (pickedFComp && compSchemas) {
       const pickedCSchema = compSchemas[pickedFComp.compSchemaId]
 
-      assertNotUndefined(pickedCSchema)
+      if (pickedCSchema === undefined) {
+        return null
+      }
 
       return pickedCSchema
     }
