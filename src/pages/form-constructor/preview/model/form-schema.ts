@@ -1,12 +1,29 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { atom, selector } from 'recoil'
+import uuid from 'uuid-random'
 
+import { ROOT_COMP_ID } from '@/constants/common'
 import { Schema } from '@/types/form-constructor'
 
 export const FSchemaState = atom<null | Schema>({
   key: 'FSchemaState',
-  default: null,
+  default: {
+    id: uuid(),
+    name: 'Name',
+    title: 'title',
+    description: 'description',
+    comps: {
+      [ROOT_COMP_ID]: {
+        id: ROOT_COMP_ID,
+        name: 'stackRoot',
+        compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
+        compName: 'Stack',
+        path: 'hello',
+        type: 'component',
+      },
+    },
+  },
 })
 
 export const pickedFCompIdState = atom({
