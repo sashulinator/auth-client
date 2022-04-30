@@ -19,7 +19,7 @@
 
 .Preview {
   height: calc(100% - 60px);
-  width: 700px;
+  min-width: 300px;
   margin: 50px;
   background-color: var(--white);
 }
