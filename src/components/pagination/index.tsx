@@ -17,6 +17,7 @@ export interface PaginationButtonProps {
   onClick?: () => void
   disabled: boolean
   ariaLabel: string
+  children: React.ReactNode
 }
 
 export type PaginationProps = {

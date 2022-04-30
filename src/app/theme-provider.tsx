@@ -1,9 +1,13 @@
 import { ThemeProvider } from '@fluentui/react'
 
 import { defaultTheme } from './themes'
-import React, { FC } from 'react'
+import React from 'react'
 
-const MyThemeProvider: FC = ({ children }) => {
+interface MyThemeProviderProps {
+  children: React.ReactNode
+}
+
+const MyThemeProvider = ({ children }: MyThemeProviderProps) => {
   setCSSVariables({
     ...defaultTheme.palette,
     headerHeight: 50,

@@ -30,17 +30,16 @@ const Header: FC = (): JSX.Element => {
     }
   }
 
+  const formConstructorText = t('pagesNames.formConstructor')
+
   return (
     <Stack as="header" horizontal horizontalAlign="space-between" className="Header">
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 10, padding: '15px 40px' }}>
         <li>
-          <Link to={ROUTES.FORM_CONSTRUCTOR.buildURL()}>{t('pagesNames.formConstructor')}</Link>
+          <Link to={ROUTES.FORM_CONSTRUCTOR.buildURL()}>{formConstructorText}</Link>
         </li>
       </Stack>
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 20, padding: '15px 40px' }}>
-        <li>
-          <Link to={ROUTES.LOGIN.buildURL()}>{t('pagesNames.login')}</Link>
-        </li>
         <li>
           <Dropdown
             aria-label="Change language"

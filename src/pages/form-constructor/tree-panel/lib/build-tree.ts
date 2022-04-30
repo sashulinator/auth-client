@@ -3,8 +3,7 @@ import { TreeData, TreeItem } from '@atlaskit/tree'
 import { TreeItemAdditionalData } from '../types'
 
 import { ROOT_COMP_ID } from '@/constants/common'
-import { Norm } from '@/types/entities'
-import { Comp } from '@/types/form-constructor'
+import { Comp, Norm } from '@/types/form-constructor'
 import { mapObject } from '@/utils/map-object'
 
 export function buildTree(comps: Norm<Comp>, additionalData: TreeItemAdditionalData): TreeData {
