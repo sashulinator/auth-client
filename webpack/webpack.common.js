@@ -86,7 +86,10 @@ module.exports = {
       template: path.resolve(__dirname, '..', './src/app/index.html'),
     }),
     new CopyPlugin({
-      patterns: [{ from: './locales', to: 'locales' }],
+      patterns: [
+        { from: './locales', to: 'locales' },
+        { from: './favicon.ico', to: 'test' },
+      ],
     }),
     new ForkTsCheckerWebpackPlugin(),
   ],
