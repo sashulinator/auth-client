@@ -1,16 +1,16 @@
 import { Stack } from '@fluentui/react'
 import { DetailsList, IColumn } from '@fluentui/react/lib/DetailsList'
 
-import { getSchemas } from '../api'
 import React from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 
+import { getSchemaList } from '@/api/schema'
 import ROUTES from '@/constants/routes'
 import { Schema } from '@/types/form-constructor'
 
 function List(): JSX.Element {
-  const { data } = useQuery('schemas', getSchemas)
+  const { data } = useQuery('schemas', getSchemaList)
 
   function renderItemColumn(item: Schema, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof Schema] as string

@@ -1,4 +1,5 @@
 import { Modal, PrimaryButton } from '@fluentui/react'
+import { assertNotNull } from '@savchenko91/schema-validator'
 
 import { paletteModalState } from '../model'
 import React, { FC } from 'react'
@@ -13,6 +14,8 @@ const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
 
   function onAdd(componentName: string) {
+    assertNotNull(FSchema)
+
     const createdNewComp = createNewComp(componentName)
     const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
 

@@ -19,11 +19,7 @@ const Preview: FC = (): JSX.Element => {
         key={JSON.stringify(FSchema)}
         onSubmit={onSubmit}
         render={(formProps) => {
-          return (
-            <form onSubmit={formProps.handleSubmit}>
-              <CompDrawer comps={FSchema.comps} />
-            </form>
-          )
+          return <form onSubmit={formProps.handleSubmit}>{FSchema && <CompDrawer comps={FSchema.comps} />}</form>
         }}
       />
     </div>
