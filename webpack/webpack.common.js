@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyPlugin = require('copy-webpack-plugin')
 const resolveTsconfigPathsToAlias = require('./resolveTsconfigPathsToWebpackAlias.js')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 
 const tsconfigPathAliases = resolveTsconfigPathsToAlias({
   tsconfigPath: '../tsconfig.json', // Using custom path
@@ -87,6 +88,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [{ from: './locales', to: 'locales' }],
     }),
+    new ForkTsCheckerWebpackPlugin(),
   ],
   stats: 'errors-only',
 }

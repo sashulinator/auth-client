@@ -1,12 +1,14 @@
 import { Spinner, SpinnerSize } from '@fluentui/react'
 
 import './index.css'
+
 import cx from 'clsx'
 import React, { FC } from 'react'
 
 type LoadingAriaProps = {
   loading?: boolean
   top?: string
+  children: React.ReactNode
 }
 
 const LoadingAria: FC<LoadingAriaProps> = ({ loading, children, top = '77px' }): JSX.Element => {
