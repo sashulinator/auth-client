@@ -38,6 +38,9 @@ const Header: FC = (): JSX.Element => {
         <li>
           <Link to={ROUTES.FORM_CONSTRUCTOR.buildURL()}>{formConstructorText}</Link>
         </li>
+        <li>
+          <Link to={ROUTES.SCHEMA_LIST.buildURL()}>Schemas</Link>
+        </li>
       </Stack>
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 20, padding: '15px 40px' }}>
         <li>

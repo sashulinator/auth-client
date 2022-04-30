@@ -1,9 +1,9 @@
 const ROUTES = {
   FORM_CONSTRUCTOR: {
-    NAME: 'form constructor',
+    NAME: 'Form constructor',
     PATH: '/form-constructor',
-    buildURL() {
-      return this.PATH
+    buildURL(id?: string) {
+      return id ? `${this.PATH}/${id}` : this.PATH
     },
   },
   LOGIN: {
@@ -13,22 +13,11 @@ const ROUTES = {
       return this.PATH
     },
   },
-  USERS: {
-    NAME: 'users',
-    PATH: '/users*',
-  },
-  'USERS/LIST': {
-    NAME: 'user list',
-    PATH: '/list',
+  SCHEMA_LIST: {
+    NAME: 'Schema list',
+    PATH: '/schema-list',
     buildURL() {
-      return `/users${this.PATH}`
-    },
-  },
-  'USERS/CREATE': {
-    NAME: 'create user',
-    PATH: '/create',
-    buildURL() {
-      return `/users${this.PATH}`
+      return this.PATH
     },
   },
 }
