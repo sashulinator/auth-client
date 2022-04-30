@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
+import ThemeDropdown from '@/shared/theme'
 
 const options: IDropdownOption[] = [
   {
@@ -43,6 +44,9 @@ const Header: FC = (): JSX.Element => {
         </li>
       </Stack>
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 20, padding: '15px 40px' }}>
+        <li>
+          <ThemeDropdown />
+        </li>
         <li>
           <Dropdown
             aria-label="Change language"
