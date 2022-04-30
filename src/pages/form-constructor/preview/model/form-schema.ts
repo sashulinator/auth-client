@@ -1,11 +1,12 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { FSchemaMock } from './form-schema.mock'
 import { atom, selector } from 'recoil'
 
-export const FSchemaState = atom({
+import { Schema } from '@/types/form-constructor'
+
+export const FSchemaState = atom<null | Schema>({
   key: 'FSchemaState',
-  default: FSchemaMock,
+  default: null,
 })
 
 export const pickedFCompIdState = atom({
@@ -19,7 +20,7 @@ export const pickedFCompState = selector({
     const FSchema = get(FSchemaState)
     const pickedFCompId = get(pickedFCompIdState)
 
-    if (pickedFCompId) {
+    if (pickedFCompId && FSchema) {
       const pickedFComp = FSchema.comps[pickedFCompId]
 
       assertNotUndefined(pickedFComp)
@@ -28,5 +29,20 @@ export const pickedFCompState = selector({
     }
 
     return null
+  },
+})
+
+export const CSchemasIdsState = selector({
+  key: 'CSchemasIdsState',
+  get: ({ get }) => {
+    const FSchema = get(FSchemaState)
+
+    if (FSchema) {
+      const CSchemasIds = Object.values(FSchema.comps).map((comp) => comp.compSchemaId)
+
+      return CSchemasIds
+    }
+
+    return []
   },
 })

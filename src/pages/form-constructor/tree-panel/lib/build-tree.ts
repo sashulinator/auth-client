@@ -6,7 +6,11 @@ import { ROOT_COMP_ID } from '@/constants/common'
 import { Comp, Norm } from '@/types/form-constructor'
 import { mapObject } from '@/utils/map-object'
 
-export function buildTree(comps: Norm<Comp>, additionalData: TreeItemAdditionalData): TreeData {
+export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeItemAdditionalData): TreeData | undefined {
+  if (comps === undefined) {
+    return undefined
+  }
+
   const rootTreeItem = {
     id: 'rootId',
     isExpanded: true,

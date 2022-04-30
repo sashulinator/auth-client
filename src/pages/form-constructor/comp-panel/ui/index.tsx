@@ -1,34 +1,54 @@
 import { PrimaryButton, Stack } from '@fluentui/react'
 import { assertNotNull } from '@savchenko91/schema-validator'
 
-import { pickedCSchemaState } from '../model/comp-schema'
-import React, { FC } from 'react'
+import { CSchemasState, pickedCSchemaState } from '../model/comp-schema'
+import React, { FC, useEffect } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
+import { useQuery } from 'react-query'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
+import { getSchemas } from '@/api/schema'
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
 import { removeComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
+import {
+  CSchemasIdsState,
+  FSchemaState,
+  pickedFCompIdState,
+  pickedFCompState,
+} from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
 import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
 
 const CompPanel: FC = (): JSX.Element => {
   const { t } = useTranslation()
+  const [, setCSchemas] = useRecoilState(CSchemasState)
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const [, setPickedFCompId] = useRecoilState(pickedFCompIdState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
+  const CSchemasIds = useRecoilValue(CSchemasIdsState)
+
+  const { data } = useQuery(['schemas', [...new Set(CSchemasIds)]], getSchemas)
+
+  useEffect(() => {
+    if (data !== undefined) {
+      setCSchemas(data)
+    }
+  }, [data])
 
   function onSubmit(comp: Comp) {
-    const newComps = replace(FSchema.comps, comp.id, comp)
-    setFSchema({ ...FSchema, comps: newComps })
+    if (FSchema) {
+      const newComps = replace(FSchema.comps, comp.id, comp)
+      setFSchema({ ...FSchema, comps: newComps })
+    }
   }
 
   function onDelete() {
     assertNotNull(pickedFComp)
+    assertNotNull(FSchema)
 
     const comps = removeComp(pickedFComp?.id, FSchema.comps)
     setFSchema({ ...FSchema, comps: comps })
