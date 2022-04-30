@@ -1,11 +1,13 @@
+import { Stack } from '@fluentui/react'
+
 import List from './list'
 import React from 'react'
 
 function SchemaListPage(): JSX.Element {
   return (
-    <div className="SchemaList">
+    <Stack className="SchemaList">
       <List />
-    </div>
+    </Stack>
   )
 }
 

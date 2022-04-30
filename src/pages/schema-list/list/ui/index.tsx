@@ -1,3 +1,4 @@
+import { Stack } from '@fluentui/react'
 import { DetailsList, IColumn } from '@fluentui/react/lib/DetailsList'
 import { assertNotNil } from '@savchenko91/schema-validator'
 
@@ -11,6 +12,7 @@ import { Schema } from '@/types/form-constructor'
 async function getSchemas(): Promise<Schema[]> {
   const response = await fetch('/api/v1/schemas')
   if (!response.ok) {
+    // TODO обработать ошибку
     throw new Error('Problem fetching data')
   }
   const schemas = await response.json()
@@ -35,7 +37,7 @@ function List(): JSX.Element {
   }
 
   return (
-    <div className="SchemaList">
+    <Stack className="SchemaList">
       <DetailsList
         items={data || []}
         columns={[
@@ -50,7 +52,7 @@ function List(): JSX.Element {
         checkButtonAriaLabel="select row"
         onRenderItemColumn={renderItemColumn}
       />
-    </div>
+    </Stack>
   )
 }
 
