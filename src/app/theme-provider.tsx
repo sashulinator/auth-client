@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@fluentui/react'
 
-import { defaultTheme } from './themes'
+import * as themes from './themes'
 import React from 'react'
 
 interface MyThemeProviderProps {
@@ -9,12 +9,12 @@ interface MyThemeProviderProps {
 
 const MyThemeProvider = ({ children }: MyThemeProviderProps) => {
   setCSSVariables({
-    ...defaultTheme.palette,
+    ...themes.defaultTheme.palette,
     headerHeight: 50,
     errorColor: '#ff8080',
   })
 
-  return <ThemeProvider theme={defaultTheme}>{children}</ThemeProvider>
+  return <ThemeProvider theme={themes.defaultTheme}>{children}</ThemeProvider>
 }
 
 const setCSSVariable = (key: string, value?: number | string) => {
