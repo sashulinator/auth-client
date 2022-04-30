@@ -93,7 +93,7 @@ export function pasteCompToParent(
 }
 
 export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: TreeDestinationPosition): Norm<Comp> {
-  if (to === undefined || to.index === undefined) {
+  if (to === undefined) {
     return comps
   }
 
@@ -111,7 +111,7 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   const newFromParentComp = removeCompFromParent(from.parentId, currentCompId, comps)
   const newComps = replace(comps, fromParentComp.id, newFromParentComp)
 
-  const newToParentComp = pasteCompToParent(to.parentId, currentCompId, to.index, newComps)
+  const newToParentComp = pasteCompToParent(to.parentId, currentCompId, to.index || 0, newComps)
   const newNewComps = replace(newComps, toParentComp?.id, newToParentComp)
 
   return newNewComps
