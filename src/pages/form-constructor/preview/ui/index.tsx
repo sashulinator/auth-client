@@ -2,8 +2,8 @@ import React, { FC } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState } from 'recoil'
 
-import { CompDrawer } from '@/components/schema-constructor'
 import { FSchemaState } from '@/pages/form-constructor/preview/model/form-schema'
+import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {
   const [FSchema] = useRecoilState(FSchemaState)

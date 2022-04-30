@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import FieldError from '@/components/field-error'
-import { CompDrawer } from '@/components/schema-constructor'
 import CustomTextField from '@/components/text-field'
 import { removeComp } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
+import CompDrawer from '@/shared/draw-comps'
 import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
 
