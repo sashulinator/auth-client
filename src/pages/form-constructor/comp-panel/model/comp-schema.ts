@@ -1,13 +1,13 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { compSchemaMock } from './comp-schema.mock'
 import { atom, selector } from 'recoil'
 
 import { pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
+import { Norm, Schema } from '@/types/form-constructor'
 
-export const CSchemasState = atom({
+export const CSchemasState = atom<null | Norm<Schema>>({
   key: 'CSchemasState',
-  default: compSchemaMock,
+  default: null,
 })
 
 export const pickedCSchemaState = selector({
@@ -16,7 +16,7 @@ export const pickedCSchemaState = selector({
     const compSchemas = get(CSchemasState)
     const pickedFComp = get(pickedFCompState)
 
-    if (pickedFComp) {
+    if (pickedFComp && compSchemas) {
       const pickedCSchema = compSchemas[pickedFComp.compSchemaId]
 
       assertNotUndefined(pickedCSchema)
