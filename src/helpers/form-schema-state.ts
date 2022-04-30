@@ -1,8 +1,7 @@
 import { TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree'
 import { assertNotEmptyArray, assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Norm } from '@/types/entities'
-import { Comp } from '@/types/form-constructor'
+import { Comp, Norm } from '@/types/form-constructor'
 import { insert, remove, replace } from '@/utils/change-unmutable'
 
 /**
@@ -169,7 +168,7 @@ export function createNewComp(componentName: string): Comp {
     return {
       id: Math.random().toString(),
       name: 'Текст1',
-      compSchemaId: 'textCompSchemaId',
+      compSchemaId: 'ee4254ef-4689-8943-8968-51ce700b8704',
       compName: 'Text',
       path: 'initialPathPleaseChangeIt' + Math.random().toString(),
       type: 'component',

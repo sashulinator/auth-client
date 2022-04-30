@@ -18,3 +18,5 @@ export interface Schema {
   description: string
   comps: Record<string, Comp>
 }
+
+export type Norm<T> = Record<string, T>

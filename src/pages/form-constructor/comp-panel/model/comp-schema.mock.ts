@@ -50,7 +50,7 @@ export const compSchemaMock: Record<string, Schema> = {
     id: 'textCompSchemaId',
     name: 'Text',
     title: 'Text',
-    description: 'button',
+    description: 'Text',
     comps: {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,
