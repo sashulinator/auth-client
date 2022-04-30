@@ -11,6 +11,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { getSchemas } from '@/api/schema'
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
+import { ROOT_COMP_ID } from '@/constants/common'
 import { removeComp } from '@/helpers/form-schema-state'
 import {
   CSchemasIdsState,
@@ -64,7 +65,7 @@ const CompPanel: FC = (): JSX.Element => {
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                <PrimaryButton onClick={onDelete}>delete</PrimaryButton>
+                {pickedFComp.id !== ROOT_COMP_ID && <PrimaryButton onClick={onDelete}>delete</PrimaryButton>}
                 <Stack tokens={{ padding: '20px 20px 0' }}>
                   <Stack as="h2">{pickedFComp.name}</Stack>
                 </Stack>
