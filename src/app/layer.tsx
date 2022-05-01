@@ -6,8 +6,8 @@ import './common.css'
 import './index.css'
 import './utils.css'
 
+import Header from '../widgets/header/ui/header'
 import DocumentTitle from './document-title'
-import Header from './header'
 import RootRoutes from './root-routes'
 import React, { FC } from 'react'
 

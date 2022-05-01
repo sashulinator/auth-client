@@ -1,39 +1,21 @@
-import { Dropdown, IDropdownOption, IDropdownProps } from '@fluentui/react'
 import { Stack } from '@fluentui/react/lib/Stack'
 
 import './header.css'
 
-import React, { FC } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
 import ROUTES, { getCurrentRoute } from '@/constants/routes'
 import { SchemaForm } from '@/pages/form-constructor/preview'
+import LanguageDropdown from '@/shared/language-dropdown'
 import ThemeDropdown from '@/shared/theme'
 
-const options: IDropdownOption[] = [
-  {
-    text: 'Русский',
-    key: 'ru',
-  },
-  {
-    text: 'English',
-    key: 'en',
-  },
-]
-
-const Header: FC = (): JSX.Element => {
-  const { t, i18n } = useTranslation()
+export default function Header(): JSX.Element {
+  const { t } = useTranslation()
 
   // ререндерит header при изменении пути
   useLocation()
-
-  const selectLanguage: IDropdownProps['onChange'] = (event, item) => {
-    if (typeof item?.key === 'string') {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      i18n.changeLanguage(item.key)
-    }
-  }
 
   const formConstructorText = t('pagesNames.formConstructor')
 
@@ -59,19 +41,9 @@ const Header: FC = (): JSX.Element => {
           <ThemeDropdown />
         </li>
         <li>
-          <Dropdown
-            styles={{ root: { width: '90px' } }}
-            aria-label="Change language"
-            onChange={selectLanguage}
-            defaultValue={i18n.language}
-            defaultSelectedKey={i18n.language}
-            placeholder="language"
-            options={options}
-          />
+          <LanguageDropdown />
         </li>
       </Stack>
     </Stack>
   )
 }
-
-export default Header
