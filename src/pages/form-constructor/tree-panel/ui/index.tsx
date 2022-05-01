@@ -12,7 +12,7 @@ import { useRecoilState } from 'recoil'
 import { moveComps as moveComp } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
 
-const PADDING_PER_LEVEL = 20
+const PADDING_PER_LEVEL = 18
 
 function TreePanel(): JSX.Element {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)

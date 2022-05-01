@@ -4,6 +4,7 @@ import { FSchemaState } from '../model/form-schema'
 import React from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 
 import Dropdown from '@/components/dropdown/dropdown'
@@ -31,6 +32,7 @@ const options: IDropdownOption[] = [
 function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
+  const { id } = useParams()
 
   async function deleteForm() {
     const response = await fetch('/api/v1/schemas', {
@@ -52,7 +54,7 @@ function SchemaForm(): JSX.Element {
     const { name, type } = newFschema
 
     const response = await fetch('/api/v1/schemas', {
-      method: 'PUT',
+      method: id ? 'PUT' : 'POST',
       body: JSON.stringify({ ...FSchema, name, type }),
       headers: {
         'content-type': 'application/json',
@@ -109,7 +111,7 @@ function SchemaForm(): JSX.Element {
                 )}
               </Field>
             )}
-            <PrimaryButton type="submit">Save form</PrimaryButton>
+            <PrimaryButton type="submit">{id ? 'Save' : 'Create'}</PrimaryButton>
             <PrimaryButton onClick={deleteForm}>Delete</PrimaryButton>
           </Stack>
         )

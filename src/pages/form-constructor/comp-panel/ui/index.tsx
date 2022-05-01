@@ -6,7 +6,7 @@ import React, { FC, useEffect } from 'react'
 import { Form } from 'react-final-form'
 // import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { getSchemas } from '@/api/schema'
 import { CSchemasIdsState, FSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
@@ -21,8 +21,11 @@ const CompPanel: FC = (): JSX.Element => {
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const CSchemasIds = useRecoilValue(CSchemasIdsState)
+  const resetCSchemas = useResetRecoilState(CSchemasState)
 
   const { data, isLoading } = useQuery(['schemas', [...new Set(CSchemasIds)]], getSchemas)
+
+  useEffect(() => resetCSchemas, [])
 
   useEffect(() => {
     if (data !== undefined) {
@@ -67,7 +70,7 @@ const CompPanel: FC = (): JSX.Element => {
           }}
         />
       )}
-      {!isLoading && !pickedCSchema && <CompContextualMenu />}
+      {!isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
     </div>
   )
 }
