@@ -4,6 +4,7 @@ import { CSchemasState, pickedCSchemaState } from '../model/comp-schema'
 import CompContextualMenu from './contextual-menu'
 import React, { FC, useEffect } from 'react'
 import { Form } from 'react-final-form'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 // import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
@@ -42,7 +43,7 @@ const CompPanel: FC = (): JSX.Element => {
   }
 
   return (
-    <div className="CompPanel">
+    <PerfectScrollbar className="CompPanel">
       {pickedCSchema && pickedFComp && CSchemas && (
         <Form<Comp, Comp>
           initialValues={pickedFComp}
@@ -71,7 +72,7 @@ const CompPanel: FC = (): JSX.Element => {
         />
       )}
       {!isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
-    </div>
+    </PerfectScrollbar>
   )
 }
 
