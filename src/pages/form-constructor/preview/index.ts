@@ -1,2 +1,2 @@
 export { default } from './ui'
-export { default as SaveForm } from './ui/save-form'
+export { default as SchemaForm } from './ui/schema-form'

@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
 import ROUTES, { getCurrentRoute } from '@/constants/routes'
-import { SaveForm } from '@/pages/form-constructor/preview'
+import { SchemaForm } from '@/pages/form-constructor/preview'
 import ThemeDropdown from '@/shared/theme'
 
 const options: IDropdownOption[] = [
@@ -52,7 +52,7 @@ const Header: FC = (): JSX.Element => {
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 20, padding: '15px 40px' }}>
         {isFormConstructorPage && (
           <li>
-            <SaveForm />
+            <SchemaForm />
           </li>
         )}
         <li>

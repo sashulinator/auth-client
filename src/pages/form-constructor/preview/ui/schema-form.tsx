@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil'
 
 import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
+import ROUTES from '@/constants/routes'
 import { Schema } from '@/types/form-constructor'
 
 // TODO tuple
@@ -30,9 +31,25 @@ const options: IDropdownOption[] = [
   },
 ]
 
-function SaveForm(): JSX.Element {
+function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
+
+  async function deleteForm() {
+    const response = await fetch('/api/v1/schemas', {
+      method: 'DELETE',
+      body: JSON.stringify({ ids: [FSchema.id] }),
+      headers: {
+        'content-type': 'application/json',
+        accept: '*/*',
+      },
+    })
+
+    if (response.ok) {
+      console.log('схема удалена')
+      window.location.replace(ROUTES.SCHEMA_LIST.buildURL())
+    }
+  }
 
   async function onSubmit(newFschema: Schema) {
     const { name, type } = newFschema
@@ -89,6 +106,7 @@ function SaveForm(): JSX.Element {
               )}
             </Field>
             <PrimaryButton type="submit">Save form</PrimaryButton>
+            <PrimaryButton onClick={deleteForm}>Delete</PrimaryButton>
           </Stack>
         )
       }}
@@ -96,4 +114,4 @@ function SaveForm(): JSX.Element {
   )
 }
 
-export default SaveForm
+export default SchemaForm
