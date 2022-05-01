@@ -4,6 +4,7 @@ import './common.css'
 import './index.css'
 import './toast.css'
 import './utils.css'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import DocumentTitle from './document-title'
 import RootRoutes from './root-routes'
