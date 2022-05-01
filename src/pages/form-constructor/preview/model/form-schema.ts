@@ -6,12 +6,12 @@ import uuid from 'uuid-random'
 import { ROOT_COMP_ID } from '@/constants/common'
 import { Schema } from '@/types/form-constructor'
 
-export const FSchemaState = atom<null | Schema>({
+export const FSchemaState = atom<Schema>({
   key: 'FSchemaState',
   default: {
     id: uuid(),
     name: 'Name',
-    title: 'title',
+    type: 'FORM',
     description: 'description',
     comps: {
       [ROOT_COMP_ID]: {

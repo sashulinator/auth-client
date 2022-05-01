@@ -1,18 +1,27 @@
-import { PrimaryButton, Stack } from '@fluentui/react'
+import { IDropdownOption, PrimaryButton, Stack } from '@fluentui/react'
 
 import { CSchemasState, pickedCSchemaState } from '../model/comp-schema'
 import CompContextualMenu from './contextual-menu'
 import React, { FC, useEffect } from 'react'
-import { Form } from 'react-final-form'
+import { Field, Form } from 'react-final-form'
 // import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { getSchemas } from '@/api/schema'
+import Dropdown from '@/components/dropdown/dropdown'
 import { CSchemasIdsState, FSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
+import componentList from '@/shared/draw-comps/lib/component-list'
 import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
+
+const componentNameOptions: IDropdownOption[] = Object.keys(componentList).map((componentName) => {
+  return {
+    key: componentName,
+    text: componentName,
+  }
+})
 
 const CompPanel: FC = (): JSX.Element => {
   // const { t } = useTranslation()
@@ -55,6 +64,11 @@ const CompPanel: FC = (): JSX.Element => {
                 >
                   <Stack as="h2">{pickedFComp.name}</Stack>
                   <CompContextualMenu />
+                </Stack>
+                <Stack>
+                  <Field<string> name="compName">
+                    {({ input }) => <Dropdown options={componentNameOptions} key="1" {...input} />}
+                  </Field>
                 </Stack>
                 <Stack>
                   <CompDrawer comps={pickedCSchema.comps} />

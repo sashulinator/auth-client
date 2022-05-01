@@ -7,27 +7,26 @@ import { useForm } from 'react-final-form'
  * Дропдаун от FluentUI не совместим с final-form из-за аргументов в onChange
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const DropdownMultipleSelect: FC<IDropdownProps & { onChange: (value?: any) => void; value: any; name: string }> = (
+const Dropdown: FC<IDropdownProps & { onChange: (value?: any) => void; value: any; name: string }> = (
   props
 ): JSX.Element => {
   const form = useForm()
 
+  console.log('value', props.value)
+
   return (
     <DropdownUI
       {...props}
-      multiSelect
+      selectedKey={props.value}
       onChange={(event, action) => {
-        if (action?.selected) {
-          form.change(props.name, [...props.value, action.key])
+        if (action?.key) {
+          form.change(props.name, action.key)
         } else {
-          form.change(
-            props.name,
-            props.value?.filter((str: string) => str !== action?.key)
-          )
+          form.change(props.name, undefined)
         }
       }}
     />
   )
 }
 
-export default DropdownMultipleSelect
+export default Dropdown

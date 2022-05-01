@@ -14,7 +14,7 @@ export interface Comp {
 export interface Schema {
   id: string
   name: string
-  title: string
+  type: string
   description: string
   comps: Record<string, Comp>
 }

@@ -35,7 +35,7 @@ export function buildRegExpFromPath(path: string): RegExp {
   // replace all params like ':id' and then replace optional params like ':id?'
   const regExp = path?.replace(/:([^/])+/g, '([^/])+').replace(/\/:([^/])+\?/, '/?([^/]?)+')
 
-  return new RegExp(`${regExp}(/)?$`)
+  return new RegExp(`${regExp}(/)?`)
 }
 
 export default ROUTES

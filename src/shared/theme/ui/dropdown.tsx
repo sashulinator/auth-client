@@ -28,9 +28,9 @@ export default function ThemeDropdown(): JSX.Element {
 
   return (
     <Dropdown
+      styles={{ root: { width: '150px' } }}
       aria-label="Change language"
       onChange={onChange}
-      styles={{ dropdown: { borderColor: 'red' } }}
       defaultValue={currentTheme}
       defaultSelectedKey={currentTheme}
       placeholder="language"
