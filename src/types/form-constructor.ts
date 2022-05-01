@@ -1,9 +1,7 @@
 export interface Comp {
   id: string
   compSchemaId: string
-  compName: string
   name: string
-  type: string
   path: string
   // дефвалуе вынести в пропс и юзер не должен в пас писать слово пропс для формы элемента
   defaultValue?: string
@@ -12,6 +10,7 @@ export interface Comp {
 }
 
 export interface Schema {
+  componentName?: string
   id: string
   name: string
   type: string

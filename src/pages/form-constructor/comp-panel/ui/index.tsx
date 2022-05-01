@@ -1,37 +1,28 @@
-import { IDropdownOption, PrimaryButton, Stack } from '@fluentui/react'
+import { PrimaryButton, Stack } from '@fluentui/react'
 
 import { CSchemasState, pickedCSchemaState } from '../model/comp-schema'
 import CompContextualMenu from './contextual-menu'
 import React, { FC, useEffect } from 'react'
-import { Field, Form } from 'react-final-form'
+import { Form } from 'react-final-form'
 // import { useTranslation } from 'react-i18next'
 import { useQuery } from 'react-query'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { getSchemas } from '@/api/schema'
-import Dropdown from '@/components/dropdown/dropdown'
 import { CSchemasIdsState, FSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
-import componentList from '@/shared/draw-comps/lib/component-list'
 import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
 
-const componentNameOptions: IDropdownOption[] = Object.keys(componentList).map((componentName) => {
-  return {
-    key: componentName,
-    text: componentName,
-  }
-})
-
 const CompPanel: FC = (): JSX.Element => {
   // const { t } = useTranslation()
-  const [, setCSchemas] = useRecoilState(CSchemasState)
+  const [CSchemas, setCSchemas] = useRecoilState(CSchemasState)
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const CSchemasIds = useRecoilValue(CSchemasIdsState)
 
-  const { data } = useQuery(['schemas', [...new Set(CSchemasIds)]], getSchemas)
+  const { data, isLoading } = useQuery(['schemas', [...new Set(CSchemasIds)]], getSchemas)
 
   useEffect(() => {
     if (data !== undefined) {
@@ -49,7 +40,7 @@ const CompPanel: FC = (): JSX.Element => {
 
   return (
     <div className="CompPanel">
-      {pickedCSchema && pickedFComp && (
+      {pickedCSchema && pickedFComp && CSchemas && (
         <Form<Comp, Comp>
           initialValues={pickedFComp}
           onSubmit={onSubmit}
@@ -66,12 +57,7 @@ const CompPanel: FC = (): JSX.Element => {
                   <CompContextualMenu />
                 </Stack>
                 <Stack>
-                  <Field<string> name="compName">
-                    {({ input }) => <Dropdown options={componentNameOptions} key="1" {...input} />}
-                  </Field>
-                </Stack>
-                <Stack>
-                  <CompDrawer comps={pickedCSchema.comps} />
+                  <CompDrawer comps={pickedCSchema.comps} schemas={CSchemas} />
                 </Stack>
                 <Stack tokens={{ padding: '20px 20px' }}>
                   <PrimaryButton type="submit">save</PrimaryButton>
@@ -81,6 +67,7 @@ const CompPanel: FC = (): JSX.Element => {
           }}
         />
       )}
+      {!isLoading && !pickedCSchema && <CompContextualMenu />}
     </div>
   )
 }

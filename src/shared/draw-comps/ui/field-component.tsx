@@ -1,4 +1,3 @@
-import componentList from '../lib/component-list'
 import { DrawerComponentProps } from '../types'
 // import { runAction } from '../../helpers/constructor-actions'
 import React, { memo } from 'react'
@@ -7,15 +6,20 @@ import { Field } from 'react-final-form'
 import FieldError from '@/components/field-error'
 
 const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {
-  const Component = componentList[props.comp.compName]?.component
+  const Component = props.Component
   // const form = useForm()
+  const CSchema = props.schemas[props.comp.compSchemaId]
 
+  // Схема еще не прогрузилась и поэтому undefined
+  if (CSchema === undefined) {
+    return null
+  }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // useEffect(runAction('onInit', { form, schemaItem: comp, schemaItems: bindingNormComps }), [])
 
   return (
     <Field
-      type={props.comp.type}
+      type={CSchema.type}
       name={props.comp.path}
       key={props.comp.path}
       defaultValue={props.comp.defaultValue}

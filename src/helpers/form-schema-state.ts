@@ -125,11 +125,8 @@ export function createNewComp(schema: Schema): Comp {
   return {
     id: uuid(),
     compSchemaId: schema.id,
-    // TODO schema.name это временно. Потом надо будет добавлять componentName в схему если она COMP описывает
-    compName: schema.name,
     path: '',
     name: schema.name,
-    type: schema.type === 'INPUT_COMP' ? 'input' : /checkbox/.test(schema.name) ? 'checkbox' : 'content',
   }
 }
 

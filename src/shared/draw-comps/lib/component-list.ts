@@ -1,4 +1,4 @@
-import { Checkbox, PrimaryButton, Stack, Text } from '@fluentui/react'
+import { Checkbox, IDropdownOption, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import CustomTextField from '@/components/text-field'
 
@@ -36,7 +36,15 @@ const componentList: Record<string, ComponentItem> = {
 
 interface ComponentItem {
   type: 'checkbox' | 'input' | 'content'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: any
 }
+
+export const componentNameOptions: IDropdownOption[] = Object.keys(componentList).map((componentName) => {
+  return {
+    key: componentName,
+    text: componentName,
+  }
+})
 
 export default componentList

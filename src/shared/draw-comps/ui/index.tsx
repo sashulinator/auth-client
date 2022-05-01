@@ -13,7 +13,7 @@ export default function CompDrawer(props: CompDrawerProps): JSX.Element {
 
   assertNotUndefined(rootComp)
 
-  return <ComponentFactory comps={props.comps} compId={rootComp.id} />
+  return <ComponentFactory comps={props.comps} compId={rootComp.id} schemas={props.schemas} />
 }
 
 /**
@@ -23,18 +23,31 @@ export default function CompDrawer(props: CompDrawerProps): JSX.Element {
  * 2. не оборачивается в Field
  * 3. не генерирует ошибки
  */
-export function ComponentFactory(props: CompComponentFactory): JSX.Element {
+export function ComponentFactory(props: CompComponentFactory): JSX.Element | null {
   const comp = props.comps[props.compId]
 
   assertNotUndefined(comp)
 
-  const сomponentItem = componentList[comp.compName]
+  const CSchema = props.schemas[comp.compSchemaId]
+
+  // Схема еще не прогрузилась и поэтому undefined
+  if (CSchema === undefined) {
+    return null
+  }
+
+  assertNotUndefined(CSchema.componentName)
+
+  const сomponentItem = componentList[CSchema.componentName]
 
   assertNotUndefined(сomponentItem)
 
   if (сomponentItem.type === 'input' || сomponentItem.type === 'checkbox') {
-    return <FieldComponent comp={comp} comps={props.comps} />
+    return (
+      <FieldComponent schemas={props.schemas} comp={comp} comps={props.comps} Component={сomponentItem.component} />
+    )
   }
 
-  return <ContentComponent comp={comp} comps={props.comps} />
+  return (
+    <ContentComponent schemas={props.schemas} comp={comp} comps={props.comps} Component={сomponentItem.component} />
+  )
 }

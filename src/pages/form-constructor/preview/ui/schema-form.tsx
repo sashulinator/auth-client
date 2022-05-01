@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
+import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { Schema } from '@/types/form-constructor'
 
 // TODO tuple
@@ -22,12 +23,8 @@ const options: IDropdownOption[] = [
     key: 'PRESET',
   },
   {
-    text: 'контент компонент',
-    key: 'CONTENT_COMP',
-  },
-  {
-    text: 'инпут компонент',
-    key: 'INPUT_COMP',
+    text: 'компонент',
+    key: 'COMP',
   },
 ]
 
@@ -94,7 +91,7 @@ function SchemaForm(): JSX.Element {
             <Field<string> name="type">
               {({ input }) => (
                 <Dropdown
-                  styles={{ root: { width: '200px' } }}
+                  styles={{ root: { width: '150px' } }}
                   options={options}
                   key="1"
                   {...input}
@@ -105,6 +102,13 @@ function SchemaForm(): JSX.Element {
                 />
               )}
             </Field>
+            {formProps.form.getFieldState('type')?.value === 'COMP' && (
+              <Field<string> name="componentName">
+                {({ input }) => (
+                  <Dropdown styles={{ root: { width: '150px' } }} options={componentNameOptions} key="1" {...input} />
+                )}
+              </Field>
+            )}
             <PrimaryButton type="submit">Save form</PrimaryButton>
             <PrimaryButton onClick={deleteForm}>Delete</PrimaryButton>
           </Stack>

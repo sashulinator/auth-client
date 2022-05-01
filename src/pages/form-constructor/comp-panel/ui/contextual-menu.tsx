@@ -3,6 +3,7 @@ import { assertNotNil, assertNotNull } from '@savchenko91/schema-validator'
 
 import './contextual-menu.css'
 
+import { pickedCSchemaState } from '../model/comp-schema'
 import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -18,6 +19,7 @@ export default function CompContextualMenu(): JSX.Element | null {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const [, setPickedFCompId] = useRecoilState(pickedFCompIdState)
   const pickedFComp = useRecoilValue(pickedFCompState)
+  const pickedCSchema = useRecoilValue(pickedCSchemaState)
 
   const [isVisible, , hide, toggle] = useBoolean(false)
   const buttonRef = useRef(null)
@@ -39,15 +41,17 @@ export default function CompContextualMenu(): JSX.Element | null {
     })
   }
 
-  items.push({
-    key: 'open_in_new_tab',
-    text: 'edit this form',
-    onClick: () => {
-      assertNotNil(pickedFComp?.compSchemaId)
-      const url = ROUTES.FORM_CONSTRUCTOR.buildURL(pickedFComp?.compSchemaId)
-      window.open(url, '_blanc')?.focus()
-    },
-  })
+  if (pickedCSchema) {
+    items.push({
+      key: 'open_in_new_tab',
+      text: 'edit this form',
+      onClick: () => {
+        assertNotNil(pickedFComp?.compSchemaId)
+        const url = ROUTES.FORM_CONSTRUCTOR.buildURL(pickedFComp?.compSchemaId)
+        window.open(url, '_blanc')?.focus()
+      },
+    })
+  }
 
   return (
     <div className="CompContextualMenu">
