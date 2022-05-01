@@ -1,22 +1,24 @@
-import { Modal, PrimaryButton } from '@fluentui/react'
-import { assertNotNull } from '@savchenko91/schema-validator'
+import { Modal, Pivot, PivotItem, PrimaryButton, Stack } from '@fluentui/react'
 
 import { paletteModalState } from '../model'
 import React, { FC } from 'react'
+import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 
+import { getSchemaList } from '@/api/schema'
 import { addCompToParent, createNewComp, findParentId } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
+import { Schema } from '@/types/form-constructor'
 
 const PaletteModal: FC = (): JSX.Element => {
+  const [isOpen, setOpen] = useRecoilState(paletteModalState)
   const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const [isOpen, setOpen] = useRecoilState(paletteModalState)
 
-  function onAdd(componentName: string) {
-    assertNotNull(FSchema)
+  const { data } = useQuery('schemas', getSchemaList)
 
-    const createdNewComp = createNewComp(componentName)
+  function onAdd(schema: Schema) {
+    const createdNewComp = createNewComp(schema)
     const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
 
     const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
@@ -28,11 +30,33 @@ const PaletteModal: FC = (): JSX.Element => {
 
   return (
     <Modal titleAriaId={'Add comp'} isOpen={isOpen} onDismiss={() => setOpen(false)} isBlocking={false}>
-      <PrimaryButton onClick={() => onAdd('TextInput')}>TextInput</PrimaryButton>
-      <PrimaryButton onClick={() => onAdd('PrimaryButton')}>PrimaryButton</PrimaryButton>
-      <PrimaryButton onClick={() => onAdd('Stack')}>Stack</PrimaryButton>
-      <PrimaryButton onClick={() => onAdd('Checkbox')}>Checkbox</PrimaryButton>
-      <PrimaryButton onClick={() => onAdd('Text')}>Text</PrimaryButton>
+      <Pivot
+        aria-label="Palette of components"
+        styles={{ root: { width: '1000px', display: 'flex', justifyContent: 'center' } }}
+      >
+        <PivotItem headerText="Компоненты">
+          <Stack tokens={{ padding: '20px', childrenGap: '10px' }} horizontal>
+            {data?.map((schema) => {
+              if (schema.type === 'PRESET' || schema.type === 'FORM') {
+                return null
+              }
+              return (
+                <PrimaryButton key={schema.id} onClick={() => onAdd(schema)}>
+                  {schema.name}
+                </PrimaryButton>
+              )
+            })}
+          </Stack>
+        </PivotItem>
+        <PivotItem headerText="Пресеты">
+          {data?.map((schema) => {
+            if (schema.type === 'PRESET') {
+              return <PrimaryButton key={schema.id}>{schema.name}</PrimaryButton>
+            }
+            return null
+          })}
+        </PivotItem>
+      </Pivot>
     </Modal>
   )
 }
