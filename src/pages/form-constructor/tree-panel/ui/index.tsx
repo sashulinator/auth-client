@@ -48,23 +48,25 @@ function TreePanel(): JSX.Element {
   }
 
   return (
-    <div className="TreePanel">
+    <>
       <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
-      {tree && (
-        <Tree
-          tree={tree}
-          renderItem={TreeLeaf}
-          onExpand={onExpand}
-          onCollapse={onCollapse}
-          onDragEnd={onDragEnd}
-          offsetPerLevel={PADDING_PER_LEVEL}
-          isDragEnabled
-          isNestingEnabled
-        />
-      )}
-    </div>
+      <div className="TreePanel">
+        {tree && (
+          <Tree
+            tree={tree}
+            renderItem={TreeLeaf}
+            onExpand={onExpand}
+            onCollapse={onCollapse}
+            onDragEnd={onDragEnd}
+            offsetPerLevel={PADDING_PER_LEVEL}
+            isDragEnabled
+            isNestingEnabled
+          />
+        )}
+      </div>
+    </>
   )
 }
 

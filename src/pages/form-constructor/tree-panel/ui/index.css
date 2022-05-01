@@ -1,19 +1,24 @@
 .TreePanel {
   background-color: var(--white);
   overflow: auto;
-  padding: 10px;
+  z-index: 0;
+  padding: 15px;
 }
 
-.TreePanel > .addCompButton {
+.TreePanel > div {
+  margin-bottom: 10vh;
+}
+
+.addCompButton {
   position: absolute;
   top: 8px;
-  right: 8px;
+  left: 265px;
   border-radius: 50%;
   min-width: 50px;
   max-width: 50px;
   min-height: 50px;
   max-height: 50px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .TreePanel .TreeLeaf:focus {
