@@ -2,11 +2,12 @@
   background-color: var(--white);
   overflow: auto;
   z-index: 5;
-  padding: 15px;
+  padding: 0 15px;
 }
 
-.TreePanel > div {
-  margin-bottom: 10vh;
+.TreePanel .marginTopAndBottom {
+  margin-top: 20px;
+  margin-bottom: 20vh;
 }
 
 .addCompButton {

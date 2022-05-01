@@ -7,6 +7,7 @@ import { paletteModalState } from '../../palette-modal/model'
 import { buildTree } from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
 import { moveComps as moveComp } from '@/helpers/form-schema-state'
@@ -52,20 +53,22 @@ function TreePanel(): JSX.Element {
       <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
-      <div className="TreePanel">
-        {tree && (
-          <Tree
-            tree={tree}
-            renderItem={TreeLeaf}
-            onExpand={onExpand}
-            onCollapse={onCollapse}
-            onDragEnd={onDragEnd}
-            offsetPerLevel={PADDING_PER_LEVEL}
-            isDragEnabled
-            isNestingEnabled
-          />
-        )}
-      </div>
+      <PerfectScrollbar className="TreePanel">
+        <div className="marginTopAndBottom">
+          {tree && (
+            <Tree
+              tree={tree}
+              renderItem={TreeLeaf}
+              onExpand={onExpand}
+              onCollapse={onCollapse}
+              onDragEnd={onDragEnd}
+              offsetPerLevel={PADDING_PER_LEVEL}
+              isDragEnabled
+              isNestingEnabled
+            />
+          )}
+        </div>
+      </PerfectScrollbar>
     </>
   )
 }

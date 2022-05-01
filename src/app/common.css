@@ -16,3 +16,20 @@ h3 {
   font-size: 15px;
   font-weight: 400;
 }
+
+/*
+  не ну а чё он показывается при фокусе то?
+  нам такого не надо! Нам только при скролле!
+*/
+.scrollbar-container .ps__rail-y {
+  opacity: 0 !important;
+}
+.scrollbar-container.ps--scrolling-y .ps__rail-y {
+  opacity: 1 !important;
+}
+.scrollbar-container .ps__rail-x {
+  opacity: 0 !important;
+}
+.scrollbar-container.ps--scrolling-x .ps__rail-x {
+  opacity: 1 !important;
+}
