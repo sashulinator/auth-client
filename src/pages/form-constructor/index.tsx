@@ -1,3 +1,5 @@
+import { Stack } from '@fluentui/react'
+
 import './index.css'
 
 import CompPanel from './comp-panel'
@@ -11,6 +13,7 @@ import { useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 
 import { getSchema } from '@/api/schema'
+import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
   const [, setFSchema] = useRecoilState(FSchemaState)
@@ -25,12 +28,15 @@ const FormConstructor: FC = (): JSX.Element => {
   }, [data])
 
   return (
-    <div className="FormConstructor">
-      <TreePanel />
-      <Preview />
-      <CompPanel />
-      <PaletteModal />
-    </div>
+    <>
+      <Header />
+      <Stack as="main" className="FormConstructor">
+        <TreePanel />
+        <Preview />
+        <CompPanel />
+        <PaletteModal />
+      </Stack>
+    </>
   )
 }
 
