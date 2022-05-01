@@ -33,7 +33,7 @@ const options: IDropdownOption[] = [
 export default function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const id = useParams()
+  const { id } = useParams()
 
   async function deleteForm() {
     const response = await fetch('/api/v1/schemas', {
