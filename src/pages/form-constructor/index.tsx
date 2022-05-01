@@ -1,6 +1,6 @@
 import { Stack } from '@fluentui/react'
 
-import './index.css'
+import './form-constructor.css'
 
 import CompPanel from './comp-panel'
 import PaletteModal from './palette-modal'
@@ -30,6 +30,7 @@ const FormConstructor: FC = (): JSX.Element => {
   return (
     <>
       <Header />
+      <div className="fakeHeader" />
       <Stack as="main" className="FormConstructor">
         <TreePanel />
         <Preview />
