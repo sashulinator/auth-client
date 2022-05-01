@@ -1,10 +1,10 @@
-import { ContextualMenu, IContextualMenuItem, Icon } from '@fluentui/react'
+import { IContextualMenuItem, Icon } from '@fluentui/react'
 import { assertNotNil, assertNotNull } from '@savchenko91/schema-validator'
 
 import './contextual-menu.css'
 
 import { pickedCSchemaState } from '../model/comp-schema'
-import React, { useRef } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
@@ -12,7 +12,7 @@ import { ROOT_COMP_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import { removeComp } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
-import useBoolean from '@/utils/use-boolean'
+import ContextualMenu from '@/shared/contextual-menu'
 
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()
@@ -20,9 +20,6 @@ export default function CompContextualMenu(): JSX.Element | null {
   const [, setPickedFCompId] = useRecoilState(pickedFCompIdState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
-
-  const [isVisible, , hide, toggle] = useBoolean(false)
-  const buttonRef = useRef(null)
 
   const items: IContextualMenuItem[] = []
 
@@ -54,14 +51,8 @@ export default function CompContextualMenu(): JSX.Element | null {
   }
 
   return (
-    <div className="CompContextualMenu">
-      <>
-        <div className="compContextualMenubackground" />
-        <a ref={buttonRef} href="#" onClick={toggle}>
-          <Icon iconName="More" />
-        </a>
-        <ContextualMenu items={items} hidden={!isVisible} target={buttonRef} onItemClick={hide} onDismiss={hide} />
-      </>
-    </div>
+    <ContextualMenu items={items}>
+      <Icon iconName="More" />
+    </ContextualMenu>
   )
 }
