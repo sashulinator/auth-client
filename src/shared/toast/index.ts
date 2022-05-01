@@ -14,3 +14,11 @@ export function errorMessage(message: string, options?: ToastOptions): void {
     ...options,
   })
 }
+
+export function successMessage(message: string, options?: ToastOptions): void {
+  reactToastify(message, {
+    closeOnClick: true,
+    type: 'success',
+    ...options,
+  })
+}

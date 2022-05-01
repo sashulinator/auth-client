@@ -12,7 +12,6 @@ export const FSchemaState = atom<Schema>({
     id: uuid(),
     name: 'Name',
     type: 'FORM',
-    description: 'description',
     comps: {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,

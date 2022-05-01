@@ -11,7 +11,7 @@ import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
-import { errorMessage } from '@/shared/toast'
+import { errorMessage, successMessage } from '@/shared/toast'
 import { Schema } from '@/types/form-constructor'
 
 // TODO tuple
@@ -33,7 +33,7 @@ const options: IDropdownOption[] = [
 export default function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const { id } = useParams()
+  const id = useParams()
 
   async function deleteForm() {
     const response = await fetch('/api/v1/schemas', {
@@ -63,14 +63,26 @@ export default function SchemaForm(): JSX.Element {
       },
     })
 
+    const data = (await response.json()) as Schema
+
     if (!response.ok) {
       errorMessage('Не удалось сделать запрос')
+    } else {
+      setTimeout(() => {
+        successMessage('Cохранено')
+      }, 10)
+    }
+
+    if (!id && data.id) {
+      window.location.replace(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
     }
   }
 
   function onDropdownChange(type: string) {
     setFSchema({ ...FSchema, type })
   }
+
+  console.log('id', id)
 
   return (
     <Form<Schema, Schema>
