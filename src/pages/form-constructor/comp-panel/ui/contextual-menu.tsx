@@ -1,8 +1,6 @@
 import { IContextualMenuItem, Icon } from '@fluentui/react'
 import { assertNotNil, assertNotNull } from '@savchenko91/schema-validator'
 
-import './contextual-menu.css'
-
 import { pickedCSchemaState } from '../model/comp-schema'
 import React from 'react'
 import { useTranslation } from 'react-i18next'

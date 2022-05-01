@@ -50,7 +50,7 @@ const CompPanel: FC = (): JSX.Element => {
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
-              <form onSubmit={formProps.handleSubmit}>
+              <Stack as="form" tokens={{ padding: '0 0 30vh' }} onSubmit={formProps.handleSubmit}>
                 <Stack
                   tokens={{ padding: '20px 20px 0' }}
                   horizontal={true}
@@ -66,7 +66,7 @@ const CompPanel: FC = (): JSX.Element => {
                 <Stack tokens={{ padding: '20px 20px' }}>
                   <PrimaryButton type="submit">save</PrimaryButton>
                 </Stack>
-              </form>
+              </Stack>
             )
           }}
         />
