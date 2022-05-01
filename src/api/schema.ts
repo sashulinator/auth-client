@@ -2,6 +2,7 @@ import { assertNotNil } from '@savchenko91/schema-validator'
 
 import { stringify } from 'qs'
 
+import { errorMessage } from '@/shared/toast'
 import { Norm, Schema } from '@/types/form-constructor'
 
 type GetSchemaParams = {
@@ -104,8 +105,7 @@ export async function updateSchema(params: UpdateSchemaParams): Promise<Schema> 
   })
 
   if (!response.ok) {
-    // TODO обработать ошибку
-    throw new Error('Problem fetching data')
+    errorMessage('Не удалось сделать запрос')
   }
   const schema = await response.json()
 

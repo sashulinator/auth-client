@@ -11,6 +11,7 @@ import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
+import { errorMessage } from '@/shared/toast'
 import { Schema } from '@/types/form-constructor'
 
 // TODO tuple
@@ -29,7 +30,7 @@ const options: IDropdownOption[] = [
   },
 ]
 
-function SchemaForm(): JSX.Element {
+export default function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const { id } = useParams()
@@ -63,8 +64,7 @@ function SchemaForm(): JSX.Element {
     })
 
     if (!response.ok) {
-      // TODO обработать ошибку
-      throw new Error('Problem fetching data')
+      errorMessage('Не удалось сделать запрос')
     }
   }
 
@@ -119,5 +119,3 @@ function SchemaForm(): JSX.Element {
     />
   )
 }
-
-export default SchemaForm
