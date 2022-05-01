@@ -1,5 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import componentList from '../lib/component-list'
 import { CompComponentFactory, CompDrawerProps } from '../types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -27,11 +28,11 @@ export function ComponentFactory(props: CompComponentFactory): JSX.Element {
 
   assertNotUndefined(comp)
 
-  if (/checkbox/.test(comp.compName) && comp.type !== 'checkbox') {
-    throw new Error('Вы создали компонент со словом "checkbox" в componentName, но type не "checkbox"')
-  }
+  const сomponentItem = componentList[comp.compName]
 
-  if (comp.type === 'input' || comp.type === 'checkbox') {
+  assertNotUndefined(сomponentItem)
+
+  if (сomponentItem.type === 'input' || сomponentItem.type === 'checkbox') {
     return <FieldComponent comp={comp} comps={props.comps} />
   }
 

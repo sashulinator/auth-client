@@ -7,7 +7,7 @@ import { Field } from 'react-final-form'
 import FieldError from '@/components/field-error'
 
 const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {
-  const Component = componentList[props.comp.compName]
+  const Component = componentList[props.comp.compName]?.component
   // const form = useForm()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

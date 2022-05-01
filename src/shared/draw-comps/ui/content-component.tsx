@@ -5,7 +5,7 @@ import { ComponentFactory } from './index'
 import React, { memo } from 'react'
 
 const ContentComponent = memo(function ContentComponent(props: DrawerComponentProps): JSX.Element {
-  const Component = componentList[props.comp.compName]
+  const Component = componentList[props.comp.compName]?.component
 
   if (props.comp.childCompIds === undefined) {
     return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
