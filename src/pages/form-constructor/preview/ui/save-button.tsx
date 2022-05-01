@@ -2,11 +2,11 @@ import { PrimaryButton } from '@fluentui/react'
 
 import { FSchemaState } from '../model/form-schema'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 import { useRecoilState } from 'recoil'
 
 function SaveButton(): JSX.Element {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const [FSchema] = useRecoilState(FSchemaState)
 
   async function onClick() {
@@ -25,7 +25,7 @@ function SaveButton(): JSX.Element {
     }
   }
 
-  return <PrimaryButton onClick={onClick}>{t('buttons.save').toString()}</PrimaryButton>
+  return <PrimaryButton onClick={onClick}>Save form</PrimaryButton>
 }
 
 export default SaveButton
