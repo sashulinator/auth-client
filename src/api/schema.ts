@@ -44,8 +44,7 @@ export async function getSchemaList(params: GetSchemaListParams): Promise<Schema
 
   const response = await fetch(`/api/v1/schemas/list${stringify(ids)}`, {
     headers: {
-      'content-type': 'application/json',
-      accept: '*/*',
+      accept: 'application/json',
     },
   })
 
@@ -71,8 +70,7 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
 
   const response = await fetch(`/api/v1/schemas${stringify({ ids }, { addQueryPrefix: true })}`, {
     headers: {
-      'content-type': 'application/json',
-      accept: '*/*',
+      accept: 'application/json',
     },
   })
 
@@ -87,4 +85,33 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
   assertNotNil(schemas)
 
   return schemas as Norm<Schema>
+}
+
+type UpdateSchemaParams = {
+  queryKey: (Schema | string | undefined)[]
+}
+
+export async function updateSchema(params: UpdateSchemaParams): Promise<Schema> {
+  const [, schemaInput] = params.queryKey
+
+  const response = await fetch('/api/v1/schemas', {
+    method: 'PUT',
+    body: JSON.stringify(schemaInput),
+    headers: {
+      'content-type': 'application/json',
+      accept: '*/*',
+    },
+  })
+
+  if (!response.ok) {
+    // TODO обработать ошибку
+    throw new Error('Problem fetching data')
+  }
+  const schema = await response.json()
+
+  // TODO провалидировать схемы
+
+  assertNotNil(schema)
+
+  return schema as Schema
 }
