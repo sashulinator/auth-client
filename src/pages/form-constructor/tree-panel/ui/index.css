@@ -11,8 +11,8 @@
 }
 
 .addCompButton {
-  position: absolute;
-  top: 8px;
+  position: fixed;
+  top: 63px;
   left: 265px;
   border-radius: 50%;
   min-width: 50px;
