@@ -1,7 +1,7 @@
 .TreePanel {
   background-color: var(--white);
   overflow: auto;
-  z-index: 0;
+  z-index: 5;
   padding: 15px;
 }
 
@@ -18,7 +18,7 @@
   max-width: 50px;
   min-height: 50px;
   max-height: 50px;
-  z-index: 1;
+  z-index: 6;
 }
 
 .TreePanel .TreeLeaf:focus {
