@@ -52,11 +52,11 @@ export default function SchemaForm(): JSX.Element {
   }
 
   async function onSubmit(newFschema: Schema) {
-    const { name, type } = newFschema
+    const { name, type, componentName = undefined } = newFschema
 
     const response = await fetch('/api/v1/schemas', {
       method: id ? 'PUT' : 'POST',
-      body: JSON.stringify({ ...FSchema, name, type }),
+      body: JSON.stringify({ ...FSchema, name, type, componentName }),
       headers: {
         'content-type': 'application/json',
         accept: '*/*',
@@ -82,7 +82,7 @@ export default function SchemaForm(): JSX.Element {
     setFSchema({ ...FSchema, type })
   }
 
-  console.log('id', id)
+  //TODO обновить схему в стэйте если меняется дропдаун для componentName
 
   return (
     <Form<Schema, Schema>
