@@ -1,4 +1,5 @@
 {
+  "locale": "en-US",
   "fieldNames": {
     "name": "name"
   },
@@ -59,5 +60,59 @@
   "assertMatchPattern/@.*\\.*./": "does not match email pattern",
   "assertMatchPattern/[A-Z]/": "must contain uppercase letter",
   "assertMatchPattern/[a-z]/": "must contain lowercase letter",
-  "assertMatchPattern/[0-9]/": "must contain number"
+  "assertMatchPattern/[0-9]/": "must contain number",
+  "calendar": {
+    "firstDayOfTheWeek": 0,
+    "months": {
+      "January": "January",
+      "February": "February",
+      "March": "March",
+      "April": "April",
+      "May": "May",
+      "June": "June",
+      "July": "July",
+      "August": "August",
+      "September": "September",
+      "October": "October",
+      "November": "November",
+      "December": "December"
+    },
+    "shortMonths": {
+      "Jan": "Jan",
+      "Feb": "Feb",
+      "Mar": "Mar",
+      "Apr": "Apr",
+      "May": "May",
+      "Jun": "Jun",
+      "Jul": "Jul",
+      "Aug": "Aug",
+      "Sep": "Sep",
+      "Oct": "Oct",
+      "Nov": "Nov",
+      "Dec": "Dec"
+    },
+    "days": {
+      "Sunday": "Sunday",
+      "Monday": "Monday",
+      "Tuesday": "Tuesday",
+      "Wednesday": "Wednesday",
+      "Thursday": "Thursday",
+      "Friday": "Friday",
+      "Saturday": "Saturday"
+    },
+    "shortDays": {
+      "Sunday": "S",
+      "Monday": "M",
+      "Tuesday": "T",
+      "Wednesday": "W",
+      "Thursday": "T",
+      "Friday": "F",
+      "Saturday": "S"
+    },
+    "goToToday": "Go to today",
+    "prevMonthAriaLabel": "Go to previous month",
+    "nextMonthAriaLabel": "Go to next month",
+    "prevYearAriaLabel": "Go to previous year",
+    "nextYearAriaLabel": "Go to next year"
+  }
 }
