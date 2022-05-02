@@ -104,7 +104,7 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   const toParentComp = comps[to.parentId]
 
   if (toParentComp === undefined) {
-    throw new Error('А когда такое бывает? интересненько')
+    return comps
   }
 
   assertNotUndefined(currentCompId)

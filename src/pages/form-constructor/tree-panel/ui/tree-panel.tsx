@@ -1,5 +1,6 @@
-import Tree, { TreeDestinationPosition, TreeSourcePosition, mutateTree } from '@atlaskit/tree'
+import Tree, { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree, mutateTree } from '@atlaskit/tree'
 import { FontIcon, PrimaryButton } from '@fluentui/react'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './index.css'
 
@@ -43,7 +44,9 @@ function TreePanel(): JSX.Element {
     if (!FSchema?.comps && FSchema === null) {
       return
     }
+    assertNotUndefined(tree)
 
+    setTree(moveItemOnTree(tree, from, to))
     const newFormSchema = moveComp(FSchema?.comps, from, to)
     setFSchema({ ...FSchema, comps: newFormSchema })
   }
