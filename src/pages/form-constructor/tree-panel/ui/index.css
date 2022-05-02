@@ -1,19 +1,25 @@
 .TreePanel {
   background-color: var(--white);
   overflow: auto;
-  padding: 10px;
+  z-index: 5;
+  padding: 0 15px;
 }
 
-.TreePanel > .addCompButton {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+.TreePanel .marginTopAndBottom {
+  margin-top: 20px;
+  margin-bottom: 30vh;
+}
+
+.addCompButton {
+  position: fixed;
+  top: 63px;
+  left: 265px;
   border-radius: 50%;
   min-width: 50px;
   max-width: 50px;
   min-height: 50px;
   max-height: 50px;
-  z-index: 2;
+  z-index: 6;
 }
 
 .TreePanel .TreeLeaf:focus {
@@ -22,6 +28,7 @@
 
 .TreePanel .treeLeafContent {
   position: relative;
+  cursor: pointer;
 }
 
 .TreeLeaf .treeLeafBackgroundColor {
@@ -32,14 +39,15 @@
   height: calc(100% - 4px);
 }
 
-.TreeLeaf.picked .TreeLeaf .treeLeafBackgroundColor {
+.TreeLeaf.picked .treeLeafContent div.treeLeafBackgroundColor {
   background-color: var(--themePrimary);
+  opacity: 0.3;
   z-index: 0;
 }
 
 .TreePanel .TreeLeaf:hover .treeLeafBackgroundColor {
   background-color: var(--themePrimary);
-  opacity: 0.2;
+  opacity: 0.15;
 }
 
 .TreePanel .TreeLeaf:focus .treeLeafBackgroundColor {

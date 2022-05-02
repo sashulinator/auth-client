@@ -9,3 +9,8 @@
 .transitionChild01 > * {
   transition: 0.1s;
 }
+
+.fakeHeader {
+  height: var(--headerHeight);
+  width: 100%;
+}

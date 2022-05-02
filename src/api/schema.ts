@@ -1,7 +1,10 @@
-import { assertNotNil } from '@savchenko91/schema-validator'
+import { assertNotNil, isEmpty } from '@savchenko91/schema-validator'
 
 import { stringify } from 'qs'
+import { UseQueryResult, useQuery } from 'react-query'
 
+import { isNormSchemas } from '@/helpers/validators'
+import { errorMessage } from '@/shared/toast'
 import { Norm, Schema } from '@/types/form-constructor'
 
 type GetSchemaParams = {
@@ -44,8 +47,7 @@ export async function getSchemaList(params: GetSchemaListParams): Promise<Schema
 
   const response = await fetch(`/api/v1/schemas/list${stringify(ids)}`, {
     headers: {
-      'content-type': 'application/json',
-      accept: '*/*',
+      accept: 'application/json',
     },
   })
 
@@ -71,8 +73,7 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
 
   const response = await fetch(`/api/v1/schemas${stringify({ ids }, { addQueryPrefix: true })}`, {
     headers: {
-      'content-type': 'application/json',
-      accept: '*/*',
+      accept: 'application/json',
     },
   })
 
@@ -87,4 +88,54 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
   assertNotNil(schemas)
 
   return schemas as Norm<Schema>
+}
+
+type UpdateSchemaParams = {
+  queryKey: (Schema | string | undefined)[]
+}
+
+export async function updateSchema(params: UpdateSchemaParams): Promise<Schema> {
+  const [, schemaInput] = params.queryKey
+
+  const response = await fetch('/api/v1/schemas', {
+    method: 'PUT',
+    body: JSON.stringify(schemaInput),
+    headers: {
+      'content-type': 'application/json',
+      accept: '*/*',
+    },
+  })
+
+  if (!response.ok) {
+    errorMessage('Не удалось сделать запрос')
+  }
+  const schema = await response.json()
+
+  // TODO провалидировать схемы
+
+  assertNotNil(schema)
+
+  return schema as Schema
+}
+
+export function useGetSchemaDependency(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
+  return useQuery(['schemasDependencies', ...ids], queryFn)
+
+  async function queryFn(): Promise<Norm<Schema> | undefined> {
+    if (isEmpty(ids)) {
+      return undefined
+    }
+
+    const req = await fetch(`/api/v1/schemas/dependencies?${stringify({ ids })}`, {
+      headers: {
+        accept: 'application/json',
+      },
+    })
+
+    const data = await req.json()
+
+    isNormSchemas(data)
+
+    return data
+  }
 }

@@ -3,7 +3,7 @@ export function setCSSVariable(key: string, value?: number | string): void {
 }
 
 export const setCSSVariables = (theme: Record<string, string | number | undefined>): void => {
-  document.body.setAttribute('style', '')
+  document.body.parentElement?.setAttribute('style', '')
 
   Object.entries(theme).forEach(([key, value]) => {
     setCSSVariable(key, value as string)

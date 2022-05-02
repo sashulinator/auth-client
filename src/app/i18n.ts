@@ -4,6 +4,7 @@ import HttpApi from 'i18next-http-backend'
 import { initReactI18next } from 'react-i18next'
 
 const createI18n = (language: string): i18nInstance => {
+  // eslint-disable-next-line import/no-named-as-default-member
   const i18n = i18next.createInstance().use(initReactI18next)
 
   i18n

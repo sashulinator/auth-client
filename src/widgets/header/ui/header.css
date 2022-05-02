@@ -1,0 +1,9 @@
+.Header {
+  background-color: var(--neutralLighterAlt);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: calc(var(--headerHeight) * 1px);
+}

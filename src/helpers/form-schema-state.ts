@@ -1,7 +1,9 @@
 import { TreeDestinationPosition, TreeSourcePosition } from '@atlaskit/tree'
 import { assertNotEmptyArray, assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Comp, Norm } from '@/types/form-constructor'
+import uuid from 'uuid-random'
+
+import { Comp, Norm, Schema } from '@/types/form-constructor'
 import { insert, remove, replace } from '@/utils/change-unmutable'
 
 /**
@@ -102,7 +104,7 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   const toParentComp = comps[to.parentId]
 
   if (toParentComp === undefined) {
-    throw new Error('А когда такое бывает? интересненько')
+    return comps
   }
 
   assertNotUndefined(currentCompId)
@@ -117,64 +119,15 @@ export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: Tree
   return newNewComps
 }
 
-export function createNewComp(componentName: string): Comp {
-  if (componentName === 'TextInput') {
-    return {
-      id: Math.random().toString(),
-      name: 'TextInput',
-      compSchemaId: 'ee4234ef-9099-8943-8968-51ce733b870',
-      compName: 'TextField',
-      // TODO строка initialPathPleaseChangeIt будет проверять валидатором
-      // TODO такого значения быть не должно
-      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
-      type: 'input',
-    }
-  }
+export function createNewComp(schema: Schema): Comp {
+  schema
 
-  if (componentName === 'PrimaryButton') {
-    return {
-      id: Math.random().toString(),
-      name: 'КнопкаГлавная1',
-      compSchemaId: 'ee4254ef-9099-4243-be68-51ce733b3376',
-      compName: 'PrimaryButton',
-      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
-      type: 'button',
-    }
+  return {
+    id: uuid(),
+    compSchemaId: schema.id,
+    path: 'DEFAULT_PATH',
+    name: schema.name,
   }
-
-  if (componentName === 'Stack') {
-    return {
-      id: Math.random().toString(),
-      name: 'stackChildName',
-      compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-      compName: 'Stack',
-      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
-      type: 'component',
-    }
-  }
-
-  if (componentName === 'Checkbox') {
-    return {
-      id: Math.random().toString(),
-      name: 'Checkbox',
-      compSchemaId: 'checkboxCompSchemaId',
-      compName: 'Checkbox',
-      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
-      type: 'checkbox',
-    }
-  }
-
-  if (componentName === 'Text') {
-    return {
-      id: Math.random().toString(),
-      name: 'Текст1',
-      compSchemaId: 'ee4254ef-4689-8943-8968-51ce700b8704',
-      compName: 'Text',
-      path: 'initialPathPleaseChangeIt' + Math.random().toString(),
-      type: 'component',
-    }
-  }
-  throw new Error('Such component does not exist')
 }
 
 export function addCompToParent(parentCompId: string, index: number, comp: Comp, comps: Norm<Comp>): Norm<Comp> {

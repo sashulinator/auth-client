@@ -1,3 +1,5 @@
+import { assertNotUndefined } from '@savchenko91/schema-validator'
+
 import componentList from '../lib/component-list'
 import { DrawerComponentProps } from '../types'
 // import { runAction } from '../../helpers/constructor-actions'
@@ -7,15 +9,22 @@ import { Field } from 'react-final-form'
 import FieldError from '@/components/field-error'
 
 const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {
-  const Component = componentList[props.comp.compName]
   // const form = useForm()
+  const CSchema = props.schemas[props.comp.compSchemaId]
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // useEffect(runAction('onInit', { form, schemaItem: comp, schemaItems: bindingNormComps }), [])
+  if (CSchema?.componentName === undefined || CSchema === undefined) {
+    return null
+  }
+
+  const сomponentItem = componentList[CSchema.componentName]
+
+  assertNotUndefined(сomponentItem)
+
+  const Component = сomponentItem.component
 
   return (
     <Field
-      type={props.comp.type}
+      type={сomponentItem.type}
       name={props.comp.path}
       key={props.comp.path}
       defaultValue={props.comp.defaultValue}
