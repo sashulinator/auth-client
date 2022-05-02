@@ -125,7 +125,7 @@ export function createNewComp(schema: Schema): Comp {
   return {
     id: uuid(),
     compSchemaId: schema.id,
-    path: '',
+    path: 'DEFAULT_PATH',
     name: schema.name,
   }
 }

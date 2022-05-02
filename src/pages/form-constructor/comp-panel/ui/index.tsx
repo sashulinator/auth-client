@@ -1,4 +1,4 @@
-import { PrimaryButton, Stack } from '@fluentui/react'
+import { Stack } from '@fluentui/react'
 
 import { CSchemasState, pickedCSchemaState } from '../model/comp-schema'
 import CompContextualMenu from './contextual-menu'
@@ -14,6 +14,7 @@ import { CSchemasIdsState, FSchemaState, pickedFCompState } from '@/pages/form-c
 import CompDrawer from '@/shared/draw-comps'
 import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
+import debounce from '@/utils/debounce'
 
 const CompPanel: FC = (): JSX.Element => {
   // const { t } = useTranslation()
@@ -47,10 +48,10 @@ const CompPanel: FC = (): JSX.Element => {
       {pickedCSchema && pickedFComp && CSchemas && (
         <Form<Comp, Comp>
           initialValues={pickedFComp}
-          onSubmit={onSubmit}
+          onSubmit={debounce(onSubmit, 750)}
           render={(formProps) => {
             return (
-              <Stack as="form" tokens={{ padding: '0 0 30vh' }} onSubmit={formProps.handleSubmit}>
+              <Stack as="form" tokens={{ padding: '0 0 30vh' }} onChange={formProps.handleSubmit}>
                 <Stack
                   tokens={{ padding: '20px 20px 0' }}
                   horizontal={true}
@@ -62,9 +63,6 @@ const CompPanel: FC = (): JSX.Element => {
                 </Stack>
                 <Stack>
                   <CompDrawer comps={pickedCSchema.comps} schemas={CSchemas} />
-                </Stack>
-                <Stack tokens={{ padding: '20px 20px' }}>
-                  <PrimaryButton type="submit">save</PrimaryButton>
                 </Stack>
               </Stack>
             )
