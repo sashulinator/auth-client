@@ -1,4 +1,4 @@
-import { IDropdownOption, PrimaryButton, Stack } from '@fluentui/react'
+import { IContextualMenuItem, IDropdownOption, Icon, PrimaryButton, Stack } from '@fluentui/react'
 
 import { FSchemaState } from '../model/form-schema'
 import React from 'react'
@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil'
 import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
+import ContextualMenu from '@/shared/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { errorMessage, successMessage } from '@/shared/toast'
 import { Schema } from '@/types/form-constructor'
@@ -35,21 +36,27 @@ export default function SchemaForm(): JSX.Element {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const { id } = useParams()
 
-  async function deleteForm() {
-    const response = await fetch('/api/v1/schemas', {
-      method: 'DELETE',
-      body: JSON.stringify({ ids: [FSchema.id] }),
-      headers: {
-        'content-type': 'application/json',
-        accept: '*/*',
-      },
-    })
+  const items: IContextualMenuItem[] = [
+    {
+      key: 'delete',
+      text: 'delete',
+      onclick: async () => {
+        const response = await fetch('/api/v1/schemas', {
+          method: 'DELETE',
+          body: JSON.stringify({ ids: [FSchema.id] }),
+          headers: {
+            'content-type': 'application/json',
+            accept: '*/*',
+          },
+        })
 
-    if (response.ok) {
-      console.log('схема удалена')
-      window.location.replace(ROUTES.SCHEMA_LIST.buildURL())
-    }
-  }
+        if (response.ok) {
+          console.log('схема удалена')
+          window.location.replace(ROUTES.SCHEMA_LIST.buildURL())
+        }
+      },
+    },
+  ]
 
   async function onSubmit(newFschema: Schema) {
     const { name, type, componentName = undefined } = newFschema
@@ -124,7 +131,9 @@ export default function SchemaForm(): JSX.Element {
               </Field>
             )}
             <PrimaryButton type="submit">{id ? 'Save' : 'Create'}</PrimaryButton>
-            <PrimaryButton onClick={deleteForm}>Delete</PrimaryButton>
+            <ContextualMenu items={items}>
+              <Icon iconName="More" />
+            </ContextualMenu>
           </Stack>
         )
       }}
