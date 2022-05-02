@@ -6,6 +6,7 @@ import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
+import uuid from 'uuid-random'
 
 import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
@@ -63,7 +64,7 @@ export default function SchemaForm(): JSX.Element {
 
     const response = await fetch('/api/v1/schemas', {
       method: id ? 'PUT' : 'POST',
-      body: JSON.stringify({ ...FSchema, name, type, componentName }),
+      body: JSON.stringify({ ...FSchema, name, type, componentName, id: id ? id : uuid() }),
       headers: {
         'content-type': 'application/json',
         accept: '*/*',

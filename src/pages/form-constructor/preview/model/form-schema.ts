@@ -1,7 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { atom, selector } from 'recoil'
-import uuid from 'uuid-random'
 
 import { ROOT_COMP_ID } from '@/constants/common'
 import { Schema } from '@/types/form-constructor'
@@ -9,7 +8,7 @@ import { Schema } from '@/types/form-constructor'
 export const FSchemaState = atom<Schema>({
   key: 'FSchemaState',
   default: {
-    id: uuid(),
+    id: '',
     name: 'Name',
     type: 'FORM',
     comps: {
@@ -46,7 +45,7 @@ export const pickedFCompState = selector({
   },
 })
 
-export const CSchemasIdsState = selector({
+export const CSchemasIdsInSchemaState = selector({
   key: 'CSchemasIdsState',
   get: ({ get }) => {
     const FSchema = get(FSchemaState)

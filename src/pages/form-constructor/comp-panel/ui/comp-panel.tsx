@@ -1,16 +1,15 @@
 import { Stack } from '@fluentui/react'
 
-import { CSchemasState, pickedCSchemaState } from '../model/comp-schema'
+import { CSchemasState, lackOfCSchemaIdsState, pickedCSchemaState } from '../model/comp-schema'
 import CompContextualMenu from './contextual-menu'
 import React, { FC, useEffect } from 'react'
 import { Form } from 'react-final-form'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 // import { useTranslation } from 'react-i18next'
-import { useQuery } from 'react-query'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
-import { getSchemas } from '@/api/schema'
-import { CSchemasIdsState, FSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
+import { useGetSchemaDependency } from '@/api/schema'
+import { FSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
 import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
@@ -22,16 +21,16 @@ const CompPanel: FC = (): JSX.Element => {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
-  const CSchemasIds = useRecoilValue(CSchemasIdsState)
+  const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
   const resetCSchemas = useResetRecoilState(CSchemasState)
 
-  const { data, isLoading } = useQuery(['schemas', [...new Set(CSchemasIds)]], getSchemas)
+  const { data, isLoading } = useGetSchemaDependency(lackOfCSchemaIds)
 
   useEffect(() => resetCSchemas, [])
 
   useEffect(() => {
     if (data !== undefined) {
-      setCSchemas(data)
+      setCSchemas({ ...data, ...CSchemas })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
@@ -51,7 +50,12 @@ const CompPanel: FC = (): JSX.Element => {
           onSubmit={debounce(onSubmit, 750)}
           render={(formProps) => {
             return (
-              <Stack as="form" tokens={{ padding: '0 0 30vh' }} onChange={formProps.handleSubmit}>
+              <Stack
+                as="form"
+                tokens={{ padding: '0 0 30vh' }}
+                onSubmit={(e) => e.preventDefault()}
+                onChange={formProps.handleSubmit}
+              >
                 <Stack
                   tokens={{ padding: '20px 20px 0' }}
                   horizontal={true}

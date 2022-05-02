@@ -8,7 +8,6 @@ export interface CompDrawerProps {
 export interface DrawerComponentProps {
   comp: Comp
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Component: any
   schemas: Norm<Schema>
   comps: Norm<Comp>
 }

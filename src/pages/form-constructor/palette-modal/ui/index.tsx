@@ -6,6 +6,7 @@ import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 
 import { getSchemaList } from '@/api/schema'
+import { ROOT_COMP_ID } from '@/constants/common'
 import { addCompToParent, createNewComp, findParentId } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
 import { Schema } from '@/types/form-constructor'
@@ -19,7 +20,8 @@ const PaletteModal: FC = (): JSX.Element => {
 
   function onAdd(schema: Schema) {
     const createdNewComp = createNewComp(schema)
-    const parentToPut = pickedFCompId ? findParentId(pickedFCompId, FSchema.comps) : 'stackRootId'
+    const isRoot = pickedFCompId === ROOT_COMP_ID
+    const parentToPut = pickedFCompId && !isRoot ? findParentId(pickedFCompId, FSchema.comps) : ROOT_COMP_ID
 
     const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
 

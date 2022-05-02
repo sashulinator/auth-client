@@ -42,12 +42,8 @@ export function ComponentFactory(props: CompComponentFactory): JSX.Element | nul
   assertNotUndefined(сomponentItem)
 
   if (сomponentItem.type === 'input' || сomponentItem.type === 'checkbox') {
-    return (
-      <FieldComponent schemas={props.schemas} comp={comp} comps={props.comps} Component={сomponentItem.component} />
-    )
+    return <FieldComponent schemas={props.schemas} comp={comp} comps={props.comps} />
   }
 
-  return (
-    <ContentComponent schemas={props.schemas} comp={comp} comps={props.comps} Component={сomponentItem.component} />
-  )
+  return <ContentComponent schemas={props.schemas} comp={comp} comps={props.comps} />
 }
