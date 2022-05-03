@@ -22,7 +22,7 @@ import { errorMessage, successMessage } from '@/shared/toast'
 const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
 export default function SchemaForm(): JSX.Element {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const { id } = useParams()
   const navigate = useNavigate()
@@ -33,7 +33,8 @@ export default function SchemaForm(): JSX.Element {
         text: t(typeName.toString()),
         key: typeName,
       })),
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [i18n.language]
   )
 
   const items: IContextualMenuItem[] = [
@@ -149,7 +150,9 @@ export default function SchemaForm(): JSX.Element {
                 )}
               </Field>
             )}
-            <PrimaryButton type="submit">{id ? 'Save' : 'Create'}</PrimaryButton>
+            <PrimaryButton type="submit">
+              {id ? t('buttons.save').toString() : t('buttons.create').toString()}
+            </PrimaryButton>
             <ContextualMenu items={items}>
               <Icon iconName="More" />
             </ContextualMenu>
