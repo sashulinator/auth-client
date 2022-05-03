@@ -4,7 +4,7 @@ import { FSchemaState } from '../model/form-schema'
 import React from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
@@ -37,6 +37,7 @@ export default function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const items: IContextualMenuItem[] = [
     {
@@ -53,8 +54,7 @@ export default function SchemaForm(): JSX.Element {
         })
 
         if (response.ok) {
-          console.log('схема удалена')
-          window.location.replace(ROUTES.SCHEMA_LIST.buildURL())
+          navigate(ROUTES.SCHEMA_LIST.buildURL())
         }
       },
     },
@@ -67,7 +67,11 @@ export default function SchemaForm(): JSX.Element {
 
     const errors = schemaValidator(newFSchema)
 
-    console.log('errors', errors)
+    if (errors) {
+      console.log('Невалидные данные в схеме', errors)
+      errorMessage('Невалидные данные в схеме (смотри ошибку в консоле браузера). Обратитесь к администратору!')
+      return
+    }
 
     const response = await fetch('/api/v1/schemas', {
       method: id ? 'PUT' : 'POST',
@@ -89,7 +93,7 @@ export default function SchemaForm(): JSX.Element {
     }
 
     if (!id && data.id) {
-      window.location.replace(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
     }
   }
 

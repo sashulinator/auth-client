@@ -1483,10 +1483,10 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@savchenko91/schema-validator@0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.7.tgz#c6a8c951c6faf9b9961033d089b65eb413f8bdad"
-  integrity sha512-yDNBgpsRnSmUOr1ee70kRQ9sZfJw6lCg9tESJjgzEdtKwFyoqlHiUVPWbp3D9RbgKXHcFTOmtORfHmtj8iNALQ==
+"@savchenko91/schema-validator@0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.8.tgz#930d5201cb8b135119b68fbdc1f457ca72a466d1"
+  integrity sha512-ELw5W4I98big3hvad5lh6vv8Nwz3a0Vytd8Aj2ul4f+z4SmakgtLNTixyYyU+rFGOXDnAYomj+IRk4qK3j+pvw==
 
 "@trivago/prettier-plugin-sort-imports@3.1.1":
   version "3.1.1"
