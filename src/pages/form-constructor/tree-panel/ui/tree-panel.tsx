@@ -6,6 +6,7 @@ import './index.css'
 
 import { paletteModalState } from '../../palette-modal/model'
 import { buildTree } from '../lib/build-tree'
+import { highlightComponent, removeHighlight } from '../lib/highlight'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
@@ -18,10 +19,20 @@ function TreePanel(): JSX.Element {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const [pickedFCompId, setPickedFCompId] = useRecoilState(pickedFCompIdState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
-  const [tree, setTree] = useState(() => buildTree(FSchema?.comps, { pickedFCompId, setPickedFCompId }))
+  const [tree, setTree] = useState(rebuildTree)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setTree(buildTree(FSchema?.comps, { pickedFCompId, setPickedFCompId })), [FSchema, pickedFCompId])
+  useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompId])
+
+  function rebuildTree() {
+    return buildTree(FSchema?.comps, {
+      pickedFCompId,
+      setPickedFCompId,
+      onMouseOver: highlightComponent,
+      onFocus: highlightComponent,
+      onBlur: removeHighlight,
+      onMouseLeave: removeHighlight,
+    })
+  }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
     if (!to) {

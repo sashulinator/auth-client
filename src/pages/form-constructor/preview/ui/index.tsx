@@ -1,3 +1,5 @@
+import './preview.css'
+
 import { CSchemasState } from '../../comp-panel/model/comp-schema'
 import React, { FC, useEffect } from 'react'
 import { Form } from 'react-final-form'
@@ -23,6 +25,7 @@ const Preview: FC = (): JSX.Element => {
 
   return (
     <div className="Preview">
+      <div className="selectorArea" />
       {CSchemas && (
         <Form
           key={JSON.stringify(FSchema)}

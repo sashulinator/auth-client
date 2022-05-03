@@ -13,6 +13,10 @@ export interface TreeLeafProps extends RenderItemParams {
 export interface TreeItemAdditionalData {
   setPickedFCompId: SetterOrUpdater<string>
   pickedFCompId: string
+  onMouseOver?: (itemId: string | number) => void
+  onMouseLeave?: (itemId: string | number) => void
+  onFocus?: (itemId: string | number) => void
+  onBlur?: (itemId: string | number) => void
 }
 
 export interface TreeItemData extends TreeItemAdditionalData {

@@ -50,7 +50,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
         // }
 
         return (
-          <div className="FieldErrorPositionRelative">
+          <div data-comp-id={props.comp.id} className="FieldErrorPositionRelative">
             <Component
               {...props.comp.props}
               {...input}
