@@ -1,10 +1,10 @@
 import { IconButton, Stack, Text } from '@fluentui/react'
 
-import { TreeLeafProps } from '../types'
+import { TreeLeafProps } from '../../../pages/form-constructor/tree-panel/types'
 import clsx from 'clsx'
 import React from 'react'
 
-function TreeLeaf(p: TreeLeafProps): JSX.Element {
+export default function TreeLeaf(p: TreeLeafProps): JSX.Element {
   const isPicked = p.item.data?.pickedFCompId === p.item.data?.comp.id
   const isExpandButton = p.item.hasChildren
 
@@ -25,8 +25,6 @@ function TreeLeaf(p: TreeLeafProps): JSX.Element {
     </div>
   )
 }
-
-export default TreeLeaf
 
 function ExpandButton(p: TreeLeafProps) {
   function toggle() {
