@@ -12,7 +12,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
   // const form = useForm()
   const CSchema = props.schemas[props.comp.compSchemaId]
 
-  if (CSchema?.componentName === undefined || CSchema === undefined) {
+  if (CSchema?.componentName === null || CSchema === undefined) {
     return null
   }
 

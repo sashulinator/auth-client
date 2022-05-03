@@ -6,8 +6,8 @@ import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 
 import { getSchemaList } from '@/api/schema'
+import { Schema } from '@/common/types'
 import ROUTES from '@/constants/routes'
-import { Schema } from '@/types/form-constructor'
 
 function List(): JSX.Element {
   const { data } = useQuery('schemas', getSchemaList)

@@ -3,7 +3,7 @@ import { assertNotEmptyArray, assertNotUndefined } from '@savchenko91/schema-val
 
 import uuid from 'uuid-random'
 
-import { Comp, Norm, Schema } from '@/types/form-constructor'
+import { Comp, Norm, Schema } from '@/common/types'
 import { insert, remove, replace } from '@/utils/change-unmutable'
 
 /**

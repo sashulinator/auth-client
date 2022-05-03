@@ -1,4 +1,4 @@
-import { Norm, Schema } from '@/types/form-constructor'
+import { Norm, Schema } from '@/common/types'
 
 export function isSchema(input: unknown): asserts input is Schema {
   return

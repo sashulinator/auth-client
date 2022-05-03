@@ -2,7 +2,7 @@ import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
 import { SetterOrUpdater } from 'recoil'
 
-import { Comp } from '@/types/form-constructor'
+import { Comp } from '@/common/types'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {

@@ -2,13 +2,15 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { atom, selector } from 'recoil'
 
+import { Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { Schema } from '@/types/form-constructor'
 
 export const FSchemaState = atom<Schema>({
   key: 'FSchemaState',
   default: {
+    // TODO Попробовать удалить id
     id: '',
+    componentName: null,
     name: 'Name',
     type: 'FORM',
     comps: {

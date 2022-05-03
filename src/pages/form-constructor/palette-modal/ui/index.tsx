@@ -6,10 +6,10 @@ import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 
 import { getSchemaList } from '@/api/schema'
+import { Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
 import { addCompToParent, createNewComp, findParentId } from '@/helpers/form-schema-state'
 import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
-import { Schema } from '@/types/form-constructor'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)

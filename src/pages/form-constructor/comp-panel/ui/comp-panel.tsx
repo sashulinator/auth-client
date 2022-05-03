@@ -9,9 +9,9 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { useGetSchemaDependency } from '@/api/schema'
+import { Comp } from '@/common/types'
 import { FSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
-import { Comp } from '@/types/form-constructor'
 import { replace } from '@/utils/change-unmutable'
 import debounce from '@/utils/debounce'
 

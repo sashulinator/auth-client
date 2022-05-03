@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil'
 
+import { Norm, Schema } from '@/common/types'
 import { CSchemasIdsInSchemaState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
-import { Norm, Schema } from '@/types/form-constructor'
 
 export const CSchemasState = atom<null | Norm<Schema>>({
   key: 'CSchemasState',

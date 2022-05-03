@@ -1,9 +1,12 @@
 import {
+  ANY_KEY,
+  _null,
   _undefined,
   and,
   buildErrorTree,
   matchPattern,
   notEmptyString,
+  notUndefined,
   only,
   or,
   string,
@@ -11,12 +14,10 @@ import {
   wrap,
 } from '@savchenko91/schema-validator'
 
-import { CreateUser, UpdateUser } from './types'
-
 const bindedWrap = wrap.bind({ handleError: buildErrorTree })
 
 export const createUserValidator = bindedWrap(
-  only<CreateUser>({
+  only({
     username: and(string, withValue(/^(\w*)$/, matchPattern)),
     password: and(
       string,
@@ -31,12 +32,40 @@ export const createUserValidator = bindedWrap(
 )
 
 export const updateUserValidator = bindedWrap(
-  only<UpdateUser>({
+  only({
     ...createUserValidator,
     id: string,
     password: or(
       and(withValue(/[A-Z]/, matchPattern), withValue(/[a-z]/, matchPattern), withValue(/[0-9]/, matchPattern)),
       _undefined
     ),
+  })
+)
+
+function assertComponentNameIsValid(v: unknown, meta: any) {
+  if (meta?.inputObject?.type === 'COMP') {
+    string(v)
+  } else {
+    throw Error('"componentName" must be define if type="COMP"')
+  }
+}
+
+export const schemaValidator = bindedWrap(
+  only({
+    componentName: or(_null, assertComponentNameIsValid),
+    id: string,
+    name: string,
+    type: string,
+    comps: wrap({
+      [ANY_KEY]: {
+        id: string,
+        compSchemaId: string,
+        name: string,
+        path: or(string, _undefined),
+        defaultValue: or(string, _undefined),
+        props: notUndefined,
+        childCompIds: or([string], _undefined),
+      },
+    }),
   })
 )

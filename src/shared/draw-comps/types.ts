@@ -1,4 +1,4 @@
-import { Comp, Norm, Schema } from '@/types/form-constructor'
+import { Comp, Norm, Schema } from '@/common/types'
 
 export interface CompDrawerProps {
   comps: Norm<Comp>

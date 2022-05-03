@@ -8,13 +8,14 @@ import { useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
+import { schemaValidator } from '@/common/schemas'
+import { Schema } from '@/common/types'
 import Dropdown from '@/components/dropdown/dropdown'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
 import ContextualMenu from '@/shared/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { errorMessage, successMessage } from '@/shared/toast'
-import { Schema } from '@/types/form-constructor'
 
 // TODO tuple
 const options: IDropdownOption[] = [
@@ -59,8 +60,14 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(newFschema: Schema) {
-    const { name, type, componentName = undefined } = newFschema
+  async function onSubmit(submitFschemaData: Schema) {
+    const { name, type, componentName = undefined } = submitFschemaData
+
+    const newFSchema = { ...FSchema, name, type, componentName, id: id ? id : uuid() }
+
+    const errors = schemaValidator(newFSchema)
+
+    console.log('errors', errors)
 
     const response = await fetch('/api/v1/schemas', {
       method: id ? 'PUT' : 'POST',

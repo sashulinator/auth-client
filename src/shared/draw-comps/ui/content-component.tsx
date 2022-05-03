@@ -1,4 +1,4 @@
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import componentList from '../lib/component-list'
 import { DrawerComponentProps } from '../types'
@@ -16,7 +16,7 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
     return null
   }
 
-  assertNotUndefined(CSchema.componentName)
+  assertNotNull(CSchema.componentName)
 
   const сomponentItem = componentList[CSchema.componentName]
 
