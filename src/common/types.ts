@@ -13,8 +13,14 @@ export interface Schema {
   componentName: null | string
   id: string
   name: string
-  type: string
+  type: FormType
   comps: Record<string, Comp>
+}
+
+export enum FormType {
+  FORM = 'FORM',
+  PRESET = 'PRESET',
+  COMP = 'COMP',
 }
 
 export type Norm<T> = Record<string, T>

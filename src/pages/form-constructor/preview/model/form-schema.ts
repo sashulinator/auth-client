@@ -2,7 +2,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { atom, selector } from 'recoil'
 
-import { Schema } from '@/common/types'
+import { FormType, Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
 
 export const FSchemaState = atom<Schema>({
@@ -12,7 +12,7 @@ export const FSchemaState = atom<Schema>({
     id: '',
     componentName: null,
     name: 'Name',
-    type: 'FORM',
+    type: FormType.FORM,
     comps: {
       [ROOT_COMP_ID]: {
         id: ROOT_COMP_ID,

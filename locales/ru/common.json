@@ -58,6 +58,10 @@
   "assertNotMoreThan": "больше чем {{- _input2}}",
   "assertNotUndefined": "обязательно",
 
+  "FORM": "форма",
+  "PRESET": "пресет",
+  "COMP": "компонент",
+
   "assertMatchPattern": "не следует паттерну: {{- _input2}}",
   "assertMatchPattern/@.*\\.*./": "введенный текст не является email",
   "assertMatchPattern/[A-Z]/": "должен содержать символ в верхнем регистре",

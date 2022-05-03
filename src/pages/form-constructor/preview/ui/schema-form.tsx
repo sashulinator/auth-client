@@ -1,8 +1,8 @@
-import { IContextualMenuItem, IDropdownOption, Icon, PrimaryButton, Stack } from '@fluentui/react'
+import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
 
 import { FSchemaState } from '../model/form-schema'
 import { FormApi, SubmissionErrors } from 'final-form'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -10,7 +10,7 @@ import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
 import { schemaValidator } from '@/common/schemas'
-import { Schema } from '@/common/types'
+import { FormType, Schema } from '@/common/types'
 import Dropdown from '@/components/dropdown/dropdown'
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
@@ -19,27 +19,22 @@ import ContextualMenu from '@/shared/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { errorMessage, successMessage } from '@/shared/toast'
 
-// TODO tuple
-const options: IDropdownOption[] = [
-  {
-    text: 'форма',
-    key: 'FORM',
-  },
-  {
-    text: 'пресет',
-    key: 'PRESET',
-  },
-  {
-    text: 'компонент',
-    key: 'COMP',
-  },
-]
+const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
 export default function SchemaForm(): JSX.Element {
   const { t } = useTranslation()
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
   const { id } = useParams()
   const navigate = useNavigate()
+
+  const options = useMemo(
+    () =>
+      typeArray.map((typeName) => ({
+        text: t(typeName.toString()),
+        key: typeName,
+      })),
+    []
+  )
 
   const items: IContextualMenuItem[] = [
     {
@@ -102,7 +97,7 @@ export default function SchemaForm(): JSX.Element {
     }
   }
 
-  function onDropdownChange(type: string) {
+  function onDropdownChange(type: FormType) {
     setFSchema({ ...FSchema, type })
   }
 

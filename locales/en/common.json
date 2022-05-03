@@ -63,6 +63,10 @@
   "assertMatchPattern/[a-z]/": "must contain lowercase letter",
   "assertMatchPattern/[0-9]/": "must contain number",
 
+  "FORM": "form",
+  "PRESET": "preset",
+  "COMP": "component",
+
   "assertIgnorePattern/\\W+/": "can contain only symbols \u003Cnobr\u003Eand \"_\"\u003C/nobr\u003E",
 
   "calendar": {
