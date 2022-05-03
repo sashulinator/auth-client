@@ -57,11 +57,15 @@
   "assertString": "обязательно",
   "assertNotMoreThan": "больше чем {{- _input2}}",
   "assertNotUndefined": "обязательно",
+
   "assertMatchPattern": "не следует паттерну: {{- _input2}}",
   "assertMatchPattern/@.*\\.*./": "введенный текст не является email",
   "assertMatchPattern/[A-Z]/": "должен содержать символ в верхнем регистре",
   "assertMatchPattern/[a-z]/": "должен содержать символ в нижнем регистре",
   "assertMatchPattern/[0-9]/": "должен содержать цифру",
+
+  "assertIgnorePattern/\\W+/": "может содержать только буквы и <nobr>символы\"-_\"</nobr>",
+
   "calendar": {
     "firstDayOfTheWeek": 1,
 

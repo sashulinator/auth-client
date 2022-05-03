@@ -50,7 +50,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
         // }
 
         return (
-          <>
+          <div className="FieldErrorPositionRelative">
             <Component
               {...props.comp.props}
               {...input}
@@ -58,7 +58,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
               // onBlur={onBlur} onFocus={onFocus}
             />
             <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-          </>
+          </div>
         )
       }}
     </Field>

@@ -1,6 +1,7 @@
 import { IContextualMenuItem, IDropdownOption, Icon, PrimaryButton, Stack } from '@fluentui/react'
 
 import { FSchemaState } from '../model/form-schema'
+import { FormApi, SubmissionErrors } from 'final-form'
 import React from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -11,6 +12,7 @@ import uuid from 'uuid-random'
 import { schemaValidator } from '@/common/schemas'
 import { Schema } from '@/common/types'
 import Dropdown from '@/components/dropdown/dropdown'
+import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
 import ContextualMenu from '@/shared/contextual-menu'
@@ -60,7 +62,11 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(submitFschemaData: Schema) {
+  async function onSubmit(
+    submitFschemaData: Schema,
+    formApi: FormApi<Schema, Schema>,
+    setError?: (errors?: SubmissionErrors) => void
+  ): Promise<void> {
     const { name, type, componentName = undefined } = submitFschemaData
 
     const newFSchema = { ...FSchema, name, type, componentName, id: id ? id : uuid() }
@@ -68,8 +74,7 @@ export default function SchemaForm(): JSX.Element {
     const errors = schemaValidator(newFSchema)
 
     if (errors) {
-      console.log('Невалидные данные в схеме', errors)
-      errorMessage('Невалидные данные в схеме (смотри ошибку в консоле браузера). Обратитесь к администратору!')
+      setError?.(errors)
       return
     }
 
@@ -119,7 +124,14 @@ export default function SchemaForm(): JSX.Element {
             tokens={{ childrenGap: 20, padding: '15px 40px' }}
           >
             <Field<string> name="name">
-              {({ input }) => <CustomTextField key="1" label={t(`fieldNames.name`)} underlined {...input} />}
+              {({ input, meta }) => {
+                return (
+                  <div className="FieldErrorPositionRelative">
+                    <CustomTextField key="1" label={t(`fieldNames.name`)} underlined {...input} />
+                    <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />
+                  </div>
+                )
+              }}
             </Field>
             <Field<string> name="type">
               {({ input }) => (

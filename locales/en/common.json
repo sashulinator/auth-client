@@ -56,11 +56,15 @@
   "assertString": "required",
   "assertNotMoreThan": "more than {{- _input2}}",
   "assertNotUndefined": "required",
+
   "assertMatchPattern": "does not match the pattern: {{- _input2}}",
   "assertMatchPattern/@.*\\.*./": "does not match email pattern",
   "assertMatchPattern/[A-Z]/": "must contain uppercase letter",
   "assertMatchPattern/[a-z]/": "must contain lowercase letter",
   "assertMatchPattern/[0-9]/": "must contain number",
+
+  "assertIgnorePattern/\\W+/": "can contain only symbols \u003Cnobr\u003Eand \"_\"\u003C/nobr\u003E",
+
   "calendar": {
     "firstDayOfTheWeek": 0,
     "months": {

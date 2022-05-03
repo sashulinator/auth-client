@@ -4,6 +4,7 @@ import {
   _undefined,
   and,
   buildErrorTree,
+  ignorePattern,
   keyDoesNotExist,
   matchPattern,
   notEmptyString,
@@ -28,7 +29,7 @@ function assertComponentNameIsValid(componentNameValue: unknown, typeValue: unkn
 export const schemaValidator = rootOnly({
   componentName: or(_null, withRef('type', assertComponentNameIsValid)),
   id: string,
-  name: string,
+  name: and(string, notEmptyString, withValue(/\W+/, ignorePattern)),
   type: string,
   comps: wrap({
     [ANY_KEY]: {
