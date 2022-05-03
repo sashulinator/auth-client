@@ -119,7 +119,7 @@ export default function SchemaForm(): JSX.Element {
             verticalAlign="center"
             tokens={{ childrenGap: 20, padding: '15px 40px' }}
           >
-            <Field<string> name="name">
+            <Field<string> name="name" validate={(v) => schemaValidator.name(v)}>
               {({ input, meta }) => {
                 return (
                   <div className="FieldErrorPositionRelative">

@@ -68,7 +68,7 @@
   "assertMatchPattern/[a-z]/": "должен содержать символ в нижнем регистре",
   "assertMatchPattern/[0-9]/": "должен содержать цифру",
 
-  "assertIgnorePattern/\\W+/": "может содержать только буквы и <nobr>символы\"-_\"</nobr>",
+  "assertIgnorePattern/\\W+/": "может содержать только буквы и <nobr>символы\"_\"</nobr>",
 
   "calendar": {
     "firstDayOfTheWeek": 1,

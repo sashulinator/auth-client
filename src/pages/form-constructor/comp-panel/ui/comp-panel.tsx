@@ -15,7 +15,7 @@ import CompDrawer from '@/shared/draw-comps'
 import { replace } from '@/utils/change-unmutable'
 import debounce from '@/utils/debounce'
 
-const CompPanel: FC = (): JSX.Element => {
+const CompPanel: FC = (): JSX.Element | null => {
   // const { t } = useTranslation()
   const [CSchemas, setCSchemas] = useRecoilState(CSchemasState)
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
@@ -40,6 +40,10 @@ const CompPanel: FC = (): JSX.Element => {
       const newComps = replace(FSchema.comps, comp.id, comp)
       setFSchema({ ...FSchema, comps: newComps })
     }
+  }
+
+  if (!(pickedCSchema && pickedFComp && CSchemas)) {
+    return null
   }
 
   return (
