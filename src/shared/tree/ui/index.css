@@ -12,7 +12,7 @@
   border-radius: 3px;
   position: absolute;
   width: 100%;
-  height: calc(100% - 4px);
+  height: calc(100% - 5px);
 }
 
 .TreeLeaf.picked .treeLeafContent div.treeLeafBackgroundColor {
@@ -21,9 +21,13 @@
   z-index: 0;
 }
 
-.TreePanel .TreeLeaf:hover .treeLeafBackgroundColor {
+.TreeLeaf:hover .treeLeafBackgroundColor {
   background-color: var(--themePrimary);
   opacity: 0.15;
+}
+
+.picked:focus .treeLeafContent div.treeLeafBackgroundColor {
+  border: solid 2px var(--themePrimary);
 }
 
 .TreePanel .TreeLeaf:focus .treeLeafBackgroundColor {
