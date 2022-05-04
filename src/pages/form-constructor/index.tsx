@@ -3,6 +3,7 @@ import { Stack } from '@fluentui/react'
 import './form-constructor.css'
 
 import CompPanel from './comp-panel'
+import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
 import { FSchemaState } from './preview/model/form-schema'
@@ -29,6 +30,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
   return (
     <>
+      <KeyListener />
       <Header />
       <div className="fakeHeader" />
       <Stack as="main" className="FormConstructor">

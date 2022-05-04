@@ -1,18 +1,17 @@
 import { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { FontIcon, PrimaryButton } from '@fluentui/react'
-import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './index.css'
 
-import { paletteModalState } from '../../palette-modal/model'
 import { buildTree } from '../lib/build-tree'
-import { highlightComponent, removeHighlight } from '../lib/highlight'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
-import { moveComps as moveComp, removeComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
+import { moveComp } from '@/helpers/form-schema-state'
+import { paletteModalState } from '@/pages/form-constructor/palette-modal'
+import { FSchemaState, highlightComponent, pickedFCompIdState, removeHighlight } from '@/pages/form-constructor/preview'
 import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
@@ -20,9 +19,7 @@ function TreePanel(): JSX.Element {
   const [pickedFCompId, setPickedFCompId] = useRecoilState(pickedFCompIdState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
-  const pickedFComp = useRecoilValue(pickedFCompState)
   useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompId])
-  useEffect(addDeleteKeyListener, [pickedFCompId])
 
   function rebuildTree() {
     return buildTree(FSchema?.comps, {
@@ -33,39 +30,6 @@ function TreePanel(): JSX.Element {
       onBlur: removeHighlight,
       onMouseLeave: removeHighlight,
     })
-  }
-
-  function addDeleteKeyListener() {
-    function test(event: any): void {
-      if (event.key === 'Backspace') {
-        assertNotNull(pickedFComp)
-        assertNotNull(FSchema)
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        if ((document?.activeElement as any)?.type === 'text') {
-          return
-        }
-
-        const comps = removeComp(pickedFComp?.id, FSchema.comps)
-        setPickedFCompId('')
-        setTimeout(() => {
-          setFSchema({ ...FSchema, comps })
-          removeHighlight()
-        })
-      }
-    }
-
-    if (pickedFCompId) {
-      document.removeEventListener('keydown', test)
-      document.addEventListener('keydown', test)
-    } else {
-      document.removeEventListener('keydown', test)
-    }
-
-    // Удаляем слушатель при уничтожении компонента
-    return () => {
-      document.removeEventListener('keydown', test)
-    }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {

@@ -94,7 +94,7 @@ export function pasteCompToParent(
   return pasteCompsToParent(parentId, currentCompId, [index], normComps)
 }
 
-export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: TreeDestinationPosition): Norm<Comp> {
+export function moveComp(comps: Norm<Comp>, from: TreeSourcePosition, to?: TreeDestinationPosition): Norm<Comp> {
   if (to === undefined) {
     return comps
   }
