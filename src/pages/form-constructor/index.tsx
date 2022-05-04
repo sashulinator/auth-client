@@ -6,7 +6,7 @@ import CompPanel from './comp-panel'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
-import { FSchemaState } from './preview/model/form-schema'
+import { FSchemaHistoryState, setFSchema } from './preview/model/form-schema'
 import TreePanel from './tree-panel'
 import React, { FC, useEffect } from 'react'
 import { useQuery } from 'react-query'
@@ -17,13 +17,13 @@ import { getSchema } from '@/api/schema'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
-  const [, setFSchema] = useRecoilState(FSchemaState)
+  const [, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const { id } = useParams()
   const { data } = useQuery(['schema', id], getSchema)
 
   useEffect(() => {
     if (data !== undefined) {
-      setFSchema(data)
+      setFSchemaHistory(setFSchema(data))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])

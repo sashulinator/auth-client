@@ -25,6 +25,12 @@ export enum FormType {
 
 export type Norm<T> = Record<string, T>
 
+export interface History<Data> {
+  prev: null | History<Data>
+  next: null | History<Data>
+  data: Data
+}
+
 export interface FindManyParams<T = number> {
   take?: T
   skip?: T

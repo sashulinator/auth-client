@@ -4,10 +4,15 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { removeComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdsState, pickedFCompState } from '@/pages/form-constructor/preview'
+import {
+  FSchemaHistoryState,
+  pickedFCompIdsState,
+  pickedFCompState,
+  setFSchemaComps,
+} from '@/pages/form-constructor/preview'
 
 export default function KeyListener(): null {
-  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   useEffect(addEscKeyListener, [pickedFCompIds])
@@ -19,7 +24,6 @@ export default function KeyListener(): null {
 
       if (event.key === 'Escape') {
         assertNotNull(pickedFComp)
-        assertNotNull(FSchema)
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((document?.activeElement as any)?.type === 'text') {
@@ -47,16 +51,15 @@ export default function KeyListener(): null {
     function action(event: KeyboardEvent): void {
       if (event.key === 'Backspace') {
         assertNotNull(pickedFComp)
-        assertNotNull(FSchema)
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((document?.activeElement as any)?.type === 'text') {
           return
         }
 
-        const comps = removeComp(pickedFComp?.id, FSchema.comps)
+        const comps = removeComp(pickedFComp?.id, FSchemaHistory.data.comps)
         setPickedFCompIds([])
-        setFSchema({ ...FSchema, comps })
+        setFSchemaHistory(setFSchemaComps(comps))
       }
     }
 

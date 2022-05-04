@@ -1,6 +1,6 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
 
-import { FSchemaState } from '../model/form-schema'
+import { FSchemaHistoryState, setFSchema } from '../model/form-schema'
 import { FormApi, SubmissionErrors } from 'final-form'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
@@ -23,7 +23,7 @@ const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
 export default function SchemaForm(): JSX.Element {
   const { t, i18n } = useTranslation()
-  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -44,7 +44,7 @@ export default function SchemaForm(): JSX.Element {
       onclick: async () => {
         const response = await fetch('/api/v1/schemas', {
           method: 'DELETE',
-          body: JSON.stringify({ ids: [FSchema.id] }),
+          body: JSON.stringify({ ids: [FSchemaHistory.data.id] }),
           headers: {
             'content-type': 'application/json',
             accept: '*/*',
@@ -65,7 +65,7 @@ export default function SchemaForm(): JSX.Element {
   ): Promise<void> {
     const { name, type, componentName = undefined } = submitFschemaData
 
-    const newFSchema = { ...FSchema, name, type, componentName, id: id ? id : uuid() }
+    const newFSchema = { ...FSchemaHistory, name, type, componentName, id: id ? id : uuid() }
 
     const errors = schemaValidator(newFSchema)
 
@@ -76,7 +76,7 @@ export default function SchemaForm(): JSX.Element {
 
     const response = await fetch('/api/v1/schemas', {
       method: id ? 'PUT' : 'POST',
-      body: JSON.stringify({ ...FSchema, name, type, componentName, id: id ? id : uuid() }),
+      body: JSON.stringify({ ...FSchemaHistory, name, type, componentName, id: id ? id : uuid() }),
       headers: {
         'content-type': 'application/json',
         accept: '*/*',
@@ -99,14 +99,14 @@ export default function SchemaForm(): JSX.Element {
   }
 
   function onDropdownChange(type: FormType) {
-    setFSchema({ ...FSchema, type })
+    setFSchemaHistory(setFSchema({ ...FSchemaHistory.data, type }))
   }
 
   //TODO обновить схему в стэйте если меняется дропдаун для componentName
 
   return (
     <Form<Schema, Schema>
-      initialValues={FSchema}
+      initialValues={FSchemaHistory.data}
       onSubmit={onSubmit}
       render={(formProps) => {
         return (

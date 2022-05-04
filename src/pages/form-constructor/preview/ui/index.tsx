@@ -5,13 +5,13 @@ import React, { FC, useEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { FSchemaState, pickedFCompIdsState } from '@/pages/form-constructor/preview/model/form-schema'
+import { FSchemaHistoryState, pickedFCompIdsState } from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {
-  const [FSchema] = useRecoilState(FSchemaState)
+  const [FSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const [CSchemas] = useRecoilState(CSchemasState)
-  const resetFSchema = useResetRecoilState(FSchemaState)
+  const resetFSchema = useResetRecoilState(FSchemaHistoryState)
   const resetPickedFCompId = useResetRecoilState(pickedFCompIdsState)
 
   useEffect(() => {
@@ -28,12 +28,12 @@ const Preview: FC = (): JSX.Element => {
       <div className="selectorArea" />
       {CSchemas && (
         <Form
-          key={JSON.stringify(FSchema)}
+          key={JSON.stringify(FSchemaHistory)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {FSchema && <CompDrawer schemas={CSchemas} comps={FSchema.comps} />}
+                {FSchemaHistory && <CompDrawer schemas={CSchemas} comps={FSchemaHistory.data.comps} />}
               </form>
             )
           }}

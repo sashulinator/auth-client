@@ -12,23 +12,24 @@ import { useRecoilState } from 'recoil'
 import { findCompLocation, moveComp } from '@/helpers/form-schema-state'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
-  FSchemaState,
+  FSchemaHistoryState,
   highlightComponent,
   pickedFCompIdsState,
   removeHighlight,
+  setFSchemaComps,
 } from '@/pages/form-constructor/preview'
 import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
-  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
 
-  useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompIds])
+  useEffect(() => setTree(rebuildTree), [FSchemaHistory, pickedFCompIds])
 
   function rebuildTree() {
-    return buildTree(FSchema?.comps, {
+    return buildTree(FSchemaHistory.data?.comps, {
       pickedIds: pickedFCompIds,
       onItemClick,
       onMouseOver: highlightComponent,
@@ -82,7 +83,7 @@ function TreePanel(): JSX.Element {
 
     assertNotUndefined(tree)
 
-    let tempComps = FSchema.comps
+    let tempComps = FSchemaHistory.data?.comps
 
     pickedFCompIds.forEach((compId) => {
       const from = findCompLocation(compId, tempComps)
@@ -90,7 +91,7 @@ function TreePanel(): JSX.Element {
       tempComps = moveComp(tempComps, from, to)
     })
 
-    setFSchema({ ...FSchema, comps: tempComps })
+    setFSchemaHistory(setFSchemaComps(tempComps))
   }
 
   /**
