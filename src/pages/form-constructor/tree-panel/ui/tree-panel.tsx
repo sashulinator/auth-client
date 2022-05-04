@@ -13,9 +13,9 @@ import { findCompLocation, moveComp } from '@/helpers/form-schema-state'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
   FSchemaHistoryState,
-  highlightComponent,
+  highlightHover,
   pickedFCompIdsState,
-  removeHighlight,
+  removeAllHoverHighlights,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview'
 import Tree from '@/shared/tree'
@@ -32,10 +32,10 @@ function TreePanel(): JSX.Element {
     return buildTree(FSchemaHistory.data?.comps, {
       pickedIds: pickedFCompIds,
       onItemClick,
-      onMouseOver: highlightComponent,
-      onFocus: highlightComponent,
-      onBlur: removeHighlight,
-      onMouseLeave: removeHighlight,
+      onMouseOver: highlightHover,
+      onFocus: highlightHover,
+      onBlur: removeAllHoverHighlights,
+      onMouseLeave: removeAllHoverHighlights,
       onKeyDown,
     })
   }

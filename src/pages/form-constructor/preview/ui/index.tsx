@@ -1,7 +1,8 @@
 import './preview.css'
 
 import { CSchemasState } from '../../comp-panel/model/comp-schema'
-import React, { FC, useEffect } from 'react'
+import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
+import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
@@ -12,7 +13,16 @@ const Preview: FC = (): JSX.Element => {
   const [FSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const [CSchemas] = useRecoilState(CSchemasState)
   const resetFSchema = useResetRecoilState(FSchemaHistoryState)
+  const [pickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const resetPickedFCompId = useResetRecoilState(pickedFCompIdsState)
+
+  useLayoutEffect(() => {
+    removeAllSelectionHighlights()
+
+    pickedFCompIds.forEach((compId) => {
+      highlightSelection(compId)
+    })
+  }, [pickedFCompIds])
 
   useEffect(() => {
     resetFSchema()
@@ -26,6 +36,7 @@ const Preview: FC = (): JSX.Element => {
   return (
     <div className="Preview">
       <div className="selectorArea" />
+      <div className="hoverArea" />
       {CSchemas && (
         <Form
           key={JSON.stringify(FSchemaHistory)}

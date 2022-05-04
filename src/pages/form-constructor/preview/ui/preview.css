@@ -2,7 +2,8 @@
   position: relative;
 }
 
-.selectorArea {
+.selectorArea,
+.hoverArea {
   position: absolute;
   width: 100%;
   height: 100%;
