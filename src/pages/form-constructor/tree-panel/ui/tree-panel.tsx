@@ -32,7 +32,7 @@ function TreePanel(): JSX.Element {
   function rebuildTree() {
     return buildTree(FSchema?.comps, {
       pickedIds: pickedFCompIds,
-      onItemClick: setPickedFCompIds,
+      onItemClick,
       onMouseOver: highlightComponent,
       onFocus: highlightComponent,
       onBlur: removeHighlight,
@@ -41,22 +41,39 @@ function TreePanel(): JSX.Element {
     })
   }
 
-  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) {
-    assertString(itemId)
+  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string) {
+    assertString(compId)
+
+    const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
+
+    if (e[controlKeyName]) {
+      if (pickedFCompIds.includes(compId)) {
+        setPickedFCompIds(pickedFCompIds.filter((id) => id !== compId))
+        return
+      }
+      setPickedFCompIds([...new Set([...pickedFCompIds, compId])])
+      return
+    }
+
+    setPickedFCompIds([compId])
+  }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>, compId: string | number) {
+    assertString(compId)
 
     const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
     if (e.key === 'Enter' && e[controlKeyName]) {
-      if (pickedFCompIds.includes(itemId)) {
-        setPickedFCompIds(pickedFCompIds.filter((id) => id !== itemId))
+      if (pickedFCompIds.includes(compId)) {
+        setPickedFCompIds(pickedFCompIds.filter((id) => id !== compId))
         return
       }
-      setPickedFCompIds([...new Set([...pickedFCompIds, itemId])])
+      setPickedFCompIds([...new Set([...pickedFCompIds, compId])])
       return
     }
 
     if (e.key === 'Enter') {
-      setPickedFCompIds([itemId])
+      setPickedFCompIds([compId])
     }
   }
 

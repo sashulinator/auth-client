@@ -38,7 +38,11 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         <div className="treeLeafBackgroundColor" />
         <div className="treeLeafBorderColor" />
         {isExpandButton && <ExpandButton {...props} />}
-        <Text as="div" onClick={() => props.item.data?.onItemClick([props.item.data.comp.id])} className="treeLeafText">
+        <Text
+          as="div"
+          onClick={(e) => props.item.data?.onItemClick(e, props.item.data.comp.id)}
+          className="treeLeafText"
+        >
           {isOneOfMultipleDragging
             ? `multiple ${props.item.data?.pickedIds.length || ''}`
             : props.item.data?.comp.name || ''}

@@ -1,6 +1,6 @@
 import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
-import { SetterOrUpdater } from 'recoil'
+import React from 'react'
 
 import { Comp } from '@/common/types'
 
@@ -11,7 +11,7 @@ export interface TreeLeafProps extends RenderItemParams {
 }
 
 export interface TreeItemAdditionalData {
-  onItemClick: SetterOrUpdater<string[]>
+  onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
   pickedIds: string[]
   onMouseOver?: (itemId: string | number) => void
   onMouseLeave?: (itemId: string | number) => void
