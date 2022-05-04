@@ -11,20 +11,25 @@ import { useRecoilState } from 'recoil'
 
 import { moveComp } from '@/helpers/form-schema-state'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
-import { FSchemaState, highlightComponent, pickedFCompIdState, removeHighlight } from '@/pages/form-constructor/preview'
+import {
+  FSchemaState,
+  highlightComponent,
+  pickedFCompIdsState,
+  removeHighlight,
+} from '@/pages/form-constructor/preview'
 import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const [pickedFCompId, setPickedFCompId] = useRecoilState(pickedFCompIdState)
+  const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
-  useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompId])
+  useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompIds])
 
   function rebuildTree() {
     return buildTree(FSchema?.comps, {
-      pickedFCompId,
-      setPickedFCompId,
+      pickedFCompIds,
+      setPickedFCompIds,
       onMouseOver: highlightComponent,
       onFocus: highlightComponent,
       onBlur: removeHighlight,

@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import React from 'react'
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
-  const isPicked = props.item.data?.pickedFCompId === props.item.data?.comp.id
+  const isPicked = props.item.data?.pickedFCompIds.includes(props.item.data?.comp.id)
   const isExpandButton = props.item.hasChildren
 
   return (
@@ -24,7 +24,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         {isExpandButton && <ExpandButton {...props} />}
         <Text
           as="div"
-          onClick={() => props.item.data?.setPickedFCompId(props.item.data.comp.id)}
+          onClick={() => props.item.data?.setPickedFCompIds([props.item.data.comp.id])}
           className="treeLeafText"
         >
           {props.item.data?.comp.name || ''}

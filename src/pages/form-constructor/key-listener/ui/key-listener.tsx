@@ -4,14 +4,14 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { removeComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview'
+import { FSchemaState, pickedFCompIdsState, pickedFCompState } from '@/pages/form-constructor/preview'
 
 export default function KeyListener(): null {
   const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const [pickedFCompId, setPickedFCompId] = useRecoilState(pickedFCompIdState)
+  const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const pickedFComp = useRecoilValue(pickedFCompState)
-  useEffect(addEscKeyListener, [pickedFCompId])
-  useEffect(addDeleteKeyListener, [pickedFCompId])
+  useEffect(addEscKeyListener, [pickedFCompIds])
+  useEffect(addDeleteKeyListener, [pickedFCompIds])
 
   function addEscKeyListener() {
     function action(event: KeyboardEvent): void {
@@ -26,11 +26,11 @@ export default function KeyListener(): null {
           return
         }
 
-        setPickedFCompId('')
+        setPickedFCompIds([])
       }
     }
 
-    if (pickedFCompId) {
+    if (pickedFCompIds) {
       document.removeEventListener('keydown', action)
       document.addEventListener('keydown', action)
     } else {
@@ -55,12 +55,12 @@ export default function KeyListener(): null {
         }
 
         const comps = removeComp(pickedFComp?.id, FSchema.comps)
-        setPickedFCompId('')
+        setPickedFCompIds([])
         setFSchema({ ...FSchema, comps })
       }
     }
 
-    if (pickedFCompId) {
+    if (pickedFCompIds) {
       document.removeEventListener('keydown', action)
       document.addEventListener('keydown', action)
     } else {

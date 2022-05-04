@@ -24,19 +24,23 @@ export const FSchemaState = atom<Schema>({
   },
 })
 
-export const pickedFCompIdState = atom({
-  key: 'pickedFCompIdState',
-  default: '',
+export const pickedFCompIdsState = atom<string[]>({
+  key: 'pickedFCompIdsState',
+  default: [],
 })
 
 export const pickedFCompState = selector({
   key: 'pickedFCompState',
   get: ({ get }) => {
     const FSchema = get(FSchemaState)
-    const pickedFCompId = get(pickedFCompIdState)
+    const pickedFCompIds = get(pickedFCompIdsState)
 
-    if (pickedFCompId && FSchema) {
-      const pickedFComp = FSchema.comps[pickedFCompId]
+    if (pickedFCompIds.length > 1) {
+      return null
+    }
+
+    if (pickedFCompIds.length !== 0 && FSchema) {
+      const pickedFComp = FSchema.comps[pickedFCompIds[0] || '']
 
       assertNotUndefined(pickedFComp)
 
