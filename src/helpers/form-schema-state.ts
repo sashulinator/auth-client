@@ -130,6 +130,29 @@ export function createNewComp(schema: Schema): Comp {
   }
 }
 
+export function addCompsToParent(
+  parentCompId: string,
+  index: number,
+  compsToAdd: Norm<Comp>,
+  comps: Norm<Comp>
+): Norm<Comp> {
+  return Object.values(compsToAdd).reduce<Norm<Comp>>((acc, comp) => {
+    return addCompToParent(parentCompId, index, comp, acc)
+  }, comps)
+}
+
+export function addCompsToParentWithNewId(
+  parentCompId: string,
+  index: number,
+  compsToAdd: Norm<Comp>,
+  comps: Norm<Comp>
+): Norm<Comp> {
+  return Object.values(compsToAdd).reduce<Norm<Comp>>((acc, comp) => {
+    const newComp = { ...comp, id: uuid() }
+    return addCompToParent(parentCompId, index, newComp, acc)
+  }, comps)
+}
+
 export function addCompToParent(parentCompId: string, index: number, comp: Comp, comps: Norm<Comp>): Norm<Comp> {
   let newParentComp: Comp
 
@@ -184,4 +207,16 @@ export function findCompLocation(compId: string, comps: Norm<Comp>): TreeSourceP
     index,
     parentId: parentComp.id,
   }
+}
+
+export function getCompsFromIds(ids: string[], comps: Norm<Comp>): Norm<Comp> {
+  return ids.reduce<Norm<Comp>>((acc, id) => {
+    const comp = comps[id]
+
+    assertNotUndefined(comp)
+
+    acc[id] = comp
+
+    return acc
+  }, {})
 }

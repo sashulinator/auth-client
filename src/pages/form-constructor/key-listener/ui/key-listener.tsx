@@ -4,8 +4,10 @@ import { assertNotNull } from '@savchenko91/schema-validator'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
+import { schemaValidator } from '@/common/schemas'
+import { Comp, Norm } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { removeComp } from '@/helpers/form-schema-state'
+import { addCompsToParentWithNewId, findParentId, getCompsFromIds, removeComp } from '@/helpers/form-schema-state'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -24,6 +26,8 @@ export default function KeyListener(): null {
   useEffect(addDeleteKeyListener, [pickedFCompIds])
   useEffect(addCtrlZKeyListener, [pickedFCompIds, FSchemaHistory])
   useEffect(addCtrlShiftZKeyListener, [pickedFCompIds, FSchemaHistory])
+  useEffect(addCtrlCKeyListener, [pickedFCompIds, FSchemaHistory])
+  useEffect(addCtrlVKeyListener, [pickedFCompIds, FSchemaHistory])
 
   function addEscKeyListener() {
     function action(event: KeyboardEvent): void {
@@ -80,6 +84,80 @@ export default function KeyListener(): null {
         }
 
         setFSchemaHistory(setPrev)
+      }
+    }
+
+    if (pickedFCompIds) {
+      document.removeEventListener('keydown', action)
+      document.addEventListener('keydown', action)
+    } else {
+      document.removeEventListener('keydown', action)
+    }
+
+    // Удаляем слушатель при уничтожении компонента
+    return () => {
+      document.removeEventListener('keydown', action)
+    }
+  }
+
+  //
+
+  function addCtrlCKeyListener() {
+    function action(event: KeyboardEvent): void {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((document?.activeElement as any)?.type === 'text') {
+        return
+      }
+
+      const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
+
+      if (event.code === 'KeyC' && event[controlKeyName] && !event.shiftKey) {
+        const selectedComps = getCompsFromIds(pickedFCompIds, FSchemaHistory.data.comps)
+        localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
+      }
+    }
+
+    if (pickedFCompIds) {
+      document.removeEventListener('keydown', action)
+      document.addEventListener('keydown', action)
+    } else {
+      document.removeEventListener('keydown', action)
+    }
+
+    // Удаляем слушатель при уничтожении компонента
+    return () => {
+      document.removeEventListener('keydown', action)
+    }
+  }
+
+  //
+
+  function addCtrlVKeyListener() {
+    function action(event: KeyboardEvent): void {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((document?.activeElement as any)?.type === 'text') {
+        return
+      }
+
+      const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
+
+      if (event.code === 'KeyV' && event[controlKeyName] && !event.shiftKey) {
+        const stringifiedComps = localStorage.getItem('copyClipboard') || ''
+
+        const comps = JSON.parse(stringifiedComps) as Norm<Comp>
+
+        schemaValidator.comps(comps)
+
+        console.log('comps', comps)
+
+        if (comps) {
+          const isRoot = pickedFCompIds[0] === ROOT_COMP_ID
+          const parentToPut =
+            pickedFCompIds[0] && !isRoot ? findParentId(pickedFCompIds[0], FSchemaHistory.data.comps) : ROOT_COMP_ID
+          const newComps = addCompsToParentWithNewId(parentToPut, 0, comps, FSchemaHistory.data.comps)
+          setFSchemaHistory(setFSchemaComps(newComps))
+          setPickedFCompIds(Object.keys(comps))
+        }
       }
     }
 
