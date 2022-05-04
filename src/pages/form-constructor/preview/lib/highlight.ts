@@ -21,8 +21,6 @@ export function highlightComponent(itemId: string | number) {
 
   const elementSelector = document.createElement('div')
 
-  console.log('height', height)
-
   elementSelector.style.width = width
   elementSelector.style.height = height
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
