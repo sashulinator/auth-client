@@ -7,7 +7,7 @@ export function removeHighlight() {
 }
 
 export function highlightComponent(itemId: string | number) {
-  const element = document.querySelector(`[data-comp-id="${itemId}"]`)
+  const element = document.querySelector(`.Preview [data-comp-id="${itemId}"]`)
   const previewEl = document.querySelector(`.selectorArea`)
 
   if (element === null || previewEl === null) {

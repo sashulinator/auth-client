@@ -10,6 +10,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
 
   return (
     <div
+      data-comp-id={props.item.id}
       onMouseOver={() => props.item.data?.onMouseOver?.(props.item.id)}
       onMouseLeave={() => props.item.data?.onMouseLeave?.(props.item.id)}
       onFocus={() => props.item.data?.onFocus?.(props.item.id)}
