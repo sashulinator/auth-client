@@ -65,7 +65,7 @@ export default function SchemaForm(): JSX.Element {
   ): Promise<void> {
     const { name, type, componentName = undefined } = submitFschemaData
 
-    const newFSchema = { ...FSchemaHistory, name, type, componentName, id: id ? id : uuid() }
+    const newFSchema = { ...FSchemaHistory.data, name, type, componentName, id: id ? id : uuid() }
 
     const errors = schemaValidator(newFSchema)
 
@@ -76,7 +76,7 @@ export default function SchemaForm(): JSX.Element {
 
     const response = await fetch('/api/v1/schemas', {
       method: id ? 'PUT' : 'POST',
-      body: JSON.stringify({ ...FSchemaHistory, name, type, componentName, id: id ? id : uuid() }),
+      body: JSON.stringify(newFSchema),
       headers: {
         'content-type': 'application/json',
         accept: '*/*',

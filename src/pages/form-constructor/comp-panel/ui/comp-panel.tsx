@@ -44,7 +44,7 @@ const CompPanel: FC = (): JSX.Element | null => {
 
   return (
     <PerfectScrollbar className="CompPanel">
-      <CompForm schemas={CSchemas} comps={FSchemaHistory.data.comps} comp={pickedFComp} onSubmit={onSubmit} />
+      <CompForm schemas={CSchemas} comps={pickedCSchema.comps} comp={pickedFComp} onSubmit={onSubmit} />
       {!isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
     </PerfectScrollbar>
   )

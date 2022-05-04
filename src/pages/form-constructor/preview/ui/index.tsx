@@ -22,7 +22,7 @@ const Preview: FC = (): JSX.Element => {
     pickedFCompIds.forEach((compId) => {
       highlightSelection(compId)
     })
-  }, [pickedFCompIds])
+  }, [pickedFCompIds, FSchemaHistory])
 
   useEffect(() => {
     resetFSchema()

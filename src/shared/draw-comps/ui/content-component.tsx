@@ -25,7 +25,11 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
   const Component = сomponentItem.component
 
   if (props.comp.childCompIds === undefined) {
-    return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
+    return (
+      <Component data-comp-id={props.comp.id} {...props.comp.props}>
+        {props.comp?.props?.children}
+      </Component>
+    )
   }
 
   return (
