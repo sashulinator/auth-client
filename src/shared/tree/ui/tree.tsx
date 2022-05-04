@@ -8,7 +8,7 @@ import React from 'react'
 
 const PADDING_PER_LEVEL = 18
 
-interface TreeProps extends Pick<Props, 'tree' | 'onDragEnd'> {
+interface TreeProps extends Pick<Props, 'tree' | 'onDragEnd' | 'onDragStart'> {
   setTree: React.Dispatch<React.SetStateAction<TreeData | undefined>>
 }
 
@@ -32,6 +32,7 @@ function Tree(props: TreeProps): JSX.Element {
       onExpand={onExpand}
       onCollapse={onCollapse}
       onDragEnd={props.onDragEnd}
+      onDragStart={props.onDragStart}
       offsetPerLevel={PADDING_PER_LEVEL}
       isDragEnabled
       isNestingEnabled

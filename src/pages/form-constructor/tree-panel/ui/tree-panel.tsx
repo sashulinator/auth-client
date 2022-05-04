@@ -27,8 +27,6 @@ function TreePanel(): JSX.Element {
 
   useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompIds])
 
-  console.log('pickedFCompIdspickedFCompIds', pickedFCompIds)
-
   function rebuildTree() {
     return buildTree(FSchema?.comps, {
       pickedIds: pickedFCompIds,
@@ -95,13 +93,32 @@ function TreePanel(): JSX.Element {
     setFSchema({ ...FSchema, comps: tempComps })
   }
 
+  /**
+   *
+    @description Пользователь может начать перетаскивать компонент, который не был выделен
+    в результате перетащятся выделенные, а не перетаскиваемые
+   */
+  function PreventMovingUnpickedItems(compId: string | number) {
+    assertString(compId)
+
+    if (pickedFCompIds.includes(compId)) {
+      return
+    }
+
+    setPickedFCompIds([compId])
+  }
+
   return (
     <>
       <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
       <PerfectScrollbar className="TreePanel">
-        <div className="marginTopAndBottom">{tree && <Tree tree={tree} onDragEnd={onDragEnd} setTree={setTree} />}</div>
+        <div className="marginTopAndBottom">
+          {tree && (
+            <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />
+          )}
+        </div>
       </PerfectScrollbar>
     </>
   )
