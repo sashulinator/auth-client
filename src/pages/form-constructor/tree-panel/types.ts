@@ -17,6 +17,7 @@ export interface TreeItemAdditionalData {
   onMouseLeave?: (itemId: string | number) => void
   onFocus?: (itemId: string | number) => void
   onBlur?: (itemId: string | number) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
 }
 
 export interface TreeItemData extends TreeItemAdditionalData {

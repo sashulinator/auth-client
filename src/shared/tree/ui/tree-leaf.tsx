@@ -10,14 +10,26 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       data-comp-id={props.item.id}
       onMouseOver={() => props.item.data?.onMouseOver?.(props.item.id)}
       onMouseLeave={() => props.item.data?.onMouseLeave?.(props.item.id)}
-      onFocus={() => props.item.data?.onFocus?.(props.item.id)}
-      onBlur={() => props.item.data?.onBlur?.(props.item.id)}
       className={clsx('TreeLeaf', isPicked && 'picked', isExpandButton && 'isExpandButton')}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
+      onFocus={(e) => {
+        props.provided.dragHandleProps.onFocus(e)
+        props.item.data?.onFocus?.(props.item.id)
+      }}
+      onBlur={(e) => {
+        props.provided.dragHandleProps.onBlur(e)
+        props.item.data?.onBlur?.(props.item.id)
+      }}
+      onKeyDown={(e) => {
+        props.provided.dragHandleProps.onKeyDown(e)
+        props.item.data?.onKeyDown?.(e, props.item.id)
+      }}
       ref={props.provided.innerRef}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">

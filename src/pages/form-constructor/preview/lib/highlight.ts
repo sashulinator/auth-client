@@ -14,6 +14,8 @@ export function highlightComponent(itemId: string | number) {
     return
   }
 
+  previewEl.innerHTML = ''
+
   const el = element as any
 
   const { offsetTop, offsetLeft } = el

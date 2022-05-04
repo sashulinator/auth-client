@@ -1,6 +1,6 @@
 import { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { FontIcon, PrimaryButton } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './index.css'
 
@@ -34,7 +34,17 @@ function TreePanel(): JSX.Element {
       onFocus: highlightComponent,
       onBlur: removeHighlight,
       onMouseLeave: removeHighlight,
+      onKeyDown,
     })
+  }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) {
+    assertString(itemId)
+
+    if (e.key === 'Enter') {
+      itemId
+      setPickedFCompIds([itemId])
+    }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
