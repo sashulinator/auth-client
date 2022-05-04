@@ -8,7 +8,8 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
   const isPicked = props.item.data?.pickedIds.includes(props.item.data?.comp.id)
   const isExpandButton = props.item.hasChildren
 
-  const isOneOfMultipleDragging = props.snapshot.isDragging && isPicked
+  const isOneOfMultipleDragging =
+    props.snapshot.isDragging && isPicked && props.item.data && props.item.data.pickedIds.length > 1
 
   return (
     <div

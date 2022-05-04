@@ -173,3 +173,15 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
 export function findParentId(id: string, comps: Norm<Comp>): string {
   return findParent(id, comps).id
 }
+
+export function findCompLocation(compId: string, comps: Norm<Comp>): TreeSourcePosition {
+  const parentComp = findParent(compId, comps)
+  const index = parentComp.childCompIds?.indexOf(compId)
+
+  assertNotUndefined(index)
+
+  return {
+    index,
+    parentId: parentComp.id,
+  }
+}

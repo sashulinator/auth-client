@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
-import { moveComp } from '@/helpers/form-schema-state'
+import { findCompLocation, moveComp } from '@/helpers/form-schema-state'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
   FSchemaState,
@@ -77,18 +77,22 @@ function TreePanel(): JSX.Element {
     }
   }
 
-  function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
+  function onDragEnd(f: TreeSourcePosition, to?: TreeDestinationPosition) {
     if (!to) {
       return
     }
 
     assertNotUndefined(tree)
 
-    setTree(moveItemOnTree(tree, from, to))
+    let tempComps = FSchema.comps
 
-    const newFormSchema = moveComp(FSchema?.comps, from, to)
+    pickedFCompIds.forEach((compId) => {
+      const from = findCompLocation(compId, tempComps)
+      setTree(moveItemOnTree(tree, from, to))
+      tempComps = moveComp(tempComps, from, to)
+    })
 
-    setFSchema({ ...FSchema, comps: newFormSchema })
+    setFSchema({ ...FSchema, comps: tempComps })
   }
 
   return (
