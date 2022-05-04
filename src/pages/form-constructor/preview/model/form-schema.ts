@@ -95,3 +95,31 @@ export function setFSchemaComps(comps: Norm<Comp>) {
     }
   }
 }
+
+export function setPrev(FSchemaHistory: History<Schema>): History<Schema> {
+  if (FSchemaHistory.prev === null) {
+    return FSchemaHistory
+  }
+
+  const newState = {
+    prev: FSchemaHistory.prev.prev || null,
+    next: FSchemaHistory,
+    data: FSchemaHistory.prev.data,
+  }
+
+  return newState
+}
+
+export function setNext(FSchemaHistory: History<Schema>): History<Schema> {
+  if (FSchemaHistory.next === null) {
+    return FSchemaHistory
+  }
+
+  const newState = {
+    prev: FSchemaHistory,
+    next: FSchemaHistory.next.next || null,
+    data: FSchemaHistory.next.data,
+  }
+
+  return newState
+}

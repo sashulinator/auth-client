@@ -6,7 +6,7 @@ import CompPanel from './comp-panel'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
-import { FSchemaHistoryState, setFSchema } from './preview/model/form-schema'
+import { FSchemaHistoryState } from './preview/model/form-schema'
 import TreePanel from './tree-panel'
 import React, { FC, useEffect } from 'react'
 import { useQuery } from 'react-query'
@@ -23,7 +23,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
   useEffect(() => {
     if (data !== undefined) {
-      setFSchemaHistory(setFSchema(data))
+      setFSchemaHistory({ next: null, data, prev: null })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
