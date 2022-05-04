@@ -4,6 +4,7 @@ import { assertNotEmptyArray, assertNotUndefined } from '@savchenko91/schema-val
 import uuid from 'uuid-random'
 
 import { Comp, Norm, Schema } from '@/common/types'
+import { copyComp } from '@/shared/draw-comps/lib/mutators'
 import { insert, remove, replace } from '@/utils/change-unmutable'
 
 /**
@@ -148,7 +149,7 @@ export function addCompsToParentWithNewId(
   comps: Norm<Comp>
 ): Norm<Comp> {
   return Object.values(compsToAdd).reduce<Norm<Comp>>((acc, comp) => {
-    const newComp = { ...comp, id: uuid() }
+    const newComp = copyComp(comp)
     return addCompToParent(parentCompId, index, newComp, acc)
   }, comps)
 }
@@ -192,7 +193,9 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
 
   return comp
 }
-
+/**
+ * @deprecated
+ */
 export function findParentId(id: string, comps: Norm<Comp>): string {
   return findParent(id, comps).id
 }

@@ -8,7 +8,6 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ROOT_COMP_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
-import { removeComp } from '@/helpers/form-schema-state'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -16,6 +15,7 @@ import {
   setFSchemaComps,
 } from '@/pages/form-constructor/preview/model/form-schema'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
+import { removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()

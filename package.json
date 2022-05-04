@@ -7,13 +7,14 @@
     "build": "webpack --config webpack/webpack.config.js --env env=prod",
     "lint": "eslint --fix \"./src/**/*.{js,jsx,ts,tsx,json}\"",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Savchenko Alexander",
   "dependencies": {
     "@atlaskit/tree": "8.6.0",
     "@fluentui/react": "8.49.0",
     "@savchenko91/schema-validator": "0.2.8",
+    "@types/jest": "^27.5.0",
     "@types/qs": "6.9.7",
     "clsx": "1.1.1",
     "esbuild-typescript-loader": "0.2.2",
@@ -67,10 +68,12 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "html-webpack-plugin": "5.1.0",
     "husky": "4",
+    "jest": "^28.0.3",
     "lint-staged": "10.5.4",
     "prettier": "2.2.1",
     "react-refresh": "0.9.0",
     "style-loader": "2.0.0",
+    "ts-jest": "^28.0.1",
     "webpack": "5.21.2",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.2",

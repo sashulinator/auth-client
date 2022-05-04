@@ -52,3 +52,8 @@ export function replace<T extends unknown[] | Record<string, any>>(
   }
   return { ...arrOrObj, [indexOrKey]: newItem }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function replaceById<T extends unknown[] | Record<string, any>>(newItem: Record<'id', string>, arrOrObj: T): T {
+  return { ...arrOrObj, [newItem.id]: newItem }
+}

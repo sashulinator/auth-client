@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { addCompsToParentWithNewId, findParentId, getCompsFromIds, removeComp } from '@/helpers/form-schema-state'
+import { addCompsToParentWithNewId, findParentId, getCompsFromIds } from '@/helpers/form-schema-state'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -16,6 +16,7 @@ import {
   setNext,
   setPrev,
 } from '@/pages/form-constructor/preview'
+import { removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function KeyListener(): null {
   const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
