@@ -5,8 +5,10 @@ import clsx from 'clsx'
 import React from 'react'
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
-  const isPicked = props.item.data?.pickedFCompIds.includes(props.item.data?.comp.id)
+  const isPicked = props.item.data?.pickedIds.includes(props.item.data?.comp.id)
   const isExpandButton = props.item.hasChildren
+
+  const isOneOfMultipleDragging = props.snapshot.isDragging && isPicked
 
   return (
     <div
@@ -34,13 +36,12 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBackgroundColor" />
+        <div className="treeLeafBorderColor" />
         {isExpandButton && <ExpandButton {...props} />}
-        <Text
-          as="div"
-          onClick={() => props.item.data?.setPickedFCompIds([props.item.data.comp.id])}
-          className="treeLeafText"
-        >
-          {props.item.data?.comp.name || ''}
+        <Text as="div" onClick={() => props.item.data?.onItemClick([props.item.data.comp.id])} className="treeLeafText">
+          {isOneOfMultipleDragging
+            ? `multiple ${props.item.data?.pickedIds.length || ''}`
+            : props.item.data?.comp.name || ''}
         </Text>
       </Stack>
     </div>

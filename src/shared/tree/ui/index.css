@@ -7,7 +7,8 @@
   cursor: pointer;
 }
 
-.TreeLeaf .treeLeafBackgroundColor {
+.TreeLeaf .treeLeafBackgroundColor,
+.TreeLeaf .treeLeafBorderColor {
   border: solid 2px transparent;
   border-radius: 3px;
   position: absolute;
@@ -15,7 +16,7 @@
   height: calc(100% - 5px);
 }
 
-.TreeLeaf.picked .treeLeafContent div.treeLeafBackgroundColor {
+.TreeLeaf.picked .treeLeafContent .treeLeafBackgroundColor {
   background-color: var(--themePrimary);
   opacity: 0.3;
   z-index: 0;
@@ -26,11 +27,7 @@
   opacity: 0.15;
 }
 
-.picked:focus .treeLeafContent div.treeLeafBackgroundColor {
-  border: solid 2px var(--themePrimary);
-}
-
-.TreePanel .TreeLeaf:focus .treeLeafBackgroundColor {
+.TreePanel .TreeLeaf:focus .treeLeafBorderColor {
   border: solid 2px var(--themePrimary);
 }
 

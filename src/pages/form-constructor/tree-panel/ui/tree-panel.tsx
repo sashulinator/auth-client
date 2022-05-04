@@ -1,5 +1,5 @@
 import { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { FontIcon, PrimaryButton } from '@fluentui/react'
+import { FontIcon, PrimaryButton, isMac } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './index.css'
@@ -24,12 +24,15 @@ function TreePanel(): JSX.Element {
   const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
+
   useEffect(() => setTree(rebuildTree), [FSchema, pickedFCompIds])
+
+  console.log('pickedFCompIdspickedFCompIds', pickedFCompIds)
 
   function rebuildTree() {
     return buildTree(FSchema?.comps, {
-      pickedFCompIds,
-      setPickedFCompIds,
+      pickedIds: pickedFCompIds,
+      onItemClick: setPickedFCompIds,
       onMouseOver: highlightComponent,
       onFocus: highlightComponent,
       onBlur: removeHighlight,
@@ -41,8 +44,18 @@ function TreePanel(): JSX.Element {
   function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) {
     assertString(itemId)
 
+    const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
+
+    if (e.key === 'Enter' && e[controlKeyName]) {
+      if (pickedFCompIds.includes(itemId)) {
+        setPickedFCompIds(pickedFCompIds.filter((id) => id !== itemId))
+        return
+      }
+      setPickedFCompIds([...new Set([...pickedFCompIds, itemId])])
+      return
+    }
+
     if (e.key === 'Enter') {
-      itemId
       setPickedFCompIds([itemId])
     }
   }
