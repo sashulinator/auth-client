@@ -15,7 +15,7 @@ import {
   pickedFCompState,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview/model/form-schema'
-import ContextualMenu from '@/shared/contextual-menu'
+import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()

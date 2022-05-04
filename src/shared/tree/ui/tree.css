@@ -1,10 +1,11 @@
-.TreePanel .TreeLeaf:focus {
+.TreeLeaf:focus {
   outline: none !important;
 }
 
-.TreePanel .treeLeafContent {
+.TreeLeaf .treeLeafContent {
   position: relative;
   cursor: pointer;
+  user-select: none;
 }
 
 .TreeLeaf .treeLeafBackgroundColor,
@@ -27,11 +28,11 @@
   opacity: 0.15;
 }
 
-.TreePanel .TreeLeaf:focus .treeLeafBorderColor {
+.TreeLeaf:focus .treeLeafBorderColor {
   border: solid 2px var(--themePrimary);
 }
 
-.TreePanel .treeLeafText {
+.TreeLeaf .treeLeafText {
   display: flex;
   align-items: center;
   height: 32px;

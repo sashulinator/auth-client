@@ -1,7 +1,7 @@
 import AtlasianTree, { TreeData, mutateTree } from '@atlaskit/tree'
 import { Props } from '@atlaskit/tree/dist/types/components/Tree/Tree-types'
 
-import './index.css'
+import './tree.css'
 
 import TreeLeaf from './tree-leaf'
 import React from 'react'

@@ -1,6 +1,6 @@
 import { ContextualMenu as FluenContextualMenu, IContextualMenuItem } from '@fluentui/react'
 
-import './index.css'
+import './contextual-menu.css'
 
 import React, { useRef } from 'react'
 

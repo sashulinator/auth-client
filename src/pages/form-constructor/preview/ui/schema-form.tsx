@@ -15,7 +15,7 @@ import Dropdown from '@/components/dropdown/dropdown'
 import FieldError from '@/components/field-error'
 import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
-import ContextualMenu from '@/shared/contextual-menu'
+import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { errorMessage, successMessage } from '@/shared/toast'
 
