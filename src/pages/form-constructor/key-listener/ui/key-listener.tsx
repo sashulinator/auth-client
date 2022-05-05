@@ -153,16 +153,17 @@ export default function KeyListener(): null {
           const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 
-          Object.values(copiedComps).map((comp) => {
+          const newComps = Object.values(copiedComps).reduce((acc, comp) => {
             if (isToRoot) {
-              const comps = addComp(comp, ROOT_COMP_ID, 0, FSchemaHistory.data.comps)
-              setFSchemaHistory(setFSchemaComps(comps))
+              acc = addComp(comp, ROOT_COMP_ID, 0, acc)
             } else {
-              const position = findCompPosition(pickedFCompIds[0] || '', FSchemaHistory.data.comps)
-              const comps = addComp(comp, position.parentId.toString(), position.index + 1, FSchemaHistory.data.comps)
-              setFSchemaHistory(setFSchemaComps(comps))
+              const position = findCompPosition(pickedFCompIds[0] || '', acc)
+              acc = addComp(comp, position.parentId.toString(), position.index + 1, acc)
             }
-          })
+            return acc
+          }, FSchemaHistory.data.comps)
+
+          setFSchemaHistory(setFSchemaComps(newComps))
 
           if (pickedFCompIds.length === 0) {
             setPickedFCompIds(comps[0] ? [comps[0].id] : [])

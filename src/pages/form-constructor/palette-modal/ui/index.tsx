@@ -13,7 +13,8 @@ import {
   pickedFCompIdsState,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview/model/form-schema'
-import { addComp, createNewComp, findCompPosition } from '@/shared/draw-comps/lib/mutators'
+import { addComp, copyComps, createNewComp, findCompPosition } from '@/shared/draw-comps/lib/mutators'
+import { remove } from '@/utils/change-unmutable'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
@@ -43,6 +44,31 @@ const PaletteModal: FC = (): JSX.Element => {
     setOpen(false)
   }
 
+  function addPreset(schema: Schema) {
+    const copiedComps = copyComps(remove(schema.comps, ROOT_COMP_ID))
+
+    console.log('copiedComps', copiedComps)
+
+    const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
+    const isToRoot = pickedFCompIds.length === 0 || isRoot
+
+    const newComps = Object.values(copiedComps).reduce((acc, comp) => {
+      if (isToRoot) {
+        acc = addComp(comp, ROOT_COMP_ID, 0, acc)
+      } else {
+        const position = findCompPosition(pickedFCompIds[0] || '', acc)
+        acc = addComp(comp, position.parentId.toString(), position.index + 1, acc)
+      }
+      return acc
+    }, FSchemaHistory.data.comps)
+
+    // console.log('newComps', newComps)
+
+    setFSchemaHistory(setFSchemaComps(newComps))
+
+    setOpen(false)
+  }
+
   return (
     <Modal titleAriaId={'Add comp'} isOpen={isOpen} onDismiss={() => setOpen(false)} isBlocking={false}>
       <Pivot
@@ -66,7 +92,11 @@ const PaletteModal: FC = (): JSX.Element => {
         <PivotItem headerText="Пресеты">
           {data?.map((schema) => {
             if (schema.type === 'PRESET') {
-              return <PrimaryButton key={schema.id}>{schema.name}</PrimaryButton>
+              return (
+                <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
+                  {schema.name}
+                </PrimaryButton>
+              )
             }
             return null
           })}
