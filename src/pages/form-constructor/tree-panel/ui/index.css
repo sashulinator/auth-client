@@ -1,13 +1,16 @@
 .TreePanel {
   background-color: var(--white);
-  overflow: auto;
   z-index: 5;
   padding: 0 15px;
 }
 
 .TreePanel .marginTopAndBottom {
   margin-top: 20px;
-  margin-bottom: 30vh;
+}
+
+.TreePanel .marginTopAndBottom > .wrapper {
+  overflow: auto;
+  height: 100%;
 }
 
 .addCompButton {
