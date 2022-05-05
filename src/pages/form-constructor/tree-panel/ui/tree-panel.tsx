@@ -5,7 +5,7 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 import './index.css'
 
 import { buildTree } from '../lib/build-tree'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
@@ -26,7 +26,20 @@ function TreePanel(): JSX.Element {
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
 
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => setTree(rebuildTree), [FSchemaHistory, pickedFCompIds])
+
+  /**
+   * Костыль! Tree требует чтобы высота родителя не менялась во время переноса компонента,
+   * а PerfectScrollbar так и норовит ее поменять
+   */
+  useLayoutEffect(() => {
+    if (wrapperRef.current && wrapperRef.current.firstElementChild) {
+      const styles = window.getComputedStyle(wrapperRef.current.firstElementChild)
+      wrapperRef.current.style.minHeight = `calc(${parseInt(styles.height, 10)}px + 30vh)`
+    }
+  }, [FSchemaHistory.data])
 
   function rebuildTree() {
     return buildTree(FSchemaHistory.data?.comps, {
