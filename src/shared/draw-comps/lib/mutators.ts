@@ -5,7 +5,7 @@ import uuid from 'uuid-random'
 
 import { Comp, Norm } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { remove, replace, replaceById } from '@/utils/change-unmutable'
+import { insert, remove, replace, replaceById } from '@/utils/change-unmutable'
 
 // TODO в будущем будет убирать еще и байндинги
 export function copyComp(comp: Comp): Comp {
@@ -56,6 +56,8 @@ export function getComps(ids: string[], comps: Norm<Comp>): Norm<Comp> {
   }, {})
 }
 
+// CHILD ID
+
 /**
  * Returns parent comp
  */
@@ -77,6 +79,27 @@ export function removeChildId(comp: Comp, childIdOrIndex: string | number): Comp
 
   return replace(comp, 'childCompIds', newChildCompIds)
 }
+
+export function addChildId(parentComp: Comp, compId: string, index: number): Comp {
+  if (index < 0) {
+    throw new Error('Index cannot be less than 0')
+  }
+
+  const childLength = parentComp?.childCompIds?.length ?? 0
+
+  if (index > childLength) {
+    throw new Error(`Index cannot be more than ${childLength}`)
+  }
+
+  const parentClone = { ...parentComp, childCompIds: parentComp?.childCompIds ?? [] }
+
+  const newChildCompIds = insert(parentClone.childCompIds, index, compId)
+  const newParentComp = replace(parentClone, 'childCompIds', newChildCompIds)
+
+  return newParentComp
+}
+
+// COMPS
 
 export function removeComp(compId: string, comps: Norm<Comp>): Norm<Comp> {
   const parentComp = findParent(compId, comps)

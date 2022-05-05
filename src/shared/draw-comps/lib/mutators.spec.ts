@@ -1,4 +1,4 @@
-import { copyComps, getCompPosition } from './mutators'
+import { addChildId, copyComps, getCompPosition } from './mutators'
 
 import { Comp, Norm } from '@/common/types'
 
@@ -39,5 +39,13 @@ describe('mutators', () => {
     const position = getCompPosition(comps.id2.id, (comps as unknown) as Norm<Comp>)
 
     expect(position).toEqual({ index: 1, parentId: 'id1' })
+  })
+
+  it(addChildId.name, () => {
+    const comp = { id: 'id1', childCompIds: ['id3', 'id2'] }
+
+    const newComp = addChildId((comp as unknown) as Comp, 'id4', 1)
+
+    expect(newComp).toEqual({ id: 'id1', childCompIds: ['id3', 'id4', 'id2'] })
   })
 })
