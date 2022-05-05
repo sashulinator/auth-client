@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { addCompsToParentWithNewId, findParentId, getCompsFromIds } from '@/helpers/form-schema-state'
+import { addCompsToParentWithNewId } from '@/helpers/form-schema-state'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -16,7 +16,7 @@ import {
   setNext,
   setPrev,
 } from '@/pages/form-constructor/preview'
-import { removeComp } from '@/shared/draw-comps/lib/mutators'
+import { findComps, findParent, removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function KeyListener(): null {
   const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
@@ -113,7 +113,7 @@ export default function KeyListener(): null {
       const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
       if (event.code === 'KeyC' && event[controlKeyName] && !event.shiftKey) {
-        const selectedComps = getCompsFromIds(pickedFCompIds, FSchemaHistory.data.comps)
+        const selectedComps = findComps(pickedFCompIds, FSchemaHistory.data.comps)
         localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
       }
     }
@@ -154,7 +154,7 @@ export default function KeyListener(): null {
         if (comps) {
           const isRoot = pickedFCompIds[0] === ROOT_COMP_ID
           const parentToPut =
-            pickedFCompIds[0] && !isRoot ? findParentId(pickedFCompIds[0], FSchemaHistory.data.comps) : ROOT_COMP_ID
+            pickedFCompIds[0] && !isRoot ? findParent(pickedFCompIds[0], FSchemaHistory.data.comps).id : ROOT_COMP_ID
           const newComps = addCompsToParentWithNewId(parentToPut, 0, comps, FSchemaHistory.data.comps)
           setFSchemaHistory(setFSchemaComps(newComps))
           setPickedFCompIds(Object.keys(comps))
@@ -227,7 +227,9 @@ export default function KeyListener(): null {
       }
 
       if (event.key === 'Backspace') {
-        assertNotNull(pickedFComp)
+        if (pickedFComp === null) {
+          return
+        }
 
         const comps = removeComp(pickedFComp?.id, FSchemaHistory.data.comps)
         setPickedFCompIds([])

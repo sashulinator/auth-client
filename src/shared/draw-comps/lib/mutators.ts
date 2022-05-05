@@ -29,11 +29,11 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
 }
 
 export function findCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePosition {
-  if (compId === ROOT_COMP_ID) {
-    throw new Error('Do not pass ROOT_COMP_ID')
-  }
-
   const parentComp = findParent(compId, comps)
+
+  if (compId === ROOT_COMP_ID) {
+    return { index: 0, parentId: parentComp.id }
+  }
   const index = parentComp.childCompIds?.indexOf(compId)
 
   assertNotUndefined(index)
