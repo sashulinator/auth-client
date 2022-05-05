@@ -6,27 +6,32 @@ import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 
 import { getSchemaList } from '@/api/schema'
+import { Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
 import { addCompToParent, createNewComp, findParentId } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
-import { Schema } from '@/types/form-constructor'
+import {
+  FSchemaHistoryState,
+  pickedFCompIdsState,
+  setFSchemaComps,
+} from '@/pages/form-constructor/preview/model/form-schema'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
-  const [pickedFCompId, setPickedCompId] = useRecoilState(pickedFCompIdState)
-  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
+  const [pickedFCompIds, setPickedCompIds] = useRecoilState(pickedFCompIdsState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
 
   const { data } = useQuery('schemas', getSchemaList)
 
   function onAdd(schema: Schema) {
     const createdNewComp = createNewComp(schema)
-    const isRoot = pickedFCompId === ROOT_COMP_ID
-    const parentToPut = pickedFCompId && !isRoot ? findParentId(pickedFCompId, FSchema.comps) : ROOT_COMP_ID
+    const isRoot = pickedFCompIds[0] === ROOT_COMP_ID
+    const parentToPut =
+      pickedFCompIds[0] && !isRoot ? findParentId(pickedFCompIds[0], FSchemaHistory.data.comps) : ROOT_COMP_ID
 
-    const newFormSchema = addCompToParent(parentToPut, 0, createdNewComp, FSchema.comps)
+    const comps = addCompToParent(parentToPut, 0, createdNewComp, FSchemaHistory.data.comps)
 
-    setFSchema({ ...FSchema, comps: newFormSchema })
-    setPickedCompId(createdNewComp.id)
+    setFSchemaHistory(setFSchemaComps(comps))
+    setPickedCompIds([createdNewComp.id])
     setOpen(false)
   }
 

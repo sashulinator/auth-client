@@ -12,7 +12,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
   // const form = useForm()
   const CSchema = props.schemas[props.comp.compSchemaId]
 
-  if (CSchema?.componentName === undefined || CSchema === undefined) {
+  if (CSchema?.componentName === null || CSchema === undefined) {
     return null
   }
 
@@ -50,7 +50,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
         // }
 
         return (
-          <>
+          <div data-comp-id={props.comp.id} className="FieldErrorPositionRelative">
             <Component
               {...props.comp.props}
               {...input}
@@ -58,7 +58,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
               // onBlur={onBlur} onFocus={onFocus}
             />
             <FieldError error={meta.touched && (meta.error || meta.submitError)} />
-          </>
+          </div>
         )
       }}
     </Field>

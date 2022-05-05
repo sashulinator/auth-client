@@ -1,0 +1,55 @@
+.TreeLeaf:focus {
+  outline: none !important;
+}
+
+.TreeLeaf .treeLeafContent {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.TreeLeaf .treeLeafBackgroundColor,
+.TreeLeaf .treeLeafBorderColor {
+  border: solid 2px transparent;
+  border-radius: 3px;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 5px);
+}
+
+.TreeLeaf.picked .treeLeafContent .treeLeafBackgroundColor {
+  background-color: var(--themePrimary);
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.TreeLeaf:hover .treeLeafBackgroundColor {
+  background-color: var(--themePrimary);
+  opacity: 0.15;
+}
+
+.TreeLeaf:focus .treeLeafBorderColor {
+  border: solid 2px var(--themePrimary);
+}
+
+.TreeLeaf .treeLeafText {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  z-index: 1;
+  padding: 2px 2px 2px 2px;
+  height: 32px;
+}
+
+.TreeLeaf .treeLeafText {
+  padding-left: 36px;
+}
+
+.TreeLeaf.isExpandButton .treeLeafText {
+  padding-left: 2px;
+}
+
+.TreeLeaf .ExpandButton {
+  margin-left: 2px;
+}

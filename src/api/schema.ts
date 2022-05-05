@@ -3,9 +3,9 @@ import { assertNotNil, isEmpty } from '@savchenko91/schema-validator'
 import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
+import { Norm, Schema } from '@/common/types'
 import { isNormSchemas } from '@/helpers/validators'
 import { errorMessage } from '@/shared/toast'
-import { Norm, Schema } from '@/types/form-constructor'
 
 type GetSchemaParams = {
   queryKey: (string | undefined)[]

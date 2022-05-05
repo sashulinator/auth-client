@@ -1,4 +1,4 @@
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import componentList from '../lib/component-list'
 import { DrawerComponentProps } from '../types'
@@ -16,7 +16,7 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
     return null
   }
 
-  assertNotUndefined(CSchema.componentName)
+  assertNotNull(CSchema.componentName)
 
   const сomponentItem = componentList[CSchema.componentName]
 
@@ -25,11 +25,15 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
   const Component = сomponentItem.component
 
   if (props.comp.childCompIds === undefined) {
-    return <Component {...props.comp.props}>{props.comp?.props?.children}</Component>
+    return (
+      <Component data-comp-id={props.comp.id} {...props.comp.props}>
+        {props.comp?.props?.children}
+      </Component>
+    )
   }
 
   return (
-    <Component {...props.comp.props}>
+    <Component {...props.comp.props} data-comp-id={props.comp.id}>
       {props.comp.childCompIds.map((compId) => {
         return <ComponentFactory key={compId} comps={props.comps} compId={compId} schemas={props.schemas} />
       })}

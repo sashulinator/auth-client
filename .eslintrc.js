@@ -42,6 +42,8 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    'react-hooks/exhaustive-deps': 'off',
     /*  throws error if "allowComputed: false"
         import * as a from './a'
         function f(x) {

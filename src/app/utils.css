@@ -14,3 +14,7 @@
   height: var(--headerHeight);
   width: 100%;
 }
+
+.hidden {
+  display: none;
+}

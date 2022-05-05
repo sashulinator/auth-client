@@ -5,3 +5,4 @@ dist
 .prettierrc.js
 scripts
 config
+jest.config.js

@@ -1,54 +1,112 @@
-import Tree, { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree, mutateTree } from '@atlaskit/tree'
-import { FontIcon, PrimaryButton } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { FontIcon, PrimaryButton, isMac } from '@fluentui/react'
+import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './index.css'
 
-import { paletteModalState } from '../../palette-modal/model'
 import { buildTree } from '../lib/build-tree'
-import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
-import { moveComps as moveComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
-
-const PADDING_PER_LEVEL = 18
+import { findCompLocation, moveComp } from '@/helpers/form-schema-state'
+import { paletteModalState } from '@/pages/form-constructor/palette-modal'
+import {
+  FSchemaHistoryState,
+  highlightHover,
+  pickedFCompIdsState,
+  removeAllHoverHighlights,
+  setFSchemaComps,
+} from '@/pages/form-constructor/preview'
+import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
-  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const [pickedFCompId, setPickedFCompId] = useRecoilState(pickedFCompIdState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
-  const [tree, setTree] = useState(() => buildTree(FSchema?.comps, { pickedFCompId, setPickedFCompId }))
+  const [tree, setTree] = useState(rebuildTree)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setTree(buildTree(FSchema?.comps, { pickedFCompId, setPickedFCompId })), [FSchema, pickedFCompId])
+  useEffect(() => setTree(rebuildTree), [FSchemaHistory, pickedFCompIds])
 
-  function onExpand(itemId: string | number) {
-    if (tree !== undefined) {
-      setTree(mutateTree(tree, itemId, { isExpanded: true }))
+  function rebuildTree() {
+    return buildTree(FSchemaHistory.data?.comps, {
+      pickedIds: pickedFCompIds,
+      onItemClick,
+      onMouseOver: highlightHover,
+      onFocus: highlightHover,
+      onBlur: removeAllHoverHighlights,
+      onMouseLeave: removeAllHoverHighlights,
+      onKeyDown,
+    })
+  }
+
+  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string) {
+    assertString(compId)
+
+    const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
+
+    if (e[controlKeyName]) {
+      if (pickedFCompIds.includes(compId)) {
+        setPickedFCompIds(pickedFCompIds.filter((id) => id !== compId))
+        return
+      }
+      setPickedFCompIds([...new Set([...pickedFCompIds, compId])])
+      return
+    }
+
+    setPickedFCompIds([compId])
+  }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>, compId: string | number) {
+    assertString(compId)
+
+    const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
+
+    if (e.key === 'Enter' && e[controlKeyName]) {
+      if (pickedFCompIds.includes(compId)) {
+        setPickedFCompIds(pickedFCompIds.filter((id) => id !== compId))
+        return
+      }
+      setPickedFCompIds([...new Set([...pickedFCompIds, compId])])
+      return
+    }
+
+    if (e.key === 'Enter') {
+      setPickedFCompIds([compId])
     }
   }
 
-  function onCollapse(itemId: string | number) {
-    if (tree !== undefined) {
-      setTree(mutateTree(tree, itemId, { isExpanded: false }))
-    }
-  }
-
-  function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
+  function onDragEnd(f: TreeSourcePosition, to?: TreeDestinationPosition) {
     if (!to) {
       return
     }
-    if (!FSchema?.comps && FSchema === null) {
-      return
-    }
+
     assertNotUndefined(tree)
 
-    setTree(moveItemOnTree(tree, from, to))
-    const newFormSchema = moveComp(FSchema?.comps, from, to)
-    setFSchema({ ...FSchema, comps: newFormSchema })
+    let tempComps = FSchemaHistory.data?.comps
+
+    pickedFCompIds.forEach((compId) => {
+      const from = findCompLocation(compId, tempComps)
+      setTree(moveItemOnTree(tree, from, to))
+      tempComps = moveComp(tempComps, from, to)
+    })
+
+    setFSchemaHistory(setFSchemaComps(tempComps))
+  }
+
+  /**
+   *
+    @description Пользователь может начать перетаскивать компонент, который не был выделен
+    в результате перетащятся выделенные, а не перетаскиваемые
+   */
+  function PreventMovingUnpickedItems(compId: string | number) {
+    assertString(compId)
+
+    if (pickedFCompIds.includes(compId)) {
+      return
+    }
+
+    setPickedFCompIds([compId])
   }
 
   return (
@@ -59,16 +117,7 @@ function TreePanel(): JSX.Element {
       <PerfectScrollbar className="TreePanel">
         <div className="marginTopAndBottom">
           {tree && (
-            <Tree
-              tree={tree}
-              renderItem={TreeLeaf}
-              onExpand={onExpand}
-              onCollapse={onCollapse}
-              onDragEnd={onDragEnd}
-              offsetPerLevel={PADDING_PER_LEVEL}
-              isDragEnabled
-              isNestingEnabled
-            />
+            <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />
           )}
         </div>
       </PerfectScrollbar>

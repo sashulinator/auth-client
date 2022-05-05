@@ -1,4 +1,4 @@
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import componentList from '../lib/component-list'
 import { CompComponentFactory, CompDrawerProps } from '../types'
@@ -35,7 +35,7 @@ export function ComponentFactory(props: CompComponentFactory): JSX.Element | nul
     return null
   }
 
-  assertNotUndefined(CSchema.componentName)
+  assertNotNull(CSchema.componentName)
 
   const сomponentItem = componentList[CSchema.componentName]
 

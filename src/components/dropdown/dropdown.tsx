@@ -12,8 +12,6 @@ const Dropdown: FC<IDropdownProps & { onChange: (value?: any) => void; value: an
 ): JSX.Element => {
   const form = useForm()
 
-  console.log('value', props.value)
-
   return (
     <DropdownUI
       {...props}

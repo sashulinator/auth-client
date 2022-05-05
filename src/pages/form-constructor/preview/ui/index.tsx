@@ -1,16 +1,28 @@
+import './preview.css'
+
 import { CSchemasState } from '../../comp-panel/model/comp-schema'
-import React, { FC, useEffect } from 'react'
+import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
+import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { FSchemaState, pickedFCompIdState } from '@/pages/form-constructor/preview/model/form-schema'
+import { FSchemaHistoryState, pickedFCompIdsState } from '@/pages/form-constructor/preview/model/form-schema'
 import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {
-  const [FSchema] = useRecoilState(FSchemaState)
+  const [FSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const [CSchemas] = useRecoilState(CSchemasState)
-  const resetFSchema = useResetRecoilState(FSchemaState)
-  const resetPickedFCompId = useResetRecoilState(pickedFCompIdState)
+  const resetFSchema = useResetRecoilState(FSchemaHistoryState)
+  const [pickedFCompIds] = useRecoilState(pickedFCompIdsState)
+  const resetPickedFCompId = useResetRecoilState(pickedFCompIdsState)
+
+  useLayoutEffect(() => {
+    removeAllSelectionHighlights()
+
+    pickedFCompIds.forEach((compId) => {
+      highlightSelection(compId)
+    })
+  }, [pickedFCompIds, FSchemaHistory])
 
   useEffect(() => {
     resetFSchema()
@@ -23,14 +35,16 @@ const Preview: FC = (): JSX.Element => {
 
   return (
     <div className="Preview">
+      <div className="selectorArea" />
+      <div className="hoverArea" />
       {CSchemas && (
         <Form
-          key={JSON.stringify(FSchema)}
+          key={JSON.stringify(FSchemaHistory)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {FSchema && <CompDrawer schemas={CSchemas} comps={FSchema.comps} />}
+                {FSchemaHistory && <CompDrawer schemas={CSchemas} comps={FSchemaHistory.data.comps} />}
               </form>
             )
           }}

@@ -8,14 +8,19 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ROOT_COMP_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
-import { removeComp } from '@/helpers/form-schema-state'
-import { FSchemaState, pickedFCompIdState, pickedFCompState } from '@/pages/form-constructor/preview/model/form-schema'
-import ContextualMenu from '@/shared/contextual-menu'
+import {
+  FSchemaHistoryState,
+  pickedFCompIdsState,
+  pickedFCompState,
+  setFSchemaComps,
+} from '@/pages/form-constructor/preview/model/form-schema'
+import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
+import { removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()
-  const [FSchema, setFSchema] = useRecoilState(FSchemaState)
-  const [, setPickedFCompId] = useRecoilState(pickedFCompIdState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
 
@@ -27,11 +32,11 @@ export default function CompContextualMenu(): JSX.Element | null {
       text: t('buttons.remove'),
       onClick: () => {
         assertNotNull(pickedFComp)
-        assertNotNull(FSchema)
+        assertNotNull(FSchemaHistory)
 
-        const comps = removeComp(pickedFComp?.id, FSchema.comps)
-        setFSchema({ ...FSchema, comps: comps })
-        setPickedFCompId('')
+        const comps = removeComp(pickedFComp?.id, FSchemaHistory.data.comps)
+        setFSchemaHistory(setFSchemaComps(comps))
+        setPickedFCompIds([])
       },
     })
   }

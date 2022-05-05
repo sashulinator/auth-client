@@ -1,6 +1,6 @@
 import { ContextualMenu as FluenContextualMenu, IContextualMenuItem } from '@fluentui/react'
 
-import './index.css'
+import './contextual-menu.css'
 
 import React, { useRef } from 'react'
 
@@ -18,7 +18,8 @@ export default function ContextualMenu(props: ContextualMenuProps): JSX.Element 
   return (
     <div className="CompContextualMenu">
       <div className="compContextualMenubackground" />
-      <a ref={buttonRef} href="#" onClick={toggle}>
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+      <a ref={buttonRef} onClick={toggle}>
         {props.children}
       </a>
       <FluenContextualMenu

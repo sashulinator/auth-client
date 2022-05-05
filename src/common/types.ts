@@ -1,3 +1,36 @@
+export interface Comp {
+  id: string
+  compSchemaId: string
+  name: string
+  path: string
+  // дефвалуе вынести в пропс и юзер не должен в пас писать слово пропс для формы элемента
+  defaultValue?: string
+  props?: Record<string, unknown>
+  childCompIds?: string[]
+}
+
+export interface Schema {
+  componentName: null | string
+  id: string
+  name: string
+  type: FormType
+  comps: Record<string, Comp>
+}
+
+export enum FormType {
+  FORM = 'FORM',
+  PRESET = 'PRESET',
+  COMP = 'COMP',
+}
+
+export type Norm<T> = Record<string, T>
+
+export interface History<Data> {
+  prev: null | History<Data>
+  next: null | History<Data>
+  data: Data
+}
+
 export interface FindManyParams<T = number> {
   take?: T
   skip?: T

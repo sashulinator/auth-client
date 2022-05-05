@@ -1,8 +1,8 @@
 import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
-import { SetterOrUpdater } from 'recoil'
+import React from 'react'
 
-import { Comp } from '@/types/form-constructor'
+import { Comp } from '@/common/types'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
@@ -11,8 +11,13 @@ export interface TreeLeafProps extends RenderItemParams {
 }
 
 export interface TreeItemAdditionalData {
-  setPickedFCompId: SetterOrUpdater<string>
-  pickedFCompId: string
+  onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
+  pickedIds: string[]
+  onMouseOver?: (itemId: string | number) => void
+  onMouseLeave?: (itemId: string | number) => void
+  onFocus?: (itemId: string | number) => void
+  onBlur?: (itemId: string | number) => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
 }
 
 export interface TreeItemData extends TreeItemAdditionalData {

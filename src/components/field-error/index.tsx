@@ -1,6 +1,7 @@
 import './index.css'
+
 import cx from 'clsx'
-import React, { FC } from 'react'
+import React, { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ServerCollectableError } from '@/types/transfer'
@@ -10,29 +11,20 @@ type FieldErrorProps = {
   error?: ServerCollectableError
 }
 
-const FieldError: FC<FieldErrorProps> = ({ className, error }): JSX.Element => {
+export default function FieldError(props: FieldErrorProps): JSX.Element {
+  const elementRef = useRef<null | HTMLDivElement>(null)
   const { t } = useTranslation()
-  const formWithValueErrorMessage = useGetMessageWithCodeAndValue(error)
-  const code = error?._code
 
-  // sometimes you have 'matchPattern' as a code and you dont want to show pattern but readable message
-  const formErrorMessage = formWithValueErrorMessage || t(code || '', error)
+  const code = props?.error?._code ?? ''
+  const input2 = props?.error?._input2 ? String(props?.error?._input2) : ''
 
-  return <div className={cx('FieldError', className)}>{formErrorMessage}</div>
-}
+  const codeMessage = t(`${code}${input2}`, props?.error?._message)
 
-function useGetMessageWithCodeAndValue(error?: ServerCollectableError): string | undefined {
-  const { t } = useTranslation()
-  const input2 = String(error?._input2)
-  const code = String(error?._code)
-
-  const res = t(`${code}${input2}`, error)
-
-  if (res === `${code}${input2}`) {
-    return undefined
+  // Делаем так потому что некоторые строки содержат в себе HTML теги
+  // которые обычным способом вставились бы просто как текст
+  if (elementRef.current?.innerHTML !== undefined) {
+    elementRef.current.innerHTML = codeMessage
   }
 
-  return res
+  return <div ref={elementRef} className={cx('FieldError', props.className)} />
 }
-
-export default FieldError

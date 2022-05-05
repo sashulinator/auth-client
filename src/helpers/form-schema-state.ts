@@ -3,7 +3,8 @@ import { assertNotEmptyArray, assertNotUndefined } from '@savchenko91/schema-val
 
 import uuid from 'uuid-random'
 
-import { Comp, Norm, Schema } from '@/types/form-constructor'
+import { Comp, Norm, Schema } from '@/common/types'
+import { copyComp } from '@/shared/draw-comps/lib/mutators'
 import { insert, remove, replace } from '@/utils/change-unmutable'
 
 /**
@@ -94,7 +95,7 @@ export function pasteCompToParent(
   return pasteCompsToParent(parentId, currentCompId, [index], normComps)
 }
 
-export function moveComps(comps: Norm<Comp>, from: TreeSourcePosition, to?: TreeDestinationPosition): Norm<Comp> {
+export function moveComp(comps: Norm<Comp>, from: TreeSourcePosition, to?: TreeDestinationPosition): Norm<Comp> {
   if (to === undefined) {
     return comps
   }
@@ -128,6 +129,29 @@ export function createNewComp(schema: Schema): Comp {
     path: 'DEFAULT_PATH',
     name: schema.name,
   }
+}
+
+export function addCompsToParent(
+  parentCompId: string,
+  index: number,
+  compsToAdd: Norm<Comp>,
+  comps: Norm<Comp>
+): Norm<Comp> {
+  return Object.values(compsToAdd).reduce<Norm<Comp>>((acc, comp) => {
+    return addCompToParent(parentCompId, index, comp, acc)
+  }, comps)
+}
+
+export function addCompsToParentWithNewId(
+  parentCompId: string,
+  index: number,
+  compsToAdd: Norm<Comp>,
+  comps: Norm<Comp>
+): Norm<Comp> {
+  return Object.values(compsToAdd).reduce<Norm<Comp>>((acc, comp) => {
+    const newComp = copyComp(comp)
+    return addCompToParent(parentCompId, index, newComp, acc)
+  }, comps)
 }
 
 export function addCompToParent(parentCompId: string, index: number, comp: Comp, comps: Norm<Comp>): Norm<Comp> {
@@ -169,7 +193,33 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
 
   return comp
 }
-
+/**
+ * @deprecated
+ */
 export function findParentId(id: string, comps: Norm<Comp>): string {
   return findParent(id, comps).id
+}
+
+export function findCompLocation(compId: string, comps: Norm<Comp>): TreeSourcePosition {
+  const parentComp = findParent(compId, comps)
+  const index = parentComp.childCompIds?.indexOf(compId)
+
+  assertNotUndefined(index)
+
+  return {
+    index,
+    parentId: parentComp.id,
+  }
+}
+
+export function getCompsFromIds(ids: string[], comps: Norm<Comp>): Norm<Comp> {
+  return ids.reduce<Norm<Comp>>((acc, id) => {
+    const comp = comps[id]
+
+    assertNotUndefined(comp)
+
+    acc[id] = comp
+
+    return acc
+  }, {})
 }
