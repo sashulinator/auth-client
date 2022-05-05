@@ -8,12 +8,13 @@ import { useRecoilState } from 'recoil'
 import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { addCompToParent, createNewComp, findParentId } from '@/helpers/form-schema-state'
+import { createNewComp } from '@/helpers/form-schema-state'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview/model/form-schema'
+import { addComp, findCompPosition } from '@/shared/draw-comps/lib/mutators'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
@@ -24,14 +25,22 @@ const PaletteModal: FC = (): JSX.Element => {
 
   function onAdd(schema: Schema) {
     const createdNewComp = createNewComp(schema)
-    const isRoot = pickedFCompIds[0] === ROOT_COMP_ID
-    const parentToPut =
-      pickedFCompIds[0] && !isRoot ? findParentId(pickedFCompIds[0], FSchemaHistory.data.comps) : ROOT_COMP_ID
+    const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
+    const isToRoot = pickedFCompIds.length === 0 || isRoot
 
-    const comps = addCompToParent(parentToPut, 0, createdNewComp, FSchemaHistory.data.comps)
+    if (isToRoot) {
+      const comps = addComp(createdNewComp, ROOT_COMP_ID, 0, FSchemaHistory.data.comps)
+      setFSchemaHistory(setFSchemaComps(comps))
+    } else {
+      const position = findCompPosition(pickedFCompIds[0] || '', FSchemaHistory.data.comps)
+      const comps = addComp(createdNewComp, position.parentId.toString(), position.index + 1, FSchemaHistory.data.comps)
+      setFSchemaHistory(setFSchemaComps(comps))
+    }
 
-    setFSchemaHistory(setFSchemaComps(comps))
-    setPickedCompIds([createdNewComp.id])
+    if (pickedFCompIds.length === 0) {
+      setPickedCompIds([createdNewComp.id])
+    }
+
     setOpen(false)
   }
 

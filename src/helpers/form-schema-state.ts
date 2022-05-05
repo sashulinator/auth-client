@@ -173,29 +173,3 @@ export function addCompToParent(parentCompId: string, index: number, comp: Comp,
 
   return newNewComps
 }
-
-export function findParent(id: string, comps: Norm<Comp>): Comp {
-  const comp = Object.values(comps).find(({ childCompIds }) => childCompIds?.includes(id))
-
-  assertNotUndefined(comp)
-
-  return comp
-}
-/**
- * @deprecated
- */
-export function findParentId(id: string, comps: Norm<Comp>): string {
-  return findParent(id, comps).id
-}
-
-export function getCompsFromIds(ids: string[], comps: Norm<Comp>): Norm<Comp> {
-  return ids.reduce<Norm<Comp>>((acc, id) => {
-    const comp = comps[id]
-
-    assertNotUndefined(comp)
-
-    acc[id] = comp
-
-    return acc
-  }, {})
-}
