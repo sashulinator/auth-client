@@ -1,5 +1,5 @@
 import { TreeSourcePosition } from '@atlaskit/tree'
-import { assertNotUndefined, isEmpty, isString } from '@savchenko91/schema-validator'
+import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import uuid from 'uuid-random'
 
@@ -28,7 +28,7 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
   return comp
 }
 
-export function getCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePosition {
+export function findCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePosition {
   if (compId === ROOT_COMP_ID) {
     throw new Error('Do not pass ROOT_COMP_ID')
   }
@@ -44,14 +44,14 @@ export function getCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePo
   }
 }
 
-export function getComp(id: string, comps: Norm<Comp>): Comp {
+export function findComp(id: string, comps: Norm<Comp>): Comp {
   const comp = comps[id]
   assertNotUndefined(comp)
   return comp
 }
-export function getComps(ids: string[], comps: Norm<Comp>): Norm<Comp> {
+export function findComps(ids: string[], comps: Norm<Comp>): Norm<Comp> {
   return ids.reduce<Norm<Comp>>((acc, id) => {
-    acc[id] = getComp(id, comps)
+    acc[id] = findComp(id, comps)
     return acc
   }, {})
 }
@@ -73,7 +73,7 @@ export function removeChildId(comp: Comp, childIdOrIndex: string | number): Comp
   const newChildCompIds = remove(comp.childCompIds, index)
 
   // Поле childCompIds не должно существовать если дети отсутствуют
-  if (isEmpty(newChildCompIds.length)) {
+  if (newChildCompIds.length === 0) {
     return remove(comp, 'childCompIds')
   }
 
@@ -112,7 +112,7 @@ export function removeComp(compId: string, comps: Norm<Comp>): Norm<Comp> {
 }
 
 export function addComp(comp: Comp, newParentId: string, newIndex: number, comps: Norm<Comp>): Norm<Comp> {
-  const parentComp = getComp(newParentId, comps)
+  const parentComp = findComp(newParentId, comps)
   // Add childId to parent
 
   const newParentComp = addChildId(parentComp, comp.id, newIndex)

@@ -1,4 +1,4 @@
-import { addChildId, addComp, copyComps, getCompPosition, moveComp, removeChildId } from './mutators'
+import { addChildId, addComp, copyComps, findCompPosition, moveComp, removeChildId } from './mutators'
 
 import { Comp, Norm } from '@/common/types'
 
@@ -29,14 +29,14 @@ describe('mutators', () => {
     })
   })
 
-  it(getCompPosition.name, () => {
+  it(findCompPosition.name, () => {
     const comps = {
       id1: { id: 'id1', childCompIds: ['id3', 'id2'] },
       id2: { id: 'id2' },
       id3: { id: 'id3' },
     }
 
-    const position = getCompPosition(comps.id2.id, (comps as unknown) as Norm<Comp>)
+    const position = findCompPosition(comps.id2.id, (comps as unknown) as Norm<Comp>)
 
     expect(position).toEqual({ index: 1, parentId: 'id1' })
   })
@@ -64,6 +64,16 @@ describe('mutators', () => {
       const newComp = removeChildId((comp as unknown) as Comp, 2)
 
       expect(newComp).toEqual({ id: 'id1', childCompIds: ['id3', 'id2', 'id6'] })
+    })
+
+    it.only('removes childCompIds if empty', () => {
+      const comp = ({ id: 'id1', childCompIds: ['id3'] } as unknown) as Comp
+
+      const newComp1 = removeChildId(comp, 'id3')
+      const newComp2 = removeChildId(comp, 0)
+
+      expect(newComp1).toEqual({ id: 'id1' })
+      expect(newComp2).toEqual({ id: 'id1' })
     })
   })
 
