@@ -3,9 +3,20 @@ import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import uuid from 'uuid-random'
 
-import { Comp, Norm } from '@/common/types'
+import { Comp, Norm, Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
 import { insert, remove, replace, replaceById } from '@/utils/change-unmutable'
+
+export function createNewComp(schema: Schema): Comp {
+  schema
+
+  return {
+    id: uuid(),
+    compSchemaId: schema.id,
+    path: 'DEFAULT_PATH',
+    name: schema.name,
+  }
+}
 
 // TODO в будущем будет убирать еще и байндинги
 export function copyComp(comp: Comp): Comp {

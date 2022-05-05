@@ -1,16 +1,13 @@
 .TreePanel {
   background-color: var(--white);
   z-index: 5;
-  padding: 0 15px;
+  padding: 15px 15px 30vh;
+  box-sizing: border-box;
+  overflow: auto !important;
 }
 
-.TreePanel .marginTopAndBottom {
-  margin-top: 20px;
-}
-
-.TreePanel .marginTopAndBottom > .wrapper {
-  overflow: auto;
-  height: 100%;
+.TreePanel::-webkit-scrollbar {
+  display: none;
 }
 
 .addCompButton {

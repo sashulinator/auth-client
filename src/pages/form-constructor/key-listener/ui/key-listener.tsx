@@ -7,7 +7,6 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { addCompsToParentWithNewId } from '@/helpers/form-schema-state'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -16,7 +15,7 @@ import {
   setNext,
   setPrev,
 } from '@/pages/form-constructor/preview'
-import { findComps, findParent, removeComp } from '@/shared/draw-comps/lib/mutators'
+import { addComp, copyComps, findCompPosition, findComps, removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function KeyListener(): null {
   const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
@@ -149,15 +148,26 @@ export default function KeyListener(): null {
 
         schemaValidator.comps(comps)
 
-        console.log('comps', comps)
-
         if (comps) {
-          const isRoot = pickedFCompIds[0] === ROOT_COMP_ID
-          const parentToPut =
-            pickedFCompIds[0] && !isRoot ? findParent(pickedFCompIds[0], FSchemaHistory.data.comps).id : ROOT_COMP_ID
-          const newComps = addCompsToParentWithNewId(parentToPut, 0, comps, FSchemaHistory.data.comps)
+          const copiedComps = copyComps(comps)
+          const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
+          const isToRoot = pickedFCompIds.length === 0 || isRoot
+
+          const newComps = Object.values(copiedComps).reduce((acc, comp) => {
+            if (isToRoot) {
+              acc = addComp(comp, ROOT_COMP_ID, 0, acc)
+            } else {
+              const position = findCompPosition(pickedFCompIds[0] || '', acc)
+              acc = addComp(comp, position.parentId.toString(), position.index + 1, acc)
+            }
+            return acc
+          }, FSchemaHistory.data.comps)
+
           setFSchemaHistory(setFSchemaComps(newComps))
-          setPickedFCompIds(Object.keys(comps))
+
+          if (pickedFCompIds.length === 0) {
+            setPickedFCompIds(comps[0] ? [comps[0].id] : [])
+          }
         }
       }
     }
