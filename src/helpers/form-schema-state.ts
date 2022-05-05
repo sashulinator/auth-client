@@ -174,18 +174,6 @@ export function addCompToParent(parentCompId: string, index: number, comp: Comp,
   return newNewComps
 }
 
-export function removeComp(compId: string, comps: Norm<Comp>) {
-  const parentComp = findParent(compId, comps)
-
-  const newParentComp = removeCompFromParent(findParentId(compId, comps), compId, comps)
-
-  const newComps = replace(comps, parentComp.id, newParentComp)
-
-  const newNewComps = remove(newComps, compId)
-
-  return newNewComps
-}
-
 export function findParent(id: string, comps: Norm<Comp>): Comp {
   const comp = Object.values(comps).find(({ childCompIds }) => childCompIds?.includes(id))
 
@@ -198,18 +186,6 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
  */
 export function findParentId(id: string, comps: Norm<Comp>): string {
   return findParent(id, comps).id
-}
-
-export function findCompLocation(compId: string, comps: Norm<Comp>): TreeSourcePosition {
-  const parentComp = findParent(compId, comps)
-  const index = parentComp.childCompIds?.indexOf(compId)
-
-  assertNotUndefined(index)
-
-  return {
-    index,
-    parentId: parentComp.id,
-  }
 }
 
 export function getCompsFromIds(ids: string[], comps: Norm<Comp>): Norm<Comp> {

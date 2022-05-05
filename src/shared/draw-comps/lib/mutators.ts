@@ -1,5 +1,5 @@
 import { TreeSourcePosition } from '@atlaskit/tree'
-import { assertNotUndefined, isEmpty, isString } from '@savchenko91/schema-validator'
+import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import uuid from 'uuid-random'
 
@@ -28,12 +28,12 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
   return comp
 }
 
-export function getCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePosition {
-  if (compId === ROOT_COMP_ID) {
-    throw new Error('Do not pass ROOT_COMP_ID')
-  }
-
+export function findCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePosition {
   const parentComp = findParent(compId, comps)
+
+  if (compId === ROOT_COMP_ID) {
+    return { index: 0, parentId: parentComp.id }
+  }
   const index = parentComp.childCompIds?.indexOf(compId)
 
   assertNotUndefined(index)
@@ -44,14 +44,14 @@ export function getCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePo
   }
 }
 
-export function getComp(id: string, comps: Norm<Comp>): Comp {
+export function findComp(id: string, comps: Norm<Comp>): Comp {
   const comp = comps[id]
   assertNotUndefined(comp)
   return comp
 }
-export function getComps(ids: string[], comps: Norm<Comp>): Norm<Comp> {
+export function findComps(ids: string[], comps: Norm<Comp>): Norm<Comp> {
   return ids.reduce<Norm<Comp>>((acc, id) => {
-    acc[id] = getComp(id, comps)
+    acc[id] = findComp(id, comps)
     return acc
   }, {})
 }
@@ -73,7 +73,7 @@ export function removeChildId(comp: Comp, childIdOrIndex: string | number): Comp
   const newChildCompIds = remove(comp.childCompIds, index)
 
   // Поле childCompIds не должно существовать если дети отсутствуют
-  if (isEmpty(newChildCompIds.length)) {
+  if (newChildCompIds.length === 0) {
     return remove(comp, 'childCompIds')
   }
 
@@ -111,14 +111,22 @@ export function removeComp(compId: string, comps: Norm<Comp>): Norm<Comp> {
   return replaceById(changedParentComp, changedComps)
 }
 
-export function addComp(comp: Comp, index: number, parentId: string, comps: Norm<Comp>): Norm<Comp> {
-  const parentComp = findParent(comp.id, comps)
+export function addComp(comp: Comp, newParentId: string, newIndex: number, comps: Norm<Comp>): Norm<Comp> {
+  const parentComp = findComp(newParentId, comps)
   // Add childId to parent
-  const newParentComp = addChildId(parentComp, comp.id, index)
+
+  const newParentComp = addChildId(parentComp, comp.id, newIndex)
   // Add parent to comps
   const compsWithNewParentComp = replaceById(newParentComp, comps)
 
-  const newComps = insert(comps, newParentComp.id, compsWithNewParentComp)
+  const newComps = insert(compsWithNewParentComp, comp.id, comp)
 
   return newComps
+}
+
+export function moveComp(comp: Comp, toParentId: string, newIndex: number, comps: Norm<Comp>): Norm<Comp> {
+  const compsWithoutMovingComp = removeComp(comp.id, comps)
+  const compsWithMovingComp = addComp(comp, toParentId, newIndex, compsWithoutMovingComp)
+
+  return compsWithMovingComp
 }

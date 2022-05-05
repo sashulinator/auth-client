@@ -5,11 +5,10 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 import './index.css'
 
 import { buildTree } from '../lib/build-tree'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
-import { findCompLocation, moveComp } from '@/helpers/form-schema-state'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
   FSchemaHistoryState,
@@ -18,6 +17,7 @@ import {
   removeAllHoverHighlights,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview'
+import { findComp, findCompPosition, moveComp } from '@/shared/draw-comps/lib/mutators'
 import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
@@ -26,7 +26,20 @@ function TreePanel(): JSX.Element {
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
 
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => setTree(rebuildTree), [FSchemaHistory, pickedFCompIds])
+
+  /**
+   * Костыль! Tree требует чтобы высота родителя не менялась во время переноса компонента,
+   * а PerfectScrollbar так и норовит ее поменять
+   */
+  useLayoutEffect(() => {
+    if (wrapperRef.current && wrapperRef.current.firstElementChild) {
+      const styles = window.getComputedStyle(wrapperRef.current.firstElementChild)
+      wrapperRef.current.style.minHeight = `calc(${parseInt(styles.height, 10)}px + 30vh)`
+    }
+  }, [FSchemaHistory.data])
 
   function rebuildTree() {
     return buildTree(FSchemaHistory.data?.comps, {
@@ -86,9 +99,10 @@ function TreePanel(): JSX.Element {
     let tempComps = FSchemaHistory.data?.comps
 
     pickedFCompIds.forEach((compId) => {
-      const from = findCompLocation(compId, tempComps)
+      const from = findCompPosition(compId, tempComps)
       setTree(moveItemOnTree(tree, from, to))
-      tempComps = moveComp(tempComps, from, to)
+      const comp = findComp(compId, tempComps)
+      tempComps = moveComp(comp, to.parentId as string, to.index || 0, tempComps)
     })
 
     setFSchemaHistory(setFSchemaComps(tempComps))
@@ -116,9 +130,11 @@ function TreePanel(): JSX.Element {
       </PrimaryButton>
       <PerfectScrollbar className="TreePanel">
         <div className="marginTopAndBottom">
-          {tree && (
-            <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />
-          )}
+          <div ref={wrapperRef} className="wrapper">
+            {tree && (
+              <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />
+            )}
+          </div>
         </div>
       </PerfectScrollbar>
     </>
