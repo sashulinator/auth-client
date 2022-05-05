@@ -63,9 +63,15 @@ export default function SchemaForm(): JSX.Element {
     formApi: FormApi<Schema, Schema>,
     setError?: (errors?: SubmissionErrors) => void
   ): Promise<void> {
-    const { name, type, componentName = undefined } = submitFschemaData
+    const { name, type, componentName = null } = submitFschemaData
 
-    const newFSchema = { ...FSchemaHistory.data, name, type, componentName, id: id ? id : uuid() }
+    const newFSchema = {
+      ...FSchemaHistory.data,
+      name,
+      type,
+      componentName: type !== FormType.COMP ? null : componentName,
+      id: id ? id : uuid(),
+    }
 
     const errors = schemaValidator(newFSchema)
 
