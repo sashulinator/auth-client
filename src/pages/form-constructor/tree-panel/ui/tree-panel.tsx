@@ -116,11 +116,7 @@ function TreePanel(): JSX.Element {
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
       <PerfectScrollbar className="TreePanel">
-        <div className="marginTopAndBottom">
-          {tree && (
-            <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />
-          )}
-        </div>
+        {tree && <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />}
       </PerfectScrollbar>
     </>
   )
