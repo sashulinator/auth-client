@@ -110,3 +110,15 @@ export function removeComp(compId: string, comps: Norm<Comp>): Norm<Comp> {
 
   return replaceById(changedParentComp, changedComps)
 }
+
+export function addComp(comp: Comp, index: number, parentId: string, comps: Norm<Comp>): Norm<Comp> {
+  const parentComp = findParent(comp.id, comps)
+  // Add childId to parent
+  const newParentComp = addChildId(parentComp, comp.id, index)
+  // Add parent to comps
+  const compsWithNewParentComp = replaceById(newParentComp, comps)
+
+  const newComps = insert(comps, newParentComp.id, compsWithNewParentComp)
+
+  return newComps
+}
