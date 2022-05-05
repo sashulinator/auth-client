@@ -1,15 +1,15 @@
-import { addChildId, copyComps, getCompPosition, removeChildId } from './mutators'
+import { addChildId, addComp, copyComps, getCompPosition, moveComp, removeChildId } from './mutators'
 
 import { Comp, Norm } from '@/common/types'
 
 describe('mutators', () => {
   it(copyComps.name, () => {
-    const comps = {
+    const comps = ({
       id1: { id: 'id1', compSchemaId: 'test' },
       id2: { id: 'id2', compSchemaId: 'test2' },
-    }
+    } as unknown) as Norm<Comp>
 
-    const copiedComps = copyComps((comps as unknown) as Norm<Comp>)
+    const copiedComps = copyComps(comps)
 
     const compEntries = Object.entries(comps)
     const copiedCompEntries = Object.entries(copiedComps)
@@ -64,6 +64,62 @@ describe('mutators', () => {
       const newComp = removeChildId((comp as unknown) as Comp, 2)
 
       expect(newComp).toEqual({ id: 'id1', childCompIds: ['id3', 'id2', 'id6'] })
+    })
+  })
+
+  describe(addComp.name, () => {
+    it('move comp', () => {
+      const comps = ({
+        id1: { id: 'id1', childCompIds: ['id2', 'id3'] },
+        id2: { id: 'id2' },
+        id3: { id: 'id3', childCompIds: ['id4'] },
+        id4: { id: 'id4' },
+      } as unknown) as Norm<Comp>
+
+      const comp = ({ id: 'id5' } as unknown) as Comp
+
+      const newComp = addComp(comp, 'id3', 1, comps)
+
+      expect(newComp).toEqual({
+        id1: { id: 'id1', childCompIds: ['id2', 'id3'] },
+        id2: { id: 'id2' },
+        id3: { id: 'id3', childCompIds: ['id4', 'id5'] },
+        id4: { id: 'id4' },
+        id5: { id: 'id5' },
+      })
+    })
+  })
+
+  describe(moveComp.name, () => {
+    const comps = ({
+      id1: { id: 'id1', childCompIds: ['id2', 'id3', 'id4'] },
+      id2: { id: 'id2' },
+      id3: { id: 'id3' },
+      id4: { id: 'id4' },
+    } as unknown) as Norm<Comp>
+
+    const comp = ({ id: 'id4' } as unknown) as Comp
+
+    it('move comp', () => {
+      const newComp = moveComp(comp, 'id3', 0, comps)
+
+      expect(newComp).toEqual({
+        id1: { id: 'id1', childCompIds: ['id2', 'id3'] },
+        id2: { id: 'id2' },
+        id3: { id: 'id3', childCompIds: ['id4'] },
+        id4: { id: 'id4' },
+      })
+    })
+
+    it('move comp inside parent', () => {
+      const newComp = moveComp(comp, 'id1', 1, comps)
+
+      expect(newComp).toEqual({
+        id1: { id: 'id1', childCompIds: ['id2', 'id4', 'id3'] },
+        id2: { id: 'id2' },
+        id3: { id: 'id3' },
+        id4: { id: 'id4' },
+      })
     })
   })
 })
