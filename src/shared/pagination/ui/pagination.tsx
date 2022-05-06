@@ -1,8 +1,8 @@
 import { isNumber } from '@savchenko91/schema-validator'
 
-import './index.css'
+import './pagination.css'
 
-import { useInputValue } from './use-input-value'
+import { useInputValue } from '../lib/use-input-value'
 import React, { FC } from 'react'
 
 export interface PaginationInputProps {
