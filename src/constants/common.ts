@@ -1,1 +1,1 @@
-export const ROOT_COMP_ID = 'stackRootId'
+export const ROOT_ID = 'ROOT_ID'

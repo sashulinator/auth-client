@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { atom, selector } from 'recoil'
 
 import { Comp, FormType, History, Norm, Schema } from '@/common/types'
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 
 // STATES
 
@@ -19,8 +19,8 @@ export const FSchemaHistoryState = atom<History<Schema>>({
       name: 'Name',
       type: FormType.FORM,
       comps: {
-        [ROOT_COMP_ID]: {
-          id: ROOT_COMP_ID,
+        [ROOT_ID]: {
+          id: ROOT_ID,
           name: 'stackRoot',
           compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
           path: 'hello',

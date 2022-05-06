@@ -3,7 +3,7 @@ import { TreeData, TreeItem } from '@atlaskit/tree'
 import { TreeItemAdditionalData } from '../types'
 
 import { Comp, Norm } from '@/common/types'
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 import { mapObject } from '@/lib/map-object'
 
 export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeItemAdditionalData): TreeData | undefined {
@@ -14,7 +14,7 @@ export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeIte
   const rootTreeItem = {
     id: 'rootId',
     isExpanded: true,
-    children: [ROOT_COMP_ID],
+    children: [ROOT_ID],
   }
 
   const treeItems = mapObject(
@@ -25,8 +25,8 @@ export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeIte
         id: comp.id,
         isExpanded: true,
         data: { comp, ...additionalData },
-        children: comp.childCompIds || [],
-        hasChildren: comp.childCompIds !== undefined,
+        children: comp.children || [],
+        hasChildren: comp.children !== undefined,
       }
     }
   )

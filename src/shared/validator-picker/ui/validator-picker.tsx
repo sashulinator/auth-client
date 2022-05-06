@@ -89,7 +89,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       [id]: {
         id,
         name: 'assertString',
-        childCompIds: [],
+        children: [],
       },
     })
   }

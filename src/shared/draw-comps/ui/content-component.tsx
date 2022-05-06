@@ -24,7 +24,7 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
 
   const Component = сomponentItem.component
 
-  if (props.comp.childCompIds === undefined) {
+  if (props.comp.children === undefined) {
     return (
       <Component data-comp-id={props.comp.id} {...props.comp.props}>
         {props.comp?.props?.children}
@@ -34,7 +34,7 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
 
   return (
     <Component {...props.comp.props} data-comp-id={props.comp.id}>
-      {props.comp.childCompIds.map((compId) => {
+      {props.comp.children.map((compId) => {
         return <ComponentFactory key={compId} comps={props.comps} compId={compId} schemas={props.schemas} />
       })}
     </Component>

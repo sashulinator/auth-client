@@ -36,7 +36,7 @@ export const schemaValidator = rootOnly({
       props: or(keyDoesNotExist, {
         label: or(string, keyDoesNotExist),
       }),
-      childCompIds: or([string], keyDoesNotExist),
+      children: or([string], keyDoesNotExist),
     },
   }),
 })

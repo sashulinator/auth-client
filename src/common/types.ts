@@ -6,7 +6,7 @@ export interface Comp {
   // дефвалуе вынести в пропс и юзер не должен в пас писать слово пропс для формы элемента
   defaultValue?: string
   props?: Record<string, unknown>
-  childCompIds?: string[]
+  children?: string[]
   validators?: Norm<CompValidator>
 }
 
@@ -27,7 +27,7 @@ export enum FormType {
 export interface CompValidator {
   id: string
   name: string
-  childCompIds: string[]
+  children: string[]
 }
 
 export type Norm<T> = Record<string, T>
