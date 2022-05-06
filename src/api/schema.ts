@@ -3,12 +3,63 @@ import { assertNotNil, isEmpty } from '@savchenko91/schema-validator'
 import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
+import { assertsSchema } from '@/common/schemas'
 import { Norm, Schema } from '@/common/types'
 import { isNormSchemas } from '@/common/validators'
-import { errorMessage } from '@/shared/toast'
+import ErrorFromObject from '@/lib/error-from-object'
 
 type GetSchemaParams = {
   queryKey: (string | undefined)[]
+}
+
+// CREATE SCHEMA
+
+export async function createSchema(newFSchema: Schema): Promise<Schema> {
+  assertsSchema(newFSchema)
+
+  const response = await fetch('/api/v1/schemas', {
+    method: 'POST',
+    body: JSON.stringify(newFSchema),
+    headers: {
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+  })
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new ErrorFromObject(data)
+  }
+
+  assertsSchema(newFSchema)
+
+  return data
+}
+
+// UPDATE SCHEMA
+
+export async function updateSchema(newFSchema: Schema): Promise<Schema> {
+  assertsSchema(newFSchema)
+
+  const response = await fetch('/api/v1/schemas', {
+    method: 'PUT',
+    body: JSON.stringify(newFSchema),
+    headers: {
+      'content-type': 'application/json',
+      accept: 'application/json',
+    },
+  })
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new ErrorFromObject(data)
+  }
+
+  assertsSchema(data)
+
+  return data
 }
 
 export async function getSchema(params: GetSchemaParams): Promise<Schema | undefined> {
@@ -20,8 +71,7 @@ export async function getSchema(params: GetSchemaParams): Promise<Schema | undef
 
   const response = await fetch(`/api/v1/schemas/${id}`, {
     headers: {
-      'content-type': 'application/json',
-      accept: '*/*',
+      accept: 'application/json',
     },
   })
 
@@ -88,34 +138,6 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
   assertNotNil(schemas)
 
   return schemas as Norm<Schema>
-}
-
-type UpdateSchemaParams = {
-  queryKey: (Schema | string | undefined)[]
-}
-
-export async function updateSchema(params: UpdateSchemaParams): Promise<Schema> {
-  const [, schemaInput] = params.queryKey
-
-  const response = await fetch('/api/v1/schemas', {
-    method: 'PUT',
-    body: JSON.stringify(schemaInput),
-    headers: {
-      'content-type': 'application/json',
-      accept: '*/*',
-    },
-  })
-
-  if (!response.ok) {
-    errorMessage('Не удалось сделать запрос')
-  }
-  const schema = await response.json()
-
-  // TODO провалидировать схемы
-
-  assertNotNil(schema)
-
-  return schema as Schema
 }
 
 export function useGetSchemaDependency(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {

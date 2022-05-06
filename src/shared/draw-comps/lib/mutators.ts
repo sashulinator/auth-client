@@ -1,7 +1,7 @@
 import { TreeSourcePosition } from '@atlaskit/tree'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
-import uuid from 'uuid-random'
+import uniqid from 'uniqid'
 
 import { Comp, Norm, Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
@@ -11,7 +11,7 @@ export function createNewComp(schema: Schema): Comp {
   schema
 
   return {
-    id: uuid(),
+    id: uniqid(),
     compSchemaId: schema.id,
     path: 'DEFAULT_PATH',
     name: schema.name,
@@ -20,7 +20,7 @@ export function createNewComp(schema: Schema): Comp {
 
 // TODO в будущем будет убирать еще и байндинги
 export function copyComp(comp: Comp): Comp {
-  return { ...comp, id: uuid() }
+  return { ...comp, id: uniqid() }
 }
 
 export function copyComps(comps: Norm<Comp>): Norm<Comp> {

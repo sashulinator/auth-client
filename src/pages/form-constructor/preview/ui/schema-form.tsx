@@ -1,7 +1,7 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
+import { ErrorCollection } from '@savchenko91/schema-validator'
 
 import { FSchemaHistoryState, setFSchema } from '../model/form-schema'
-import { FormApi, SubmissionErrors } from 'final-form'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -9,15 +9,18 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
+import { createSchema, updateSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
 import { FormType, Schema } from '@/common/types'
 import ROUTES from '@/constants/routes'
+import useAppMutation from '@/lib/use-mutation'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { Dropdown } from '@/shared/dropdown'
+import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
 import FieldError from '@/shared/field-error'
 import CustomTextField from '@/shared/textfield'
-import { errorMessage, successMessage } from '@/shared/toast'
+import { successMessage } from '@/shared/toast'
 
 const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
@@ -27,15 +30,20 @@ export default function SchemaForm(): JSX.Element {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const options = useMemo(
-    () =>
-      typeArray.map((typeName) => ({
-        text: t(typeName.toString()),
-        key: typeName,
-      })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [i18n.language]
-  )
+  const { mutateAsync: apiCreateSchema } = useAppMutation(createSchema, {
+    onSuccess: (data) => {
+      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+      successMessage(t('messages.saved'))
+    },
+  })
+
+  const { mutateAsync: apiUpdateSchema } = useAppMutation(updateSchema, {
+    onSuccess: () => {
+      successMessage(t('messages.saved'))
+    },
+  })
+
+  const options = useMemo(() => buildOptionsFromStringArray(typeArray, t), [i18n.language])
 
   const items: IContextualMenuItem[] = [
     {
@@ -58,49 +66,30 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(
-    submitFschemaData: Schema,
-    formApi: FormApi<Schema, Schema>,
-    setError?: (errors?: SubmissionErrors) => void
-  ): Promise<void> {
-    const { name, type, componentName = null } = submitFschemaData
+  async function onSubmit(submitFschemaData: Schema): Promise<void | ErrorCollection> {
+    const { name, type } = submitFschemaData
+
+    const newComponentName = type !== FormType.COMP ? null : submitFschemaData.componentName
+    const newId = id ? id : uuid()
 
     const newFSchema = {
       ...FSchemaHistory.data,
+      id: newId,
+      componentName: newComponentName,
       name,
       type,
-      componentName: type !== FormType.COMP ? null : componentName,
-      id: id ? id : uuid(),
     }
 
-    const errors = schemaValidator(newFSchema)
-
-    if (errors) {
-      setError?.(errors)
-      return
-    }
-
-    const response = await fetch('/api/v1/schemas', {
-      method: id ? 'PUT' : 'POST',
-      body: JSON.stringify(newFSchema),
-      headers: {
-        'content-type': 'application/json',
-        accept: '*/*',
-      },
-    })
-
-    const data = (await response.json()) as Schema
-
-    if (!response.ok) {
-      errorMessage('Не удалось сделать запрос')
-    } else {
-      setTimeout(() => {
-        successMessage('Cохранено')
-      }, 10)
-    }
-
-    if (!id && data.id) {
-      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+    try {
+      if (id) {
+        await apiUpdateSchema(newFSchema)
+      } else {
+        await apiCreateSchema(newFSchema)
+      }
+      // TODO возвращать ошибки валидатора только плюс потом появится бэк на джаве
+      // и надо будет изменять формат этих ошибок под формат final-form
+    } catch (e) {
+      return e
     }
   }
 

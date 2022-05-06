@@ -2,9 +2,17 @@ import { Checkbox, IDropdownOption, PrimaryButton, Stack, Text } from '@fluentui
 
 import CustomDatePicker from '@/shared/date-picker'
 import CustomTextField from '@/shared/textfield'
+import ValidatorPicker from '@/shared/validator-picker'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentList: Record<string, ComponentItem> = {
+  // Utils
+
+  ValiddatorsAttacher: {
+    type: 'input',
+    component: ValidatorPicker,
+  },
+
   // Checkboxes
 
   Checkbox: {
