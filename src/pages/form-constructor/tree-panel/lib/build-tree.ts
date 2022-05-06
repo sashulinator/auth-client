@@ -14,7 +14,6 @@ export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeIte
   const rootTreeItem = {
     id: 'rootId',
     isExpanded: true,
-    data: 'test',
     children: [ROOT_COMP_ID],
   }
 

@@ -7,6 +7,7 @@ export interface Comp {
   defaultValue?: string
   props?: Record<string, unknown>
   childCompIds?: string[]
+  validators?: Norm<CompValidator>
 }
 
 export interface Schema {
@@ -21,6 +22,12 @@ export enum FormType {
   FORM = 'FORM',
   PRESET = 'PRESET',
   COMP = 'COMP',
+}
+
+export interface CompValidator {
+  id: string
+  name: string
+  childCompIds: string[]
 }
 
 export type Norm<T> = Record<string, T>
