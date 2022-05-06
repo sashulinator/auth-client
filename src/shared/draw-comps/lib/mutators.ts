@@ -4,7 +4,7 @@ import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 import uniqid from 'uniqid'
 
 import { Comp, Norm, Schema } from '@/common/types'
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 import { insert, remove, replace, replaceById } from '@/lib/change-unmutable'
 
 export function createNewComp(schema: Schema): Comp {
@@ -12,8 +12,8 @@ export function createNewComp(schema: Schema): Comp {
 
   return {
     id: uniqid(),
+    path: uniqid(),
     compSchemaId: schema.id,
-    path: 'DEFAULT_PATH',
     name: schema.name,
   }
 }
@@ -42,7 +42,7 @@ export function findParent(id: string, comps: Norm<Comp>): Comp {
 export function findCompPosition(compId: string, comps: Norm<Comp>): TreeSourcePosition {
   const parentComp = findParent(compId, comps)
 
-  if (compId === ROOT_COMP_ID) {
+  if (compId === ROOT_ID) {
     return { index: 0, parentId: parentComp.id }
   }
   const index = parentComp.children?.indexOf(compId)

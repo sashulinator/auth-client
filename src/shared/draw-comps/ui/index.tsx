@@ -6,10 +6,10 @@ import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import React from 'react'
 
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 
 export default function CompDrawer(props: CompDrawerProps): JSX.Element {
-  const rootComp = props.comps[ROOT_COMP_ID]
+  const rootComp = props.comps[ROOT_ID]
 
   assertNotUndefined(rootComp)
 

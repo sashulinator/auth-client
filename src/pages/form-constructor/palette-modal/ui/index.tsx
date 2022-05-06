@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil'
 
 import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 import { remove } from '@/lib/change-unmutable'
 import {
   FSchemaHistoryState,
@@ -25,11 +25,11 @@ const PaletteModal: FC = (): JSX.Element => {
 
   function onAdd(schema: Schema) {
     const createdNewComp = createNewComp(schema)
-    const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
+    const isRoot = pickedFCompIds.includes(ROOT_ID)
     const isToRoot = pickedFCompIds.length === 0 || isRoot
 
     if (isToRoot) {
-      const comps = addComp(createdNewComp, ROOT_COMP_ID, 0, FSchemaHistory.data.comps)
+      const comps = addComp(createdNewComp, ROOT_ID, 0, FSchemaHistory.data.comps)
       setFSchemaHistory(setFSchemaComps(comps))
     } else {
       const position = findCompPosition(pickedFCompIds[0] || '', FSchemaHistory.data.comps)
@@ -45,16 +45,16 @@ const PaletteModal: FC = (): JSX.Element => {
   }
 
   function addPreset(schema: Schema) {
-    const copiedComps = copyComps(remove(schema.comps, ROOT_COMP_ID))
+    const copiedComps = copyComps(remove(schema.comps, ROOT_ID))
 
     console.log('copiedComps', copiedComps)
 
-    const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
+    const isRoot = pickedFCompIds.includes(ROOT_ID)
     const isToRoot = pickedFCompIds.length === 0 || isRoot
 
     const newComps = Object.values(copiedComps).reduce((acc, comp) => {
       if (isToRoot) {
-        acc = addComp(comp, ROOT_COMP_ID, 0, acc)
+        acc = addComp(comp, ROOT_ID, 0, acc)
       } else {
         const position = findCompPosition(pickedFCompIds[0] || '', acc)
         acc = addComp(comp, position.parentId.toString(), position.index + 1, acc)

@@ -6,7 +6,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -74,7 +74,7 @@ export default function KeyListener(): null {
         }
 
         if (FSchemaHistory.prev) {
-          const prevCompsId = FSchemaHistory.prev.data.comps[ROOT_COMP_ID]?.children || []
+          const prevCompsId = FSchemaHistory.prev.data.comps[ROOT_ID]?.children || []
 
           const absentIds = pickedFCompIds.filter((id) => !prevCompsId.includes(id))
 
@@ -150,12 +150,12 @@ export default function KeyListener(): null {
 
         if (comps) {
           const copiedComps = copyComps(comps)
-          const isRoot = pickedFCompIds.includes(ROOT_COMP_ID)
+          const isRoot = pickedFCompIds.includes(ROOT_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 
           const newComps = Object.values(copiedComps).reduce((acc, comp) => {
             if (isToRoot) {
-              acc = addComp(comp, ROOT_COMP_ID, 0, acc)
+              acc = addComp(comp, ROOT_ID, 0, acc)
             } else {
               const position = findCompPosition(pickedFCompIds[0] || '', acc)
               acc = addComp(comp, position.parentId.toString(), position.index + 1, acc)
@@ -201,7 +201,7 @@ export default function KeyListener(): null {
         }
 
         if (FSchemaHistory.next) {
-          const nextCompsId = FSchemaHistory.next.data.comps[ROOT_COMP_ID]?.children || []
+          const nextCompsId = FSchemaHistory.next.data.comps[ROOT_ID]?.children || []
 
           const absentIds = pickedFCompIds.filter((id) => !nextCompsId.includes(id))
 

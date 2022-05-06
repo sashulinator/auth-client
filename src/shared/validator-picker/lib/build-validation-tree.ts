@@ -1,7 +1,8 @@
 import { TreeItem } from '@atlaskit/tree'
 
-import { VALIDATOR_ROOT_ID, defaultCompValidators } from './constants'
+import { defaultCompValidators } from './constants'
 
+import { ROOT_ID } from '@/constants/common'
 import { mapObject } from '@/lib/map-object'
 
 interface AdditionalData {
@@ -16,7 +17,7 @@ export function buildValidatorsTree(validators = defaultCompValidators, addition
   const rootTreeItem = {
     id: 'rootId',
     isExpanded: true,
-    children: [VALIDATOR_ROOT_ID],
+    children: [ROOT_ID],
   }
 
   const treeItems = mapObject(

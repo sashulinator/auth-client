@@ -6,7 +6,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { ROOT_COMP_ID } from '@/constants/common'
+import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import {
   FSchemaHistoryState,
@@ -26,7 +26,7 @@ export default function CompContextualMenu(): JSX.Element | null {
 
   const items: IContextualMenuItem[] = []
 
-  if (pickedFComp?.id !== ROOT_COMP_ID) {
+  if (pickedFComp?.id !== ROOT_ID) {
     items.push({
       key: 'remove',
       text: t('buttons.remove'),
