@@ -1,6 +1,6 @@
 import { Spinner, SpinnerSize } from '@fluentui/react'
 
-import './index.css'
+import './loading-area.css'
 
 import cx from 'clsx'
 import React, { FC } from 'react'

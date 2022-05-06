@@ -4,7 +4,7 @@ import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
 import { Norm, Schema } from '@/common/types'
-import { isNormSchemas } from '@/helpers/validators'
+import { isNormSchemas } from '@/common/validators'
 import { errorMessage } from '@/shared/toast'
 
 type GetSchemaParams = {

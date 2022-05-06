@@ -4,7 +4,7 @@ import './contextual-menu.css'
 
 import React, { useRef } from 'react'
 
-import useBoolean from '@/utils/use-boolean'
+import useBoolean from '@/lib/use-boolean'
 
 interface ContextualMenuProps {
   items: IContextualMenuItem[]

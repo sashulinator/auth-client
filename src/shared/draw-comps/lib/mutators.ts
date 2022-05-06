@@ -5,7 +5,7 @@ import uuid from 'uuid-random'
 
 import { Comp, Norm, Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
-import { insert, remove, replace, replaceById } from '@/utils/change-unmutable'
+import { insert, remove, replace, replaceById } from '@/lib/change-unmutable'
 
 export function createNewComp(schema: Schema): Comp {
   schema

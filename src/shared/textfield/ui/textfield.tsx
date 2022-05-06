@@ -2,7 +2,7 @@ import { ITextFieldProps, TextField } from '@fluentui/react'
 
 import React, { forwardRef } from 'react'
 
-import { useAutoFocus } from '@/utils/use-autofocus'
+import { useAutoFocus } from '@/lib/use-autofocus'
 
 const CustomTextField = forwardRef<HTMLInputElement | null, ITextFieldProps & { autoFocusDelay?: number }>(
   (props, ref): JSX.Element => {
