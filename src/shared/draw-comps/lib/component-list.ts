@@ -1,6 +1,7 @@
 import { Checkbox, IDropdownOption, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import CustomDatePicker from '@/shared/date-picker'
+import JSONEditor from '@/shared/json-editor'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'
 
@@ -8,7 +9,7 @@ import ValidatorPicker from '@/shared/validator-picker'
 const componentList: Record<string, ComponentItem> = {
   // Utils
 
-  ValiddatorsAttacher: {
+  ValidatorPicker: {
     type: 'input',
     component: ValidatorPicker,
   },
@@ -30,6 +31,11 @@ const componentList: Record<string, ComponentItem> = {
   DatePicker: {
     type: 'input',
     component: CustomDatePicker,
+  },
+
+  JSONEditor: {
+    type: 'input',
+    component: JSONEditor,
   },
 
   // Contents
