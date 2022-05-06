@@ -25,8 +25,8 @@ export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeIte
         id: comp.id,
         isExpanded: true,
         data: { comp, ...additionalData },
-        children: comp.childCompIds || [],
-        hasChildren: comp.childCompIds !== undefined,
+        children: comp.children || [],
+        hasChildren: comp.children !== undefined,
       }
     }
   )

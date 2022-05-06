@@ -6,6 +6,6 @@ export const defaultCompValidators: Norm<CompValidator> = {
   [VALIDATOR_ROOT_ID]: {
     id: VALIDATOR_ROOT_ID,
     name: 'and',
-    childCompIds: [],
+    children: [],
   },
 }

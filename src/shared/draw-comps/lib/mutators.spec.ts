@@ -31,7 +31,7 @@ describe('mutators', () => {
 
   it(findCompPosition.name, () => {
     const comps = {
-      id1: { id: 'id1', childCompIds: ['id3', 'id2'] },
+      id1: { id: 'id1', children: ['id3', 'id2'] },
       id2: { id: 'id2' },
       id3: { id: 'id3' },
     }
@@ -42,32 +42,32 @@ describe('mutators', () => {
   })
 
   it(addChildId.name, () => {
-    const comp = { id: 'id1', childCompIds: ['id3', 'id2'] }
+    const comp = { id: 'id1', children: ['id3', 'id2'] }
 
     const newComp = addChildId((comp as unknown) as Comp, 'id4', 1)
 
-    expect(newComp).toEqual({ id: 'id1', childCompIds: ['id3', 'id4', 'id2'] })
+    expect(newComp).toEqual({ id: 'id1', children: ['id3', 'id4', 'id2'] })
   })
 
   describe(removeChildId.name, () => {
     it('removes by Id', () => {
-      const comp = { id: 'id1', childCompIds: ['id3', 'id2', 'id4', 'id6'] }
+      const comp = { id: 'id1', children: ['id3', 'id2', 'id4', 'id6'] }
 
       const newComp = removeChildId((comp as unknown) as Comp, 'id4')
 
-      expect(newComp).toEqual({ id: 'id1', childCompIds: ['id3', 'id2', 'id6'] })
+      expect(newComp).toEqual({ id: 'id1', children: ['id3', 'id2', 'id6'] })
     })
 
     it('removes by index', () => {
-      const comp = { id: 'id1', childCompIds: ['id3', 'id2', 'id4', 'id6'] }
+      const comp = { id: 'id1', children: ['id3', 'id2', 'id4', 'id6'] }
 
       const newComp = removeChildId((comp as unknown) as Comp, 2)
 
-      expect(newComp).toEqual({ id: 'id1', childCompIds: ['id3', 'id2', 'id6'] })
+      expect(newComp).toEqual({ id: 'id1', children: ['id3', 'id2', 'id6'] })
     })
 
-    it.only('removes childCompIds if empty', () => {
-      const comp = ({ id: 'id1', childCompIds: ['id3'] } as unknown) as Comp
+    it.only('removes children if empty', () => {
+      const comp = ({ id: 'id1', children: ['id3'] } as unknown) as Comp
 
       const newComp1 = removeChildId(comp, 'id3')
       const newComp2 = removeChildId(comp, 0)
@@ -80,9 +80,9 @@ describe('mutators', () => {
   describe(addComp.name, () => {
     it('move comp', () => {
       const comps = ({
-        id1: { id: 'id1', childCompIds: ['id2', 'id3'] },
+        id1: { id: 'id1', children: ['id2', 'id3'] },
         id2: { id: 'id2' },
-        id3: { id: 'id3', childCompIds: ['id4'] },
+        id3: { id: 'id3', children: ['id4'] },
         id4: { id: 'id4' },
       } as unknown) as Norm<Comp>
 
@@ -91,9 +91,9 @@ describe('mutators', () => {
       const newComp = addComp(comp, 'id3', 1, comps)
 
       expect(newComp).toEqual({
-        id1: { id: 'id1', childCompIds: ['id2', 'id3'] },
+        id1: { id: 'id1', children: ['id2', 'id3'] },
         id2: { id: 'id2' },
-        id3: { id: 'id3', childCompIds: ['id4', 'id5'] },
+        id3: { id: 'id3', children: ['id4', 'id5'] },
         id4: { id: 'id4' },
         id5: { id: 'id5' },
       })
@@ -102,7 +102,7 @@ describe('mutators', () => {
 
   describe(moveComp.name, () => {
     const comps = ({
-      id1: { id: 'id1', childCompIds: ['id2', 'id3', 'id4'] },
+      id1: { id: 'id1', children: ['id2', 'id3', 'id4'] },
       id2: { id: 'id2' },
       id3: { id: 'id3' },
       id4: { id: 'id4' },
@@ -114,9 +114,9 @@ describe('mutators', () => {
       const newComp = moveComp(comp, 'id3', 0, comps)
 
       expect(newComp).toEqual({
-        id1: { id: 'id1', childCompIds: ['id2', 'id3'] },
+        id1: { id: 'id1', children: ['id2', 'id3'] },
         id2: { id: 'id2' },
-        id3: { id: 'id3', childCompIds: ['id4'] },
+        id3: { id: 'id3', children: ['id4'] },
         id4: { id: 'id4' },
       })
     })
@@ -125,7 +125,7 @@ describe('mutators', () => {
       const newComp = moveComp(comp, 'id1', 1, comps)
 
       expect(newComp).toEqual({
-        id1: { id: 'id1', childCompIds: ['id2', 'id4', 'id3'] },
+        id1: { id: 'id1', children: ['id2', 'id4', 'id3'] },
         id2: { id: 'id2' },
         id3: { id: 'id3' },
         id4: { id: 'id4' },

@@ -27,8 +27,8 @@ export function buildValidatorsTree(validators = defaultCompValidators, addition
         id: validator.id,
         isExpanded: true,
         data: { validator, ...additionalData },
-        children: validator.childCompIds || [],
-        hasChildren: validator.childCompIds !== undefined,
+        children: validator.children || [],
+        hasChildren: validator.children !== undefined,
       }
     }
   )

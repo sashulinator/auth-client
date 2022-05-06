@@ -32,7 +32,7 @@ export function copyComps(comps: Norm<Comp>): Norm<Comp> {
 }
 
 export function findParent(id: string, comps: Norm<Comp>): Comp {
-  const comp = Object.values(comps).find(({ childCompIds }) => childCompIds?.includes(id))
+  const comp = Object.values(comps).find(({ children }) => children?.includes(id))
 
   assertNotUndefined(comp)
 
@@ -45,7 +45,7 @@ export function findCompPosition(compId: string, comps: Norm<Comp>): TreeSourceP
   if (compId === ROOT_COMP_ID) {
     return { index: 0, parentId: parentComp.id }
   }
-  const index = parentComp.childCompIds?.indexOf(compId)
+  const index = parentComp.children?.indexOf(compId)
 
   assertNotUndefined(index)
 
@@ -73,22 +73,22 @@ export function findComps(ids: string[], comps: Norm<Comp>): Norm<Comp> {
  * Returns parent comp
  */
 export function removeChildId(comp: Comp, childIdOrIndex: string | number): Comp {
-  assertNotUndefined(comp.childCompIds)
+  assertNotUndefined(comp.children)
 
-  const index = isString(childIdOrIndex) ? comp.childCompIds.indexOf(childIdOrIndex) : childIdOrIndex
+  const index = isString(childIdOrIndex) ? comp.children.indexOf(childIdOrIndex) : childIdOrIndex
 
   if (index === -1) {
     throw new Error('child does not exist in comp')
   }
 
-  const newChildCompIds = remove(comp.childCompIds, index)
+  const newChildren = remove(comp.children, index)
 
-  // Поле childCompIds не должно существовать если дети отсутствуют
-  if (newChildCompIds.length === 0) {
-    return remove(comp, 'childCompIds')
+  // Поле children не должно существовать если дети отсутствуют
+  if (newChildren.length === 0) {
+    return remove(comp, 'children')
   }
 
-  return replace(comp, 'childCompIds', newChildCompIds)
+  return replace(comp, 'children', newChildren)
 }
 
 export function addChildId(parentComp: Comp, compId: string, index: number): Comp {
@@ -96,16 +96,16 @@ export function addChildId(parentComp: Comp, compId: string, index: number): Com
     throw new Error('Index cannot be less than 0')
   }
 
-  const childLength = parentComp?.childCompIds?.length ?? 0
+  const childLength = parentComp?.children?.length ?? 0
 
   if (index > childLength) {
     throw new Error(`Index cannot be more than ${childLength}`)
   }
 
-  const parentClone = { ...parentComp, childCompIds: parentComp?.childCompIds ?? [] }
+  const parentClone = { ...parentComp, children: parentComp?.children ?? [] }
 
-  const newChildCompIds = insert(parentClone.childCompIds, index, compId)
-  const newParentComp = replace(parentClone, 'childCompIds', newChildCompIds)
+  const newchildren = insert(parentClone.children, index, compId)
+  const newParentComp = replace(parentClone, 'children', newchildren)
 
   return newParentComp
 }

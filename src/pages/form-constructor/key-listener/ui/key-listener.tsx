@@ -74,7 +74,7 @@ export default function KeyListener(): null {
         }
 
         if (FSchemaHistory.prev) {
-          const prevCompsId = FSchemaHistory.prev.data.comps[ROOT_COMP_ID]?.childCompIds || []
+          const prevCompsId = FSchemaHistory.prev.data.comps[ROOT_COMP_ID]?.children || []
 
           const absentIds = pickedFCompIds.filter((id) => !prevCompsId.includes(id))
 
@@ -201,7 +201,7 @@ export default function KeyListener(): null {
         }
 
         if (FSchemaHistory.next) {
-          const nextCompsId = FSchemaHistory.next.data.comps[ROOT_COMP_ID]?.childCompIds || []
+          const nextCompsId = FSchemaHistory.next.data.comps[ROOT_COMP_ID]?.children || []
 
           const absentIds = pickedFCompIds.filter((id) => !nextCompsId.includes(id))
 
