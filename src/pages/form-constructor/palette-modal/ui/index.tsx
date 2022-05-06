@@ -8,13 +8,13 @@ import { useRecoilState } from 'recoil'
 import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
 import { ROOT_COMP_ID } from '@/constants/common'
+import { remove } from '@/lib/change-unmutable'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview/model/form-schema'
 import { addComp, copyComps, createNewComp, findCompPosition } from '@/shared/draw-comps/lib/mutators'
-import { remove } from '@/utils/change-unmutable'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)

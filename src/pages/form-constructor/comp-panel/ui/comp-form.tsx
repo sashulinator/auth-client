@@ -6,8 +6,8 @@ import React from 'react'
 import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/common/types'
+import debounce from '@/lib/debounce'
 import CompDrawer from '@/shared/draw-comps'
-import debounce from '@/utils/debounce'
 
 interface CompFormProps {
   comp: Comp
