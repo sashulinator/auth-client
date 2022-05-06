@@ -1,6 +1,5 @@
 import { initializeIcons } from '@fluentui/react'
 
-import ErrorBoundary from './error-boundary'
 import history from './history'
 import './i18n'
 import RootLayer from './layer'
@@ -19,17 +18,15 @@ export const App = () => {
 
   return (
     <Suspense>
-      <ErrorBoundary>
-        <QueryClientProvider client={queryClient}>
-          <RecoilRoot>
-            <ThemeProvider>
-              <HistoryRouter history={history}>
-                <RootLayer />
-              </HistoryRouter>
-            </ThemeProvider>
-          </RecoilRoot>
-        </QueryClientProvider>
-      </ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ThemeProvider>
+            <HistoryRouter history={history}>
+              <RootLayer />
+            </HistoryRouter>
+          </ThemeProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
     </Suspense>
   )
 }

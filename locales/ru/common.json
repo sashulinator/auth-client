@@ -1,5 +1,8 @@
 {
   "locale": "ru-RU",
+  "messages": {
+    "saved": "Сохранено"
+  },
   "fieldNames": {
     "name": "имя"
   },
@@ -53,6 +56,7 @@
     }
   },
   "unknownError": "неизвестная ошибка",
+  "serverInvalidData": "Полученны невалидные данные от сервера",
   "P2002": "уже существует",
   "searchByNameEmail": "Поиск по имени и email",
   "assertString": "обязательно",

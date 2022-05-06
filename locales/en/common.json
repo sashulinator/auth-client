@@ -1,5 +1,8 @@
 {
   "locale": "en-US",
+  "messages": {
+    "saved": "Saved"
+  },
   "fieldNames": {
     "name": "name"
   },
@@ -52,7 +55,9 @@
       "id": "id"
     }
   },
-  "unknownError": "unknown error",
+  "unknownError": "Unknown error",
+  "serverInvalidData": "Received invalid data from server",
+
   "P2002": "already exists",
   "assertString": "required",
   "assertNotMoreThan": "more than {{- _input2}}",

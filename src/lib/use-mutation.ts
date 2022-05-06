@@ -22,13 +22,18 @@ const useAppMutation = <TResult, TVariables = undefined, TSnapshot = unknown>(
     error: unknown,
     ...args
   ): void => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    mutationConfig?.onError?.(error, ...args)
     if (isValidationError(error)) {
       errorMessage(t(error._code))
     } else {
       errorMessage(t('unknownError'))
     }
+
+    if (isObject(error)) {
+      console.log({ ...error })
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    mutationConfig?.onError?.(error, ...args)
   }
 
   const newMutationConfig = mutationConfig ? { onError, ...mutationConfig } : { onError }

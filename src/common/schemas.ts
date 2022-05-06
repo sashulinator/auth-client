@@ -1,12 +1,10 @@
 import {
   ANY_KEY,
   _null,
-  _undefined,
   and,
   buildErrorTree,
   ignorePattern,
   keyDoesNotExist,
-  matchPattern,
   notEmptyString,
   only,
   or,
@@ -16,18 +14,15 @@ import {
   wrap,
 } from '@savchenko91/schema-validator'
 
+import { assertSchemaComponentNameIsValid } from './assertions'
+import { Schema } from './types'
+
+import ErrorFromObject from '@/lib/error-from-object'
+
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
-function assertComponentNameIsValid(componentNameValue: unknown, typeValue: unknown) {
-  if (typeValue === 'COMP') {
-    string(componentNameValue)
-  } else {
-    throw Error('"componentName" must be define if type="COMP"')
-  }
-}
-
 export const schemaValidator = rootOnly({
-  componentName: or(_null, withRef('type', assertComponentNameIsValid)),
+  componentName: or(_null, withRef('type', assertSchemaComponentNameIsValid)),
   id: string,
   name: and(string, notEmptyString, withValue(/\W+/, ignorePattern)),
   type: string,
@@ -46,24 +41,12 @@ export const schemaValidator = rootOnly({
   }),
 })
 
-export const createUserValidator = rootOnly({
-  username: and(string, withValue(/^(\w*)$/, matchPattern)),
-  password: and(
-    string,
-    notEmptyString,
-    withValue(/[A-Z]/, matchPattern),
-    withValue(/[a-z]/, matchPattern),
-    withValue(/[0-9]/, matchPattern)
-  ),
-  email: and(string, withValue(/@.*\.*./, matchPattern)),
-  fullname: or(string, _undefined),
-})
+export function assertsSchema(input: unknown): asserts input is Schema {
+  const errors = schemaValidator(input)
 
-export const updateUserValidator = rootOnly({
-  ...createUserValidator,
-  id: string,
-  password: or(
-    and(withValue(/[A-Z]/, matchPattern), withValue(/[a-z]/, matchPattern), withValue(/[0-9]/, matchPattern)),
-    _undefined
-  ),
-})
+  // TODO фигня какая-то. Надо создать отдельную ошибку
+  if (errors) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    throw new ErrorFromObject(errors as any)
+  }
+}

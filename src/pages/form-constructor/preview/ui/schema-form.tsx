@@ -9,7 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
-import { createSchema } from '@/api/schema'
+import { createSchema, updateSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
 import { FormType, Schema } from '@/common/types'
 import ROUTES from '@/constants/routes'
@@ -17,9 +17,10 @@ import useAppMutation from '@/lib/use-mutation'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { Dropdown } from '@/shared/dropdown'
+import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
 import FieldError from '@/shared/field-error'
 import CustomTextField from '@/shared/textfield'
-import { errorMessage, successMessage } from '@/shared/toast'
+import { successMessage } from '@/shared/toast'
 
 const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
@@ -36,15 +37,13 @@ export default function SchemaForm(): JSX.Element {
     },
   })
 
-  const options = useMemo(
-    () =>
-      typeArray.map((typeName) => ({
-        text: t(typeName.toString()),
-        key: typeName,
-      })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [i18n.language]
-  )
+  const { mutateAsync: apiUpdateSchema } = useAppMutation(updateSchema, {
+    onSuccess: () => {
+      successMessage(t('messages.saved'))
+    },
+  })
+
+  const options = useMemo(() => buildOptionsFromStringArray(typeArray, t), [i18n.language])
 
   const items: IContextualMenuItem[] = [
     {
@@ -81,19 +80,17 @@ export default function SchemaForm(): JSX.Element {
       type,
     }
 
-    const errors = schemaValidator(newFSchema) as ErrorCollection
-
-    // Маловероятный кейс, но на всякий случай
-    if (errors.comps) {
-      console.log(errors.comps)
-      errorMessage('Unexpected error. See full information in the console')
+    try {
+      if (id) {
+        await apiUpdateSchema(newFSchema)
+      } else {
+        await apiCreateSchema(newFSchema)
+      }
+      // TODO возвращать ошибки валидатора только плюс потом появится бэк на джаве
+      // и надо будет изменять формат этих ошибок под формат final-form
+    } catch (e) {
+      return e
     }
-
-    if (errors) {
-      return errors
-    }
-
-    await apiCreateSchema(newFSchema)
   }
 
   function onDropdownChange(type: FormType) {
