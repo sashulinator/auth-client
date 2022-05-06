@@ -6,7 +6,7 @@ import { DrawerComponentProps } from '../types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
-import FieldError from '@/components/field-error'
+import FieldError from '@/shared/field-error'
 
 const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {
   // const form = useForm()
