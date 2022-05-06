@@ -52,6 +52,7 @@
       "id": "id"
     }
   },
+  "unknownError": "unknown error",
   "P2002": "already exists",
   "assertString": "required",
   "assertNotMoreThan": "more than {{- _input2}}",

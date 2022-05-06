@@ -11,6 +11,22 @@ type GetSchemaParams = {
   queryKey: (string | undefined)[]
 }
 
+// TODO валидация данных
+export async function createSchema(newFSchema: Schema): Promise<Schema> {
+  const response = await fetch('/api/v1/schemas', {
+    method: 'POST',
+    body: JSON.stringify(newFSchema),
+    headers: {
+      'content-type': 'application/json',
+      accept: '*/*',
+    },
+  })
+
+  const data = (response.json() as unknown) as Schema
+
+  return data
+}
+
 export async function getSchema(params: GetSchemaParams): Promise<Schema | undefined> {
   const [, id] = params.queryKey
 

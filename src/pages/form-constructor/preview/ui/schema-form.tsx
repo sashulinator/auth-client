@@ -1,7 +1,7 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
+import { ErrorCollection } from '@savchenko91/schema-validator'
 
 import { FSchemaHistoryState, setFSchema } from '../model/form-schema'
-import { FormApi, SubmissionErrors } from 'final-form'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -9,9 +9,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
+import { createSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
 import { FormType, Schema } from '@/common/types'
 import ROUTES from '@/constants/routes'
+import useAppMutation from '@/lib/use-mutation'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { Dropdown } from '@/shared/dropdown'
@@ -26,6 +28,13 @@ export default function SchemaForm(): JSX.Element {
   const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const { id } = useParams()
   const navigate = useNavigate()
+
+  const { mutateAsync: apiCreateSchema } = useAppMutation(createSchema, {
+    onSuccess: (data) => {
+      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+      successMessage(t('messages.saved'))
+    },
+  })
 
   const options = useMemo(
     () =>
@@ -58,50 +67,33 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(
-    submitFschemaData: Schema,
-    formApi: FormApi<Schema, Schema>,
-    setError?: (errors?: SubmissionErrors) => void
-  ): Promise<void> {
-    const { name, type, componentName = null } = submitFschemaData
+  async function onSubmit(submitFschemaData: Schema): Promise<void | ErrorCollection> {
+    const { name, type } = submitFschemaData
+
+    const newComponentName = type !== FormType.COMP ? null : submitFschemaData.componentName
+    const newId = id ? id : uuid()
 
     const newFSchema = {
       ...FSchemaHistory.data,
+      id: newId,
+      componentName: newComponentName,
       name,
       type,
-      componentName: type !== FormType.COMP ? null : componentName,
-      id: id ? id : uuid(),
     }
 
-    const errors = schemaValidator(newFSchema)
+    const errors = schemaValidator(newFSchema) as ErrorCollection
+
+    // Маловероятный кейс, но на всякий случай
+    if (errors.comps) {
+      console.log(errors.comps)
+      errorMessage('Unexpected error. See full information in the console')
+    }
 
     if (errors) {
-      setError?.(errors)
-      return
+      return errors
     }
 
-    const response = await fetch('/api/v1/schemas', {
-      method: id ? 'PUT' : 'POST',
-      body: JSON.stringify(newFSchema),
-      headers: {
-        'content-type': 'application/json',
-        accept: '*/*',
-      },
-    })
-
-    const data = (await response.json()) as Schema
-
-    if (!response.ok) {
-      errorMessage('Не удалось сделать запрос')
-    } else {
-      setTimeout(() => {
-        successMessage('Cохранено')
-      }, 10)
-    }
-
-    if (!id && data.id) {
-      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
-    }
+    await apiCreateSchema(newFSchema)
   }
 
   function onDropdownChange(type: FormType) {

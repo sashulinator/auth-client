@@ -52,6 +52,7 @@
       "id": "id"
     }
   },
+  "unknownError": "неизвестная ошибка",
   "P2002": "уже существует",
   "searchByNameEmail": "Поиск по имени и email",
   "assertString": "обязательно",
