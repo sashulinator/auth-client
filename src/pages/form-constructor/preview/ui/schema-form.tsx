@@ -13,10 +13,10 @@ import { schemaValidator } from '@/common/schemas'
 import { FormType, Schema } from '@/common/types'
 import Dropdown from '@/components/dropdown/dropdown'
 import FieldError from '@/components/field-error'
-import CustomTextField from '@/components/text-field'
 import ROUTES from '@/constants/routes'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
+import CustomTextField from '@/shared/textfield'
 import { errorMessage, successMessage } from '@/shared/toast'
 
 const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
