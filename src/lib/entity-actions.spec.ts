@@ -1,3 +1,5 @@
+import { assertNotUndefined } from '@savchenko91/schema-validator'
+
 import {
   Entity,
   addChildId,
@@ -10,27 +12,26 @@ import {
 
 import { Norm } from '@/common/types'
 
-describe('mutators', () => {
+describe('entity-actions', () => {
   it(copyEntities.name, () => {
-    const entities = ({
-      id1: { id: 'id1' },
+    const entities: Norm<Entity> = {
+      id1: { id: 'id1', children: ['id2'] },
       id2: { id: 'id2' },
-    } as unknown) as Norm<Entity>
+    }
 
-    const copiedEntitys = copyEntities(entities)
+    const copiedEntities = copyEntities(entities)
 
-    const entityEntries = Object.entries(entities)
-    const copiedEntityEntries = Object.entries(copiedEntitys)
+    const copiedEntityKeys = Object.keys(copiedEntities)
 
-    copiedEntityEntries.forEach(([copiedEntityKey, copiedEntity], i) => {
-      const [entityKey, entity] = entityEntries[i] as any
+    const id1NewId = copiedEntityKeys[0]
+    const id2NewId = copiedEntityKeys[1]
 
-      const isSameId = entityKey === copiedEntityKey || entity.id === copiedEntity.id
+    assertNotUndefined(id1NewId)
+    assertNotUndefined(id2NewId)
 
-      if (isSameId) {
-        throw Error('Ids must be different')
-      }
-    })
+    if (!copiedEntities[id1NewId]?.children?.includes(id2NewId)) {
+      throw new Error('id1NewId should be included')
+    }
   })
 
   it(findEntityPosition.name, () => {
@@ -70,7 +71,7 @@ describe('mutators', () => {
       expect(newEntity).toEqual({ id: 'id1', children: ['id3', 'id2', 'id6'] })
     })
 
-    it.only('removes children if empty', () => {
+    it('removes children if empty', () => {
       const entity = ({ id: 'id1', children: ['id3'] } as unknown) as Entity
 
       const newEntity1 = removeChildId(entity, 'id3')
