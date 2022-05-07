@@ -6,9 +6,10 @@ import { mapObject } from '@/lib/map-object'
 
 interface AdditionalData {
   onChange: (v: string) => void
+  remove: (id: string) => void
 }
 
-export function buildValidatorsTree(validators: Norm<CompValidator>, additionalData: AdditionalData) {
+export function buildValidatorsTree(validators: Norm<CompValidator> | undefined, additionalData: AdditionalData) {
   if (validators === undefined) {
     return undefined
   }

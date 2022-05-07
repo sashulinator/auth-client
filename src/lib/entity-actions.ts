@@ -51,6 +51,7 @@ export function copyEntities<T extends Entity>(entities: Norm<T>, uniqKeys: stri
     const position = findEntityPosition(entity.id, accEntities)
     assertNotUndefined(position)
     const entitiesWithRemoved = removeEntity(entity.id, accEntities)
+    assertNotUndefined(entitiesWithRemoved)
     const entitiesWithPasted = addEntity(newEntity, position.parentId, position.index, entitiesWithRemoved)
 
     return entitiesWithPasted
@@ -70,8 +71,8 @@ export function findRootParentIds<T extends Entity>(entities: Norm<T>): string[]
   }, [])
 }
 
-export function findParent<T extends Entity>(id: string, entities: Norm<T>): T | undefined {
-  return Object.values(entities).find(({ children }) => children?.includes(id))
+export function findParent<T extends Entity>(id: string | number, entities: Norm<T>): T | undefined {
+  return Object.values(entities).find(({ children }) => children?.includes(id.toString()))
 }
 
 export function findEntityPosition<T extends Entity>(
@@ -97,7 +98,7 @@ export function findEntityPosition<T extends Entity>(
   }
 }
 
-export function findEntity<T extends Entity>(id: string, entities: Norm<T>): T {
+export function findEntity<T extends Entity>(id: string | number, entities: Norm<T>): T {
   const entity = entities[id]
   assertNotUndefined(entity)
   return entity
@@ -154,10 +155,13 @@ export function addChildId<T extends Entity>(parententity: T, entityId: string, 
 
 // entities
 
-export function removeEntity<T extends Entity>(entityId: string, entities: Norm<T>): Norm<T> {
+export function removeEntity<T extends Entity>(entityId: string | number, entities: Norm<T>): Norm<T> | undefined {
   const parentEntity = findParent(entityId, entities)
 
-  assertNotUndefined(parentEntity)
+  // undefined if we remove root
+  if (parentEntity === undefined) {
+    return undefined
+  }
   // Remove from entities
   const newEntities = remove(entities, entityId)
   // Remove from parent
@@ -168,7 +172,7 @@ export function removeEntity<T extends Entity>(entityId: string, entities: Norm<
 
 export function addEntity<T extends Entity>(
   entity: T,
-  newParentId: string,
+  newParentId: string | number,
   newIndex: number,
   entities: Norm<T>
 ): Norm<T> {
@@ -186,11 +190,12 @@ export function addEntity<T extends Entity>(
 
 export function moveEntity<T extends Entity>(
   entity: T,
-  toParentId: string,
+  toParentId: string | number,
   newIndex: number,
   entities: Norm<T>
 ): Norm<T> {
   const entitiesWithoutMovingentity = removeEntity(entity.id, entities)
+  assertNotUndefined(entitiesWithoutMovingentity)
   const entitiesWithMovingentity = addEntity(entity, toParentId, newIndex, entitiesWithoutMovingentity)
 
   return entitiesWithMovingentity

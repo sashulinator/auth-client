@@ -1,5 +1,5 @@
 import { IContextualMenuItem, Icon } from '@fluentui/react'
-import { assertNotNil, assertNotNull } from '@savchenko91/schema-validator'
+import { assertNotNil, assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { pickedCSchemaState } from '../model/comp-schema'
 import React from 'react'
@@ -35,6 +35,7 @@ export default function CompContextualMenu(): JSX.Element | null {
         assertNotNull(FSchemaHistory)
 
         const comps = removeEntity(pickedFComp?.id, FSchemaHistory.data.comps)
+        assertNotUndefined(comps)
         setFSchemaHistory(setFSchemaComps(comps))
         setPickedFCompIds([])
       },
