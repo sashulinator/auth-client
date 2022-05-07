@@ -47,8 +47,6 @@ const PaletteModal: FC = (): JSX.Element => {
   function addPreset(schema: Schema) {
     const copiedComps = copyComps(remove(schema.comps, ROOT_ID))
 
-    console.log('copiedComps', copiedComps)
-
     const isRoot = pickedFCompIds.includes(ROOT_ID)
     const isToRoot = pickedFCompIds.length === 0 || isRoot
 
@@ -61,8 +59,6 @@ const PaletteModal: FC = (): JSX.Element => {
       }
       return acc
     }, FSchemaHistory.data.comps)
-
-    // console.log('newComps', newComps)
 
     setFSchemaHistory(setFSchemaComps(newComps))
 
