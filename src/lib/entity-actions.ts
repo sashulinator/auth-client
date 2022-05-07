@@ -11,15 +11,36 @@ export interface Entity {
   children?: string[]
 }
 
-export function copyEntity<T extends Entity>(entity: T): T {
-  return { ...entity, id: uniqid() }
+export function copyEntity<T extends Entity>(entity: T, uniqKeys: string[] = []): T {
+  const newUniqKeys = ['id', ...uniqKeys]
+
+  return newUniqKeys.reduce((acc, keyName) => {
+    return {
+      ...acc,
+      [keyName]: uniqid(),
+    }
+  }, entity)
 }
 
-// TODO не проходится по детям и не заменяет в них id!
-export function copyEntities<T extends Entity>(entities: Norm<T>): Norm<T> {
+export function findDependencyIds(ids: string[], entities: Norm<Entity>): string[] {
+  return ids.reduce(
+    (accIds, id) => {
+      const entity = findEntity(id, entities)
+
+      if (entity.children) {
+        return [...accIds, ...entity.children]
+      }
+
+      return accIds
+    },
+    [...ids]
+  )
+}
+
+export function copyEntities<T extends Entity>(entities: Norm<T>, uniqKeys: string[] = []): Norm<T> {
   return Object.values(entities).reduce<Norm<T>>((accEntities, entity) => {
     const hasParent = !!Object.values(accEntities).find(({ children }) => children?.includes(entity.id))
-    const newEntity = copyEntity(entity)
+    const newEntity = copyEntity(entity, uniqKeys)
 
     if (!hasParent) {
       const entitiesWithRemoved = remove(accEntities, entity.id)
@@ -28,25 +49,40 @@ export function copyEntities<T extends Entity>(entities: Norm<T>): Norm<T> {
     }
 
     const position = findEntityPosition(entity.id, accEntities)
+    assertNotUndefined(position)
     const entitiesWithRemoved = removeEntity(entity.id, accEntities)
     const entitiesWithPasted = addEntity(newEntity, position.parentId, position.index, entitiesWithRemoved)
+
     return entitiesWithPasted
   }, entities)
 }
 
-export function findParent<T extends Entity>(id: string, entities: Norm<T>): T {
-  const entity = Object.values(entities).find(({ children }) => children?.includes(id))
+/*
+  Полезна когда копируем несколько сущностей с вложенностью и надо найти какие из них родители
+*/
+export function findRootParentIds<T extends Entity>(entities: Norm<T>): string[] {
+  return Object.values(entities).reduce<string[]>((acc, entity) => {
+    const parent = findParent(entity.id, entities)
+    if (!parent) {
+      acc.push(entity.id)
+    }
+    return acc
+  }, [])
+}
 
-  assertNotUndefined(entity)
-
-  return entity
+export function findParent<T extends Entity>(id: string, entities: Norm<T>): T | undefined {
+  return Object.values(entities).find(({ children }) => children?.includes(id))
 }
 
 export function findEntityPosition<T extends Entity>(
   entityId: string,
   entities: Norm<T>
-): { index: number; parentId: string } {
+): { index: number; parentId: string } | undefined {
   const parentEntity = findParent(entityId, entities)
+
+  if (parentEntity === undefined) {
+    return undefined
+  }
 
   if (entityId === ROOT_ID) {
     return { index: 0, parentId: parentEntity.id }
@@ -120,6 +156,8 @@ export function addChildId<T extends Entity>(parententity: T, entityId: string, 
 
 export function removeEntity<T extends Entity>(entityId: string, entities: Norm<T>): Norm<T> {
   const parentEntity = findParent(entityId, entities)
+
+  assertNotUndefined(parentEntity)
   // Remove from entities
   const newEntities = remove(entities, entityId)
   // Remove from parent

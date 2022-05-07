@@ -1,5 +1,5 @@
 import { isMac } from '@fluentui/react'
-import { assertNotNull } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -7,7 +7,15 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
-import { addEntity, copyEntities, findEntities, findEntityPosition, removeEntity } from '@/lib/entity-actions'
+import {
+  addEntity,
+  copyEntities,
+  findDependencyIds,
+  findEntities,
+  findEntityPosition,
+  findRootParentIds,
+  removeEntity,
+} from '@/lib/entity-actions'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -112,7 +120,8 @@ export default function KeyListener(): null {
       const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
       if (event.code === 'KeyC' && event[controlKeyName] && !event.shiftKey) {
-        const selectedComps = findEntities(pickedFCompIds, FSchemaHistory.data.comps)
+        const dependencyIds = findDependencyIds(pickedFCompIds, FSchemaHistory.data.comps)
+        const selectedComps = findEntities(dependencyIds, FSchemaHistory.data.comps)
         localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
       }
     }
@@ -149,19 +158,28 @@ export default function KeyListener(): null {
         schemaValidator.comps(comps)
 
         if (comps) {
-          const copiedComps = copyEntities(comps)
+          const copiedComps = copyEntities(comps, ['path'])
+
+          const rootCompIds = findRootParentIds(copiedComps)
+          const rootComps = findEntities(rootCompIds, copiedComps)
+
+          const mergedComps = { ...FSchemaHistory.data.comps, ...copiedComps }
+
           const isRoot = pickedFCompIds.includes(ROOT_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 
-          const newComps = Object.values(copiedComps).reduce((acc, comp) => {
+          const newComps = Object.values(rootComps).reduce((acc, comp) => {
+            console.log('comp', comp)
+
             if (isToRoot) {
               acc = addEntity(comp, ROOT_ID, 0, acc)
             } else {
               const position = findEntityPosition(pickedFCompIds[0] || '', acc)
+              assertNotUndefined(position)
               acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
             }
             return acc
-          }, FSchemaHistory.data.comps)
+          }, mergedComps)
 
           setFSchemaHistory(setFSchemaComps(newComps))
 

@@ -100,6 +100,7 @@ function TreePanel(): JSX.Element {
 
     pickedFCompIds.forEach((compId) => {
       const from = findEntityPosition(compId, tempComps)
+      assertNotUndefined(from)
       setTree(moveItemOnTree(tree, from, to))
       const comp = findEntity(compId, tempComps)
       tempComps = moveEntity(comp, to.parentId as string, to.index || 0, tempComps)

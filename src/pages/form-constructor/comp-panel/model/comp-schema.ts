@@ -40,7 +40,7 @@ export const lackOfCSchemaIdsState = selector({
 
     const CSchemasIdsPossessed = Object.keys(CSchemas)
 
-    const lackOfCSchemaIds = CSchemasIdsInSchema.filter((x) => !CSchemasIdsPossessed.includes(x))
+    const lackOfCSchemaIds = CSchemasIdsInSchema.filter((id) => !CSchemasIdsPossessed.includes(id))
 
     return [...new Set(lackOfCSchemaIds)]
   },
