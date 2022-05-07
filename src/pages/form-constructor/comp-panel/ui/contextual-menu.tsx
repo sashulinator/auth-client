@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
+import { removeEntity } from '@/lib/entity-actions'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -15,7 +16,6 @@ import {
   setFSchemaComps,
 } from '@/pages/form-constructor/preview/model/form-schema'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
-import { removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()
@@ -34,7 +34,7 @@ export default function CompContextualMenu(): JSX.Element | null {
         assertNotNull(pickedFComp)
         assertNotNull(FSchemaHistory)
 
-        const comps = removeComp(pickedFComp?.id, FSchemaHistory.data.comps)
+        const comps = removeEntity(pickedFComp?.id, FSchemaHistory.data.comps)
         setFSchemaHistory(setFSchemaComps(comps))
         setPickedFCompIds([])
       },
