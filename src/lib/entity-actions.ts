@@ -1,4 +1,3 @@
-import { TreeSourcePosition } from '@atlaskit/tree'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import uniqid from 'uniqid'
@@ -18,11 +17,21 @@ export function copyEntity<T extends Entity>(entity: T): T {
 
 // TODO не проходится по детям и не заменяет в них id!
 export function copyEntities<T extends Entity>(entities: Norm<T>): Norm<T> {
-  return Object.values(entities).reduce<Norm<T>>((acc, entity) => {
+  return Object.values(entities).reduce<Norm<T>>((accEntities, entity) => {
+    const hasParent = !!Object.values(accEntities).find(({ children }) => children?.includes(entity.id))
     const newEntity = copyEntity(entity)
-    acc[newEntity.id] = newEntity
-    return acc
-  }, {})
+
+    if (!hasParent) {
+      const entitiesWithRemoved = remove(accEntities, entity.id)
+      const entitiesWithPasted = insert(entitiesWithRemoved, newEntity.id, newEntity)
+      return entitiesWithPasted
+    }
+
+    const position = findEntityPosition(entity.id, accEntities)
+    const entitiesWithRemoved = removeEntity(entity.id, accEntities)
+    const entitiesWithPasted = addEntity(newEntity, position.parentId, position.index, entitiesWithRemoved)
+    return entitiesWithPasted
+  }, entities)
 }
 
 export function findParent<T extends Entity>(id: string, entities: Norm<T>): T {
@@ -33,7 +42,10 @@ export function findParent<T extends Entity>(id: string, entities: Norm<T>): T {
   return entity
 }
 
-export function findEntityPosition<T extends Entity>(entityId: string, entities: Norm<T>): TreeSourcePosition {
+export function findEntityPosition<T extends Entity>(
+  entityId: string,
+  entities: Norm<T>
+): { index: number; parentId: string } {
   const parentEntity = findParent(entityId, entities)
 
   if (entityId === ROOT_ID) {
