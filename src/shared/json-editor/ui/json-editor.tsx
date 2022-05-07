@@ -22,18 +22,24 @@ const tryParseJson = (value: unknown): any => {
   }
 }
 
+const formatJson = (value: unknown): string =>
+  typeof value === 'string' ? value : JSON.stringify(value, null, TAB_SIZE)
+
 export default function JSONEditor(props: JSONEditorProps): JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lastStringValue = useRef<any>()
   // т.к. JSON.parse возвращает any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lastOnChangeValue = useRef<any>()
+
+  const value = props.value === lastOnChangeValue.current ? lastStringValue.current : formatJson(props.value)
 
   function onChange(value: string): void {
     const parsedValue = tryParseJson(value)
     lastOnChangeValue.current = parsedValue
     lastStringValue.current = value
 
-    props.input?.onChange?.(parsedValue)
+    props.onChange?.(parsedValue)
   }
 
   function handleAceBlur(_: unknown, editor?: Ace.Editor): void {
@@ -50,8 +56,8 @@ export default function JSONEditor(props: JSONEditorProps): JSX.Element {
         width="100%"
         mode="json"
         theme="monokai"
-        name="UNIQUE_ID_OF_DIV"
         {...props}
+        value={value}
         tabSize={TAB_SIZE}
         height="250px"
         onChange={onChange}

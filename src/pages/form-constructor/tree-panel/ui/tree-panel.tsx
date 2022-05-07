@@ -9,6 +9,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
+import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
   FSchemaHistoryState,
@@ -17,7 +18,6 @@ import {
   removeAllHoverHighlights,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview'
-import { findComp, findCompPosition, moveComp } from '@/shared/draw-comps/lib/mutators'
 import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
@@ -99,10 +99,10 @@ function TreePanel(): JSX.Element {
     let tempComps = FSchemaHistory.data?.comps
 
     pickedFCompIds.forEach((compId) => {
-      const from = findCompPosition(compId, tempComps)
+      const from = findEntityPosition(compId, tempComps)
       setTree(moveItemOnTree(tree, from, to))
-      const comp = findComp(compId, tempComps)
-      tempComps = moveComp(comp, to.parentId as string, to.index || 0, tempComps)
+      const comp = findEntity(compId, tempComps)
+      tempComps = moveEntity(comp, to.parentId as string, to.index || 0, tempComps)
     })
 
     setFSchemaHistory(setFSchemaComps(tempComps))

@@ -59,6 +59,7 @@ function TreeLeaf(props: TreeLeafProps) {
 }
 
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
+  // TODO сделать проверку на невалидное значение
   const [tree, setTree] = useState<TreeData | undefined>(() =>
     // props.value || undefined сделано потому что прилетает пустая строка
     // Добавить в componentList defaultValue, сейчас у всех пустая строка
@@ -97,14 +98,16 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   return (
     <div className="ValidatorsTree">
       <IconButton iconProps={{ iconName: 'ChevronRight' }} onClick={addValidator} />
-      <AtlasianTree
-        tree={tree}
-        renderItem={TreeLeaf}
-        onDragEnd={onDragEnd}
-        offsetPerLevel={PADDING_PER_LEVEL}
-        isDragEnabled
-        isNestingEnabled
-      />
+      {tree && (
+        <AtlasianTree
+          tree={tree}
+          renderItem={TreeLeaf}
+          onDragEnd={onDragEnd}
+          offsetPerLevel={PADDING_PER_LEVEL}
+          isDragEnabled
+          isNestingEnabled
+        />
+      )}
     </div>
   )
 }

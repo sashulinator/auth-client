@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { addEntity, copyEntities, findEntities, findEntityPosition, removeEntity } from '@/lib/entity-actions'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -15,7 +16,6 @@ import {
   setNext,
   setPrev,
 } from '@/pages/form-constructor/preview'
-import { addComp, copyComps, findCompPosition, findComps, removeComp } from '@/shared/draw-comps/lib/mutators'
 
 export default function KeyListener(): null {
   const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
@@ -112,7 +112,7 @@ export default function KeyListener(): null {
       const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
       if (event.code === 'KeyC' && event[controlKeyName] && !event.shiftKey) {
-        const selectedComps = findComps(pickedFCompIds, FSchemaHistory.data.comps)
+        const selectedComps = findEntities(pickedFCompIds, FSchemaHistory.data.comps)
         localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
       }
     }
@@ -149,16 +149,16 @@ export default function KeyListener(): null {
         schemaValidator.comps(comps)
 
         if (comps) {
-          const copiedComps = copyComps(comps)
+          const copiedComps = copyEntities(comps)
           const isRoot = pickedFCompIds.includes(ROOT_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 
           const newComps = Object.values(copiedComps).reduce((acc, comp) => {
             if (isToRoot) {
-              acc = addComp(comp, ROOT_ID, 0, acc)
+              acc = addEntity(comp, ROOT_ID, 0, acc)
             } else {
-              const position = findCompPosition(pickedFCompIds[0] || '', acc)
-              acc = addComp(comp, position.parentId.toString(), position.index + 1, acc)
+              const position = findEntityPosition(pickedFCompIds[0] || '', acc)
+              acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
             }
             return acc
           }, FSchemaHistory.data.comps)
@@ -241,7 +241,7 @@ export default function KeyListener(): null {
           return
         }
 
-        const comps = removeComp(pickedFComp?.id, FSchemaHistory.data.comps)
+        const comps = removeEntity(pickedFComp?.id, FSchemaHistory.data.comps)
         setPickedFCompIds([])
         setFSchemaHistory(setFSchemaComps(comps))
       }
