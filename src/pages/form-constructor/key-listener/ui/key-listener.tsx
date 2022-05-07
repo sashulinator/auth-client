@@ -13,6 +13,7 @@ import {
   findDependencyIds,
   findEntities,
   findEntityPosition,
+  findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
 import {
@@ -159,10 +160,17 @@ export default function KeyListener(): null {
         if (comps) {
           const copiedComps = copyEntities(comps, ['path'])
 
+          const rootCompIds = findRootParentIds(copiedComps)
+          const rootComps = findEntities(rootCompIds, copiedComps)
+
+          const mergedComps = { ...FSchemaHistory.data.comps, ...copiedComps }
+
           const isRoot = pickedFCompIds.includes(ROOT_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 
-          const newComps = Object.values(copiedComps).reduce((acc, comp) => {
+          const newComps = Object.values(rootComps).reduce((acc, comp) => {
+            console.log('comp', comp)
+
             if (isToRoot) {
               acc = addEntity(comp, ROOT_ID, 0, acc)
             } else {
@@ -171,7 +179,7 @@ export default function KeyListener(): null {
               acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
             }
             return acc
-          }, FSchemaHistory.data.comps)
+          }, mergedComps)
 
           setFSchemaHistory(setFSchemaComps(newComps))
 

@@ -57,6 +57,19 @@ export function copyEntities<T extends Entity>(entities: Norm<T>, uniqKeys: stri
   }, entities)
 }
 
+/*
+  Полезна когда копируем несколько сущностей с вложенностью и надо найти какие из них родители
+*/
+export function findRootParentIds<T extends Entity>(entities: Norm<T>): string[] {
+  return Object.values(entities).reduce<string[]>((acc, entity) => {
+    const parent = findParent(entity.id, entities)
+    if (!parent) {
+      acc.push(entity.id)
+    }
+    return acc
+  }, [])
+}
+
 export function findParent<T extends Entity>(id: string, entities: Norm<T>): T | undefined {
   return Object.values(entities).find(({ children }) => children?.includes(id))
 }
