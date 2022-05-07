@@ -49,6 +49,7 @@ export function copyEntities<T extends Entity>(entities: Norm<T>, uniqKeys: stri
     }
 
     const position = findEntityPosition(entity.id, accEntities)
+    assertNotUndefined(position)
     const entitiesWithRemoved = removeEntity(entity.id, accEntities)
     const entitiesWithPasted = addEntity(newEntity, position.parentId, position.index, entitiesWithRemoved)
 
@@ -56,19 +57,19 @@ export function copyEntities<T extends Entity>(entities: Norm<T>, uniqKeys: stri
   }, entities)
 }
 
-export function findParent<T extends Entity>(id: string, entities: Norm<T>): T {
-  const entity = Object.values(entities).find(({ children }) => children?.includes(id))
-
-  assertNotUndefined(entity)
-
-  return entity
+export function findParent<T extends Entity>(id: string, entities: Norm<T>): T | undefined {
+  return Object.values(entities).find(({ children }) => children?.includes(id))
 }
 
 export function findEntityPosition<T extends Entity>(
   entityId: string,
   entities: Norm<T>
-): { index: number; parentId: string } {
+): { index: number; parentId: string } | undefined {
   const parentEntity = findParent(entityId, entities)
+
+  if (parentEntity === undefined) {
+    return undefined
+  }
 
   if (entityId === ROOT_ID) {
     return { index: 0, parentId: parentEntity.id }
@@ -142,6 +143,8 @@ export function addChildId<T extends Entity>(parententity: T, entityId: string, 
 
 export function removeEntity<T extends Entity>(entityId: string, entities: Norm<T>): Norm<T> {
   const parentEntity = findParent(entityId, entities)
+
+  assertNotUndefined(parentEntity)
   // Remove from entities
   const newEntities = remove(entities, entityId)
   // Remove from parent

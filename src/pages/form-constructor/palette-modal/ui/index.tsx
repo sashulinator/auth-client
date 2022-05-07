@@ -1,4 +1,5 @@
 import { Modal, Pivot, PivotItem, PrimaryButton, Stack } from '@fluentui/react'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { paletteModalState } from '../model'
 import React, { FC } from 'react'
@@ -34,6 +35,7 @@ const PaletteModal: FC = (): JSX.Element => {
       setFSchemaHistory(setFSchemaComps(comps))
     } else {
       const position = findEntityPosition(pickedFCompIds[0] || '', FSchemaHistory.data.comps)
+      assertNotUndefined(position)
       const comps = addEntity(
         createdNewComp,
         position.parentId.toString(),
@@ -61,6 +63,7 @@ const PaletteModal: FC = (): JSX.Element => {
         acc = addEntity(comp, ROOT_ID, 0, acc)
       } else {
         const position = findEntityPosition(pickedFCompIds[0] || '', acc)
+        assertNotUndefined(position)
         acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
       }
       return acc

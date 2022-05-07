@@ -1,5 +1,5 @@
 import { isMac } from '@fluentui/react'
-import { assertNotNull } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -167,6 +167,7 @@ export default function KeyListener(): null {
               acc = addEntity(comp, ROOT_ID, 0, acc)
             } else {
               const position = findEntityPosition(pickedFCompIds[0] || '', acc)
+              assertNotUndefined(position)
               acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
             }
             return acc
