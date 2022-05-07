@@ -260,6 +260,7 @@ export default function KeyListener(): null {
         }
 
         const comps = removeEntity(pickedFComp?.id, FSchemaHistory.data.comps)
+        assertNotUndefined(comps)
         setPickedFCompIds([])
         setFSchemaHistory(setFSchemaComps(comps))
       }
