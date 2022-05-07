@@ -7,7 +7,14 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
-import { addEntity, copyEntities, findEntities, findEntityPosition, removeEntity } from '@/lib/entity-actions'
+import {
+  addEntity,
+  copyEntities,
+  findDependencyIds,
+  findEntities,
+  findEntityPosition,
+  removeEntity,
+} from '@/lib/entity-actions'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
@@ -112,7 +119,8 @@ export default function KeyListener(): null {
       const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
       if (event.code === 'KeyC' && event[controlKeyName] && !event.shiftKey) {
-        const selectedComps = findEntities(pickedFCompIds, FSchemaHistory.data.comps)
+        const dependencyIds = findDependencyIds(pickedFCompIds, FSchemaHistory.data.comps)
+        const selectedComps = findEntities(dependencyIds, FSchemaHistory.data.comps)
         localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
       }
     }
@@ -149,7 +157,8 @@ export default function KeyListener(): null {
         schemaValidator.comps(comps)
 
         if (comps) {
-          const copiedComps = copyEntities(comps)
+          const copiedComps = copyEntities(comps, ['path'])
+
           const isRoot = pickedFCompIds.includes(ROOT_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 

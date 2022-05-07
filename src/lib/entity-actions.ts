@@ -11,15 +11,36 @@ export interface Entity {
   children?: string[]
 }
 
-export function copyEntity<T extends Entity>(entity: T): T {
-  return { ...entity, id: uniqid() }
+export function copyEntity<T extends Entity>(entity: T, uniqKeys: string[] = []): T {
+  const newUniqKeys = ['id', ...uniqKeys]
+
+  return newUniqKeys.reduce((acc, keyName) => {
+    return {
+      ...acc,
+      [keyName]: uniqid(),
+    }
+  }, entity)
 }
 
-// TODO не проходится по детям и не заменяет в них id!
-export function copyEntities<T extends Entity>(entities: Norm<T>): Norm<T> {
+export function findDependencyIds(ids: string[], entities: Norm<Entity>): string[] {
+  return ids.reduce(
+    (accIds, id) => {
+      const entity = findEntity(id, entities)
+
+      if (entity.children) {
+        return [...accIds, ...entity.children]
+      }
+
+      return accIds
+    },
+    [...ids]
+  )
+}
+
+export function copyEntities<T extends Entity>(entities: Norm<T>, uniqKeys: string[] = []): Norm<T> {
   return Object.values(entities).reduce<Norm<T>>((accEntities, entity) => {
     const hasParent = !!Object.values(accEntities).find(({ children }) => children?.includes(entity.id))
-    const newEntity = copyEntity(entity)
+    const newEntity = copyEntity(entity, uniqKeys)
 
     if (!hasParent) {
       const entitiesWithRemoved = remove(accEntities, entity.id)
@@ -30,6 +51,7 @@ export function copyEntities<T extends Entity>(entities: Norm<T>): Norm<T> {
     const position = findEntityPosition(entity.id, accEntities)
     const entitiesWithRemoved = removeEntity(entity.id, accEntities)
     const entitiesWithPasted = addEntity(newEntity, position.parentId, position.index, entitiesWithRemoved)
+
     return entitiesWithPasted
   }, entities)
 }
