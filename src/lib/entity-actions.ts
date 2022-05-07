@@ -181,9 +181,9 @@ export function addEntity<T extends Entity>(
 
   const newParententity = addChildId(parentEntity, entity.id, newIndex)
   // Add parent to entities
-  const entitiesWithNewParententity = replaceById(newParententity, entities)
+  const entitiesWithNewParentEntity = replaceById(newParententity, entities)
 
-  const newEntities = insert(entitiesWithNewParententity, entity.id, entity)
+  const newEntities = insert(entitiesWithNewParentEntity, entity.id, entity)
 
   return newEntities
 }

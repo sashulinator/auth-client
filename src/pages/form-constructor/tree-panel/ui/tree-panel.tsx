@@ -90,7 +90,7 @@ function TreePanel(): JSX.Element {
   }
 
   function onDragEnd(f: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to) {
+    if (!to || to.parentId === 'rootId') {
       return
     }
 

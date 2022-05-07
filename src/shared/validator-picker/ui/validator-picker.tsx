@@ -56,10 +56,16 @@ function TreeLeaf(props: TreeLeafProps) {
       {...props.provided.dragHandleProps}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
+        <IconButton iconProps={{ iconName: 'Cancel' }} onClick={() => props.item.data?.remove(props.item.id)} />
         {validator.name === 'and' || validator.name === 'or' ? (
-          <Stack tokens={{ padding: '15px' }}>{isRoot ? 'Root' : validator.name}</Stack>
+          isRoot ? (
+            'Root'
+          ) : (
+            validator.name
+          )
         ) : (
           <Dropdown
+            style={{ marginLeft: '15px', width: '100%' }}
             onChange={(e, option) => props.item.data?.onValidatorNameChange(props.item.id, option?.key || '')}
             defaultSelectedKey={validator.name}
             styles={{ root: { width: '150px' } }}
@@ -67,7 +73,6 @@ function TreeLeaf(props: TreeLeafProps) {
             key="1"
           />
         )}
-        <IconButton iconProps={{ iconName: 'Cancel' }} onClick={() => props.item.data?.remove(props.item.id)} />
       </Stack>
     </div>
   )
@@ -76,8 +81,6 @@ function TreeLeaf(props: TreeLeafProps) {
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-
-  console.log('props.value', props.value)
 
   const validators = props.value
 
@@ -91,20 +94,17 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    console.log('to', to, !tree)
-
-    if (!to || !tree || !validators) {
+    if (!to || !tree || !validators || to.parentId === 'rootId') {
       return
     }
 
     const parentValidator = findEntity(from.parentId, validators)
-    const validatorId = parentValidator?.children[from.index]
+    const validatorId = parentValidator.children[from.index]
 
     assertNotUndefined(validatorId)
 
     const validator = findEntity(validatorId, validators)
 
-    // const isChildOperator = validator.name === 'and' || validator?.name === 'or'
     const isParentOperator = parentValidator?.name === 'and' || parentValidator?.name === 'or'
 
     if (!isParentOperator) {
