@@ -2050,6 +2050,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.28.tgz#cade4b64f8438f588951a6b35843ce536853f25b"
   integrity sha512-lg55ArB+ZiHHbBBttLpzD07akz0QPrZgUODNakeC09i62dnrywr9mFErHuaPlB6I7z+sEbK+IYmplahvplCj2g==
 
+"@types/object-diff@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@types/object-diff/-/object-diff-0.0.2.tgz#8dd927e8fb17046099691c9459e5749a01f2db07"
+  integrity sha512-rrVH1lNUsqzcjPm01bxKZydaKfdXgNwtqM5u6ExnaEwQ3xD0jpz0Rc6yNqItRxaqy+SHv1+hEfyzFNu575Y7nQ==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -6765,6 +6770,11 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
+object-diff@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/object-diff/-/object-diff-0.0.4.tgz#d883b0444fe8fd6e04e595d7bb665682c916047f"
+  integrity sha1-2IOwRE/o/W4E5ZXXu2ZWgskWBH8=
+
 object-inspect@^1.11.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.12.0.tgz#6e2c120e868fd1fd18cb4f18c31741d0d6e776f0"
@@ -7405,7 +7415,7 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-ace@^10.1.0:
+react-ace@10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/react-ace/-/react-ace-10.1.0.tgz#d348eac2b16475231779070b6cd16768deed565f"
   integrity sha512-VkvUjZNhdYTuKOKQpMIZi7uzZZVgzCjM7cLYu6F64V0mejY8a2XTyPUIMszC6A4trbeMIHbK5fYFcT/wkP/8VA==
