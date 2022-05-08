@@ -67,7 +67,7 @@ export default function SchemaForm(): JSX.Element {
   ]
 
   async function onSubmit(submitFschemaData: Schema): Promise<void | ErrorCollection> {
-    const { name, type } = submitFschemaData
+    const { title: name, type } = submitFschemaData
 
     const newComponentName = type !== FormType.COMP ? null : submitFschemaData.componentName
     const newId = id ? id : uuid()

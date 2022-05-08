@@ -7,8 +7,8 @@ export function createNewComp(schema: Schema): Comp {
 
   return {
     id: uniqid(),
-    path: uniqid(),
+    name: uniqid(),
+    title: schema.title,
     compSchemaId: schema.id,
-    name: schema.name,
   }
 }

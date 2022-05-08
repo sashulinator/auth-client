@@ -88,7 +88,7 @@ const PaletteModal: FC = (): JSX.Element => {
               }
               return (
                 <PrimaryButton key={schema.id} onClick={() => onAdd(schema)}>
-                  {schema.name}
+                  {schema.title}
                 </PrimaryButton>
               )
             })}
@@ -99,7 +99,7 @@ const PaletteModal: FC = (): JSX.Element => {
             if (schema.type === 'PRESET') {
               return (
                 <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
-                  {schema.name}
+                  {schema.title}
                 </PrimaryButton>
               )
             }

@@ -41,7 +41,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   horizontalAlign="space-between"
                   verticalAlign="center"
                 >
-                  <Stack as="h2">{props.comp.name}</Stack>
+                  <Stack as="h2">{props.comp.title}</Stack>
                   <CompContextualMenu />
                 </Stack>
                 <Stack>

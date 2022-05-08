@@ -32,7 +32,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
         return { ...error }
       }}
       type={сomponentItem.type}
-      name={props.comp.path}
+      name={props.comp.name}
       defaultValue={props.comp.defaultValue}
       {...props.comp.props}
     >

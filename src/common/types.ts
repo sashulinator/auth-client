@@ -2,7 +2,7 @@ export interface Comp {
   id: string
   compSchemaId: string
   name: string
-  path: string
+  title: string
   // дефвалуе вынести в пропс и юзер не должен в пас писать слово пропс для формы элемента
   defaultValue?: string
   props?: Record<string, unknown>
@@ -13,7 +13,7 @@ export interface Comp {
 export interface Schema {
   componentName: null | string
   id: string
-  name: string
+  title: string
   type: FormType
   comps: Record<string, Comp>
 }

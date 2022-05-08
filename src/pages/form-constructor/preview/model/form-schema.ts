@@ -16,14 +16,14 @@ export const FSchemaHistoryState = atom<History<Schema>>({
       // TODO Попробовать удалить id
       id: '',
       componentName: null,
-      name: 'Name',
+      title: 'Name',
       type: FormType.FORM,
       comps: {
         [ROOT_ID]: {
           id: ROOT_ID,
-          name: 'stackRoot',
+          name: 'noname',
           compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
-          path: 'hello',
+          title: 'stackRoot',
         },
       },
     },
