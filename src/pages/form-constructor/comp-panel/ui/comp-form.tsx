@@ -6,7 +6,7 @@ import React from 'react'
 import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/common/types'
-import debounce from '@/lib/debounce'
+import Autosave from '@/shared/autosave/ui/autosave'
 import CompDrawer from '@/shared/draw-comps'
 
 interface CompFormProps {
@@ -24,15 +24,11 @@ export default function CompForm(props: CompFormProps): JSX.Element {
   return (
     <Form<Comp, Comp>
       initialValues={props.comp}
-      onSubmit={debounce(props.onSubmit as any, 750)}
-      render={(formProps) => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onSubmit={() => {}}
+      render={() => {
         return (
-          <Stack
-            as="form"
-            tokens={{ padding: '0 0 30vh' }}
-            onSubmit={(e) => e.preventDefault()}
-            onChange={formProps.handleSubmit}
-          >
+          <Stack as="form" tokens={{ padding: '0 0 30vh' }} onSubmit={(e) => e.preventDefault()}>
             <Stack
               tokens={{ padding: '20px 20px 0' }}
               horizontal={true}
@@ -40,6 +36,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
               verticalAlign="center"
             >
               <Stack as="h2">{props.comp.name}</Stack>
+              <Autosave save={props.onSubmit} />
               <CompContextualMenu />
             </Stack>
             <Stack>
