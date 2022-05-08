@@ -119,7 +119,7 @@ export default function SchemaForm(): JSX.Element {
                 return (
                   <div className="FieldErrorPositionRelative">
                     <CustomTextField key="1" label={t(`fieldNames.name`)} underlined {...input} />
-                    <FieldError key="2" error={meta.touched && (meta.error || meta.submitError)} />
+                    <FieldError key="2" meta={meta} />
                   </div>
                 )
               }}

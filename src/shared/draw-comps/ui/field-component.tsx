@@ -27,7 +27,8 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
     <Field
       validate={(v) => {
         const error = validate?.(v)
-        console.log({ ...error }, v)
+        console.log('validate', error)
+
         return { ...error }
       }}
       type={сomponentItem.type}
@@ -39,7 +40,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
         return (
           <div data-comp-id={props.comp.id} className="FieldErrorPositionRelative">
             <Component {...props.comp.props} {...input} />
-            <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+            <FieldError meta={meta} />
           </div>
         )
       }}
