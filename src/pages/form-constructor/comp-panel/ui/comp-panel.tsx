@@ -33,7 +33,7 @@ const CompPanel: FC = (): JSX.Element | null => {
     }
   }
 
-  function onSubmit(comp: Comp) {
+  function onAutosave(comp: Comp) {
     const newComps = replace(FSchemaHistory.data.comps, comp.id, comp)
     setFSchemaHistory(setFSchemaComps(newComps))
   }
@@ -44,7 +44,7 @@ const CompPanel: FC = (): JSX.Element | null => {
 
   return (
     <PerfectScrollbar className="CompPanel">
-      <CompForm schemas={CSchemas} comps={pickedCSchema.comps} comp={pickedFComp} onSubmit={onSubmit} />
+      <CompForm schemas={CSchemas} comps={pickedCSchema.comps} comp={pickedFComp} onAutosave={onAutosave} />
       {!isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
     </PerfectScrollbar>
   )
