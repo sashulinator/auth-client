@@ -12,5 +12,7 @@ export interface TreeLeafProps extends RenderItemParams {
 
 export interface AdditionalData {
   remove: (id: string | number) => void
-  changeValidator: (id: string | number, name: string) => void
+  changeValidator: (id: string | number, name: string, withValue?: unknown) => void
+  pickItemId: React.Dispatch<React.SetStateAction<string>>
+  pickedItemId: string
 }

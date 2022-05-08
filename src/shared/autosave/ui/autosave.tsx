@@ -30,15 +30,12 @@ class AutoSave extends React.Component<any> {
     }
     const { values, save } = this.props
 
-    console.log('this.props', this.props)
-
     // This diff step is totally optional
     // @ts-expect-error becase
     const difference = diff(this.state.values, values)
     if (Object.keys(difference).length) {
       // values have changed
       this.setState({ submitting: true, values })
-      console.log('save', this)
 
       // @ts-expect-error becase
       this.promise = save(values)

@@ -7,6 +7,7 @@ import {
   buildErrorTree,
   only,
   or,
+  withValue,
 } from '@savchenko91/schema-validator'
 
 import { assertionList } from './assertion-list'
@@ -40,9 +41,15 @@ function factory(compValidatorId: string, compValidators: Norm<CompValidator>): 
     return isAnd ? and(...validators) : or(...validators)
   }
 
-  const assertion = assertionList[compValidator.name]?.assertion
+  const assertionItem = assertionList[compValidator.name]
+  assertNotUndefined(assertionItem)
 
-  assertNotUndefined(assertion)
+  const isWithValueAssertion = assertionItem.type === 'withValue'
+  console.log('compValidator', compValidator)
 
-  return assertion
+  if (isWithValueAssertion) {
+    return withValue(compValidator.input2, assertionItem.assertion)
+  }
+
+  return assertionItem.assertion
 }

@@ -17,11 +17,19 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const { validator } = props.item.data
 
   // const isRoot = props.item.data.validator.id === ROOT_ID
+  const isAnd = validator.name === 'and'
+  const isOr = validator.name === 'or'
   const isOperator = validator.name === 'and' || validator.name === 'or'
+  const isPicked = props.item.data.pickedItemId === props.item.data.validator.id
+  const options = isOperator ? buildOptionsFromStringArray(['or', 'and']) : assertionNameOptions
 
   return (
     <div
-      className={clsx('TreeLeaf')}
+      role="button"
+      tabIndex={0}
+      className={clsx('TreeLeaf', isPicked && 'picked')}
+      onClick={() => props.item.data?.pickItemId(props.item.id.toString())}
+      onKeyDown={() => props.item.data?.pickItemId(props.item.id.toString())}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
       ref={props.provided.innerRef}
@@ -34,24 +42,15 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
           iconProps={{ iconName: 'Cancel' }}
           onClick={() => props.item.data?.remove(props.item.id)}
         />
-        <Stack className="treeLeafText" horizontal verticalAlign="stretch">
-          {isOperator ? (
-            <Dropdown
-              name="thereCouldBeYourAd"
-              styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
-              onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
-              value={validator.name}
-              options={buildOptionsFromStringArray(['or', 'and'])}
-            />
-          ) : (
-            <Dropdown
-              name="thereCouldBeYourAd"
-              styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
-              onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
-              value={validator.name}
-              options={assertionNameOptions}
-            />
-          )}
+        <div className="type">{isAnd ? '&' : isOr ? '||' : 'A'}</div>
+        <Stack className="treeLeafText" horizontal>
+          <Dropdown
+            name="hereCouldBeYourAd"
+            styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
+            onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
+            value={validator.name}
+            options={options}
+          />
         </Stack>
       </Stack>
     </div>

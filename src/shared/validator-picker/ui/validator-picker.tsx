@@ -14,7 +14,9 @@ import uniqid from 'uniqid'
 import { Comp, CompValidator, Norm, Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
+import debounce from '@/lib/debounce'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import { assertionList, isWithValueAssertionItem } from '@/shared/draw-comps/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
 
 export interface ValidatorsTreeProps {
@@ -29,25 +31,28 @@ export interface ValidatorsTreeProps {
 
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
+  const [pickedItemId, pickItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-
   const validators = props.value
 
-  useEffect(() => setTree(rebuildTree), [props.value])
+  useEffect(() => setTree(rebuildTree), [props.value, pickedItemId])
 
   function rebuildTree() {
     return buildValidatorsTree(props.value || undefined, {
       changeValidator,
       remove,
+      pickItemId,
+      pickedItemId,
     })
   }
 
-  function changeValidator(id: string | number, name: string) {
+  function changeValidator(id: string | number, name: string, input2: unknown) {
     if (validators && props.name) {
       const validator = findEntity(id, validators)
       const newValidators = replace(validators, id, {
         ...validator,
         name,
+        input2,
       })
 
       props.onChange(newValidators)
@@ -81,9 +86,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addValidator(): void {
     const id = uniqid()
     const currentValidators = validators ? validators : defaultCompValidators
-    const validator = {
+    const validator: CompValidator = {
       id,
-      name: 'assertString',
+      name: 'string',
       children: [],
     }
 
@@ -97,7 +102,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addOperator() {
     const id = uniqid()
     const currentValidators = validators ? validators : defaultCompValidators
-    const validator = {
+    const validator: CompValidator = {
       id,
       name: 'and',
       children: [],
@@ -112,26 +117,65 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
   function remove(id: string | number): void {
     if (validators) {
-      props.onChange(removeEntity(id, validators))
+      const newValidators = removeEntity(id, validators)
+
+      if (newValidators === undefined) {
+        props.onChange(undefined)
+      } else if (Object.keys(newValidators).length === 1) {
+        props.onChange(undefined)
+      } else {
+        props.onChange(removeEntity(id, validators))
+      }
     }
   }
 
   return (
     <div className={clsx('ValidatorPicker', validators && 'notEmpty')}>
       {props.label && <Label>{props.label}</Label>}
-      <Stack className="wrapper">
+      <Stack className="wrapper" verticalAlign="space-between">
         <div className="validatorPickerBackground" />
-        <Stack horizontal horizontalAlign="space-between">
-          <PrimaryButton onClick={addValidator}>add assertion</PrimaryButton>
-          <IconButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
-        </Stack>
-        {tree && (
-          <Stack tokens={{ padding: '2px 0' }}>
-            {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
+        <Stack>
+          <Stack horizontal horizontalAlign="space-between">
+            <PrimaryButton onClick={addValidator}>add assertion</PrimaryButton>
+            <IconButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
           </Stack>
-        )}
+          {tree && (
+            <Stack tokens={{ padding: '2px 0' }}>
+              {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
+              <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
+            </Stack>
+          )}
+        </Stack>
+
+        <AdditionalInput validators={validators} pickedItemId={pickedItemId} changeValidator={changeValidator} />
       </Stack>
     </div>
   )
+}
+
+function AdditionalInput(props: any) {
+  const validator = props.validators?.[props.pickedItemId]
+  const [value, setValue] = useState(validator?.input2)
+
+  if (!props?.pickedItemId && !validator) {
+    return null
+  }
+  const assertionItem = assertionList[validator?.name]
+
+  if (isWithValueAssertionItem(assertionItem)) {
+    const Component = assertionItem.component
+
+    return (
+      <Component
+        value={value}
+        onChange={(e: unknown, v: string) => {
+          setValue(v)
+          debounce(props.changeValidator, 500)(props.pickedItemId, validator?.name, v)
+        }}
+        placeholder="value"
+      />
+    )
+  }
+
+  return null
 }

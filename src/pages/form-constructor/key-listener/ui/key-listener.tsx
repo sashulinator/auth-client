@@ -169,8 +169,6 @@ export default function KeyListener(): null {
           const isToRoot = pickedFCompIds.length === 0 || isRoot
 
           const newComps = Object.values(rootComps).reduce((acc, comp) => {
-            console.log('comp', comp)
-
             if (isToRoot) {
               acc = addEntity(comp, ROOT_ID, 0, acc)
             } else {
