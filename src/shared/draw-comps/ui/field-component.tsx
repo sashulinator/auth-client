@@ -1,15 +1,14 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import buildValidator from '../lib/build-validators'
 import componentList from '../lib/component-list'
 import { DrawerComponentProps } from '../types'
-// import { runAction } from '../../helpers/constructor-actions'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
 import FieldError from '@/shared/field-error'
 
 const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {
-  // const form = useForm()
   const CSchema = props.schemas[props.comp.compSchemaId]
 
   if (CSchema?.componentName === null || CSchema === undefined) {
@@ -22,41 +21,20 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
 
   const Component = сomponentItem.component
 
+  const validate = buildValidator(props.comp.validators)
+
   return (
     <Field
+      validate={(v) => validate?.(v)}
       type={сomponentItem.type}
       name={props.comp.path}
-      key={props.comp.path}
       defaultValue={props.comp.defaultValue}
       {...props.comp.props}
     >
       {({ input, meta }) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        function onChange(event: any) {
-          // runAction('onChange', { form, schemaItem: comp, schemaItems: bindingNormComps })()
-          input?.onChange(event)
-        }
-
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // function onBlur(...args: any[]) {
-        //   runAction('onBlur', { form, schemaItem: comp, schemaItems: bindingNormComps })()
-        //   input?.onBlur(...args)
-        // }
-
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // function onFocus(...args: any[]) {
-        //   runAction('onFocus', { form, schemaItem: comp, schemaItems: bindingNormComps })()
-        //   input?.onFocus(...args)
-        // }
-
         return (
           <div data-comp-id={props.comp.id} className="FieldErrorPositionRelative">
-            <Component
-              {...props.comp.props}
-              {...input}
-              onChange={onChange}
-              // onBlur={onBlur} onFocus={onFocus}
-            />
+            <Component {...props.comp.props} {...input} />
             <FieldError error={meta.touched && (meta.error || meta.submitError)} />
           </div>
         )

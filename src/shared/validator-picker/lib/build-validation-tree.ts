@@ -5,7 +5,7 @@ import { ROOT_ID } from '@/constants/common'
 import { mapObject } from '@/lib/map-object'
 
 interface AdditionalData {
-  onChange: (v: string) => void
+  onValidatorNameChange: (v: string | number, name: string) => void
   remove: (id: string) => void
 }
 

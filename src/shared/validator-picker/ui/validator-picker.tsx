@@ -16,8 +16,9 @@ import uniqid from 'uniqid'
 
 import { Comp, CompValidator, Norm, Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
-import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
+import { validatorNameOptions } from '@/shared/draw-comps/lib/validator-list'
 
 const PADDING_PER_LEVEL = 18
 
@@ -27,6 +28,7 @@ interface ValidatorsTreeProps {
   onChange: (value: Norm<CompValidator> | undefined) => void
   schemas: Norm<Schema>
   value: Norm<CompValidator> | undefined
+  name?: string
 }
 
 export interface TreeLeafProps extends RenderItemParams {
@@ -66,10 +68,10 @@ function TreeLeaf(props: TreeLeafProps) {
         ) : (
           <Dropdown
             style={{ marginLeft: '15px', width: '100%' }}
-            onChange={(e, option) => props.item.data?.onValidatorNameChange(props.item.id, option?.key || '')}
+            onChange={(e, option) => props.item.data?.onValidatorNameChange?.(props.item.id, option?.key || '')}
             defaultSelectedKey={validator.name}
             styles={{ root: { width: '150px' } }}
-            options={buildOptionsFromStringArray([validator.name])}
+            options={validatorNameOptions}
             key="1"
           />
         )}
@@ -88,9 +90,21 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
   function rebuildTree() {
     return buildValidatorsTree(props.value || undefined, {
-      onChange: console.log,
+      onValidatorNameChange,
       remove,
     })
+  }
+
+  function onValidatorNameChange(id: string | number, name: string) {
+    if (validators && props.name) {
+      const validator = findEntity(id, validators)
+      const newValidators = replace(validators, id, {
+        ...validator,
+        name,
+      })
+
+      props.onChange(newValidators)
+    }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
@@ -111,8 +125,10 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       return
     }
 
-    props.onChange(moveEntity(validator, to.parentId, to.index || 0, validators))
-    setTree(moveItemOnTree(tree, from, to))
+    if (validators) {
+      props.onChange(moveEntity(validator, to.parentId, to.index || 0, validators))
+      setTree(moveItemOnTree(tree, from, to))
+    }
   }
 
   function addValidator(): void {
@@ -126,7 +142,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
     const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
 
-    props.onChange(newValidators)
+    if (props.name) {
+      props.onChange(newValidators)
+    }
   }
 
   function addOperator(operatorName: 'and' | 'or') {
@@ -141,7 +159,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
       const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
 
-      props.onChange(newValidators)
+      if (validators) {
+        props.onChange(newValidators)
+      }
     }
   }
 

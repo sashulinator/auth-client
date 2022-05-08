@@ -1,11 +1,11 @@
 import { IDropdownOption } from '@fluentui/react'
-import { assertNull, assertString, assertUndefined } from '@savchenko91/schema-validator'
+import { Assertion, WithAssertion, assertNull, assertString, assertUndefined } from '@savchenko91/schema-validator'
 
 import { Norm } from '@/common/types'
 
 interface ValidatorItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  validator: any
+  validator: Assertion | WithAssertion
 }
 
 export const validatorList: Norm<ValidatorItem> = {
