@@ -62,4 +62,6 @@ class AutoSave extends React.Component<any> {
 // - Render a message when submitting
 // - Pass in debounce and save props nicely
 // eslint-disable-next-line react/display-name
-export default (props: any) => <FormSpy {...props} subscription={{ values: true }} component={AutoSave} />
+export default (props: any) => {
+  return <FormSpy {...props} subscription={{ values: true }} component={AutoSave} />
+}

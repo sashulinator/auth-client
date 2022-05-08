@@ -4,7 +4,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './validator-picker.css'
 
-import { buildValidatorsTree } from '../lib/build-validation-tree'
+import buildTree from '../lib/build-tree'
 import { defaultCompValidators } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
@@ -38,7 +38,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   useEffect(() => setTree(rebuildTree), [props.value, pickedItemId])
 
   function rebuildTree() {
-    return buildValidatorsTree(props.value || undefined, {
+    return buildTree(props.value || undefined, {
       changeValidator,
       remove,
       pickItemId,
