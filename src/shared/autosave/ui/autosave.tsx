@@ -54,7 +54,9 @@ function Autosave(props: AutosaveProps) {
   return props.hocProps.children
 }
 
+
 export default function AutosaveHOC(props: AutosavePropsHOC): JSX.Element {
   // @ts-expect-error because of final-form props for Autosave
   return <FormSpy hocProps={props} subscription={{ values: true }} component={Autosave} />
+
 }

@@ -147,7 +147,6 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
-
         <AdditionalInput
           key={pickedItemId}
           validators={validators}
