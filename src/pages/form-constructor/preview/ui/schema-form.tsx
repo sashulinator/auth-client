@@ -67,7 +67,7 @@ export default function SchemaForm(): JSX.Element {
   ]
 
   async function onSubmit(submitFschemaData: Schema): Promise<void | ErrorCollection> {
-    const { title: name, type } = submitFschemaData
+    const { title, type } = submitFschemaData
 
     const newComponentName = type !== FormType.COMP ? null : submitFschemaData.componentName
     const newId = id ? id : uuid()
@@ -76,7 +76,7 @@ export default function SchemaForm(): JSX.Element {
       ...FSchemaHistory.data,
       id: newId,
       componentName: newComponentName,
-      name,
+      title,
       type,
     }
 
@@ -114,11 +114,11 @@ export default function SchemaForm(): JSX.Element {
             verticalAlign="center"
             tokens={{ childrenGap: 20, padding: '15px 40px' }}
           >
-            <Field<string> name="name" validate={(v) => schemaValidator.name(v)}>
+            <Field<string> name="title" validate={(v) => schemaValidator.title(v)}>
               {({ input, meta }) => {
                 return (
                   <div className="FieldErrorPositionRelative">
-                    <CustomTextField key="1" label={t(`fieldNames.name`)} underlined {...input} />
+                    <CustomTextField key="1" label={t(`fieldNames.title`)} underlined {...input} />
                     <FieldError key="2" meta={meta} />
                   </div>
                 )

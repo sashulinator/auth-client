@@ -24,14 +24,14 @@ const rootOnly = only.bind({ handleError: buildErrorTree })
 export const schemaValidator = rootOnly({
   componentName: or(_null, withRef('type', assertSchemaComponentNameIsValid)),
   id: string,
-  name: and(string, notEmptyString, withValue(/\W+/, ignorePattern)),
+  title: and(string, notEmptyString, withValue(/\W+/, ignorePattern)),
   type: string,
   comps: wrap({
     [ANY_KEY]: {
       id: string,
       compSchemaId: and(string, notEmptyString),
-      name: and(string, notEmptyString),
-      path: or(string, keyDoesNotExist),
+      title: and(string, notEmptyString),
+      name: or(string, keyDoesNotExist),
       defaultValue: or(string, keyDoesNotExist),
       props: or(keyDoesNotExist, {
         label: or(string, keyDoesNotExist),

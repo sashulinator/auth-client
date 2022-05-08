@@ -15,7 +15,7 @@ function List(): JSX.Element {
   function renderItemColumn(item: Schema, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof Schema] as string
 
-    if (column?.key === 'name') {
+    if (column?.key === 'title') {
       return <Link to={ROUTES.FORM_CONSTRUCTOR.buildURL(item.id)}>{item.title}</Link>
     }
     return <span>{fieldContent}</span>
@@ -26,7 +26,6 @@ function List(): JSX.Element {
       <DetailsList
         items={data || []}
         columns={[
-          { key: 'name', name: 'Name', fieldName: 'name', minWidth: 100, maxWidth: 200, isResizable: true },
           { key: 'title', name: 'Title', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
           { key: 'description', name: 'Description', fieldName: 'description', minWidth: 100 },
         ]}
