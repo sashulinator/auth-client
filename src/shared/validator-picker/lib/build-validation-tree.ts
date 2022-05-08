@@ -1,13 +1,10 @@
 import { TreeItem } from '@atlaskit/tree'
 
+import { AdditionalData } from '../types'
+
 import { CompValidator, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
 import { mapObject } from '@/lib/map-object'
-
-interface AdditionalData {
-  onValidatorNameChange: (v: string | number, name: string) => void
-  remove: (id: string) => void
-}
 
 export function buildValidatorsTree(validators: Norm<CompValidator> | undefined, additionalData: AdditionalData) {
   if (validators === undefined) {

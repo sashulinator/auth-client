@@ -9,7 +9,7 @@ import {
   or,
 } from '@savchenko91/schema-validator'
 
-import { validatorList } from './validator-list'
+import { assertionList } from './assertion-list'
 
 import { CompValidator, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
@@ -32,16 +32,17 @@ function factory(compValidatorId: string, compValidators: Norm<CompValidator>): 
   const compValidator = compValidators[compValidatorId]
   assertNotUndefined(compValidator)
 
-  if (compValidator.name === 'and') {
+  const isOr = compValidator.name === 'and'
+  const isAnd = compValidator.name === 'or'
+
+  if (isAnd || isOr) {
     const validators = compValidator?.children.map((id) => factory(id, compValidators))
-    return and(...validators)
+    return isAnd ? and(...validators) : or(...validators)
   }
-  if (compValidator.name === 'or') {
-    const validators = compValidator?.children.map((id) => factory(id, compValidators))
-    return or(...validators)
-  } else {
-    const fn = validatorList[compValidator.name]?.validator
-    assertNotUndefined(fn)
-    return fn
-  }
+
+  const assertion = assertionList[compValidator.name]?.assertion
+
+  assertNotUndefined(assertion)
+
+  return assertion
 }

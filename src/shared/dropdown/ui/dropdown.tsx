@@ -1,7 +1,6 @@
 import { Dropdown as DropdownUI, IDropdownProps } from '@fluentui/react'
 
 import React, { FC } from 'react'
-import { useForm } from 'react-final-form'
 
 /**
  * Дропдаун от FluentUI не совместим с final-form из-за аргументов в onChange
@@ -10,17 +9,15 @@ import { useForm } from 'react-final-form'
 const Dropdown: FC<IDropdownProps & { onChange: (value?: any) => void; value: any; name: string }> = (
   props
 ): JSX.Element => {
-  const form = useForm()
-
   return (
     <DropdownUI
       {...props}
       selectedKey={props.value}
       onChange={(event, action) => {
         if (action?.key) {
-          form.change(props.name, action.key)
+          props.onChange(action.key)
         } else {
-          form.change(props.name, undefined)
+          props.onChange(undefined)
         }
       }}
     />
