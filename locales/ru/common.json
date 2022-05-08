@@ -4,7 +4,8 @@
     "saved": "Сохранено"
   },
   "fieldNames": {
-    "name": "имя"
+    "name": "имя",
+    "title": "заголовок"
   },
   "pagesNames": {
     "createUser": "Создать пользователя",
