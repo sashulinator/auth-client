@@ -27,7 +27,6 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
     <Field
       validate={(v) => {
         const error = validate?.(v)
-        console.log({ ...error }, v)
         return { ...error }
       }}
       type={сomponentItem.type}
