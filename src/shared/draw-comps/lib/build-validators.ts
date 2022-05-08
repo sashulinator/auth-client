@@ -45,7 +45,6 @@ function factory(compValidatorId: string, compValidators: Norm<CompValidator>): 
   assertNotUndefined(assertionItem)
 
   const isWithValueAssertion = assertionItem.type === 'withValue'
-  console.log('compValidator', compValidator)
 
   if (isWithValueAssertion) {
     return withValue(compValidator.input2, assertionItem.assertion)

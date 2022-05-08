@@ -18,12 +18,13 @@ export default function FieldError(props: FieldErrorProps): JSX.Element {
   const code = props?.error?._code ?? ''
   const input2 = props?.error?._input2 ? String(props?.error?._input2) : ''
 
-  const codeMessage = t(`${code}${input2}`, props?.error?._message)
+  const simpleMessage = t(code, props?.error)
+  const complexMessage = t(`${code}${input2?.toString()}`, props.error)
 
   // Делаем так потому что некоторые строки содержат в себе HTML теги
   // которые обычным способом вставились бы просто как текст
   if (elementRef.current?.innerHTML !== undefined) {
-    elementRef.current.innerHTML = codeMessage
+    elementRef.current.innerHTML = complexMessage || simpleMessage
   }
 
   return <div ref={elementRef} className={cx('FieldError', props.className)} />

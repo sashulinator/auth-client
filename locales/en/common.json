@@ -68,6 +68,10 @@
   "assertMatchPattern/[A-Z]/": "must contain uppercase letter",
   "assertMatchPattern/[a-z]/": "must contain lowercase letter",
   "assertMatchPattern/[0-9]/": "must contain number",
+  "assertMatchPattern@.*\\.*.": "does not match email pattern",
+  "assertMatchPattern[A-Z]": "must contain uppercase letter",
+  "assertMatchPattern[a-z]": "must contain lowercase letter",
+  "assertMatchPattern[0-9]": "must contain number",
 
   "FORM": "form",
   "PRESET": "preset",

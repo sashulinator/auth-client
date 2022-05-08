@@ -28,6 +28,7 @@ export interface CompValidator {
   id: string
   name: string
   children: string[]
+  input2?: unknown
 }
 
 export type Norm<T> = Record<string, T>

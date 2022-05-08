@@ -4,6 +4,7 @@ import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
 import React from 'react'
 
+import { ROOT_ID } from '@/constants/common'
 // import { ROOT_ID } from '@/constants/common'
 import { assertionNameOptions } from '@/shared/draw-comps/lib/assertion-list'
 import { Dropdown } from '@/shared/dropdown'
@@ -16,7 +17,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
 
   const { validator } = props.item.data
 
-  // const isRoot = props.item.data.validator.id === ROOT_ID
+  const isRoot = props.item.data.validator.id === ROOT_ID
   const isAnd = validator.name === 'and'
   const isOr = validator.name === 'or'
   const isOperator = validator.name === 'and' || validator.name === 'or'
@@ -42,7 +43,21 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
           iconProps={{ iconName: 'Cancel' }}
           onClick={() => props.item.data?.remove(props.item.id)}
         />
-        <div className="type">{isAnd ? '&' : isOr ? '||' : 'A'}</div>
+        <div className="type">
+          {isRoot ? (
+            <span>
+              ro
+              <br />
+              ot
+            </span>
+          ) : isAnd ? (
+            '&'
+          ) : isOr ? (
+            '||'
+          ) : (
+            'A'
+          )}
+        </div>
         <Stack className="treeLeafText" horizontal>
           <Dropdown
             name="hereCouldBeYourAd"

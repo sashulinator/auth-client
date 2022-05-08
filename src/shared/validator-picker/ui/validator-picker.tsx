@@ -64,14 +64,15 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       return
     }
 
-    const parentValidator = findEntity(from.parentId, validators)
-    const validatorId = parentValidator.children[from.index]
+    const toParentValidator = findEntity(to.parentId, validators)
+    const fromParentValidator = findEntity(from.parentId, validators)
+    const validatorId = fromParentValidator.children[from.index]
 
     assertNotUndefined(validatorId)
 
     const validator = findEntity(validatorId, validators)
 
-    const isParentOperator = parentValidator?.name === 'and' || parentValidator?.name === 'or'
+    const isParentOperator = toParentValidator?.name === 'and' || toParentValidator?.name === 'or'
 
     if (!isParentOperator) {
       return
