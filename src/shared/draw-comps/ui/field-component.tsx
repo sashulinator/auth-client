@@ -40,7 +40,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
         return (
           <div data-comp-id={props.comp.id} className="FieldErrorPositionRelative">
             <Component {...props.comp.props} {...input} />
-            <FieldError error={meta.touched && (meta.error || meta.submitError)} />
+            <FieldError meta={meta} />
           </div>
         )
       }}
