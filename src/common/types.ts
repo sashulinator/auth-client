@@ -31,6 +31,12 @@ export interface CompValidator {
   input2?: unknown
 }
 
+export interface CompBinding {
+  id: string
+  name: string
+  children: string[]
+}
+
 export type Norm<T> = Record<string, T>
 
 export interface History<Data> {
