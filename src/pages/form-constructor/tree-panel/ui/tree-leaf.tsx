@@ -1,6 +1,6 @@
 import { IconButton, Stack, Text } from '@fluentui/react'
 
-import { TreeLeafProps } from '../../../pages/form-constructor/tree-panel/types'
+import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
 import React from 'react'
 
@@ -42,7 +42,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         <Text
           as="div"
           onClick={(e) => props.item.data?.onItemClick(e, props.item.data.comp.id)}
-          className="treeLeafText"
+          className={clsx('treeLeafText', !isExpandButton && 'addOneButtonSpace')}
         >
           {isOneOfMultipleDragging
             ? `multiple ${props.item.data?.pickedIds.length || ''}`
@@ -60,7 +60,7 @@ function ExpandButton(p: TreeLeafProps) {
 
   return (
     <IconButton
-      className={clsx('ExpandButton', p.item.isExpanded && 'turnChildRight90', 'transitionChild01')}
+      className={clsx('button', p.item.isExpanded && 'turnChildRight90', 'transitionChild01')}
       iconProps={{ iconName: 'ChevronRight' }}
       onClick={toggle}
     />

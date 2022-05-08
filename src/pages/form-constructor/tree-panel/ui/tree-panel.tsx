@@ -5,6 +5,7 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 import './index.css'
 
 import { buildTree } from '../lib/build-tree'
+import TreeLeaf from './tree-leaf'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
@@ -130,7 +131,15 @@ function TreePanel(): JSX.Element {
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
       <PerfectScrollbar className="TreePanel">
-        {tree && <Tree tree={tree} onDragStart={PreventMovingUnpickedItems} onDragEnd={onDragEnd} setTree={setTree} />}
+        {tree && (
+          <Tree
+            renderItem={TreeLeaf}
+            tree={tree}
+            onDragStart={PreventMovingUnpickedItems}
+            onDragEnd={onDragEnd}
+            setTree={setTree}
+          />
+        )}
       </PerfectScrollbar>
     </>
   )

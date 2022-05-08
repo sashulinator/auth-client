@@ -3,12 +3,11 @@ import { Props } from '@atlaskit/tree/dist/types/components/Tree/Tree-types'
 
 import './tree.css'
 
-import TreeLeaf from './tree-leaf'
 import React from 'react'
 
 const PADDING_PER_LEVEL = 18
 
-interface TreeProps extends Pick<Props, 'tree' | 'onDragEnd' | 'onDragStart'> {
+interface TreeProps extends Pick<Props, 'tree' | 'onDragEnd' | 'onDragStart' | 'renderItem'> {
   setTree: React.Dispatch<React.SetStateAction<TreeData | undefined>>
 }
 
@@ -28,7 +27,7 @@ function Tree(props: TreeProps): JSX.Element {
   return (
     <AtlasianTree
       tree={props.tree}
-      renderItem={TreeLeaf}
+      renderItem={props.renderItem}
       onExpand={onExpand}
       onCollapse={onCollapse}
       onDragEnd={props.onDragEnd}

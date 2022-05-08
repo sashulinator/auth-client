@@ -11,10 +11,11 @@
 .TreeLeaf .treeLeafBackgroundColor,
 .TreeLeaf .treeLeafBorderColor {
   border: solid 2px transparent;
+  box-sizing: border-box;
   border-radius: 3px;
   position: absolute;
   width: 100%;
-  height: calc(100% - 5px);
+  height: calc(100% - 1px);
 }
 
 .TreeLeaf.picked .treeLeafContent .treeLeafBackgroundColor {
@@ -38,18 +39,18 @@
   height: 32px;
   width: 100%;
   z-index: 1;
-  padding: 2px 2px 2px 2px;
+  margin: 2px;
   height: 32px;
 }
 
-.TreeLeaf .treeLeafText {
+.TreeLeaf .treeLeafText.addOneButtonSpace {
   padding-left: 36px;
 }
 
-.TreeLeaf.isExpandButton .treeLeafText {
+.TreeLeaf .treeLeafText {
   padding-left: 2px;
 }
 
-.TreeLeaf .ExpandButton {
+.TreeLeaf .button {
   margin-left: 2px;
 }
