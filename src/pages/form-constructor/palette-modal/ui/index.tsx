@@ -9,13 +9,9 @@ import { useRecoilState } from 'recoil'
 import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { FSchemaHistoryState, pickedFCompIdsState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { remove } from '@/lib/change-unmutable'
 import { addEntity, copyEntities, findEntityPosition } from '@/lib/entity-actions'
-import {
-  FSchemaHistoryState,
-  pickedFCompIdsState,
-  setFSchemaComps,
-} from '@/pages/form-constructor/preview/model/form-schema'
 import { createNewComp } from '@/shared/draw-comps/lib/actions'
 
 const PaletteModal: FC = (): JSX.Element => {

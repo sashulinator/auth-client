@@ -7,12 +7,8 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { useGetSchemaDependency } from '@/api/schema'
 import { Comp } from '@/common/types'
+import { FSchemaHistoryState, pickedFCompState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { replace } from '@/lib/change-unmutable'
-import {
-  FSchemaHistoryState,
-  pickedFCompState,
-  setFSchemaComps,
-} from '@/pages/form-constructor/preview/model/form-schema'
 
 const CompPanel: FC = (): JSX.Element | null => {
   const [CSchemas, setCSchemas] = useRecoilState(CSchemasState)

@@ -8,13 +8,13 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
-import { removeEntity } from '@/lib/entity-actions'
 import {
   FSchemaHistoryState,
   pickedFCompIdsState,
   pickedFCompState,
   setFSchemaComps,
-} from '@/pages/form-constructor/preview/model/form-schema'
+} from '@/entities/schema/model/current-schema'
+import { removeEntity } from '@/lib/entity-actions'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 
 export default function CompContextualMenu(): JSX.Element | null {

@@ -6,7 +6,7 @@ import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { FSchemaHistoryState, pickedFCompIdsState } from '@/pages/form-constructor/preview/model/form-schema'
+import { FSchemaHistoryState, pickedFCompIdsState } from '@/entities/schema/model/current-schema'
 import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {

@@ -2,11 +2,11 @@ import { Stack } from '@fluentui/react'
 
 import './form-constructor.css'
 
+import { FSchemaHistoryState } from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
-import { FSchemaHistoryState } from './preview/model/form-schema'
 import TreePanel from './tree-panel'
 import React, { FC, useEffect } from 'react'
 import { useQuery } from 'react-query'
