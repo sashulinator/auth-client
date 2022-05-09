@@ -2,12 +2,13 @@ import { isMac } from '@fluentui/react'
 import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { useEffect } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
 
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
-import { pickedFCompState, selectedCompIdsState } from '@/entities/schema'
+import { currentSchemaHistoryState, selectedCompIdsState, setFSchemaComps, setNext, setPrev } from '@/entities/schema'
+import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
 import {
   addEntity,
   copyEntities,
@@ -17,12 +18,11 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { currentSchemaHistoryState, setFSchemaComps, setNext, setPrev } from '@/pages/form-constructor/preview'
 
 export default function KeyListener(): null {
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
-  const pickedFComp = useRecoilValue(pickedFCompState)
+  const selectedComp = getSelectedComp(currentSchemaHistory.data, selectedCompIds)
 
   useEffect(addEscKeyListener, [selectedCompIds])
   useEffect(addDeleteKeyListener, [selectedCompIds])
@@ -34,7 +34,7 @@ export default function KeyListener(): null {
   function addEscKeyListener() {
     function action(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
-        assertNotNull(pickedFComp)
+        assertNotNull(selectedComp)
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((document?.activeElement as any)?.type === 'text') {
@@ -247,11 +247,11 @@ export default function KeyListener(): null {
       }
 
       if (event.key === 'Backspace') {
-        if (pickedFComp === null) {
+        if (selectedComp === null) {
           return
         }
 
-        const comps = removeEntity(pickedFComp?.id, currentSchemaHistory.data.comps)
+        const comps = removeEntity(selectedComp?.id, currentSchemaHistory.data.comps)
         assertNotUndefined(comps)
         setSelectedCompIds([])
         setCurrentSchemaHistory(setFSchemaComps(comps))

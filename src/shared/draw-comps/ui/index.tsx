@@ -9,11 +9,12 @@ import React from 'react'
 import { ROOT_ID } from '@/constants/common'
 
 export default function CompDrawer(props: CompDrawerProps): JSX.Element | null {
+  const { schemas } = props.bindingContext.states
   const rootComp = props.comps[ROOT_ID]
 
   assertNotUndefined(rootComp)
 
-  if (props.schemas === null) {
+  if (schemas === null) {
     return null
   }
   return (
@@ -21,7 +22,7 @@ export default function CompDrawer(props: CompDrawerProps): JSX.Element | null {
       bindingContext={props.bindingContext}
       comps={props.comps}
       compId={rootComp.id}
-      schemas={props.schemas}
+      schemas={schemas}
     />
   )
 }

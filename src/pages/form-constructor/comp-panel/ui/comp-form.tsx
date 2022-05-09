@@ -1,17 +1,17 @@
 import { Stack } from '@fluentui/react'
 
 import CompContextualMenu from './contextual-menu'
+import { Config } from 'final-form'
 import React, { useRef } from 'react'
 import { Form } from 'react-final-form'
 
-import { Comp, Norm } from '@/common/types'
-import Autosave, { AutosavePropsHOC } from '@/shared/autosave/ui/autosave'
+import { Comp, Schema } from '@/common/types'
+import Autosave from '@/shared/autosave/ui/autosave'
 import CompDrawer, { Context } from '@/shared/draw-comps'
 
 interface CompFormProps {
-  comp: Comp
-  comps: Norm<Comp>
-  onSubmit: AutosavePropsHOC['save']
+  schema: Schema
+  onSubmit: Config<Comp, Comp>['onSubmit']
   context: Context
 }
 
@@ -27,8 +27,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
 
   return (
     <Form<Comp, Comp>
-      initialValues={props.comp}
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      initialValues={props.context.states.selectedComp || undefined}
       onSubmit={props.onSubmit}
       render={(formProps) => {
         return (
@@ -41,13 +40,12 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   horizontalAlign="space-between"
                   verticalAlign="center"
                 >
-                  <Stack as="h2">{props.comp.title}</Stack>
+                  <Stack as="h2">{props.schema.title}</Stack>
                   <CompContextualMenu />
                 </Stack>
                 <Stack>
                   <CompDrawer
-                    comps={props.comps}
-                    schemas={props.context.states.schemas}
+                    comps={props.schema.comps}
                     bindingContext={{
                       states: {
                         ...props.context.states,

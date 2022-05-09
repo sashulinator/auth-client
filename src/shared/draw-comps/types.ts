@@ -5,17 +5,28 @@ import { Comp, History, Norm, Schema } from '@/common/types'
 
 export interface CompDrawerProps {
   comps: Norm<Comp>
-  schemas: Norm<Schema> | null
   bindingContext: BindingContext
 }
 
-export interface Context {
+export interface InitialContext {
   states: {
     schemas: Norm<Schema> | null
     currentSchema: Schema
+    selectedComp: Comp | null
+    selectedCompSchema: Schema | null
   }
   functions: {
     setCurrentSchemaHistory: SetterOrUpdater<History<Schema>>
+    setSelectedCompIds: SetterOrUpdater<string[]>
+  }
+}
+
+export interface Context extends InitialContext {
+  states: {
+    schemas: Norm<Schema>
+    currentSchema: Schema
+    selectedComp: Comp | null
+    selectedCompSchema: Schema | null
   }
 }
 

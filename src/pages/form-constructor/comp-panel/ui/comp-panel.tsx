@@ -1,32 +1,44 @@
-import { pickedCSchemaState } from '../model/comp-schema'
 import CompForm from './comp-form'
 import CompContextualMenu from './contextual-menu'
+import { Config } from 'final-form'
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useRecoilValue } from 'recoil'
 
-import { pickedFCompState } from '@/entities/schema'
-import { AutosavePropsHOC } from '@/shared/autosave/ui/autosave'
-import { Context } from '@/shared/draw-comps'
+import { Comp } from '@/common/types'
+import { Context, InitialContext } from '@/shared/draw-comps'
 
 interface CompPanelProps {
-  onSubmit: AutosavePropsHOC['save']
+  onSubmit: Config<Comp, Comp>['onSubmit']
   isLoading: boolean
-  context: Context
+  context: InitialContext
 }
 
 export default function CompPanel(props: CompPanelProps): JSX.Element | null {
-  const pickedCSchema = useRecoilValue(pickedCSchemaState)
-  const pickedFComp = useRecoilValue(pickedFCompState)
+  const { selectedComp, selectedCompSchema, schemas } = props.context.states
 
-  if (!(pickedCSchema && pickedFComp)) {
+  const schemaIsMissing = !props.isLoading && selectedComp && !selectedCompSchema
+
+  if (schemas === null || !selectedComp) {
     return null
+  }
+
+  console.log('selectedCompSchema', selectedCompSchema)
+
+  const context: Context = {
+    ...props.context,
+    states: {
+      ...props.context.states,
+      schemas,
+    },
   }
 
   return (
     <PerfectScrollbar className="CompPanel">
-      <CompForm comps={pickedCSchema.comps} comp={pickedFComp} context={props.context} onSubmit={props.onSubmit} />
-      {!props.isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
+      {selectedCompSchema ? (
+        <CompForm schema={selectedCompSchema} context={context} onSubmit={props.onSubmit} />
+      ) : schemaIsMissing ? (
+        <CompContextualMenu />
+      ) : null}
     </PerfectScrollbar>
   )
 }

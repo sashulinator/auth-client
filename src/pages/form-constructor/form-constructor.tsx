@@ -4,7 +4,7 @@ import './form-constructor.css'
 
 import { currentSchemaHistoryState, upsertCurrentSchemaComp } from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
-import { lackOfCSchemaIdsState, schemasState } from './comp-panel/model/comp-schema'
+import { lackOfCSchemaIdsState, schemasState, selectedCompSchemaState } from './comp-panel/model/comp-schema'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
@@ -16,23 +16,32 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
 import { Comp } from '@/common/types'
+import { selectedCompIdsState } from '@/entities/schema'
+import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
+import { InitialContext } from '@/shared/draw-comps'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
 
   const [schemas, setSchemas] = useRecoilState(schemasState)
+  const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
+  const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
   const resetCSchemas = useResetRecoilState(schemasState)
 
-  const context = {
+  const selectedComp = getSelectedComp(currentSchemaHistory.data, selectedCompIds)
+  const context: InitialContext = {
     states: {
       schemas,
       currentSchema: currentSchemaHistory.data,
+      selectedComp,
+      selectedCompSchema,
     },
     functions: {
       setCurrentSchemaHistory,
+      setSelectedCompIds,
     },
   }
 
@@ -44,6 +53,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
   useEffect(() => resetCSchemas, [])
   useEffect(setFetchedCurrentSchemaToState, [fetchedCurrentSchema])
+  useEffect(updateSelectedCompSchema, [selectedComp, schemas])
   useEffect(setFetchedSchemasToState, [fetchedDependencySchemas])
 
   function setFetchedCurrentSchemaToState() {
@@ -55,6 +65,12 @@ const FormConstructor: FC = (): JSX.Element => {
   function setFetchedSchemasToState() {
     if (fetchedDependencySchemas !== undefined) {
       setSchemas({ ...fetchedDependencySchemas, ...schemas })
+    }
+  }
+
+  function updateSelectedCompSchema() {
+    if (selectedComp?.compSchemaId) {
+      setSelectedCompSchema(schemas?.[selectedComp?.compSchemaId] ?? null)
     }
   }
 

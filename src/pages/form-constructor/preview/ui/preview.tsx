@@ -8,10 +8,10 @@ import { useRecoilState, useResetRecoilState } from 'recoil'
 
 import { selectedCompIdsState } from '@/entities/schema'
 import { currentSchemaHistoryState } from '@/entities/schema/model/current-schema'
-import CompDrawer, { Context } from '@/shared/draw-comps'
+import CompDrawer, { Context, InitialContext } from '@/shared/draw-comps'
 
 interface PreviewProps {
-  context: Context
+  context: InitialContext
 }
 
 export default function Preview(props: PreviewProps): JSX.Element {
@@ -38,6 +38,18 @@ export default function Preview(props: PreviewProps): JSX.Element {
     console.log('data', data)
   }
 
+  if (schemas === null) {
+    return <div className="Preview" />
+  }
+
+  const context: Context = {
+    ...props.context,
+    states: {
+      ...props.context.states,
+      schemas,
+    },
+  }
+
   return (
     <div className="Preview">
       <div className="selectorArea" />
@@ -51,11 +63,10 @@ export default function Preview(props: PreviewProps): JSX.Element {
               <form onSubmit={formProps.handleSubmit}>
                 {currentSchemaHistory && (
                   <CompDrawer
-                    schemas={schemas}
-                    comps={currentSchemaHistory.data.comps}
+                    comps={context.states.currentSchema.comps}
                     bindingContext={{
                       states: {
-                        ...props.context.states,
+                        ...context.states,
                         formState: formProps.form.getState(),
                       },
                       functions: {
