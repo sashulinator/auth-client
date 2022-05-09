@@ -1,8 +1,13 @@
 import { Stack } from '@fluentui/react'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './form-constructor.css'
 
-import { currentSchemaHistoryState, upsertCurrentSchemaComp } from '../../entities/schema/model/current-schema'
+import {
+  currentSchemaHistoryState,
+  setFSchemaComps,
+  upsertCurrentSchemaComp,
+} from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
 import { lackOfCSchemaIdsState, schemasState, selectedCompSchemaState } from './comp-panel/model/comp-schema'
 import KeyListener from './key-listener'
@@ -16,8 +21,11 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
 import { Comp } from '@/common/types'
+import ROUTES from '@/constants/routes'
 import { selectedCompIdsState } from '@/entities/schema'
 import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
+import CompContextualMenu from '@/entities/schema/ui/contextual-menu'
+import { removeEntity } from '@/lib/entity-actions'
 import { InitialContext } from '@/shared/draw-comps'
 import Header from '@/widgets/header'
 
@@ -85,6 +93,24 @@ const FormConstructor: FC = (): JSX.Element => {
     setCurrentSchemaHistory(upsertCurrentSchemaComp(comp))
   }
 
+  function removeCompFromState(compId: string) {
+    assertNotNull(currentSchemaHistory)
+
+    const comps = removeEntity(compId, currentSchemaHistory.data.comps)
+    assertNotUndefined(comps)
+
+    setCurrentSchemaHistory(setFSchemaComps(comps))
+
+    if (compId === selectedComp?.id) {
+      setSelectedCompIds([])
+    }
+  }
+
+  function openSchemaInNewTab(schemaId: string) {
+    const url = ROUTES.FORM_CONSTRUCTOR.buildURL(schemaId)
+    window.open(url, '_blanc')?.focus()
+  }
+
   return (
     <>
       <KeyListener />
@@ -93,7 +119,19 @@ const FormConstructor: FC = (): JSX.Element => {
       <Stack as="main" className="FormConstructor">
         <TreePanel />
         <Preview context={context} />
-        <CompPanel onSubmit={upsertCompToCurrentSchemaState} isLoading={isDependencySchemasLoading} context={context} />
+        <CompPanel
+          onSubmit={upsertCompToCurrentSchemaState}
+          isLoading={isDependencySchemasLoading}
+          context={context}
+          ContextualMenu={(props) => (
+            <CompContextualMenu
+              comp={props.comp}
+              schemas={schemas}
+              remove={removeCompFromState}
+              openSchemaInNewTab={openSchemaInNewTab}
+            />
+          )}
+        />
         <PaletteModal />
       </Stack>
     </>

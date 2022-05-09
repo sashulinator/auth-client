@@ -22,7 +22,8 @@
   },
   "formConstructorPage": {
     "bindings": "Bindings",
-    "addBindings": "Add bindings"
+    "addBindings": "Add bindings",
+    "editThisForm": "Edit this form"
   },
   "buttons": {
     "add": "Add",

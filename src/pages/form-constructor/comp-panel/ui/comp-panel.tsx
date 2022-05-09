@@ -1,5 +1,6 @@
+import './comp-panel.css'
+
 import CompForm from './comp-form'
-import CompContextualMenu from './contextual-menu'
 import { Config } from 'final-form'
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -11,11 +12,12 @@ interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
   isLoading: boolean
   context: InitialContext
+  ContextualMenu: (props: { comp: Comp }) => JSX.Element
 }
 
 export default function CompPanel(props: CompPanelProps): JSX.Element | null {
   const { selectedComp, selectedCompSchema, schemas } = props.context.states
-
+  const { ContextualMenu } = props
   const schemaIsMissing = !props.isLoading && selectedComp && !selectedCompSchema
 
   if (schemas === null || !selectedComp) {
@@ -33,9 +35,12 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
   return (
     <PerfectScrollbar className="CompPanel">
       {selectedCompSchema ? (
-        <CompForm schema={selectedCompSchema} context={context} onSubmit={props.onSubmit} />
+        <>
+          <ContextualMenu comp={selectedComp} />
+          <CompForm schema={selectedCompSchema} context={context} onSubmit={props.onSubmit} />
+        </>
       ) : schemaIsMissing ? (
-        <CompContextualMenu />
+        <ContextualMenu comp={selectedComp} />
       ) : null}
     </PerfectScrollbar>
   )

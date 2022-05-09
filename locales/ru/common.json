@@ -22,7 +22,8 @@
   },
   "formConstructorPage": {
     "bindings": "Связывание",
-    "addBindings": "Добавить связывание"
+    "addBindings": "Добавить связывание",
+    "editThisForm": "Редактировать эту форму"
   },
   "buttons": {
     "add": "Добавить",

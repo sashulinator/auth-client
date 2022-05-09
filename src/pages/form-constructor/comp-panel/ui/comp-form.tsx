@@ -1,6 +1,5 @@
 import { Stack } from '@fluentui/react'
 
-import CompContextualMenu from './contextual-menu'
 import { Config } from 'final-form'
 import React, { useRef } from 'react'
 import { Form } from 'react-final-form'
@@ -40,8 +39,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   horizontalAlign="space-between"
                   verticalAlign="center"
                 >
-                  <Stack as="h2">{props.schema.title}</Stack>
-                  <CompContextualMenu />
+                  <Stack as="h2">{props.context.states.selectedComp?.title}</Stack>
                 </Stack>
                 <Stack>
                   <CompDrawer
