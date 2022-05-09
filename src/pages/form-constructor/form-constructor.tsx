@@ -6,6 +6,8 @@ import './form-constructor.css'
 import {
   currentSchemaHistoryState,
   setFSchemaComps,
+  setNext,
+  setPrev,
   upsertCurrentSchemaComp,
 } from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
@@ -20,12 +22,22 @@ import { useParams } from 'react-router-dom'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
+import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
+import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import { selectedCompIdsState } from '@/entities/schema'
 import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
 import CompContextualMenu from '@/entities/schema/ui/contextual-menu'
-import { removeEntity } from '@/lib/entity-actions'
+import {
+  addEntity,
+  copyEntities,
+  findDependencyIds,
+  findEntities,
+  findEntityPosition,
+  findRootParentIds,
+  removeEntity,
+} from '@/lib/entity-actions'
 import { InitialContext } from '@/shared/draw-comps'
 import Header from '@/widgets/header'
 
@@ -128,9 +140,90 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
+  function removeSelectedComps() {
+    selectedCompIds.forEach((id) => {
+      removeCompFromState(id)
+    })
+  }
+
+  function keepCompsSelected(ids: string[] = []) {
+    const absentIds = selectedCompIds.filter((id) => !ids.includes(id))
+    const selectedIds = selectedCompIds.filter((id) => !absentIds.includes(id))
+    setSelectedCompIds(selectedIds)
+  }
+
+  function undo() {
+    if (currentSchemaHistory.prev) {
+      // TODO проверяет только в корне а надо везде!!
+      keepCompsSelected(currentSchemaHistory.prev.data.comps[ROOT_ID]?.children)
+    }
+    setCurrentSchemaHistory(setPrev)
+  }
+
+  function redo() {
+    if (currentSchemaHistory.next) {
+      // TODO проверяет только в корне а надо везде!!
+      keepCompsSelected(currentSchemaHistory.next.data.comps[ROOT_ID]?.children)
+    }
+    setCurrentSchemaHistory(setNext)
+  }
+
+  function copyToClipboard() {
+    const dependencyIds = findDependencyIds(selectedCompIds, currentSchemaHistory.data.comps)
+    const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.comps)
+    localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
+  }
+
+  // TODO разбить на подфункции
+  function pasteFromClipboard() {
+    const stringifiedComps = localStorage.getItem('copyClipboard') || ''
+
+    const comps = JSON.parse(stringifiedComps) as Norm<Comp>
+
+    schemaValidator.comps(comps)
+
+    if (comps) {
+      const copiedComps = copyEntities(comps, ['path'])
+
+      const rootCompIds = findRootParentIds(copiedComps)
+      const rootComps = findEntities(rootCompIds, copiedComps)
+
+      const mergedComps = { ...currentSchemaHistory.data.comps, ...copiedComps }
+
+      const isRoot = selectedCompIds.includes(ROOT_ID)
+      const isToRoot = selectedCompIds.length === 0 || isRoot
+
+      const newComps = Object.values(rootComps).reduce((acc, comp) => {
+        if (isToRoot) {
+          acc = addEntity(comp, ROOT_ID, 0, acc)
+        } else {
+          const position = findEntityPosition(selectedCompIds[0] || '', acc)
+          assertNotUndefined(position)
+          acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
+        }
+        return acc
+      }, mergedComps)
+
+      setCurrentSchemaHistory(setFSchemaComps(newComps))
+
+      if (selectedCompIds.length === 0) {
+        setSelectedCompIds(comps[0] ? [comps[0].id] : [])
+      }
+    }
+  }
+
   return (
     <>
-      <KeyListener />
+      <KeyListener
+        selectedCompIds={selectedCompIds}
+        schema={currentSchemaHistory.data}
+        selectAndUnselectComp={selectAndUnselectComp}
+        removeSelectedComps={removeSelectedComps}
+        pasteFromClipboard={pasteFromClipboard}
+        copyToClipboard={copyToClipboard}
+        undo={undo}
+        redo={redo}
+      />
       <Header />
       <div className="fakeHeader" />
       <Stack as="main" className="FormConstructor">
