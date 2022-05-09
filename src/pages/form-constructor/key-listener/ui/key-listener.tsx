@@ -17,7 +17,7 @@ import {
   removeEntity,
 } from '@/lib/entity-actions'
 import {
-  FSchemaHistoryState,
+  currentSchemaHistoryState,
   pickedFCompIdsState,
   pickedFCompState,
   setFSchemaComps,
@@ -26,16 +26,16 @@ import {
 } from '@/pages/form-constructor/preview'
 
 export default function KeyListener(): null {
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const pickedFComp = useRecoilValue(pickedFCompState)
 
   useEffect(addEscKeyListener, [pickedFCompIds])
   useEffect(addDeleteKeyListener, [pickedFCompIds])
-  useEffect(addCtrlZKeyListener, [pickedFCompIds, FSchemaHistory])
-  useEffect(addCtrlShiftZKeyListener, [pickedFCompIds, FSchemaHistory])
-  useEffect(addCtrlCKeyListener, [pickedFCompIds, FSchemaHistory])
-  useEffect(addCtrlVKeyListener, [pickedFCompIds, FSchemaHistory])
+  useEffect(addCtrlZKeyListener, [pickedFCompIds, currentSchemaHistory])
+  useEffect(addCtrlShiftZKeyListener, [pickedFCompIds, currentSchemaHistory])
+  useEffect(addCtrlCKeyListener, [pickedFCompIds, currentSchemaHistory])
+  useEffect(addCtrlVKeyListener, [pickedFCompIds, currentSchemaHistory])
 
   function addEscKeyListener() {
     function action(event: KeyboardEvent): void {
@@ -81,8 +81,8 @@ export default function KeyListener(): null {
           return
         }
 
-        if (FSchemaHistory.prev) {
-          const prevCompsId = FSchemaHistory.prev.data.comps[ROOT_ID]?.children || []
+        if (currentSchemaHistory.prev) {
+          const prevCompsId = currentSchemaHistory.prev.data.comps[ROOT_ID]?.children || []
 
           const absentIds = pickedFCompIds.filter((id) => !prevCompsId.includes(id))
 
@@ -91,7 +91,7 @@ export default function KeyListener(): null {
           setPickedFCompIds(newPickedIds)
         }
 
-        setFSchemaHistory(setPrev)
+        setCurrentSchemaHistory(setPrev)
       }
     }
 
@@ -120,8 +120,8 @@ export default function KeyListener(): null {
       const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
       if (event.code === 'KeyC' && event[controlKeyName] && !event.shiftKey) {
-        const dependencyIds = findDependencyIds(pickedFCompIds, FSchemaHistory.data.comps)
-        const selectedComps = findEntities(dependencyIds, FSchemaHistory.data.comps)
+        const dependencyIds = findDependencyIds(pickedFCompIds, currentSchemaHistory.data.comps)
+        const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.comps)
         localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
       }
     }
@@ -163,7 +163,7 @@ export default function KeyListener(): null {
           const rootCompIds = findRootParentIds(copiedComps)
           const rootComps = findEntities(rootCompIds, copiedComps)
 
-          const mergedComps = { ...FSchemaHistory.data.comps, ...copiedComps }
+          const mergedComps = { ...currentSchemaHistory.data.comps, ...copiedComps }
 
           const isRoot = pickedFCompIds.includes(ROOT_ID)
           const isToRoot = pickedFCompIds.length === 0 || isRoot
@@ -179,7 +179,7 @@ export default function KeyListener(): null {
             return acc
           }, mergedComps)
 
-          setFSchemaHistory(setFSchemaComps(newComps))
+          setCurrentSchemaHistory(setFSchemaComps(newComps))
 
           if (pickedFCompIds.length === 0) {
             setPickedFCompIds(comps[0] ? [comps[0].id] : [])
@@ -216,8 +216,8 @@ export default function KeyListener(): null {
           return
         }
 
-        if (FSchemaHistory.next) {
-          const nextCompsId = FSchemaHistory.next.data.comps[ROOT_ID]?.children || []
+        if (currentSchemaHistory.next) {
+          const nextCompsId = currentSchemaHistory.next.data.comps[ROOT_ID]?.children || []
 
           const absentIds = pickedFCompIds.filter((id) => !nextCompsId.includes(id))
 
@@ -226,7 +226,7 @@ export default function KeyListener(): null {
           setPickedFCompIds(newPickedIds)
         }
 
-        setFSchemaHistory(setNext)
+        setCurrentSchemaHistory(setNext)
       }
     }
 
@@ -257,10 +257,10 @@ export default function KeyListener(): null {
           return
         }
 
-        const comps = removeEntity(pickedFComp?.id, FSchemaHistory.data.comps)
+        const comps = removeEntity(pickedFComp?.id, currentSchemaHistory.data.comps)
         assertNotUndefined(comps)
         setPickedFCompIds([])
-        setFSchemaHistory(setFSchemaComps(comps))
+        setCurrentSchemaHistory(setFSchemaComps(comps))
       }
     }
 

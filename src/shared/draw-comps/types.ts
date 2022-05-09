@@ -11,8 +11,8 @@ export interface CompDrawerProps {
 
 export interface Context {
   CSchemas: Norm<Schema>
-  FSchemaHistory: History<Schema>
-  setFSchemaHistory: SetterOrUpdater<History<Schema>>
+  currentSchemaHistory: History<Schema>
+  setCurrentSchemaHistory: SetterOrUpdater<History<Schema>>
 }
 
 export interface BindingContext extends Context {

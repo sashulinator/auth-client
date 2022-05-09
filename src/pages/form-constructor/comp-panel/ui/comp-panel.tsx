@@ -7,12 +7,12 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { useGetSchemaDependency } from '@/api/schema'
 import { Comp } from '@/common/types'
-import { FSchemaHistoryState, pickedFCompState, setFSchemaComps } from '@/entities/schema/model/current-schema'
+import { currentSchemaHistoryState, pickedFCompState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { replace } from '@/lib/change-unmutable'
 
 const CompPanel: FC = (): JSX.Element | null => {
   const [CSchemas, setCSchemas] = useRecoilState(CSchemasState)
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
@@ -30,8 +30,8 @@ const CompPanel: FC = (): JSX.Element | null => {
   }
 
   function onAutosave(comp: Comp) {
-    const newComps = replace(FSchemaHistory.data.comps, comp.id, comp)
-    setFSchemaHistory(setFSchemaComps(newComps))
+    const newComps = replace(currentSchemaHistory.data.comps, comp.id, comp)
+    setCurrentSchemaHistory(setFSchemaComps(newComps))
   }
 
   if (!(pickedCSchema && pickedFComp && CSchemas)) {
@@ -45,8 +45,8 @@ const CompPanel: FC = (): JSX.Element | null => {
         comps={pickedCSchema.comps}
         comp={pickedFComp}
         context={{
-          FSchemaHistory,
-          setFSchemaHistory,
+          currentSchemaHistory,
+          setCurrentSchemaHistory,
           CSchemas,
         }}
         onAutosave={onAutosave}

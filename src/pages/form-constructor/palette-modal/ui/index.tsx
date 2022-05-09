@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil'
 import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
-import { FSchemaHistoryState, pickedFCompIdsState, setFSchemaComps } from '@/entities/schema/model/current-schema'
+import { currentSchemaHistoryState, pickedFCompIdsState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { remove } from '@/lib/change-unmutable'
 import { addEntity, copyEntities, findEntityPosition } from '@/lib/entity-actions'
 import { createNewComp } from '@/shared/draw-comps/lib/actions'
@@ -17,7 +17,7 @@ import { createNewComp } from '@/shared/draw-comps/lib/actions'
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
   const [pickedFCompIds, setPickedCompIds] = useRecoilState(pickedFCompIdsState)
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
 
   const { data } = useQuery('schemas', getSchemaList)
 
@@ -27,18 +27,18 @@ const PaletteModal: FC = (): JSX.Element => {
     const isToRoot = pickedFCompIds.length === 0 || isRoot
 
     if (isToRoot) {
-      const comps = addEntity(createdNewComp, ROOT_ID, 0, FSchemaHistory.data.comps)
-      setFSchemaHistory(setFSchemaComps(comps))
+      const comps = addEntity(createdNewComp, ROOT_ID, 0, currentSchemaHistory.data.comps)
+      setCurrentSchemaHistory(setFSchemaComps(comps))
     } else {
-      const position = findEntityPosition(pickedFCompIds[0] || '', FSchemaHistory.data.comps)
+      const position = findEntityPosition(pickedFCompIds[0] || '', currentSchemaHistory.data.comps)
       assertNotUndefined(position)
       const comps = addEntity(
         createdNewComp,
         position.parentId.toString(),
         position.index + 1,
-        FSchemaHistory.data.comps
+        currentSchemaHistory.data.comps
       )
-      setFSchemaHistory(setFSchemaComps(comps))
+      setCurrentSchemaHistory(setFSchemaComps(comps))
     }
 
     if (pickedFCompIds.length === 0) {
@@ -63,9 +63,9 @@ const PaletteModal: FC = (): JSX.Element => {
         acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
       }
       return acc
-    }, FSchemaHistory.data.comps)
+    }, currentSchemaHistory.data.comps)
 
-    setFSchemaHistory(setFSchemaComps(newComps))
+    setCurrentSchemaHistory(setFSchemaComps(newComps))
 
     setOpen(false)
   }

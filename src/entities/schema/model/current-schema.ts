@@ -7,8 +7,8 @@ import { ROOT_ID } from '@/constants/common'
 
 // STATES
 
-export const FSchemaHistoryState = atom<History<Schema>>({
-  key: 'FSchemaState',
+export const currentSchemaHistoryState = atom<History<Schema>>({
+  key: 'currentSchemaHistoryState',
   default: {
     prev: null,
     next: null,
@@ -40,15 +40,15 @@ export const pickedFCompIdsState = atom<string[]>({
 export const pickedFCompState = selector({
   key: 'pickedFCompState',
   get: ({ get }) => {
-    const FSchemaHistory = get(FSchemaHistoryState)
+    const currentSchemaHistory = get(currentSchemaHistoryState)
     const pickedFCompIds = get(pickedFCompIdsState)
 
     if (pickedFCompIds.length > 1) {
       return null
     }
 
-    if (pickedFCompIds.length !== 0 && FSchemaHistory.data) {
-      const pickedFComp = FSchemaHistory.data.comps[pickedFCompIds[0] || '']
+    if (pickedFCompIds.length !== 0 && currentSchemaHistory.data) {
+      const pickedFComp = currentSchemaHistory.data.comps[pickedFCompIds[0] || '']
 
       assertNotUndefined(pickedFComp)
 
@@ -62,10 +62,10 @@ export const pickedFCompState = selector({
 export const CSchemasIdsInSchemaState = selector({
   key: 'CSchemasIdsState',
   get: ({ get }) => {
-    const FSchemaHistory = get(FSchemaHistoryState)
+    const currentSchemaHistory = get(currentSchemaHistoryState)
 
-    if (FSchemaHistory) {
-      const CSchemasIds = Object.values(FSchemaHistory.data.comps).map((comp) => comp.compSchemaId)
+    if (currentSchemaHistory) {
+      const CSchemasIds = Object.values(currentSchemaHistory.data.comps).map((comp) => comp.compSchemaId)
 
       return CSchemasIds
     }
@@ -77,9 +77,9 @@ export const CSchemasIdsInSchemaState = selector({
 // SETTERS
 
 export function setFSchema(schema: Schema) {
-  return (FSchemaHistory: History<Schema>): History<Schema> => {
+  return (currentSchemaHistory: History<Schema>): History<Schema> => {
     return {
-      prev: FSchemaHistory,
+      prev: currentSchemaHistory,
       next: null,
       data: schema,
     }
@@ -87,38 +87,38 @@ export function setFSchema(schema: Schema) {
 }
 
 export function setFSchemaComps(comps: Norm<Comp>) {
-  return (FSchemaHistory: History<Schema>): History<Schema> => {
+  return (currentSchemaHistory: History<Schema>): History<Schema> => {
     return {
-      prev: FSchemaHistory,
+      prev: currentSchemaHistory,
       next: null,
-      data: { ...FSchemaHistory.data, comps },
+      data: { ...currentSchemaHistory.data, comps },
     }
   }
 }
 
-export function setPrev(FSchemaHistory: History<Schema>): History<Schema> {
-  if (FSchemaHistory.prev === null) {
-    return FSchemaHistory
+export function setPrev(currentSchemaHistory: History<Schema>): History<Schema> {
+  if (currentSchemaHistory.prev === null) {
+    return currentSchemaHistory
   }
 
   const newState = {
-    prev: FSchemaHistory.prev.prev || null,
-    next: FSchemaHistory,
-    data: FSchemaHistory.prev.data,
+    prev: currentSchemaHistory.prev.prev || null,
+    next: currentSchemaHistory,
+    data: currentSchemaHistory.prev.data,
   }
 
   return newState
 }
 
-export function setNext(FSchemaHistory: History<Schema>): History<Schema> {
-  if (FSchemaHistory.next === null) {
-    return FSchemaHistory
+export function setNext(currentSchemaHistory: History<Schema>): History<Schema> {
+  if (currentSchemaHistory.next === null) {
+    return currentSchemaHistory
   }
 
   const newState = {
-    prev: FSchemaHistory,
-    next: FSchemaHistory.next.next || null,
-    data: FSchemaHistory.next.data,
+    prev: currentSchemaHistory,
+    next: currentSchemaHistory.next.next || null,
+    data: currentSchemaHistory.next.data,
   }
 
   return newState

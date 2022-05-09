@@ -9,7 +9,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import {
-  FSchemaHistoryState,
+  currentSchemaHistoryState,
   pickedFCompIdsState,
   pickedFCompState,
   setFSchemaComps,
@@ -19,7 +19,7 @@ import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
@@ -32,11 +32,11 @@ export default function CompContextualMenu(): JSX.Element | null {
       text: t('buttons.remove'),
       onClick: () => {
         assertNotNull(pickedFComp)
-        assertNotNull(FSchemaHistory)
+        assertNotNull(currentSchemaHistory)
 
-        const comps = removeEntity(pickedFComp?.id, FSchemaHistory.data.comps)
+        const comps = removeEntity(pickedFComp?.id, currentSchemaHistory.data.comps)
         assertNotUndefined(comps)
-        setFSchemaHistory(setFSchemaComps(comps))
+        setCurrentSchemaHistory(setFSchemaComps(comps))
         setPickedFCompIds([])
       },
     })

@@ -6,13 +6,13 @@ import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { FSchemaHistoryState, pickedFCompIdsState } from '@/entities/schema/model/current-schema'
+import { currentSchemaHistoryState, pickedFCompIdsState } from '@/entities/schema/model/current-schema'
 import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [CSchemas] = useRecoilState(CSchemasState)
-  const resetFSchema = useResetRecoilState(FSchemaHistoryState)
+  const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
   const [pickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const resetPickedFCompId = useResetRecoilState(pickedFCompIdsState)
 
@@ -22,7 +22,7 @@ const Preview: FC = (): JSX.Element => {
     pickedFCompIds.forEach((compId) => {
       highlightSelection(compId)
     })
-  }, [pickedFCompIds, FSchemaHistory.data])
+  }, [pickedFCompIds, currentSchemaHistory.data])
 
   useEffect(() => {
     resetFSchema()
@@ -39,19 +39,19 @@ const Preview: FC = (): JSX.Element => {
       <div className="hoverArea" />
       {CSchemas && (
         <Form
-          key={JSON.stringify(FSchemaHistory)}
+          key={JSON.stringify(currentSchemaHistory)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {FSchemaHistory && (
+                {currentSchemaHistory && (
                   <CompDrawer
                     schemas={CSchemas}
-                    comps={FSchemaHistory.data.comps}
+                    comps={currentSchemaHistory.data.comps}
                     bindingContext={{
-                      FSchemaHistory,
+                      currentSchemaHistory,
                       CSchemas,
-                      setFSchemaHistory,
+                      setCurrentSchemaHistory,
                       form: formProps.form,
                     }}
                   />

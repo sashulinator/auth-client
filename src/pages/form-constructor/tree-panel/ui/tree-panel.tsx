@@ -13,7 +13,7 @@ import { useRecoilState } from 'recoil'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
-  FSchemaHistoryState,
+  currentSchemaHistoryState,
   highlightHover,
   pickedFCompIdsState,
   removeAllHoverHighlights,
@@ -22,14 +22,14 @@ import {
 import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => setTree(rebuildTree), [FSchemaHistory, pickedFCompIds])
+  useEffect(() => setTree(rebuildTree), [currentSchemaHistory, pickedFCompIds])
 
   /**
    * Костыль! Tree требует чтобы высота родителя не менялась во время переноса компонента,
@@ -40,10 +40,10 @@ function TreePanel(): JSX.Element {
       const styles = window.getComputedStyle(wrapperRef.current.firstElementChild)
       wrapperRef.current.style.minHeight = `calc(${parseInt(styles.height, 10)}px + 30vh)`
     }
-  }, [FSchemaHistory.data])
+  }, [currentSchemaHistory.data])
 
   function rebuildTree() {
-    return buildTree(FSchemaHistory.data?.comps, {
+    return buildTree(currentSchemaHistory.data?.comps, {
       pickedIds: pickedFCompIds,
       onItemClick,
       onMouseOver: highlightHover,
@@ -97,7 +97,7 @@ function TreePanel(): JSX.Element {
 
     assertNotUndefined(tree)
 
-    let tempComps = FSchemaHistory.data?.comps
+    let tempComps = currentSchemaHistory.data?.comps
 
     pickedFCompIds.forEach((compId) => {
       const from = findEntityPosition(compId, tempComps)
@@ -107,7 +107,7 @@ function TreePanel(): JSX.Element {
       tempComps = moveEntity(comp, to.parentId as string, to.index || 0, tempComps)
     })
 
-    setFSchemaHistory(setFSchemaComps(tempComps))
+    setCurrentSchemaHistory(setFSchemaComps(tempComps))
   }
 
   /**

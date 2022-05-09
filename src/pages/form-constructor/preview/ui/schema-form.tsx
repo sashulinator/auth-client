@@ -1,7 +1,7 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
 import { ErrorCollection } from '@savchenko91/schema-validator'
 
-import { FSchemaHistoryState, setFSchema } from '../../../../entities/schema/model/current-schema'
+import { currentSchemaHistoryState, setFSchema } from '../../../../entities/schema/model/current-schema'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +26,7 @@ const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
 export default function SchemaForm(): JSX.Element {
   const { t, i18n } = useTranslation()
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -52,7 +52,7 @@ export default function SchemaForm(): JSX.Element {
       onclick: async () => {
         const response = await fetch('/api/v1/schemas', {
           method: 'DELETE',
-          body: JSON.stringify({ ids: [FSchemaHistory.data.id] }),
+          body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
           headers: {
             'content-type': 'application/json',
             accept: '*/*',
@@ -73,7 +73,7 @@ export default function SchemaForm(): JSX.Element {
     const newId = id ? id : uuid()
 
     const newFSchema = {
-      ...FSchemaHistory.data,
+      ...currentSchemaHistory.data,
       id: newId,
       componentName: newComponentName,
       title,
@@ -94,14 +94,14 @@ export default function SchemaForm(): JSX.Element {
   }
 
   function onDropdownChange(type: FormType) {
-    setFSchemaHistory(setFSchema({ ...FSchemaHistory.data, type }))
+    setCurrentSchemaHistory(setFSchema({ ...currentSchemaHistory.data, type }))
   }
 
   //TODO обновить схему в стэйте если меняется дропдаун для componentName
 
   return (
     <Form<Schema, Schema>
-      initialValues={FSchemaHistory.data}
+      initialValues={currentSchemaHistory.data}
       onSubmit={onSubmit}
       render={(formProps) => {
         return (

@@ -2,7 +2,7 @@ import { Stack } from '@fluentui/react'
 
 import './form-constructor.css'
 
-import { FSchemaHistoryState } from '../../entities/schema/model/current-schema'
+import { currentSchemaHistoryState } from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
@@ -17,13 +17,13 @@ import { getSchema } from '@/api/schema'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
-  const [, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const { id } = useParams()
   const { data } = useQuery(['schema', id], getSchema)
 
   useEffect(() => {
     if (data !== undefined) {
-      setFSchemaHistory({ next: null, data, prev: null })
+      setCurrentSchemaHistory({ next: null, data, prev: null })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
