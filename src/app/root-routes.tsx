@@ -1,8 +1,9 @@
 import ROUTES from '../constants/routes'
-import FormConstructor from '../pages/form-constructor'
-import SchemaListPage from '../pages/schema-list'
 import React, { FC } from 'react'
 import { Route, Routes } from 'react-router-dom'
+
+import FormConstructor from '@/pages/form-constructor/form-constructor'
+import SchemaListPage from '@/pages/schema-list'
 
 const RootRoutes: FC = () => {
   return (

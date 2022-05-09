@@ -17,16 +17,19 @@ import { getSchema } from '@/api/schema'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
-  const [, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const { id } = useParams()
-  const { data } = useQuery(['schema', id], getSchema)
 
-  useEffect(() => {
-    if (data !== undefined) {
-      setCurrentSchemaHistory({ next: null, data, prev: null })
+  const [, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
+
+  const { data: fetchedCurrentSchema } = useQuery(['schema', id], getSchema)
+
+  useEffect(setFetchedCurrentSchemaToState, [fetchedCurrentSchema])
+
+  function setFetchedCurrentSchemaToState() {
+    if (fetchedCurrentSchema !== undefined) {
+      setCurrentSchemaHistory({ next: null, data: fetchedCurrentSchema, prev: null })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }
 
   return (
     <>
