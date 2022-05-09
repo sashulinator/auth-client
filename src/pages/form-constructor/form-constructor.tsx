@@ -30,12 +30,15 @@ const FormConstructor: FC = (): JSX.Element => {
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
   const resetCSchemas = useResetRecoilState(schemasState)
+  const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
+  const resetPickedFCompId = useResetRecoilState(selectedCompIdsState)
 
   const selectedComp = getSelectedComp(currentSchemaHistory.data, selectedCompIds)
   const context: InitialContext = {
     states: {
       schemas,
       currentSchema: currentSchemaHistory.data,
+      selectedCompIds,
       selectedComp,
       selectedCompSchema,
     },
@@ -51,7 +54,11 @@ const FormConstructor: FC = (): JSX.Element => {
     lackOfCSchemaIds
   )
 
-  useEffect(() => resetCSchemas, [])
+  useEffect(() => {
+    resetCSchemas()
+    resetFSchema()
+    resetPickedFCompId()
+  }, [])
   useEffect(setFetchedCurrentSchemaToState, [fetchedCurrentSchema])
   useEffect(updateSelectedCompSchema, [selectedComp, schemas])
   useEffect(setFetchedSchemasToState, [fetchedDependencySchemas])

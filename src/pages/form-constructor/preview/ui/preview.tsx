@@ -1,13 +1,9 @@
 import './preview.css'
 
-import { schemasState } from '../../comp-panel/model/comp-schema'
 import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
-import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { selectedCompIdsState } from '@/entities/schema'
-import { currentSchemaHistoryState } from '@/entities/schema/model/current-schema'
 import CompDrawer, { Context, InitialContext } from '@/shared/draw-comps'
 
 interface PreviewProps {
@@ -15,26 +11,16 @@ interface PreviewProps {
 }
 
 export default function Preview(props: PreviewProps): JSX.Element {
-  const [currentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const [schemas] = useRecoilState(schemasState)
-  const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
-  const [selectedCompIds] = useRecoilState(selectedCompIdsState)
-  const resetPickedFCompId = useResetRecoilState(selectedCompIdsState)
+  const { currentSchema, schemas } = props.context.states
 
   useLayoutEffect(() => {
     removeAllSelectionHighlights()
-
-    selectedCompIds.forEach((compId) => {
+    props.context.states.selectedCompIds.forEach((compId) => {
       highlightSelection(compId)
     })
-  }, [selectedCompIds, currentSchemaHistory.data])
+  }, [props.context.states.selectedCompIds, currentSchema])
 
-  useEffect(() => {
-    resetFSchema()
-    resetPickedFCompId()
-  }, [])
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function onSubmit(data: any) {
+  function onSubmit(data: unknown) {
     console.log('data', data)
   }
 
@@ -56,14 +42,14 @@ export default function Preview(props: PreviewProps): JSX.Element {
       <div className="hoverArea" />
       {schemas && (
         <Form
-          key={JSON.stringify(currentSchemaHistory)}
+          key={JSON.stringify(currentSchema)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {currentSchemaHistory && (
+                {currentSchema && (
                   <CompDrawer
-                    comps={context.states.currentSchema.comps}
+                    comps={currentSchema.comps}
                     bindingContext={{
                       states: {
                         ...context.states,

@@ -22,8 +22,6 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
     return null
   }
 
-  console.log('selectedCompSchema', selectedCompSchema)
-
   const context: Context = {
     ...props.context,
     states: {

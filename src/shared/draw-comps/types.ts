@@ -13,6 +13,7 @@ export interface InitialContext {
     schemas: Norm<Schema> | null
     currentSchema: Schema
     selectedComp: Comp | null
+    selectedCompIds: string[]
     selectedCompSchema: Schema | null
   }
   functions: {
@@ -27,6 +28,7 @@ export interface Context extends InitialContext {
     currentSchema: Schema
     selectedComp: Comp | null
     selectedCompSchema: Schema | null
+    selectedCompIds: string[]
   }
 }
 
