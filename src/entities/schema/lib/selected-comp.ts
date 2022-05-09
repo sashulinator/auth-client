@@ -8,11 +8,11 @@ export function getSelectedComp(currentSchema: Schema | null, selectedCompIds: s
   }
 
   if (selectedCompIds.length !== 0 && currentSchema) {
-    const pickedFComp = currentSchema.comps[selectedCompIds[0] || '']
+    const selectedComp = currentSchema.comps[selectedCompIds[0] || '']
 
-    assertNotUndefined(pickedFComp)
+    assertNotUndefined(selectedComp)
 
-    return pickedFComp
+    return selectedComp
   }
 
   return null
