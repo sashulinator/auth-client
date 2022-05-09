@@ -8,11 +8,14 @@ import React from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 
-export default function CompDrawer(props: CompDrawerProps): JSX.Element {
+export default function CompDrawer(props: CompDrawerProps): JSX.Element | null {
   const rootComp = props.comps[ROOT_ID]
 
   assertNotUndefined(rootComp)
 
+  if (props.schemas === null) {
+    return null
+  }
   return (
     <ComponentFactory
       bindingContext={props.bindingContext}

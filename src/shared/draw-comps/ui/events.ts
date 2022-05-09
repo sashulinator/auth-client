@@ -26,11 +26,11 @@ export function isEqualEvent(
 
 // action это контекст и ...аргументы
 
-export function setValueAction(props: { victimName: string }) {
-  return (context: BindingContext, value: unknown) => {
-    context.form.change(props.victimName, value)
-  }
-}
+// export function setValueAction(props: { victimName: string }) {
+//   return (context: BindingContext, value: unknown) => {
+//     context.form.change(props.victimName, value)
+//   }
+// }
 
 // export function addCompAction(context: ActionContext, schemaId: string) {
 

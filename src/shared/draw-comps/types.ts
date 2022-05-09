@@ -5,19 +5,25 @@ import { Comp, History, Norm, Schema } from '@/common/types'
 
 export interface CompDrawerProps {
   comps: Norm<Comp>
-  schemas: Norm<Schema>
+  schemas: Norm<Schema> | null
   bindingContext: BindingContext
 }
 
 export interface Context {
-  CSchemas: Norm<Schema>
-  currentSchemaHistory: History<Schema>
-  setCurrentSchemaHistory: SetterOrUpdater<History<Schema>>
+  states: {
+    schemas: Norm<Schema> | null
+    currentSchema: Schema
+  }
+  functions: {
+    setCurrentSchemaHistory: SetterOrUpdater<History<Schema>>
+  }
 }
 
-export interface BindingContext extends Context {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: FormApi<any, any>
+export type BindingContext = Context & {
+  states: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formState: ReturnType<FormApi<any, any>['getState']>
+  }
 }
 
 export interface DrawerComponentProps {

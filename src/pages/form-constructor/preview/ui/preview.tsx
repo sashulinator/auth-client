@@ -2,16 +2,20 @@ import './preview.css'
 
 import { schemasState } from '../../comp-panel/model/comp-schema'
 import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
-import React, { FC, useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
 import { selectedCompIdsState } from '@/entities/schema'
 import { currentSchemaHistoryState } from '@/entities/schema/model/current-schema'
-import CompDrawer from '@/shared/draw-comps'
+import CompDrawer, { Context } from '@/shared/draw-comps'
 
-const Preview: FC = (): JSX.Element => {
-  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
+interface PreviewProps {
+  context: Context
+}
+
+export default function Preview(props: PreviewProps): JSX.Element {
+  const [currentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [schemas] = useRecoilState(schemasState)
   const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
   const [selectedCompIds] = useRecoilState(selectedCompIdsState)
@@ -50,10 +54,13 @@ const Preview: FC = (): JSX.Element => {
                     schemas={schemas}
                     comps={currentSchemaHistory.data.comps}
                     bindingContext={{
-                      currentSchemaHistory,
-                      CSchemas: schemas,
-                      setCurrentSchemaHistory,
-                      form: formProps.form,
+                      states: {
+                        ...props.context.states,
+                        formState: formProps.form.getState(),
+                      },
+                      functions: {
+                        ...props.context.functions,
+                      },
                     }}
                   />
                 )}
@@ -65,5 +72,3 @@ const Preview: FC = (): JSX.Element => {
     </div>
   )
 }
-
-export default Preview

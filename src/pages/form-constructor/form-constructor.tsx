@@ -22,9 +22,19 @@ const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
 
   const [schemas, setSchemas] = useRecoilState(schemasState)
-  const [, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
   const resetCSchemas = useResetRecoilState(schemasState)
+
+  const context = {
+    states: {
+      schemas,
+      currentSchema: currentSchemaHistory.data,
+    },
+    functions: {
+      setCurrentSchemaHistory,
+    },
+  }
 
   const { data: fetchedCurrentSchema } = useQuery(['schema', id], getSchema)
 
@@ -59,8 +69,8 @@ const FormConstructor: FC = (): JSX.Element => {
       <div className="fakeHeader" />
       <Stack as="main" className="FormConstructor">
         <TreePanel />
-        <Preview />
-        <CompPanel onSubmit={upsertCompToCurrentSchemaState} isLoading={isDependencySchemasLoading} />
+        <Preview context={context} />
+        <CompPanel onSubmit={upsertCompToCurrentSchemaState} isLoading={isDependencySchemasLoading} context={context} />
         <PaletteModal />
       </Stack>
     </>

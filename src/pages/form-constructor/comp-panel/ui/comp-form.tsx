@@ -4,14 +4,13 @@ import CompContextualMenu from './contextual-menu'
 import React, { useRef } from 'react'
 import { Form } from 'react-final-form'
 
-import { Comp, Norm, Schema } from '@/common/types'
+import { Comp, Norm } from '@/common/types'
 import Autosave, { AutosavePropsHOC } from '@/shared/autosave/ui/autosave'
 import CompDrawer, { Context } from '@/shared/draw-comps'
 
 interface CompFormProps {
   comp: Comp
   comps: Norm<Comp>
-  schemas: Norm<Schema>
   onSubmit: AutosavePropsHOC['save']
   context: Context
 }
@@ -48,10 +47,15 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                 <Stack>
                   <CompDrawer
                     comps={props.comps}
-                    schemas={props.schemas}
+                    schemas={props.context.states.schemas}
                     bindingContext={{
-                      ...props.context,
-                      form: formProps.form,
+                      states: {
+                        ...props.context.states,
+                        formState: formProps.form.getState(),
+                      },
+                      functions: {
+                        ...props.context.functions,
+                      },
                     }}
                   />
                 </Stack>
