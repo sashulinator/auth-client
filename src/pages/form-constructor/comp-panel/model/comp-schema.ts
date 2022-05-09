@@ -3,7 +3,7 @@ import { atom, selector } from 'recoil'
 import { Norm, Schema } from '@/common/types'
 import { CSchemasIdsInSchemaState, pickedFCompState } from '@/entities/schema'
 
-export const CSchemasState = atom<null | Norm<Schema>>({
+export const schemasState = atom<null | Norm<Schema>>({
   key: 'CSchemasState',
   default: null,
 })
@@ -11,7 +11,7 @@ export const CSchemasState = atom<null | Norm<Schema>>({
 export const pickedCSchemaState = selector({
   key: 'pickedCSchemaState',
   get: ({ get }) => {
-    const CSchemas = get(CSchemasState)
+    const CSchemas = get(schemasState)
     const pickedFComp = get(pickedFCompState)
 
     if (pickedFComp && CSchemas) {
@@ -31,7 +31,7 @@ export const pickedCSchemaState = selector({
 export const lackOfCSchemaIdsState = selector({
   key: 'lackOfCSchemaIdsState',
   get: ({ get }) => {
-    const CSchemas = get(CSchemasState)
+    const CSchemas = get(schemasState)
     const CSchemasIdsInSchema = get(CSchemasIdsInSchemaState)
 
     if (!CSchemas) {

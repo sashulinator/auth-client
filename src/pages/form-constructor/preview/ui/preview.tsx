@@ -1,6 +1,6 @@
 import './preview.css'
 
-import { CSchemasState } from '../../comp-panel/model/comp-schema'
+import { schemasState } from '../../comp-panel/model/comp-schema'
 import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
 import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
@@ -12,7 +12,7 @@ import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const [CSchemas] = useRecoilState(CSchemasState)
+  const [schemas] = useRecoilState(schemasState)
   const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
   const [selectedCompIds] = useRecoilState(selectedCompIdsState)
   const resetPickedFCompId = useResetRecoilState(selectedCompIdsState)
@@ -38,7 +38,7 @@ const Preview: FC = (): JSX.Element => {
     <div className="Preview">
       <div className="selectorArea" />
       <div className="hoverArea" />
-      {CSchemas && (
+      {schemas && (
         <Form
           key={JSON.stringify(currentSchemaHistory)}
           onSubmit={onSubmit}
@@ -47,11 +47,11 @@ const Preview: FC = (): JSX.Element => {
               <form onSubmit={formProps.handleSubmit}>
                 {currentSchemaHistory && (
                   <CompDrawer
-                    schemas={CSchemas}
+                    schemas={schemas}
                     comps={currentSchemaHistory.data.comps}
                     bindingContext={{
                       currentSchemaHistory,
-                      CSchemas,
+                      CSchemas: schemas,
                       setCurrentSchemaHistory,
                       form: formProps.form,
                     }}

@@ -140,7 +140,7 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
   return schemas as Norm<Schema>
 }
 
-export function useGetSchemaDependency(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
+export function useGetDependencySchemas(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
   return useQuery(['schemasDependencies', ...ids], queryFn)
 
   async function queryFn(): Promise<Norm<Schema> | undefined> {
