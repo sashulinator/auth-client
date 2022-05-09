@@ -8,12 +8,8 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
-import {
-  currentSchemaHistoryState,
-  pickedFCompIdsState,
-  pickedFCompState,
-  setFSchemaComps,
-} from '@/entities/schema/model/current-schema'
+import { pickedFCompIdsState, pickedFCompState } from '@/entities/schema'
+import { currentSchemaHistoryState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { removeEntity } from '@/lib/entity-actions'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 

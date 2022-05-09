@@ -7,7 +7,8 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { useGetSchemaDependency } from '@/api/schema'
 import { Comp } from '@/common/types'
-import { currentSchemaHistoryState, pickedFCompState, setFSchemaComps } from '@/entities/schema/model/current-schema'
+import { pickedFCompState } from '@/entities/schema'
+import { currentSchemaHistoryState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { replace } from '@/lib/change-unmutable'
 
 const CompPanel: FC = (): JSX.Element | null => {

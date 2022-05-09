@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { pickedFCompIdsState, pickedFCompState } from '@/entities/schema'
 import {
   addEntity,
   copyEntities,
@@ -16,14 +17,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import {
-  currentSchemaHistoryState,
-  pickedFCompIdsState,
-  pickedFCompState,
-  setFSchemaComps,
-  setNext,
-  setPrev,
-} from '@/pages/form-constructor/preview'
+import { currentSchemaHistoryState, setFSchemaComps, setNext, setPrev } from '@/pages/form-constructor/preview'
 
 export default function KeyListener(): null {
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)

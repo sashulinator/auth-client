@@ -10,12 +10,12 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
+import { pickedFCompIdsState } from '@/entities/schema'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
   currentSchemaHistoryState,
   highlightHover,
-  pickedFCompIdsState,
   removeAllHoverHighlights,
   setFSchemaComps,
 } from '@/pages/form-constructor/preview'
