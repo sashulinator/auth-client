@@ -1,8 +1,23 @@
-import { Comp, Norm, Schema } from '@/common/types'
+import { FormApi } from 'final-form'
+import { SetterOrUpdater } from 'recoil'
+
+import { Comp, History, Norm, Schema } from '@/common/types'
 
 export interface CompDrawerProps {
   comps: Norm<Comp>
   schemas: Norm<Schema>
+  bindingContext: BindingContext
+}
+
+export interface Context {
+  CSchemas: Norm<Schema>
+  FSchemaHistory: History<Schema>
+  setFSchemaHistory: SetterOrUpdater<History<Schema>>
+}
+
+export interface BindingContext extends Context {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: FormApi<any, any>
 }
 
 export interface DrawerComponentProps {
@@ -10,10 +25,12 @@ export interface DrawerComponentProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   schemas: Norm<Schema>
   comps: Norm<Comp>
+  bindingContext: BindingContext
 }
 
 export interface CompComponentFactory {
   compId: string
   comps: Norm<Comp>
   schemas: Norm<Schema>
+  bindingContext: BindingContext
 }

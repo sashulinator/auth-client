@@ -10,7 +10,7 @@ import { FSchemaHistoryState, pickedFCompIdsState } from '@/pages/form-construct
 import CompDrawer from '@/shared/draw-comps'
 
 const Preview: FC = (): JSX.Element => {
-  const [FSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
   const [CSchemas] = useRecoilState(CSchemasState)
   const resetFSchema = useResetRecoilState(FSchemaHistoryState)
   const [pickedFCompIds] = useRecoilState(pickedFCompIdsState)
@@ -44,7 +44,18 @@ const Preview: FC = (): JSX.Element => {
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {FSchemaHistory && <CompDrawer schemas={CSchemas} comps={FSchemaHistory.data.comps} />}
+                {FSchemaHistory && (
+                  <CompDrawer
+                    schemas={CSchemas}
+                    comps={FSchemaHistory.data.comps}
+                    bindingContext={{
+                      FSchemaHistory,
+                      CSchemas,
+                      setFSchemaHistory,
+                      form: formProps.form,
+                    }}
+                  />
+                )}
               </form>
             )
           }}

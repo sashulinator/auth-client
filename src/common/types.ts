@@ -8,6 +8,12 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: Norm<CompValidator>
+  injections?: [
+    {
+      fromGlobalPath: 'string'
+      toCompPath: 'string'
+    }
+  ]
 }
 
 export interface Schema {

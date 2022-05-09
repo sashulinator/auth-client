@@ -35,7 +35,15 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
   return (
     <Component {...props.comp.props} data-comp-id={props.comp.id}>
       {props.comp.children.map((compId) => {
-        return <ComponentFactory key={compId} comps={props.comps} compId={compId} schemas={props.schemas} />
+        return (
+          <ComponentFactory
+            bindingContext={props.bindingContext}
+            key={compId}
+            comps={props.comps}
+            compId={compId}
+            schemas={props.schemas}
+          />
+        )
       })}
     </Component>
   )

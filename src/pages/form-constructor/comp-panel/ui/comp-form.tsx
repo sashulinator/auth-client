@@ -6,13 +6,14 @@ import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/common/types'
 import Autosave, { AutosavePropsHOC } from '@/shared/autosave/ui/autosave'
-import CompDrawer from '@/shared/draw-comps'
+import CompDrawer, { Context } from '@/shared/draw-comps'
 
 interface CompFormProps {
   comp: Comp
   comps: Norm<Comp>
   schemas: Norm<Schema>
   onAutosave: AutosavePropsHOC['save']
+  context: Context
 }
 
 export default function CompForm(props: CompFormProps): JSX.Element {
@@ -45,7 +46,14 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   <CompContextualMenu />
                 </Stack>
                 <Stack>
-                  <CompDrawer comps={props.comps} schemas={props.schemas} />
+                  <CompDrawer
+                    comps={props.comps}
+                    schemas={props.schemas}
+                    bindingContext={{
+                      ...props.context,
+                      form: formProps.form,
+                    }}
+                  />
                 </Stack>
               </Stack>
             </Autosave>

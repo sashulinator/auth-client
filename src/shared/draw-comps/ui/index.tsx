@@ -13,12 +13,19 @@ export default function CompDrawer(props: CompDrawerProps): JSX.Element {
 
   assertNotUndefined(rootComp)
 
-  return <ComponentFactory comps={props.comps} compId={rootComp.id} schemas={props.schemas} />
+  return (
+    <ComponentFactory
+      bindingContext={props.bindingContext}
+      comps={props.comps}
+      compId={rootComp.id}
+      schemas={props.schemas}
+    />
+  )
 }
 
 /**
  * Компонент который не является инпутом это ContentComponent
- * Отличия FieldComponent от ContentComponent:
+ * Отличия ContentComponent от FieldComponent:
  * 1. могут быть дети
  * 2. не оборачивается в Field
  * 3. не генерирует ошибки
@@ -42,8 +49,12 @@ export function ComponentFactory(props: CompComponentFactory): JSX.Element | nul
   assertNotUndefined(сomponentItem)
 
   if (сomponentItem.type === 'input' || сomponentItem.type === 'checkbox') {
-    return <FieldComponent schemas={props.schemas} comp={comp} comps={props.comps} />
+    return (
+      <FieldComponent bindingContext={props.bindingContext} schemas={props.schemas} comp={comp} comps={props.comps} />
+    )
   }
 
-  return <ContentComponent schemas={props.schemas} comp={comp} comps={props.comps} />
+  return (
+    <ContentComponent bindingContext={props.bindingContext} schemas={props.schemas} comp={comp} comps={props.comps} />
+  )
 }
