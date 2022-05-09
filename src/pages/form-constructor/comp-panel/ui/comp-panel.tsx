@@ -3,7 +3,7 @@ import CompForm from './comp-form'
 import CompContextualMenu from './contextual-menu'
 import React, { FC, useEffect } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { useGetSchemaDependency } from '@/api/schema'
 import { Comp } from '@/common/types'
@@ -17,11 +17,9 @@ const CompPanel: FC = (): JSX.Element | null => {
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
-  const resetCSchemas = useResetRecoilState(CSchemasState)
 
   const { data, isLoading } = useGetSchemaDependency(lackOfCSchemaIds)
 
-  useEffect(() => resetCSchemas, [])
   useEffect(setFetchedSchemasToState, [data])
 
   function setFetchedSchemasToState() {
