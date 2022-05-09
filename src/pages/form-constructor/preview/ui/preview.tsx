@@ -6,7 +6,7 @@ import React, { FC, useEffect, useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { pickedFCompIdsState } from '@/entities/schema'
+import { selectedCompIdsState } from '@/entities/schema'
 import { currentSchemaHistoryState } from '@/entities/schema/model/current-schema'
 import CompDrawer from '@/shared/draw-comps'
 
@@ -14,16 +14,16 @@ const Preview: FC = (): JSX.Element => {
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const [CSchemas] = useRecoilState(CSchemasState)
   const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
-  const [pickedFCompIds] = useRecoilState(pickedFCompIdsState)
-  const resetPickedFCompId = useResetRecoilState(pickedFCompIdsState)
+  const [selectedCompIds] = useRecoilState(selectedCompIdsState)
+  const resetPickedFCompId = useResetRecoilState(selectedCompIdsState)
 
   useLayoutEffect(() => {
     removeAllSelectionHighlights()
 
-    pickedFCompIds.forEach((compId) => {
+    selectedCompIds.forEach((compId) => {
       highlightSelection(compId)
     })
-  }, [pickedFCompIds, currentSchemaHistory.data])
+  }, [selectedCompIds, currentSchemaHistory.data])
 
   useEffect(() => {
     resetFSchema()

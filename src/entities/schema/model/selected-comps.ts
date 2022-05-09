@@ -3,8 +3,8 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { currentSchemaHistoryState } from './current-schema'
 import { atom, selector } from 'recoil'
 
-export const pickedFCompIdsState = atom<string[]>({
-  key: 'pickedFCompIdsState',
+export const selectedCompIdsState = atom<string[]>({
+  key: 'selectedCompIdsState',
   default: [],
 })
 
@@ -14,14 +14,14 @@ export const pickedFCompState = selector({
   key: 'pickedFCompState',
   get: ({ get }) => {
     const currentSchemaHistory = get(currentSchemaHistoryState)
-    const pickedFCompIds = get(pickedFCompIdsState)
+    const selectedCompIds = get(selectedCompIdsState)
 
-    if (pickedFCompIds.length > 1) {
+    if (selectedCompIds.length > 1) {
       return null
     }
 
-    if (pickedFCompIds.length !== 0 && currentSchemaHistory.data) {
-      const pickedFComp = currentSchemaHistory.data.comps[pickedFCompIds[0] || '']
+    if (selectedCompIds.length !== 0 && currentSchemaHistory.data) {
+      const pickedFComp = currentSchemaHistory.data.comps[selectedCompIds[0] || '']
 
       assertNotUndefined(pickedFComp)
 

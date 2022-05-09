@@ -8,7 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
-import { pickedFCompIdsState, pickedFCompState } from '@/entities/schema'
+import { pickedFCompState, selectedCompIdsState } from '@/entities/schema'
 import { currentSchemaHistoryState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { removeEntity } from '@/lib/entity-actions'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
@@ -16,7 +16,7 @@ import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 export default function CompContextualMenu(): JSX.Element | null {
   const { t } = useTranslation()
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const [, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
+  const [, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const pickedFComp = useRecoilValue(pickedFCompState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
 
@@ -33,7 +33,7 @@ export default function CompContextualMenu(): JSX.Element | null {
         const comps = removeEntity(pickedFComp?.id, currentSchemaHistory.data.comps)
         assertNotUndefined(comps)
         setCurrentSchemaHistory(setFSchemaComps(comps))
-        setPickedFCompIds([])
+        setSelectedCompIds([])
       },
     })
   }

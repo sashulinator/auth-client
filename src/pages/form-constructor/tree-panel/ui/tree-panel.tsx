@@ -10,7 +10,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
-import { pickedFCompIdsState } from '@/entities/schema'
+import { selectedCompIdsState } from '@/entities/schema'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import {
@@ -23,13 +23,13 @@ import Tree from '@/shared/tree'
 
 function TreePanel(): JSX.Element {
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const [pickedFCompIds, setPickedFCompIds] = useRecoilState(pickedFCompIdsState)
+  const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState(rebuildTree)
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => setTree(rebuildTree), [currentSchemaHistory, pickedFCompIds])
+  useEffect(() => setTree(rebuildTree), [currentSchemaHistory, selectedCompIds])
 
   /**
    * Костыль! Tree требует чтобы высота родителя не менялась во время переноса компонента,
@@ -44,7 +44,7 @@ function TreePanel(): JSX.Element {
 
   function rebuildTree() {
     return buildTree(currentSchemaHistory.data?.comps, {
-      pickedIds: pickedFCompIds,
+      pickedIds: selectedCompIds,
       onItemClick,
       onMouseOver: highlightHover,
       onFocus: highlightHover,
@@ -60,15 +60,15 @@ function TreePanel(): JSX.Element {
     const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
     if (e[controlKeyName]) {
-      if (pickedFCompIds.includes(compId)) {
-        setPickedFCompIds(pickedFCompIds.filter((id) => id !== compId))
+      if (selectedCompIds.includes(compId)) {
+        setSelectedCompIds(selectedCompIds.filter((id) => id !== compId))
         return
       }
-      setPickedFCompIds([...new Set([...pickedFCompIds, compId])])
+      setSelectedCompIds([...new Set([...selectedCompIds, compId])])
       return
     }
 
-    setPickedFCompIds([compId])
+    setSelectedCompIds([compId])
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>, compId: string | number) {
@@ -77,16 +77,16 @@ function TreePanel(): JSX.Element {
     const controlKeyName = isMac() ? 'metaKey' : 'ctrlKey'
 
     if (e.key === 'Enter' && e[controlKeyName]) {
-      if (pickedFCompIds.includes(compId)) {
-        setPickedFCompIds(pickedFCompIds.filter((id) => id !== compId))
+      if (selectedCompIds.includes(compId)) {
+        setSelectedCompIds(selectedCompIds.filter((id) => id !== compId))
         return
       }
-      setPickedFCompIds([...new Set([...pickedFCompIds, compId])])
+      setSelectedCompIds([...new Set([...selectedCompIds, compId])])
       return
     }
 
     if (e.key === 'Enter') {
-      setPickedFCompIds([compId])
+      setSelectedCompIds([compId])
     }
   }
 
@@ -99,7 +99,7 @@ function TreePanel(): JSX.Element {
 
     let tempComps = currentSchemaHistory.data?.comps
 
-    pickedFCompIds.forEach((compId) => {
+    selectedCompIds.forEach((compId) => {
       const from = findEntityPosition(compId, tempComps)
       assertNotUndefined(from)
       setTree(moveItemOnTree(tree, from, to))
@@ -118,11 +118,11 @@ function TreePanel(): JSX.Element {
   function PreventMovingUnpickedItems(compId: string | number) {
     assertString(compId)
 
-    if (pickedFCompIds.includes(compId)) {
+    if (selectedCompIds.includes(compId)) {
       return
     }
 
-    setPickedFCompIds([compId])
+    setSelectedCompIds([compId])
   }
 
   return (

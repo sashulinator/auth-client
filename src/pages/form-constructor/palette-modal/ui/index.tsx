@@ -9,7 +9,7 @@ import { useRecoilState } from 'recoil'
 import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
-import { pickedFCompIdsState } from '@/entities/schema'
+import { selectedCompIdsState } from '@/entities/schema'
 import { currentSchemaHistoryState, setFSchemaComps } from '@/entities/schema/model/current-schema'
 import { remove } from '@/lib/change-unmutable'
 import { addEntity, copyEntities, findEntityPosition } from '@/lib/entity-actions'
@@ -17,21 +17,21 @@ import { createNewComp } from '@/shared/draw-comps/lib/actions'
 
 const PaletteModal: FC = (): JSX.Element => {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
-  const [pickedFCompIds, setPickedCompIds] = useRecoilState(pickedFCompIdsState)
+  const [selectedCompIds, setPickedCompIds] = useRecoilState(selectedCompIdsState)
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
 
   const { data } = useQuery('schemas', getSchemaList)
 
   function onAdd(schema: Schema) {
     const createdNewComp = createNewComp(schema)
-    const isRoot = pickedFCompIds.includes(ROOT_ID)
-    const isToRoot = pickedFCompIds.length === 0 || isRoot
+    const isRoot = selectedCompIds.includes(ROOT_ID)
+    const isToRoot = selectedCompIds.length === 0 || isRoot
 
     if (isToRoot) {
       const comps = addEntity(createdNewComp, ROOT_ID, 0, currentSchemaHistory.data.comps)
       setCurrentSchemaHistory(setFSchemaComps(comps))
     } else {
-      const position = findEntityPosition(pickedFCompIds[0] || '', currentSchemaHistory.data.comps)
+      const position = findEntityPosition(selectedCompIds[0] || '', currentSchemaHistory.data.comps)
       assertNotUndefined(position)
       const comps = addEntity(
         createdNewComp,
@@ -42,7 +42,7 @@ const PaletteModal: FC = (): JSX.Element => {
       setCurrentSchemaHistory(setFSchemaComps(comps))
     }
 
-    if (pickedFCompIds.length === 0) {
+    if (selectedCompIds.length === 0) {
       setPickedCompIds([createdNewComp.id])
     }
 
@@ -52,14 +52,14 @@ const PaletteModal: FC = (): JSX.Element => {
   function addPreset(schema: Schema) {
     const copiedComps = copyEntities(remove(schema.comps, ROOT_ID))
 
-    const isRoot = pickedFCompIds.includes(ROOT_ID)
-    const isToRoot = pickedFCompIds.length === 0 || isRoot
+    const isRoot = selectedCompIds.includes(ROOT_ID)
+    const isToRoot = selectedCompIds.length === 0 || isRoot
 
     const newComps = Object.values(copiedComps).reduce((acc, comp) => {
       if (isToRoot) {
         acc = addEntity(comp, ROOT_ID, 0, acc)
       } else {
-        const position = findEntityPosition(pickedFCompIds[0] || '', acc)
+        const position = findEntityPosition(selectedCompIds[0] || '', acc)
         assertNotUndefined(position)
         acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
       }
