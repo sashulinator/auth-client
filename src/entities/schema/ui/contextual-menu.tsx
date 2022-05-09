@@ -27,7 +27,7 @@ export default function CompContextualMenu(props: CompContextualMenuProps): JSX.
     })
   }
 
-  if (props.schemas?.[props.comp.id]) {
+  if (props.schemas?.[props.comp.compSchemaId]) {
     items.push({
       key: 'editThisForm',
       text: t('formConstructorPage.editThisForm'),
