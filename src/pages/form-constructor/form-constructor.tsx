@@ -20,7 +20,7 @@ import { useParams } from 'react-router-dom'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
-import { Comp } from '@/common/types'
+import { Comp, Norm } from '@/common/types'
 import ROUTES from '@/constants/routes'
 import { selectedCompIdsState } from '@/entities/schema'
 import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
@@ -93,7 +93,11 @@ const FormConstructor: FC = (): JSX.Element => {
     setCurrentSchemaHistory(upsertCurrentSchemaComp(comp))
   }
 
-  function removeCompFromState(compId: string) {
+  function upsertCompsToCurrentSchemaState(comps: Norm<Comp>) {
+    setCurrentSchemaHistory(setFSchemaComps(comps))
+  }
+
+  function removeCompFromState(compId: string): void {
     assertNotNull(currentSchemaHistory)
 
     const comps = removeEntity(compId, currentSchemaHistory.data.comps)
@@ -106,9 +110,22 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
-  function openSchemaInNewTab(schemaId: string) {
+  function openSchemaInNewTab(schemaId: string): void {
     const url = ROUTES.FORM_CONSTRUCTOR.buildURL(schemaId)
     window.open(url, '_blanc')?.focus()
+  }
+
+  function selectAndUnselectComp(compId: string | string[]): void {
+    if (Array.isArray(compId)) {
+      setSelectedCompIds(compId)
+      return
+    }
+
+    if (selectedCompIds.includes(compId)) {
+      setSelectedCompIds(selectedCompIds.filter((id) => id !== compId))
+    } else {
+      setSelectedCompIds([...new Set([...selectedCompIds, compId])])
+    }
   }
 
   return (
@@ -117,7 +134,12 @@ const FormConstructor: FC = (): JSX.Element => {
       <Header />
       <div className="fakeHeader" />
       <Stack as="main" className="FormConstructor">
-        <TreePanel />
+        <TreePanel
+          schema={currentSchemaHistory.data}
+          selectAndUnselectComp={selectAndUnselectComp}
+          upsertComps={upsertCompsToCurrentSchemaState}
+          selectedCompIds={selectedCompIds}
+        />
         <Preview context={context} />
         <CompPanel
           onSubmit={upsertCompToCurrentSchemaState}
