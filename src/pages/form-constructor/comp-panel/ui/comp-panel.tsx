@@ -1,17 +1,20 @@
 import { CSchemasState, lackOfCSchemaIdsState, pickedCSchemaState } from '../model/comp-schema'
 import CompForm from './comp-form'
 import CompContextualMenu from './contextual-menu'
-import React, { FC, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
 import { useGetSchemaDependency } from '@/api/schema'
-import { Comp } from '@/common/types'
 import { pickedFCompState } from '@/entities/schema'
-import { currentSchemaHistoryState, setFSchemaComps } from '@/entities/schema/model/current-schema'
-import { replace } from '@/lib/change-unmutable'
+import { currentSchemaHistoryState } from '@/entities/schema/model/current-schema'
+import { AutosavePropsHOC } from '@/shared/autosave/ui/autosave'
 
-const CompPanel: FC = (): JSX.Element | null => {
+interface CompPanelProps {
+  onSubmit: AutosavePropsHOC['save']
+}
+
+export default function CompPanel(props: CompPanelProps): JSX.Element | null {
   const [CSchemas, setCSchemas] = useRecoilState(CSchemasState)
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const pickedCSchema = useRecoilValue(pickedCSchemaState)
@@ -26,11 +29,6 @@ const CompPanel: FC = (): JSX.Element | null => {
     if (data !== undefined) {
       setCSchemas({ ...data, ...CSchemas })
     }
-  }
-
-  function onAutosave(comp: Comp) {
-    const newComps = replace(currentSchemaHistory.data.comps, comp.id, comp)
-    setCurrentSchemaHistory(setFSchemaComps(newComps))
   }
 
   if (!(pickedCSchema && pickedFComp && CSchemas)) {
@@ -48,11 +46,9 @@ const CompPanel: FC = (): JSX.Element | null => {
           setCurrentSchemaHistory,
           CSchemas,
         }}
-        onAutosave={onAutosave}
+        onSubmit={props.onSubmit}
       />
       {!isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
     </PerfectScrollbar>
   )
 }
-
-export default CompPanel

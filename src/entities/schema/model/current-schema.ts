@@ -2,6 +2,7 @@ import { atom } from 'recoil'
 
 import { Comp, FormType, History, Norm, Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { replace } from '@/lib/change-unmutable'
 
 // STATES
 
@@ -42,6 +43,18 @@ export function setFSchema(schema: Schema) {
 
 export function setFSchemaComps(comps: Norm<Comp>) {
   return (currentSchemaHistory: History<Schema>): History<Schema> => {
+    return {
+      prev: currentSchemaHistory,
+      next: null,
+      data: { ...currentSchemaHistory.data, comps },
+    }
+  }
+}
+
+export function upsertCurrentSchemaComp(comp: Comp) {
+  return (currentSchemaHistory: History<Schema>): History<Schema> => {
+    const comps = replace(currentSchemaHistory.data.comps, comp.id, comp)
+
     return {
       prev: currentSchemaHistory,
       next: null,

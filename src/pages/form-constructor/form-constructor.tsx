@@ -2,7 +2,7 @@ import { Stack } from '@fluentui/react'
 
 import './form-constructor.css'
 
-import { currentSchemaHistoryState } from '../../entities/schema/model/current-schema'
+import { currentSchemaHistoryState, upsertCurrentSchemaComp } from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
 import { CSchemasState } from './comp-panel/model/comp-schema'
 import KeyListener from './key-listener'
@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 
 import { getSchema } from '@/api/schema'
+import { Comp } from '@/common/types'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
@@ -34,6 +35,10 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
+  function upsertCompToCurrentSchemaState(comp: Comp) {
+    setCurrentSchemaHistory(upsertCurrentSchemaComp(comp))
+  }
+
   return (
     <>
       <KeyListener />
@@ -42,7 +47,7 @@ const FormConstructor: FC = (): JSX.Element => {
       <Stack as="main" className="FormConstructor">
         <TreePanel />
         <Preview />
-        <CompPanel />
+        <CompPanel onSubmit={upsertCompToCurrentSchemaState} />
         <PaletteModal />
       </Stack>
     </>

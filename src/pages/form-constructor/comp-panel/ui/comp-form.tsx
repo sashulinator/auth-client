@@ -12,7 +12,7 @@ interface CompFormProps {
   comp: Comp
   comps: Norm<Comp>
   schemas: Norm<Schema>
-  onAutosave: AutosavePropsHOC['save']
+  onSubmit: AutosavePropsHOC['save']
   context: Context
 }
 
@@ -30,7 +30,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
     <Form<Comp, Comp>
       initialValues={props.comp}
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onSubmit={props.onAutosave}
+      onSubmit={props.onSubmit}
       render={(formProps) => {
         return (
           <form onSubmit={formProps.handleSubmit} ref={formRef}>
