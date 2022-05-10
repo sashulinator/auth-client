@@ -2,15 +2,21 @@ import { assertNotUndefined, buildObjectByPath } from '@savchenko91/schema-valid
 
 import buildValidator from '../lib/build-validators'
 import componentList from '../lib/component-list'
-import { DrawerComponentProps } from '../types'
+import { Context } from '../types'
 import get from 'lodash.get'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
-import { Comp } from '@/entities/schema/model/types'
+import { Comp, Norm, Schema } from '@/entities/schema/model/types'
 import FieldError from '@/shared/field-error'
 
-const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {
+interface FieldComponentProps {
+  comp: Comp
+  schemas: Norm<Schema>
+  context: Context
+}
+
+const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {
   const CSchema = props.schemas[props.comp.compSchemaId]
 
   if (CSchema?.componentName === null || CSchema === undefined) {
@@ -31,13 +37,13 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
     }
 
     return providers?.reduce<Comp>((accComp, provider) => {
-      if (!provider.fromGlobalPath || !provider.toCompPath) {
+      if (!provider.global || !provider.name) {
         return comp
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const data = get({ context: props.bindingContext }, provider.fromGlobalPath as any)
+      const data = get({ context: props.context }, provider.global as any)
 
-      const newProps = (buildObjectByPath({ ...accComp }, provider.toCompPath, data) as unknown) as Comp
+      const newProps = (buildObjectByPath({ ...accComp }, provider.name, data) as unknown) as Comp
       return newProps
     }, comp)
   }
@@ -53,7 +59,7 @@ const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps)
     >
       {({ input, meta }) => {
         return (
-          <div data-comp-id={props.comp.id} className="FieldErrorPositionRelative">
+          <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
             <Component {...injectedComp.props} {...input} />
             <FieldError meta={meta} />
           </div>

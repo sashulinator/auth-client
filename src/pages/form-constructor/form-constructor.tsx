@@ -22,7 +22,7 @@ import {
   CompContextualMenu,
   Norm,
   currentSchemaHistoryState,
-  defineSelectedComp,
+  defineSelectedComp as definePropertyPanelComp,
   findMissingSchemaIds,
   nextSetter,
   prevSetter,
@@ -41,7 +41,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { InitialContext } from '@/shared/draw-comps'
+import findCompSchema from '@/shared/draw-comps/lib/find-comp-schema'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
@@ -51,17 +51,18 @@ const FormConstructor: FC = (): JSX.Element => {
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const resetCSchemas = useResetRecoilState(schemasState)
-  const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
-  const resetPickedFCompId = useResetRecoilState(selectedCompIdsState)
+  const resetSchemas = useResetRecoilState(schemasState)
+  const resetCurrentSchemaHistory = useResetRecoilState(currentSchemaHistoryState)
+  const resetSelectedCompIds = useResetRecoilState(selectedCompIdsState)
   const missingSchemaIds = findMissingSchemaIds(currentSchemaHistory.data, schemas)
-  const selectedComp = defineSelectedComp(currentSchemaHistory.data, selectedCompIds)
-  const context: InitialContext = {
+  const propertyPanelComp = definePropertyPanelComp(currentSchemaHistory.data, selectedCompIds)
+  const propertyPanelSchema = findCompSchema(propertyPanelComp?.id, schemas)
+  const context = {
     states: {
       schemas,
       currentSchema: currentSchemaHistory.data,
       selectedCompIds,
-      selectedComp,
+      propertyPanelComp,
       selectedCompSchema,
     },
     functions: {
@@ -77,12 +78,12 @@ const FormConstructor: FC = (): JSX.Element => {
   )
 
   useEffect(() => {
-    resetCSchemas()
-    resetFSchema()
-    resetPickedFCompId()
+    resetSchemas()
+    resetCurrentSchemaHistory()
+    resetSelectedCompIds()
   }, [])
   useEffect(setFetchedCurrentSchemaToState, [fetchedCurrentSchema])
-  useEffect(updateSelectedCompSchema, [selectedComp, schemas])
+  useEffect(updateSelectedCompSchema, [propertyPanelComp, schemas])
   useEffect(setFetchedSchemasToState, [fetchedDependencySchemas])
 
   function setFetchedCurrentSchemaToState() {
@@ -98,8 +99,8 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function updateSelectedCompSchema() {
-    if (selectedComp?.compSchemaId) {
-      setSelectedCompSchema(schemas?.[selectedComp?.compSchemaId] ?? null)
+    if (propertyPanelComp?.compSchemaId) {
+      setSelectedCompSchema(schemas?.[propertyPanelComp?.compSchemaId] ?? null)
     }
   }
 
@@ -119,7 +120,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
     setCurrentSchemaHistory(updateCompsSetter(comps))
 
-    if (compId === selectedComp?.id) {
+    if (compId === propertyPanelComp?.id) {
       setSelectedCompIds([])
     }
   }
@@ -238,11 +239,14 @@ const FormConstructor: FC = (): JSX.Element => {
           upsertComps={updateCompsInCurrentSchemaState}
           selectedCompIds={selectedCompIds}
         />
-        <Preview context={context} />
+        <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
         <CompPanel
           onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
           context={context}
+          schemas={schemas}
+          schema={propertyPanelSchema}
+          comp={propertyPanelComp}
           ContextualMenu={(props) => (
             <CompContextualMenu
               comp={props.comp}

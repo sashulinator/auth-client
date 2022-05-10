@@ -5,39 +5,37 @@ import { Config } from 'final-form'
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
-import { Comp } from '@/entities/schema'
-import { Context, InitialContext } from '@/shared/draw-comps'
+import { Comp, Norm, Schema } from '@/entities/schema'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
   isLoading: boolean
-  context: InitialContext
+  context: Record<string, unknown>
+  schemas: Norm<Schema> | null
+  schema: Schema | null
+  comp: Comp | null
   ContextualMenu: (props: { comp: Comp }) => JSX.Element
 }
 
 export default function CompPanel(props: CompPanelProps): JSX.Element | null {
-  const { ContextualMenu } = props
+  const schemaIsMissing = !props.isLoading && !props.schema
 
-  const { selectedComp, selectedCompSchema, schemas } = props.context.states
-
-  const schemaIsMissing = !props.isLoading && selectedComp && !selectedCompSchema
-
-  if (!schemas || !selectedComp) {
+  if (!props.schemas || !props.comp) {
     return null
-  }
-
-  const context: Context = {
-    ...props.context,
-    states: {
-      ...props.context.states,
-      schemas,
-    },
   }
 
   return (
     <PerfectScrollbar className="CompPanel">
-      {schemaIsMissing || (selectedComp && <ContextualMenu comp={selectedComp} />)}
-      {selectedCompSchema && <CompForm schema={selectedCompSchema} context={context} onSubmit={props.onSubmit} />}
+      {schemaIsMissing && <props.ContextualMenu comp={props.comp} />}
+      {props.schema && (
+        <CompForm
+          schema={props.schema}
+          schemas={props.schemas}
+          comp={props.comp}
+          context={props.context}
+          onSubmit={props.onSubmit}
+        />
+      )}
     </PerfectScrollbar>
   )
 }

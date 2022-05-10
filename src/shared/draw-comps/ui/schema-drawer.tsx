@@ -1,29 +1,30 @@
 import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import componentList from '../lib/component-list'
-import { CompComponentFactory, CompDrawerProps } from '../types'
+import { Context } from '../types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import React from 'react'
 
 import { ROOT_ID } from '@/constants/common'
+import { Comp, Norm, Schema } from '@/entities/schema'
 
-export default function CompDrawer(props: CompDrawerProps): JSX.Element | null {
-  const { schemas } = props.bindingContext.states
-  const rootComp = props.comps[ROOT_ID]
+interface SchemaDrawerProps {
+  schemas: Norm<Schema>
+  schema: Schema
+  context: Context
+}
+
+export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
+  const rootComp = props.schema.comps[ROOT_ID]
 
   assertNotUndefined(rootComp)
 
-  if (schemas === null) {
+  if (props.schemas === null) {
     return null
   }
   return (
-    <ComponentFactory
-      bindingContext={props.bindingContext}
-      comps={props.comps}
-      compId={rootComp.id}
-      schemas={schemas}
-    />
+    <ComponentFactory context={props.context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
   )
 }
 
@@ -34,7 +35,14 @@ export default function CompDrawer(props: CompDrawerProps): JSX.Element | null {
  * 2. не оборачивается в Field
  * 3. не генерирует ошибки
  */
-export function ComponentFactory(props: CompComponentFactory): JSX.Element | null {
+interface ComponentFactoryProps {
+  schemas: Norm<Schema>
+  comps: Norm<Comp>
+  compId: string
+  context: Context
+}
+
+export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
   const comp = props.comps[props.compId]
 
   assertNotUndefined(comp)
@@ -53,12 +61,8 @@ export function ComponentFactory(props: CompComponentFactory): JSX.Element | nul
   assertNotUndefined(сomponentItem)
 
   if (сomponentItem.type === 'input' || сomponentItem.type === 'checkbox') {
-    return (
-      <FieldComponent bindingContext={props.bindingContext} schemas={props.schemas} comp={comp} comps={props.comps} />
-    )
+    return <FieldComponent context={props.context} schemas={props.schemas} comp={comp} />
   }
 
-  return (
-    <ContentComponent bindingContext={props.bindingContext} schemas={props.schemas} comp={comp} comps={props.comps} />
-  )
+  return <ContentComponent context={props.context} schemas={props.schemas} comp={comp} comps={props.comps} />
 }

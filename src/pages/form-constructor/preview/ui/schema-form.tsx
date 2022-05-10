@@ -65,13 +65,13 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(submitFschemaData: Schema): Promise<void | ErrorCollection> {
-    const { title, type } = submitFschemaData
+  async function onSubmit(submitSchemaData: Schema): Promise<void | ErrorCollection> {
+    const { title, type } = submitSchemaData
 
-    const newComponentName = type !== FormType.COMP ? null : submitFschemaData.componentName
+    const newComponentName = type !== FormType.COMP ? null : submitSchemaData.componentName
     const newId = id ? id : uuid()
 
-    const newFSchema = {
+    const newSchema: Schema = {
       ...currentSchemaHistory.data,
       id: newId,
       componentName: newComponentName,
@@ -81,9 +81,9 @@ export default function SchemaForm(): JSX.Element {
 
     try {
       if (id) {
-        await apiUpdateSchema(newFSchema)
+        await apiUpdateSchema(newSchema)
       } else {
-        await apiCreateSchema(newFSchema)
+        await apiCreateSchema(newSchema)
       }
       // TODO возвращать ошибки валидатора только плюс потом появится бэк на джаве
       // и надо будет изменять формат этих ошибок под формат final-form

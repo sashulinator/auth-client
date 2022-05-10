@@ -4,63 +4,40 @@ import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlig
 import React, { useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 
-import CompDrawer, { Context, InitialContext } from '@/shared/draw-comps'
+import { Norm, Schema } from '@/entities/schema'
+import CompDrawer from '@/shared/draw-comps'
 
 interface PreviewProps {
-  context: InitialContext
+  schema: Schema
+  schemas: Norm<Schema> | null
+  selectedCompIds: string[]
 }
 
 export default function Preview(props: PreviewProps): JSX.Element {
-  const { currentSchema, schemas } = props.context.states
-
+  const { schemas, schema } = props
   useLayoutEffect(() => {
     removeAllSelectionHighlights()
-    props.context.states.selectedCompIds.forEach((compId) => {
+    props.selectedCompIds.forEach((compId) => {
       highlightSelection(compId)
     })
-  }, [props.context.states.selectedCompIds, currentSchema])
+  }, [props.selectedCompIds, props.schema])
 
   function onSubmit(data: unknown) {
     console.log('data', data)
-  }
-
-  if (schemas === null) {
-    return <div className="Preview" />
-  }
-
-  const context: Context = {
-    ...props.context,
-    states: {
-      ...props.context.states,
-      schemas,
-    },
   }
 
   return (
     <div className="Preview">
       <div className="selectorArea" />
       <div className="hoverArea" />
-      {schemas && (
+      {schemas && schema && (
         <Form
-          key={JSON.stringify(currentSchema)}
+          key={JSON.stringify(props.schema)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {currentSchema && (
-                  <CompDrawer
-                    comps={currentSchema.comps}
-                    bindingContext={{
-                      states: {
-                        ...context.states,
-                        formState: formProps.form.getState(),
-                      },
-                      functions: {
-                        ...props.context.functions,
-                      },
-                    }}
-                  />
-                )}
+                <CompDrawer schema={schema} schemas={schemas} context={{ formState: formProps.form.getState() }} />
               </form>
             )
           }}

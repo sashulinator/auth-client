@@ -4,14 +4,16 @@ import { Config } from 'final-form'
 import React, { useRef } from 'react'
 import { Form } from 'react-final-form'
 
-import { Comp, Schema } from '@/entities/schema'
+import { Comp, Norm, Schema } from '@/entities/schema'
 import Autosave from '@/shared/autosave/ui/autosave'
-import CompDrawer, { Context } from '@/shared/draw-comps'
+import CompDrawer from '@/shared/draw-comps'
 
 interface CompFormProps {
   schema: Schema
+  schemas: Norm<Schema>
   onSubmit: Config<Comp, Comp>['onSubmit']
-  context: Context
+  context: Record<string, unknown>
+  comp: Comp
 }
 
 export default function CompForm(props: CompFormProps): JSX.Element {
@@ -26,7 +28,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
 
   return (
     <Form<Comp, Comp>
-      initialValues={props.context.states.selectedComp || undefined}
+      initialValues={props.comp || undefined}
       onSubmit={props.onSubmit}
       render={(formProps) => {
         return (
@@ -39,20 +41,13 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   horizontalAlign="space-between"
                   verticalAlign="center"
                 >
-                  <Stack as="h2">{props.context.states.selectedComp?.title}</Stack>
+                  <Stack as="h2">{props.comp.title}</Stack>
                 </Stack>
                 <Stack>
                   <CompDrawer
-                    comps={props.schema.comps}
-                    bindingContext={{
-                      states: {
-                        ...props.context.states,
-                        formState: formProps.form.getState(),
-                      },
-                      functions: {
-                        ...props.context.functions,
-                      },
-                    }}
+                    schema={props.schema}
+                    schemas={props.schemas}
+                    context={{ formState: formProps.form.getState(), ...props.context }}
                   />
                 </Stack>
               </Stack>

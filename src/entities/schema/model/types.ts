@@ -18,14 +18,18 @@ export interface Comp {
   validators?: Norm<CompValidator>
   injections?: [
     {
-      fromGlobalPath: 'string'
-      toCompPath: 'string'
+      global: 'string'
+      name: 'string'
     }
   ]
 }
 
-export interface Schema {
+export type Schema = Omit<CompSchema, 'componentName'> & {
   componentName: null | string
+}
+
+export interface CompSchema {
+  componentName: string
   id: string
   title: string
   type: FormType

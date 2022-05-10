@@ -1,12 +1,20 @@
 import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import componentList from '../lib/component-list'
-import { DrawerComponentProps } from '../types'
-// import { runAction } from '../../helpers/constructor-actions'
-import { ComponentFactory } from './index'
+import { Context } from '../types'
+import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 
-const ContentComponent = memo(function ContentComponent(props: DrawerComponentProps): JSX.Element | null {
+import { Comp, Norm, Schema } from '@/entities/schema'
+
+interface ContentComponentProps {
+  schemas: Norm<Schema>
+  comps: Norm<Comp>
+  comp: Comp
+  context: Context
+}
+
+const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {
   assertNotUndefined(props.comp)
 
   const CSchema = props.schemas[props.comp.compSchemaId]
@@ -37,11 +45,11 @@ const ContentComponent = memo(function ContentComponent(props: DrawerComponentPr
       {props.comp.children.map((compId) => {
         return (
           <ComponentFactory
-            bindingContext={props.bindingContext}
             key={compId}
             comps={props.comps}
             compId={compId}
             schemas={props.schemas}
+            context={props.context}
           />
         )
       })}
