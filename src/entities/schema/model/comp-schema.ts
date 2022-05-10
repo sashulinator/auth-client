@@ -13,6 +13,7 @@ export const selectedCompSchemaState = atom<null | Schema>({
   default: null,
 })
 
+// TODO вынести в отдельную функцию чтобы этот стейт ничего не знал о других
 export const lackOfCSchemaIdsState = selector({
   key: 'lackOfCSchemaIdsState',
   get: ({ get }) => {

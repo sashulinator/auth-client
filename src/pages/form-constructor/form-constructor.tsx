@@ -3,15 +3,7 @@ import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator
 
 import './form-constructor.css'
 
-import {
-  currentSchemaHistoryState,
-  setFSchemaComps,
-  setNext,
-  setPrev,
-  upsertCurrentSchemaComp,
-} from '../../entities/schema/model/current-schema'
 import CompPanel from './comp-panel'
-import { lackOfCSchemaIdsState, schemasState, selectedCompSchemaState } from './comp-panel/model/comp-schema'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
@@ -26,9 +18,19 @@ import { schemaValidator } from '@/common/schemas'
 import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
-import { selectedCompIdsState } from '@/entities/schema'
+import {
+  CompContextualMenu,
+  currentSchemaHistoryState,
+  lackOfCSchemaIdsState,
+  schemasState,
+  selectedCompIdsState,
+  selectedCompSchemaState,
+  setFSchemaComps,
+  setNext,
+  setPrev,
+  upsertCurrentSchemaComp,
+} from '@/entities/schema'
 import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
-import CompContextualMenu from '@/entities/schema/ui/contextual-menu'
 import {
   addEntity,
   copyEntities,
