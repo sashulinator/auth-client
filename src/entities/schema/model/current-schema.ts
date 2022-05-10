@@ -31,7 +31,7 @@ export const currentSchemaHistoryState = atom<History<Schema>>({
 
 // SETTERS
 
-export function setFSchema(schema: Schema) {
+export function schemaSetter(schema: Schema) {
   return (currentSchemaHistory: History<Schema>): History<Schema> => {
     return {
       prev: currentSchemaHistory,
@@ -41,7 +41,7 @@ export function setFSchema(schema: Schema) {
   }
 }
 
-export function setFSchemaComps(comps: Norm<Comp>) {
+export function updateCompsSetter(comps: Norm<Comp>) {
   return (currentSchemaHistory: History<Schema>): History<Schema> => {
     return {
       prev: currentSchemaHistory,
@@ -51,7 +51,7 @@ export function setFSchemaComps(comps: Norm<Comp>) {
   }
 }
 
-export function upsertCurrentSchemaComp(comp: Comp) {
+export function updateCompSetter(comp: Comp) {
   return (currentSchemaHistory: History<Schema>): History<Schema> => {
     const comps = replace(currentSchemaHistory.data.comps, comp.id, comp)
 
@@ -63,7 +63,7 @@ export function upsertCurrentSchemaComp(comp: Comp) {
   }
 }
 
-export function setPrev(currentSchemaHistory: History<Schema>): History<Schema> {
+export function prevSetter(currentSchemaHistory: History<Schema>): History<Schema> {
   if (currentSchemaHistory.prev === null) {
     return currentSchemaHistory
   }
@@ -77,7 +77,7 @@ export function setPrev(currentSchemaHistory: History<Schema>): History<Schema> 
   return newState
 }
 
-export function setNext(currentSchemaHistory: History<Schema>): History<Schema> {
+export function nextSetter(currentSchemaHistory: History<Schema>): History<Schema> {
   if (currentSchemaHistory.next === null) {
     return currentSchemaHistory
   }

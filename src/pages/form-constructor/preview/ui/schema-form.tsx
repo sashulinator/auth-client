@@ -1,7 +1,7 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
 import { ErrorCollection } from '@savchenko91/schema-validator'
 
-import { currentSchemaHistoryState, setFSchema } from '../../../../entities/schema/model/current-schema'
+import { currentSchemaHistoryState, schemaSetter } from '../../../../entities/schema/model/current-schema'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -94,7 +94,7 @@ export default function SchemaForm(): JSX.Element {
   }
 
   function onDropdownChange(type: FormType) {
-    setCurrentSchemaHistory(setFSchema({ ...currentSchemaHistory.data, type }))
+    setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, type }))
   }
 
   //TODO обновить схему в стэйте если меняется дропдаун для componentName

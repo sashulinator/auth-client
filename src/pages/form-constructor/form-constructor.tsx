@@ -22,13 +22,13 @@ import {
   CompContextualMenu,
   currentSchemaHistoryState,
   lackOfCSchemaIdsState,
+  nextSetter,
+  prevSetter,
   schemasState,
   selectedCompIdsState,
   selectedCompSchemaState,
-  setFSchemaComps,
-  setNext,
-  setPrev,
-  upsertCurrentSchemaComp,
+  updateCompSetter,
+  updateCompsSetter,
 } from '@/entities/schema'
 import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
 import {
@@ -103,12 +103,12 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
-  function upsertCompToCurrentSchemaState(comp: Comp) {
-    setCurrentSchemaHistory(upsertCurrentSchemaComp(comp))
+  function updateCompInCurrentSchemaState(comp: Comp) {
+    setCurrentSchemaHistory(updateCompSetter(comp))
   }
 
-  function upsertCompsToCurrentSchemaState(comps: Norm<Comp>) {
-    setCurrentSchemaHistory(setFSchemaComps(comps))
+  function updateCompsInCurrentSchemaState(comps: Norm<Comp>) {
+    setCurrentSchemaHistory(updateCompsSetter(comps))
   }
 
   function removeCompFromState(compId: string): void {
@@ -117,7 +117,7 @@ const FormConstructor: FC = (): JSX.Element => {
     const comps = removeEntity(compId, currentSchemaHistory.data.comps)
     assertNotUndefined(comps)
 
-    setCurrentSchemaHistory(setFSchemaComps(comps))
+    setCurrentSchemaHistory(updateCompsSetter(comps))
 
     if (compId === selectedComp?.id) {
       setSelectedCompIds([])
@@ -159,7 +159,7 @@ const FormConstructor: FC = (): JSX.Element => {
       // TODO проверяет только в корне а надо везде!!
       keepCompsSelected(currentSchemaHistory.prev.data.comps[ROOT_ID]?.children)
     }
-    setCurrentSchemaHistory(setPrev)
+    setCurrentSchemaHistory(prevSetter)
   }
 
   function redo() {
@@ -167,7 +167,7 @@ const FormConstructor: FC = (): JSX.Element => {
       // TODO проверяет только в корне а надо везде!!
       keepCompsSelected(currentSchemaHistory.next.data.comps[ROOT_ID]?.children)
     }
-    setCurrentSchemaHistory(setNext)
+    setCurrentSchemaHistory(nextSetter)
   }
 
   function copyToClipboard() {
@@ -206,7 +206,7 @@ const FormConstructor: FC = (): JSX.Element => {
         return acc
       }, mergedComps)
 
-      setCurrentSchemaHistory(setFSchemaComps(newComps))
+      setCurrentSchemaHistory(updateCompsSetter(newComps))
 
       if (selectedCompIds.length === 0) {
         setSelectedCompIds(comps[0] ? [comps[0].id] : [])
@@ -232,12 +232,12 @@ const FormConstructor: FC = (): JSX.Element => {
         <TreePanel
           schema={currentSchemaHistory.data}
           selectAndUnselectComp={selectAndUnselectComp}
-          upsertComps={upsertCompsToCurrentSchemaState}
+          upsertComps={updateCompsInCurrentSchemaState}
           selectedCompIds={selectedCompIds}
         />
         <Preview context={context} />
         <CompPanel
-          onSubmit={upsertCompToCurrentSchemaState}
+          onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
           context={context}
           ContextualMenu={(props) => (

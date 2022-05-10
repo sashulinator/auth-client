@@ -10,7 +10,7 @@ import { getSchemaList } from '@/api/schema'
 import { Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
 import { selectedCompIdsState } from '@/entities/schema'
-import { currentSchemaHistoryState, setFSchemaComps } from '@/entities/schema/model/current-schema'
+import { currentSchemaHistoryState, updateCompsSetter } from '@/entities/schema/model/current-schema'
 import { remove } from '@/lib/change-unmutable'
 import { addEntity, copyEntities, findEntityPosition } from '@/lib/entity-actions'
 import { createNewComp } from '@/shared/draw-comps/lib/actions'
@@ -29,7 +29,7 @@ const PaletteModal: FC = (): JSX.Element => {
 
     if (isToRoot) {
       const comps = addEntity(createdNewComp, ROOT_ID, 0, currentSchemaHistory.data.comps)
-      setCurrentSchemaHistory(setFSchemaComps(comps))
+      setCurrentSchemaHistory(updateCompsSetter(comps))
     } else {
       const position = findEntityPosition(selectedCompIds[0] || '', currentSchemaHistory.data.comps)
       assertNotUndefined(position)
@@ -39,7 +39,7 @@ const PaletteModal: FC = (): JSX.Element => {
         position.index + 1,
         currentSchemaHistory.data.comps
       )
-      setCurrentSchemaHistory(setFSchemaComps(comps))
+      setCurrentSchemaHistory(updateCompsSetter(comps))
     }
 
     if (selectedCompIds.length === 0) {
@@ -66,7 +66,7 @@ const PaletteModal: FC = (): JSX.Element => {
       return acc
     }, currentSchemaHistory.data.comps)
 
-    setCurrentSchemaHistory(setFSchemaComps(newComps))
+    setCurrentSchemaHistory(updateCompsSetter(newComps))
 
     setOpen(false)
   }
