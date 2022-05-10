@@ -1,32 +1,46 @@
-import { FormApi, FormState } from 'final-form'
+/* eslint-disable eslint-comments/disable-enable-pair */
+
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Config, FormApi, FormState } from 'final-form'
 import diff from 'object-diff'
 import React, { useEffect, useRef, useState } from 'react'
 import { FormSpy } from 'react-final-form'
 
-export interface AutosavePropsHOC {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  save: (values: any, form: FormApi<any, any>) => void | Promise<void>
+export type AutosaveProps = AutosaveProps1 | AutosaveProps2
+
+type AutosaveProps1 = {
   debounce: number
-  children?: React.ReactChild
+  save: (values: any, form: FormApi<any, any>) => void | Promise<void>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AutosaveProps = FormState<any, any> & {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AutosaveProps2 = {
+  debounce: number
+  children: React.ReactChild
+  onSubmit: Config<any, any>['onSubmit']
+}
+
+export default function AutosaveHOC(hocProps: AutosaveProps): JSX.Element {
+  // @ts-expect-error because
+  return <FormSpy hocProps={hocProps} subscription={{ values: true }} component={Autosave} />
+}
+
+type AutosaveLogicProps = FormState<any, any> & {
   form: FormApi<any, any>
-  hocProps: AutosavePropsHOC
+  hocProps: AutosaveProps
 }
 
-function Autosave(props: AutosaveProps) {
+function Autosave(props: AutosaveLogicProps): JSX.Element | null {
   const [state, setState] = useState({ values: props.values, submitting: false })
   const timeout = useRef(0)
   const promise = useRef<null | Promise<void> | void>(null)
+  const formRef = useRef<HTMLFormElement | null>(null)
 
   useEffect(() => {
     if (timeout.current) {
       clearTimeout(timeout.current)
     }
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     timeout.current = window.setTimeout(save, props.hocProps.debounce)
   }, [props.values])
 
@@ -42,19 +56,43 @@ function Autosave(props: AutosaveProps) {
     if (Object.keys(difference).length) {
       setState({ submitting: true, values })
 
-      promise.current = props.hocProps.save(values, props.form)
-      await promise.current
+      if (isAutosaveWithForm(props.hocProps) && props.hocProps.children) {
+        forceSubmit()
+      } else if (isSimpleAutosave(props.hocProps)) {
+        promise.current = props.hocProps.save?.(values, props.form)
+        await promise.current
 
-      promise.current = null
-
+        promise.current = null
+      }
       setState((s) => ({ ...s, submitting: false }))
     }
   }
 
-  return props.hocProps.children
+  function forceSubmit() {
+    if (formRef.current) {
+      const event = new CustomEvent('submit', { bubbles: true, cancelable: true })
+      formRef.current.dispatchEvent(event)
+    }
+  }
+
+  if (isAutosaveWithForm(props.hocProps) && props.hocProps.children) {
+    return (
+      <form onSubmit={props.hocProps.onSubmit as any} ref={formRef}>
+        {props.hocProps.children}
+      </form>
+    )
+  }
+
+  if (isSimpleAutosave(props.hocProps)) {
+    return null
+  }
+
+  return null
 }
 
-export default function AutosaveHOC(props: AutosavePropsHOC): JSX.Element {
-  // @ts-expect-error because of final-form props for Autosave
-  return <FormSpy hocProps={props} subscription={{ values: true }} component={Autosave} />
+function isAutosaveWithForm(input: any): input is AutosaveProps2 {
+  return !!input?.children
+}
+function isSimpleAutosave(input: any): input is AutosaveProps1 {
+  return !!input?.save
 }

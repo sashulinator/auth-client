@@ -17,7 +17,7 @@ import { Comp, CompValidator, Norm, Schema } from '@/entities/schema'
 import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
-import AutosaveHOC from '@/shared/autosave'
+import Autosave from '@/shared/autosave'
 import SchemaDrawer from '@/shared/schema-drawer'
 import { assertionList, isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
@@ -160,10 +160,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             render={(formProps) => {
               return (
                 <>
-                  <AutosaveHOC
-                    save={(input2) => changeValidator(validator.id, validator.name, input2)}
-                    debounce={500}
-                  />
+                  <Autosave save={(input2) => changeValidator(validator.id, validator.name, input2)} debounce={500} />
                   <SchemaDrawer
                     schema={assertionItem.schema}
                     schemas={dummySchemas}

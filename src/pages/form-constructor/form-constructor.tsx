@@ -56,7 +56,7 @@ const FormConstructor: FC = (): JSX.Element => {
   const resetSelectedCompIds = useResetRecoilState(selectedCompIdsState)
   const missingSchemaIds = findMissingSchemaIds(currentSchemaHistory.data, schemas)
   const propertyPanelComp = definePropertyPanelComp(currentSchemaHistory.data, selectedCompIds)
-  const propertyPanelSchema = findCompSchema(propertyPanelComp?.id, schemas)
+  const propertyPanelSchema = findCompSchema(propertyPanelComp, schemas)
   const context = {
     states: {
       schemas,
@@ -85,6 +85,7 @@ const FormConstructor: FC = (): JSX.Element => {
   useEffect(setFetchedCurrentSchemaToState, [fetchedCurrentSchema])
   useEffect(updateSelectedCompSchema, [propertyPanelComp, schemas])
   useEffect(setFetchedSchemasToState, [fetchedDependencySchemas])
+  useEffect(updateSchemas, [currentSchemaHistory.data])
 
   function setFetchedCurrentSchemaToState() {
     if (fetchedCurrentSchema !== undefined) {
@@ -103,6 +104,10 @@ const FormConstructor: FC = (): JSX.Element => {
     if (propertyPanelComp?.compSchemaId) {
       setSelectedCompSchema(schemas?.[propertyPanelComp?.compSchemaId] ?? null)
     }
+  }
+
+  function updateSchemas() {
+    setSchemas({ [currentSchemaHistory.data.id]: currentSchemaHistory.data, ...schemas })
   }
 
   function updateCompInCurrentSchemaState(comp: Comp) {
@@ -242,6 +247,7 @@ const FormConstructor: FC = (): JSX.Element => {
         />
         <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
         <CompPanel
+          // key={JSON.stringify(selectedCompIds)}
           onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
           context={context}

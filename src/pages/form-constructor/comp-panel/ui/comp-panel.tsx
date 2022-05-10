@@ -26,7 +26,7 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
 
   return (
     <PerfectScrollbar className="CompPanel">
-      {schemaIsMissing && <props.ContextualMenu comp={props.comp} />}
+      {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
       {props.schema && (
         <CompForm
           schema={props.schema}

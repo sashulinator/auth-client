@@ -31,7 +31,7 @@ export default function FieldError(props: FieldErrorProps): JSX.Element | null {
 
   const tkey = `${code}${input2?.toString()}`
 
-  const simpleMessage = t(code, error)
+  const simpleMessage = t(code, error?._message, error)
   const complexMessage = t(`${code}${input2?.toString()}`, error)
 
   // Делаем так потому что некоторые строки содержат в себе HTML теги

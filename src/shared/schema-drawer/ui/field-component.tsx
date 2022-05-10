@@ -27,10 +27,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
 
   return (
     <Field
-      validate={(v) => {
-        const error = validate?.(v)
-        return error
-      }}
+      validate={(v) => validate?.(v)}
       type={сomponentItem.type}
       name={injectedComp.name}
       defaultValue={injectedComp.defaultValue}

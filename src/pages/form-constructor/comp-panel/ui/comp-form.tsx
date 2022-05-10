@@ -1,7 +1,7 @@
 import { Stack } from '@fluentui/react'
 
 import { Config } from 'final-form'
-import React, { useRef } from 'react'
+import React from 'react'
 import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
@@ -17,43 +17,31 @@ interface CompFormProps {
 }
 
 export default function CompForm(props: CompFormProps): JSX.Element {
-  const formRef = useRef<HTMLFormElement | null>(null)
-
-  // TODO засунусь эту логику в Autosave
-  function save() {
-    if (formRef.current) {
-      const event = new CustomEvent('submit', { bubbles: true, cancelable: true })
-      formRef.current.dispatchEvent(event)
-    }
-  }
-
   return (
     <Form<Comp, Comp>
       initialValues={props.comp || undefined}
       onSubmit={props.onSubmit}
       render={(formProps) => {
         return (
-          <form onSubmit={formProps.handleSubmit} ref={formRef}>
-            <Autosave save={save} debounce={500}>
-              <Stack tokens={{ padding: '0 0 30vh' }}>
-                <Stack
-                  tokens={{ padding: '20px 20px 0' }}
-                  horizontal={true}
-                  horizontalAlign="space-between"
-                  verticalAlign="center"
-                >
-                  <Stack as="h2">{props.comp.title}</Stack>
-                </Stack>
-                <Stack>
-                  <CompDrawer
-                    schema={props.schema}
-                    schemas={props.schemas}
-                    context={{ formState: formProps.form.getState(), ...props.context }}
-                  />
-                </Stack>
+          <Autosave onSubmit={formProps.handleSubmit} debounce={500}>
+            <Stack tokens={{ padding: '0 0 30vh' }}>
+              <Stack
+                tokens={{ padding: '20px 20px 0' }}
+                horizontal={true}
+                horizontalAlign="space-between"
+                verticalAlign="center"
+              >
+                <Stack as="h2">{props.comp.title}</Stack>
               </Stack>
-            </Autosave>
-          </form>
+              <Stack>
+                <CompDrawer
+                  schema={props.schema}
+                  schemas={props.schemas}
+                  context={{ formState: formProps.form.getState(), ...props.context }}
+                />
+              </Stack>
+            </Stack>
+          </Autosave>
         )
       }}
     />

@@ -1,19 +1,14 @@
-import findSchemaContainingCompId from './find-schema-containing-comp-id'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Norm, Schema } from '@/entities/schema'
+import { Comp, Norm, Schema } from '@/entities/schema'
 
-export default function findCompSchema(compId = '', schemas: Norm<Schema> | null): Schema | null {
-  if (schemas === null) {
+export default function findCompSchema(comp: Comp | null, schemas: Norm<Schema> | null): Schema | null {
+  if (schemas === null || comp === null) {
     return null
   }
 
-  const comp = findSchemaContainingCompId(compId, schemas)?.comps[compId]
-
-  if (comp === undefined) {
-    return null
-  }
-
-  const schema = schemas[comp.compSchemaId] ?? null
+  const schema = schemas[comp.compSchemaId]
+  assertNotUndefined(schema)
 
   return schema
 }

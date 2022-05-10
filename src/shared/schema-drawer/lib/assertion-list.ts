@@ -1,13 +1,14 @@
 import { IDropdownOption } from '@fluentui/react'
 import {
   Assertion,
-  assertMatchPattern,
   assertNotUndefined,
   assertNull,
   assertString,
   assertUndefined,
   isObject,
 } from '@savchenko91/schema-validator'
+
+import { assertMatchPattern } from './custom-assertions'
 
 import { FormType, Norm, Schema } from '@/entities/schema'
 
@@ -32,8 +33,6 @@ export enum ComponentNames {
   Stack = 'Stack',
 }
 
-console.log('ComponentNames.Stack', ComponentNames)
-
 export const assertionList: Norm<AssertionListItem> = {
   string: {
     type: 'assertion',
@@ -53,14 +52,10 @@ export const assertionList: Norm<AssertionListItem> = {
   },
   matchPattern: {
     type: 'withValue',
-    assertion: (input, { pattern }) => {
-      console.log('aallooo')
-      assertMatchPattern(input, pattern)
-      console.log('ne allo')
-    },
+    assertion: assertMatchPattern,
     schema: {
-      id: 'e84eabbb-b048-4d39-ab10-673605c718e2',
-      title: 'TYU',
+      id: 'hereCouldBeYourAd',
+      title: 'hereCouldBeYourAd',
       componentName: null,
       type: FormType.FORM,
       comps: {
