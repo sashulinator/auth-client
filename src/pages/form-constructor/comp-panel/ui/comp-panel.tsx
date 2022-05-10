@@ -16,11 +16,13 @@ interface CompPanelProps {
 }
 
 export default function CompPanel(props: CompPanelProps): JSX.Element | null {
-  const { selectedComp, selectedCompSchema, schemas } = props.context.states
   const { ContextualMenu } = props
+
+  const { selectedComp, selectedCompSchema, schemas } = props.context.states
+
   const schemaIsMissing = !props.isLoading && selectedComp && !selectedCompSchema
 
-  if (schemas === null || !selectedComp) {
+  if (!schemas || !selectedComp) {
     return null
   }
 
@@ -34,14 +36,8 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
 
   return (
     <PerfectScrollbar className="CompPanel">
-      {selectedCompSchema ? (
-        <>
-          <ContextualMenu comp={selectedComp} />
-          <CompForm schema={selectedCompSchema} context={context} onSubmit={props.onSubmit} />
-        </>
-      ) : schemaIsMissing ? (
-        <ContextualMenu comp={selectedComp} />
-      ) : null}
+      {schemaIsMissing || (selectedComp && <ContextualMenu comp={selectedComp} />)}
+      {selectedCompSchema && <CompForm schema={selectedCompSchema} context={context} onSubmit={props.onSubmit} />}
     </PerfectScrollbar>
   )
 }
