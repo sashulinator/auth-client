@@ -7,7 +7,7 @@ export interface AutosavePropsHOC {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   save: (values: any, form: FormApi<any, any>) => void | Promise<void>
   debounce: number
-  children: React.ReactChild
+  children?: React.ReactChild
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

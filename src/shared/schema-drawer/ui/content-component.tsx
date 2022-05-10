@@ -1,6 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import componentList from '../lib/component-list'
+import { componentListBlind } from '../lib/component-list'
 import { Context } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
@@ -16,7 +16,7 @@ interface ContentComponentProps {
 }
 
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {
-  const сomponentItem = componentList[props.schema.componentName]
+  const сomponentItem = componentListBlind[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
   if (props.comp.children === undefined) {

@@ -1,7 +1,6 @@
 import { IDropdownOption } from '@fluentui/react'
 import {
   Assertion,
-  WithAssertion,
   assertMatchPattern,
   assertNotUndefined,
   assertNull,
@@ -10,22 +9,30 @@ import {
   isObject,
 } from '@savchenko91/schema-validator'
 
-import { Norm } from '@/entities/schema'
-import TextField from '@/shared/textfield'
+import { FormType, Norm, Schema } from '@/entities/schema'
 
 type AssertionListItem = AssertionItem | WithValueAssertionItem
 
-interface AssertionItem {
+export interface AssertionItem {
   type: 'assertion'
   assertion: Assertion
 }
 
-interface WithValueAssertionItem {
+export interface WithValueAssertionItem {
   type: 'withValue'
-  assertion: WithAssertion
+  // второй аргумент в ассёршене это объект который сабмитит схема
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: any
+  assertion: (input: unknown, values: any) => void
+  // значения схемы прилетят во второй аргумент ассёршена
+  schema: Schema
 }
+
+export enum ComponentNames {
+  TextField = 'TextField',
+  Stack = 'Stack',
+}
+
+console.log('ComponentNames.Stack', ComponentNames)
 
 export const assertionList: Norm<AssertionListItem> = {
   string: {
@@ -46,13 +53,38 @@ export const assertionList: Norm<AssertionListItem> = {
   },
   matchPattern: {
     type: 'withValue',
-    assertion: assertMatchPattern,
-    component: TextField,
+    assertion: (input, { pattern }) => {
+      console.log('aallooo')
+      assertMatchPattern(input, pattern)
+      console.log('ne allo')
+    },
+    schema: {
+      id: 'e84eabbb-b048-4d39-ab10-673605c718e2',
+      title: 'TYU',
+      componentName: null,
+      type: FormType.FORM,
+      comps: {
+        ROOT_ID: {
+          id: 'ROOT_ID',
+          title: 'stackRoot',
+          name: 'hello',
+          children: ['pattern'],
+          compSchemaId: ComponentNames.Stack,
+        },
+        pattern: {
+          id: 'pattern',
+          title: 'pattern',
+          name: 'pattern',
+          props: { label: 'pattern' },
+          compSchemaId: ComponentNames.TextField,
+        },
+      },
+    },
   },
 }
 
 export function isWithValueAssertionItem(input: unknown): input is WithValueAssertionItem {
-  if (isObject(input) && 'component' in input) {
+  if (isObject(input) && 'schema' in input) {
     return true
   }
   return false

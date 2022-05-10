@@ -19,6 +19,7 @@ interface CompFormProps {
 export default function CompForm(props: CompFormProps): JSX.Element {
   const formRef = useRef<HTMLFormElement | null>(null)
 
+  // TODO засунусь эту логику в Autosave
   function save() {
     if (formRef.current) {
       const event = new CustomEvent('submit', { bubbles: true, cancelable: true })

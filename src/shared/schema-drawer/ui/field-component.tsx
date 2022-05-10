@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import buildValidator from '../lib/build-validators'
-import componentList from '../lib/component-list'
+import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
 import { Context } from '../model/types'
 import React, { memo } from 'react'
@@ -18,7 +18,7 @@ interface FieldComponentProps {
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {
-  const сomponentItem = componentList[props.schema.componentName]
+  const сomponentItem = componentListBlind[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
   const validate = buildValidator(props.comp.validators)
@@ -27,7 +27,10 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
 
   return (
     <Field
-      validate={(v) => validate?.(v)}
+      validate={(v) => {
+        const error = validate?.(v)
+        return error
+      }}
       type={сomponentItem.type}
       name={injectedComp.name}
       defaultValue={injectedComp.defaultValue}

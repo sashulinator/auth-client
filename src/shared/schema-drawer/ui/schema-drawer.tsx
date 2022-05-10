@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import assertCompSchema from '../lib/assert-comp-schema'
-import componentList from '../lib/component-list'
+import { componentListBlind } from '../lib/component-list'
 import isInputType from '../lib/is-field-component'
 import { Context } from '../model/types'
 import ContentComponent from './content-component'
@@ -57,7 +57,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   assertCompSchema(schema)
 
-  const сomponentItem = componentList[schema.componentName]
+  const сomponentItem = componentListBlind[schema.componentName]
   assertNotUndefined(сomponentItem)
 
   if (isInputType(сomponentItem)) {

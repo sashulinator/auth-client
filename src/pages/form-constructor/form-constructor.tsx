@@ -89,6 +89,7 @@ const FormConstructor: FC = (): JSX.Element => {
   function setFetchedCurrentSchemaToState() {
     if (fetchedCurrentSchema !== undefined) {
       setCurrentSchemaHistory({ next: null, data: fetchedCurrentSchema, prev: null })
+      setSchemas({ [fetchedCurrentSchema.id]: fetchedCurrentSchema, ...schemas })
     }
   }
 

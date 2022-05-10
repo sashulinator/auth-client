@@ -9,13 +9,16 @@ import { defaultCompValidators } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
+import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
 import { Comp, CompValidator, Norm, Schema } from '@/entities/schema'
+import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import { replace } from '@/lib/change-unmutable'
-import debounce from '@/lib/debounce'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import AutosaveHOC from '@/shared/autosave'
+import SchemaDrawer from '@/shared/schema-drawer'
 import { assertionList, isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
 
@@ -31,18 +34,20 @@ export interface ValidatorsTreeProps {
 
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
-  const [pickedItemId, pickItemId] = useState('')
+  const [selectedItemId, pickItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const validators = props.value
+  const validator = validators?.[selectedItemId]
+  const assertionItem = assertionList[validator?.name || '']
 
-  useEffect(() => setTree(rebuildTree), [props.value, pickedItemId])
+  useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
     return buildTree(props.value || undefined, {
       changeValidator,
       remove,
       pickItemId,
-      pickedItemId,
+      pickedItemId: selectedItemId,
     })
   }
 
@@ -147,40 +152,29 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
-        <AdditionalInput
-          key={pickedItemId}
-          validators={validators}
-          pickedItemId={pickedItemId}
-          changeValidator={changeValidator}
-        />
+        {isWithValueAssertionItem(assertionItem) && validator && (
+          <Form
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onSubmit={() => {}}
+            initialValues={validator.input2}
+            render={(formProps) => {
+              return (
+                <>
+                  <AutosaveHOC
+                    save={(input2) => changeValidator(validator.id, validator.name, input2)}
+                    debounce={500}
+                  />
+                  <SchemaDrawer
+                    schema={assertionItem.schema}
+                    schemas={dummySchemas}
+                    context={{ formState: formProps.form.getState() }}
+                  />
+                </>
+              )
+            }}
+          />
+        )}
       </Stack>
     </div>
   )
-}
-
-function AdditionalInput(props: any) {
-  const validator = props.validators?.[props.pickedItemId]
-  const [value, setValue] = useState(validator?.input2)
-
-  if (!props?.pickedItemId && !validator) {
-    return null
-  }
-  const assertionItem = assertionList[validator?.name]
-
-  if (isWithValueAssertionItem(assertionItem)) {
-    const Component = assertionItem.component
-
-    return (
-      <Component
-        value={value}
-        onChange={(e: unknown, v: string) => {
-          setValue(v)
-          debounce(props.changeValidator, 500)(props.pickedItemId, validator?.name, v)
-        }}
-        placeholder="value"
-      />
-    )
-  }
-
-  return null
 }
