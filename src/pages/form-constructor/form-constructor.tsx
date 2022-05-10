@@ -11,7 +11,7 @@ import TreePanel from './tree-panel'
 import React, { FC, useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState } from 'recoil'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
@@ -22,7 +22,8 @@ import {
   CompContextualMenu,
   Norm,
   currentSchemaHistoryState,
-  lackOfCSchemaIdsState,
+  defineSelectedComp,
+  findMissingSchemaIds,
   nextSetter,
   prevSetter,
   schemasState,
@@ -31,7 +32,6 @@ import {
   updateCompSetter,
   updateCompsSetter,
 } from '@/entities/schema'
-import { getSelectedComp } from '@/entities/schema/lib/selected-comp'
 import {
   addEntity,
   copyEntities,
@@ -51,12 +51,11 @@ const FormConstructor: FC = (): JSX.Element => {
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
   const resetCSchemas = useResetRecoilState(schemasState)
   const resetFSchema = useResetRecoilState(currentSchemaHistoryState)
   const resetPickedFCompId = useResetRecoilState(selectedCompIdsState)
-
-  const selectedComp = getSelectedComp(currentSchemaHistory.data, selectedCompIds)
+  const missingSchemaIds = findMissingSchemaIds(currentSchemaHistory.data, schemas)
+  const selectedComp = defineSelectedComp(currentSchemaHistory.data, selectedCompIds)
   const context: InitialContext = {
     states: {
       schemas,
@@ -74,7 +73,7 @@ const FormConstructor: FC = (): JSX.Element => {
   const { data: fetchedCurrentSchema } = useQuery(['schema', id], getSchema)
 
   const { data: fetchedDependencySchemas, isLoading: isDependencySchemasLoading } = useGetDependencySchemas(
-    lackOfCSchemaIds
+    missingSchemaIds
   )
 
   useEffect(() => {
