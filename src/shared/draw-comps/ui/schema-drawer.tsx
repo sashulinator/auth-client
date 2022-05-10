@@ -1,6 +1,8 @@
-import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import assertCompSchema from '../lib/assert-comp-schema'
 import componentList from '../lib/component-list'
+import isInputType from '../lib/is-field-component'
 import { Context } from '../types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -44,25 +46,25 @@ interface ComponentFactoryProps {
 
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
   const comp = props.comps[props.compId]
-
   assertNotUndefined(comp)
 
-  const CSchema = props.schemas[comp.compSchemaId]
+  const schema = props.schemas[comp.compSchemaId]
 
   // Схема еще не прогрузилась и поэтому undefined
-  if (CSchema === undefined) {
+  if (schema === undefined) {
     return null
   }
 
-  assertNotNull(CSchema.componentName)
+  assertCompSchema(schema)
 
-  const сomponentItem = componentList[CSchema.componentName]
-
+  const сomponentItem = componentList[schema.componentName]
   assertNotUndefined(сomponentItem)
 
-  if (сomponentItem.type === 'input' || сomponentItem.type === 'checkbox') {
-    return <FieldComponent context={props.context} schemas={props.schemas} comp={comp} />
+  if (isInputType(сomponentItem)) {
+    return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />
   }
 
-  return <ContentComponent context={props.context} schemas={props.schemas} comp={comp} comps={props.comps} />
+  return (
+    <ContentComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
+  )
 }

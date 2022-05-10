@@ -15,7 +15,5 @@ export default function findCompSchema(compId = '', schemas: Norm<Schema> | null
 
   const schema = schemas[comp.compSchemaId] ?? null
 
-  console.log('comp', schema, comp)
-
   return schema
 }

@@ -18,8 +18,8 @@ export interface Comp {
   validators?: Norm<CompValidator>
   injections?: [
     {
-      global: 'string'
-      name: 'string'
+      from: 'string'
+      to: 'string'
     }
   ]
 }
