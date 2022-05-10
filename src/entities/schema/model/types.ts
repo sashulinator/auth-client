@@ -1,3 +1,11 @@
+export type Norm<T> = Record<string, T>
+
+export interface History<Data> {
+  prev: null | History<Data>
+  next: null | History<Data>
+  data: Data
+}
+
 export interface Comp {
   id: string
   compSchemaId: string
@@ -41,32 +49,4 @@ export interface CompBinding {
   id: string
   name: string
   children: string[]
-}
-
-export type Norm<T> = Record<string, T>
-
-export interface History<Data> {
-  prev: null | History<Data>
-  next: null | History<Data>
-  data: Data
-}
-
-export interface FindManyParams<T = number> {
-  take?: T
-  skip?: T
-}
-
-export interface SearchQuery {
-  searchQuery?: string
-}
-
-export interface CreateUser {
-  username: string
-  password: string
-  email: string
-  fullname: string
-}
-
-export interface UpdateUser extends CreateUser {
-  id: string
 }

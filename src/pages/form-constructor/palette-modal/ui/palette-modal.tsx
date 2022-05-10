@@ -6,8 +6,8 @@ import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 
 import { getSchemaList } from '@/api/schema'
-import { Comp, Norm, Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { Comp, Norm, Schema } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
 import { createNewComp } from '@/shared/draw-comps/lib/actions'
 

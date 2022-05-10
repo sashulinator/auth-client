@@ -1,7 +1,6 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
 import { ErrorCollection } from '@savchenko91/schema-validator'
 
-import { currentSchemaHistoryState, schemaSetter } from '../../../../entities/schema/model/current-schema'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -11,8 +10,8 @@ import uuid from 'uuid-random'
 
 import { createSchema, updateSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
-import { FormType, Schema } from '@/common/types'
 import ROUTES from '@/constants/routes'
+import { FormType, Schema, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import useAppMutation from '@/lib/use-mutation'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'

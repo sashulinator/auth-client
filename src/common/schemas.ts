@@ -14,8 +14,8 @@ import {
   wrap,
 } from '@savchenko91/schema-validator'
 
+import { Schema } from '../entities/schema'
 import { assertSchemaComponentNameIsValid } from './assertions'
-import { Schema } from './types'
 
 import ErrorFromObject from '@/lib/error-from-object'
 

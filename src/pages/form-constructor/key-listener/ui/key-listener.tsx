@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Schema } from '@/common/types'
+import { Schema } from '@/entities/schema'
 import { isBackspace, isC, isCtrl, isEscape, isShift, isV, isZ } from '@/lib/key-events'
 
 interface KeyListenerProps {

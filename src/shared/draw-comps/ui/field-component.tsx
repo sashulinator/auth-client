@@ -7,7 +7,7 @@ import get from 'lodash.get'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
-import { Comp } from '@/common/types'
+import { Comp } from '@/entities/schema/model/types'
 import FieldError from '@/shared/field-error'
 
 const FieldComponent = memo(function FieldComponent(props: DrawerComponentProps) {

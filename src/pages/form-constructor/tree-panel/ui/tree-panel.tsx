@@ -10,7 +10,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { useRecoilState } from 'recoil'
 
-import { Comp, Norm, Schema } from '@/common/types'
+import { Comp, Norm, Schema } from '@/entities/schema'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'

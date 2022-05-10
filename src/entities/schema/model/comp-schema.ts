@@ -1,7 +1,6 @@
 import { atom, selector } from 'recoil'
 
-import { Norm, Schema } from '@/common/types'
-import { CSchemasIdsInSchemaState } from '@/entities/schema'
+import { CSchemasIdsInSchemaState, Norm, Schema } from '@/entities/schema'
 
 export const schemasState = atom<null | Norm<Schema>>({
   key: 'schemasState',

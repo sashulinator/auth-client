@@ -2,8 +2,8 @@ import { TreeItem } from '@atlaskit/tree'
 
 import { AdditionalData } from '../types'
 
-import { CompValidator, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { CompValidator, Norm } from '@/entities/schema'
 import { mapObject } from '@/lib/map-object'
 
 export default function buildTree(validators: Norm<CompValidator> | undefined, additionalData: AdditionalData) {

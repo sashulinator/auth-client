@@ -1,6 +1,6 @@
+import { Comp, FormType, History, Norm, Schema } from '../model/types'
 import { atom } from 'recoil'
 
-import { Comp, FormType, History, Norm, Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 

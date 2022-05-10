@@ -1,5 +1,5 @@
-import { CompValidator, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { CompValidator, Norm } from '@/entities/schema'
 
 export const defaultCompValidators: Norm<CompValidator> = {
   [ROOT_ID]: {

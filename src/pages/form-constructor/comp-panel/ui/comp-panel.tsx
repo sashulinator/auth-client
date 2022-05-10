@@ -5,7 +5,7 @@ import { Config } from 'final-form'
 import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
-import { Comp } from '@/common/types'
+import { Comp } from '@/entities/schema'
 import { Context, InitialContext } from '@/shared/draw-comps'
 
 interface CompPanelProps {

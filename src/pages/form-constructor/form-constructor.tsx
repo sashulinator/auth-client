@@ -15,11 +15,12 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
-import { Comp, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import {
+  Comp,
   CompContextualMenu,
+  Norm,
   currentSchemaHistoryState,
   lackOfCSchemaIdsState,
   nextSetter,

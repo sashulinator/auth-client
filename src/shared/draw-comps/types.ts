@@ -1,7 +1,7 @@
 import { FormApi } from 'final-form'
 import { SetterOrUpdater } from 'recoil'
 
-import { Comp, History, Norm, Schema } from '@/common/types'
+import { Comp, History, Norm, Schema } from '@/entities/schema'
 
 export interface CompDrawerProps {
   comps: Norm<Comp>

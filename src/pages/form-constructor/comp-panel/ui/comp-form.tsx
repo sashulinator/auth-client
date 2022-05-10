@@ -4,7 +4,7 @@ import { Config } from 'final-form'
 import React, { useRef } from 'react'
 import { Form } from 'react-final-form'
 
-import { Comp, Schema } from '@/common/types'
+import { Comp, Schema } from '@/entities/schema'
 import Autosave from '@/shared/autosave/ui/autosave'
 import CompDrawer, { Context } from '@/shared/draw-comps'
 

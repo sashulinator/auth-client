@@ -12,8 +12,8 @@ import {
 
 import { assertionList } from './assertion-list'
 
-import { CompValidator, Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { CompValidator, Norm } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 

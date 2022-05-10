@@ -10,7 +10,7 @@ import {
   isObject,
 } from '@savchenko91/schema-validator'
 
-import { Norm } from '@/common/types'
+import { Norm } from '@/entities/schema'
 import TextField from '@/shared/textfield'
 
 type AssertionListItem = AssertionItem | WithValueAssertionItem

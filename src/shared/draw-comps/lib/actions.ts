@@ -1,6 +1,6 @@
 import uniqid from 'uniqid'
 
-import { Comp, Schema } from '@/common/types'
+import { Comp, Schema } from '@/entities/schema'
 
 export function createNewComp(schema: Schema): Comp {
   schema

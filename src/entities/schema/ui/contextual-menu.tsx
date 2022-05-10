@@ -3,8 +3,8 @@ import { IContextualMenuItem, Icon } from '@fluentui/react'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Comp, Norm, Schema } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { Comp, Norm, Schema } from '@/entities/schema'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 
 interface CompContextualMenuProps {

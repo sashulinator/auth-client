@@ -1,6 +1,6 @@
 import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
-import { CompValidator } from '@/common/types'
+import { CompValidator } from '@/entities/schema'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
