@@ -5,10 +5,9 @@ import clsx from 'clsx'
 import React from 'react'
 
 import { ROOT_ID } from '@/constants/common'
-// import { ROOT_ID } from '@/constants/common'
-import { assertionNameOptions } from '@/shared/draw-comps/lib/assertion-list'
 import { Dropdown } from '@/shared/dropdown'
 import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
+import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   if (props.item.data === undefined) {

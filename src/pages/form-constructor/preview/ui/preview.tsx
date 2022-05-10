@@ -5,7 +5,7 @@ import React, { useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 
 import { Norm, Schema } from '@/entities/schema'
-import CompDrawer from '@/shared/draw-comps'
+import CompDrawer from '@/shared/schema-drawer'
 
 interface PreviewProps {
   schema: Schema

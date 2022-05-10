@@ -6,7 +6,7 @@ import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
 import Autosave from '@/shared/autosave/ui/autosave'
-import CompDrawer from '@/shared/draw-comps'
+import CompDrawer from '@/shared/schema-drawer'
 
 interface CompFormProps {
   schema: Schema

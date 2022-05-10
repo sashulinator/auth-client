@@ -32,6 +32,7 @@ import {
   updateCompSetter,
   updateCompsSetter,
 } from '@/entities/schema'
+import findCompSchema from '@/entities/schema/lib/find-comp-schema'
 import {
   addEntity,
   copyEntities,
@@ -41,7 +42,6 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import findCompSchema from '@/shared/draw-comps/lib/find-comp-schema'
 import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {

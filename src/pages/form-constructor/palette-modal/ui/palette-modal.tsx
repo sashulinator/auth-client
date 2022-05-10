@@ -9,7 +9,7 @@ import { getSchemaList } from '@/api/schema'
 import { ROOT_ID } from '@/constants/common'
 import { Comp, Norm, Schema } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
-import { createNewComp } from '@/shared/draw-comps/lib/actions'
+import { createNewComp } from '@/shared/schema-drawer/lib/actions'
 
 interface PaletteModalProps {
   addNewComps: (comps: Norm<Comp>) => void

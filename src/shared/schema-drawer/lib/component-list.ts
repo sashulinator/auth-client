@@ -1,9 +1,9 @@
 import { Checkbox, IDropdownOption, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import CustomDatePicker from '@/shared/date-picker'
-import ValidatorPicker from '@/shared/draw-comps/validator-picker'
 import JSONEditor from '@/shared/json-editor'
 import CustomTextField from '@/shared/textfield'
+import ValidatorPicker from '@/shared/validator-picker'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentList: Record<string, ComponentItem> = {

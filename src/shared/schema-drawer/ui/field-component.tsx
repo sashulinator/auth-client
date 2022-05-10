@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import buildValidator from '../lib/build-validators'
 import componentList from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
-import { Context } from '../types'
+import { Context } from '../model/types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 

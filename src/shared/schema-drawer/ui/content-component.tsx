@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import componentList from '../lib/component-list'
-import { Context } from '../types'
+import { Context } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 

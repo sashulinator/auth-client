@@ -16,7 +16,7 @@ import { Comp, CompValidator, Norm, Schema } from '@/entities/schema'
 import { replace } from '@/lib/change-unmutable'
 import debounce from '@/lib/debounce'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
-import { assertionList, isWithValueAssertionItem } from '@/shared/draw-comps/lib/assertion-list'
+import { assertionList, isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
 
 export interface ValidatorsTreeProps {

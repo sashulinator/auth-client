@@ -1,2 +1,3 @@
 export { default } from './ui/schema-drawer'
-export * from './types'
+
+export * from './model/types'

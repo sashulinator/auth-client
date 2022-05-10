@@ -1,6 +1,6 @@
 import { buildObjectByPath } from '@savchenko91/schema-validator'
 
-import { Context } from '../types'
+import { Context } from '../model/types'
 import get from 'lodash.get'
 
 import { Comp } from '@/entities/schema'
