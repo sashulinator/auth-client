@@ -176,7 +176,31 @@ const FormConstructor: FC = (): JSX.Element => {
     localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
   }
 
-  // TODO разбить на подфункции
+  function addNewComps(comps: Norm<Comp>) {
+    const copiedComps = copyEntities(comps, ['name'])
+
+    const rootCompIds = findRootParentIds(copiedComps)
+    const rootComps = findEntities(rootCompIds, copiedComps)
+
+    const mergedComps = { ...currentSchemaHistory.data.comps, ...copiedComps }
+
+    const isRoot = selectedCompIds.includes(ROOT_ID)
+    const isToRoot = selectedCompIds.length === 0 || isRoot
+
+    const newComps = Object.values(rootComps).reduce((acc, comp) => {
+      if (isToRoot) {
+        acc = addEntity(comp, ROOT_ID, 0, acc)
+      } else {
+        const position = findEntityPosition(selectedCompIds[0] || '', acc)
+        assertNotUndefined(position)
+        acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
+      }
+      return acc
+    }, mergedComps)
+
+    setCurrentSchemaHistory(updateCompsSetter(newComps))
+  }
+
   function pasteFromClipboard() {
     const stringifiedComps = localStorage.getItem('copyClipboard') || ''
 
@@ -185,28 +209,7 @@ const FormConstructor: FC = (): JSX.Element => {
     schemaValidator.comps(comps)
 
     if (comps) {
-      const copiedComps = copyEntities(comps, ['path'])
-
-      const rootCompIds = findRootParentIds(copiedComps)
-      const rootComps = findEntities(rootCompIds, copiedComps)
-
-      const mergedComps = { ...currentSchemaHistory.data.comps, ...copiedComps }
-
-      const isRoot = selectedCompIds.includes(ROOT_ID)
-      const isToRoot = selectedCompIds.length === 0 || isRoot
-
-      const newComps = Object.values(rootComps).reduce((acc, comp) => {
-        if (isToRoot) {
-          acc = addEntity(comp, ROOT_ID, 0, acc)
-        } else {
-          const position = findEntityPosition(selectedCompIds[0] || '', acc)
-          assertNotUndefined(position)
-          acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
-        }
-        return acc
-      }, mergedComps)
-
-      setCurrentSchemaHistory(updateCompsSetter(newComps))
+      addNewComps(comps)
 
       if (selectedCompIds.length === 0) {
         setSelectedCompIds(comps[0] ? [comps[0].id] : [])
@@ -249,7 +252,7 @@ const FormConstructor: FC = (): JSX.Element => {
             />
           )}
         />
-        <PaletteModal />
+        <PaletteModal addNewComps={addNewComps} selectAndUnselectComp={selectAndUnselectComp} />
       </Stack>
     </>
   )
