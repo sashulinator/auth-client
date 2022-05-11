@@ -1,24 +1,25 @@
-import { IPivotProps, Label, PivotItem as PivotItemUI, Pivot as PivotUI } from '@fluentui/react'
+import { IPivotProps, PivotItem, Pivot as PivotUI } from '@fluentui/react'
 
-import React, { FC } from 'react'
+import React from 'react'
 
-const Pivot: FC<
-  IPivotProps & { label: string; name: string; headerText: string; ariaLabel: string; linkSize?: 'normal' | 'large' }
-> = (props): JSX.Element => {
+import { Comp, Norm } from '@/entities/schema'
+
+type PivotProps = IPivotProps & { label: string; children: React.ReactNode[] }
+
+export default function Pivot(props: PivotProps): JSX.Element {
   return (
-    <PivotUI aria-label={props.ariaLabel} {...props}>
-      <Label>{props.label}</Label>
-      <PivotItemUI headerText="Tab 1">
-        <Label>Label 1</Label>
-      </PivotItemUI>
-      <PivotItemUI headerText="Tab 2">
-        <Label>Label 2</Label>
-      </PivotItemUI>
-      <PivotItemUI headerText="Tab 3">
-        <Label>Label 3</Label>
-      </PivotItemUI>
+    <PivotUI {...props}>
+      {props.children?.map((child) => {
+        // @ts-expect-error because
+        const { compId, comps } = child.props as { compId: string; comps: Norm<Comp> }
+        const comp = comps[compId] as Comp
+
+        return (
+          <PivotItem key={comp.id} {...comp.props}>
+            {child}
+          </PivotItem>
+        )
+      })}
     </PivotUI>
   )
 }
-
-export default Pivot
