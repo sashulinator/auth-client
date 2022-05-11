@@ -164,7 +164,12 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
                   <SchemaDrawer
                     schema={assertionItem.schema}
                     schemas={dummySchemas}
-                    context={{ formState: formProps.form.getState() }}
+                    context={{
+                      formState: formProps.form.getState(),
+                      fns: {
+                        changeField: formProps.form.change,
+                      },
+                    }}
                   />
                 </>
               )

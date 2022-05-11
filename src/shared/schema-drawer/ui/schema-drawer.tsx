@@ -6,7 +6,7 @@ import isInputType from '../lib/is-field-component'
 import { Context } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import React from 'react'
+import React, { useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { Comp, Norm, Schema } from '@/entities/schema'
@@ -18,6 +18,17 @@ interface SchemaDrawerProps {
 }
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
+  const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
+
+  const context = {
+    fetchedData: fetchedDataContext,
+    ...props.context,
+    fns: {
+      ...props.context.fns,
+      setFetchedDataToContext,
+    },
+  }
+
   const rootComp = props.schema.comps[ROOT_ID]
 
   assertNotUndefined(rootComp)
@@ -25,9 +36,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   if (props.schemas === null) {
     return null
   }
-  return (
-    <ComponentFactory context={props.context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
-  )
+  return <ComponentFactory context={context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
 }
 
 /**

@@ -37,7 +37,16 @@ export default function Preview(props: PreviewProps): JSX.Element {
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                <CompDrawer schema={schema} schemas={schemas} context={{ formState: formProps.form.getState() }} />
+                <CompDrawer
+                  schema={schema}
+                  schemas={schemas}
+                  context={{
+                    formState: formProps.form.getState(),
+                    fns: {
+                      changeField: formProps.form.change,
+                    },
+                  }}
+                />
               </form>
             )
           }}
