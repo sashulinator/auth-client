@@ -1,9 +1,10 @@
-import { Checkbox, IDropdownOption, PrimaryButton, Stack, Text } from '@fluentui/react'
+import { Checkbox, IDropdownOption, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import { ComponentNames } from '../model/types'
 
 import CustomDatePicker from '@/shared/date-picker'
 import JSONEditor from '@/shared/json-editor'
+import { Pivot, PivotItem } from '@/shared/pivot'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'
 
@@ -53,6 +54,18 @@ const componentList = {
   Text: {
     type: 'content',
     component: Text,
+  },
+  Label: {
+    type: 'content',
+    component: Label,
+  },
+  Pivot: {
+    type: 'content',
+    component: Pivot,
+  },
+  PivotItem: {
+    type: 'content',
+    component: PivotItem,
   },
 } as const
 
