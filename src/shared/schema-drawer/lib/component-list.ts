@@ -3,6 +3,7 @@ import { Checkbox, IDropdownOption, PrimaryButton, Stack, Text } from '@fluentui
 import { ComponentNames } from '../model/types'
 
 import CustomDatePicker from '@/shared/date-picker'
+import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'
@@ -33,6 +34,11 @@ const componentList = {
   DatePicker: {
     type: 'input',
     component: CustomDatePicker,
+  },
+
+  Fetcher: {
+    type: 'input',
+    component: Fetcher,
   },
 
   JSONEditor: {

@@ -35,7 +35,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
       {({ input, meta }) => {
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
-            <сomponentItem.component {...injectedComp.props} {...input} />
+            <сomponentItem.component {...input} {...injectedComp.props} {...props.context.fns} />
             <FieldError meta={meta} />
           </div>
         )
