@@ -11,6 +11,7 @@ import {
 } from '@savchenko91/schema-validator'
 
 import { assertionList } from './assertion-list'
+import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
 import { CompValidator, Norm } from '@/entities/schema'
@@ -47,7 +48,8 @@ function factory(compValidatorId: string, compValidators: Norm<CompValidator>): 
   const isWithValueAssertion = assertionItem.type === 'withValue'
 
   if (isWithValueAssertion) {
-    return withValue(compValidator.input2, assertionItem.assertion)
+    const input2 = formToOneValueIfNeeded(compValidator.input2)
+    return withValue(input2, assertionItem.assertion)
   }
 
   return assertionItem.assertion

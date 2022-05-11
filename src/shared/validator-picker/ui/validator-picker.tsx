@@ -55,7 +55,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     if (validators && props.name) {
       const validator = findEntity(id, validators)
       const newValidators = replace(validators, id, {
-        ...validator,
+        id: validator.id,
         name,
         input2,
       })

@@ -1,6 +1,7 @@
 import { IDropdownOption } from '@fluentui/react'
 import {
   Assertion,
+  assertMatchPattern,
   assertNotUndefined,
   assertNull,
   assertString,
@@ -8,8 +9,8 @@ import {
   isObject,
 } from '@savchenko91/schema-validator'
 
-import { assertMatchPattern } from './custom-assertions'
-
+// import { assertMatchPattern } from './custom-assertions'
+import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '@/constants/common'
 import { FormType, Norm, Schema } from '@/entities/schema'
 
 type AssertionListItem = AssertionItem | WithValueAssertionItem
@@ -69,7 +70,7 @@ export const assertionList: Norm<AssertionListItem> = {
         pattern: {
           id: 'pattern',
           title: 'pattern',
-          name: 'pattern',
+          name: MUTATE_ALL_FORM_VALUES_TO_STRING,
           props: { label: 'pattern' },
           compSchemaId: ComponentNames.TextField,
         },

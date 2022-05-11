@@ -51,20 +51,23 @@ function Autosave(props: AutosaveLogicProps): JSX.Element | null {
 
     const { values } = props
 
-    const difference = diff(state.values, values)
+    // diff бывает выкидывает ошибку если null прилетит
+    // непонятно откуда он прилетает
+    try {
+      const difference = diff(state.values, values)
 
-    if (Object.keys(difference).length) {
-      setState({ submitting: true, values })
+      if (Object.keys(difference).length) {
+        setState({ submitting: true, values })
 
-      if (isAutosaveWithForm(props.hocProps) && props.hocProps.children) {
-        forceSubmit()
-      } else if (isSimpleAutosave(props.hocProps)) {
-        promise.current = props.hocProps.save?.(values, props.form)
-        await promise.current
-
-        promise.current = null
+        if (isAutosaveWithForm(props.hocProps) && props.hocProps.children) {
+          forceSubmit()
+        } else if (isSimpleAutosave(props.hocProps)) {
+          promise.current = props.hocProps.save?.(values, props.form)
+        }
+        setState((s) => ({ ...s, submitting: false }))
       }
-      setState((s) => ({ ...s, submitting: false }))
+    } catch (e) {
+      return
     }
   }
 
@@ -77,7 +80,7 @@ function Autosave(props: AutosaveLogicProps): JSX.Element | null {
 
   if (isAutosaveWithForm(props.hocProps) && props.hocProps.children) {
     return (
-      <form onSubmit={props.hocProps.onSubmit as any} ref={formRef}>
+      <form name="allloooo" onSubmit={props.hocProps.onSubmit as any} ref={formRef}>
         {props.hocProps.children}
       </form>
     )
