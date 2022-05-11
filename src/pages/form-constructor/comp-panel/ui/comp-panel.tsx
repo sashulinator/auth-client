@@ -1,53 +1,41 @@
-import { CSchemasState, lackOfCSchemaIdsState, pickedCSchemaState } from '../model/comp-schema'
+import './comp-panel.css'
+
 import CompForm from './comp-form'
-import CompContextualMenu from './contextual-menu'
-import React, { FC, useEffect } from 'react'
+import { Config } from 'final-form'
+import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 
-import { useGetSchemaDependency } from '@/api/schema'
-import { Comp } from '@/common/types'
-import { replace } from '@/lib/change-unmutable'
-import {
-  FSchemaHistoryState,
-  pickedFCompState,
-  setFSchemaComps,
-} from '@/pages/form-constructor/preview/model/form-schema'
+import { Comp, Norm, Schema } from '@/entities/schema'
 
-const CompPanel: FC = (): JSX.Element | null => {
-  const [CSchemas, setCSchemas] = useRecoilState(CSchemasState)
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
-  const pickedCSchema = useRecoilValue(pickedCSchemaState)
-  const pickedFComp = useRecoilValue(pickedFCompState)
-  const lackOfCSchemaIds = useRecoilValue(lackOfCSchemaIdsState)
-  const resetCSchemas = useResetRecoilState(CSchemasState)
+interface CompPanelProps {
+  onSubmit: Config<Comp, Comp>['onSubmit']
+  isLoading: boolean
+  context: Record<string, unknown>
+  schemas: Norm<Schema> | null
+  schema: Schema | null
+  comp: Comp | null
+  ContextualMenu: (props: { comp: Comp }) => JSX.Element
+}
 
-  const { data, isLoading } = useGetSchemaDependency(lackOfCSchemaIds)
+export default function CompPanel(props: CompPanelProps): JSX.Element | null {
+  const schemaIsMissing = !props.isLoading && !props.schema
 
-  useEffect(() => resetCSchemas, [])
-  useEffect(setFetchedSchemasToState, [data])
-
-  function setFetchedSchemasToState() {
-    if (data !== undefined) {
-      setCSchemas({ ...data, ...CSchemas })
-    }
-  }
-
-  function onAutosave(comp: Comp) {
-    const newComps = replace(FSchemaHistory.data.comps, comp.id, comp)
-    setFSchemaHistory(setFSchemaComps(newComps))
-  }
-
-  if (!(pickedCSchema && pickedFComp && CSchemas)) {
+  if (!props.schemas || !props.comp) {
     return null
   }
 
   return (
     <PerfectScrollbar className="CompPanel">
-      <CompForm schemas={CSchemas} comps={pickedCSchema.comps} comp={pickedFComp} onAutosave={onAutosave} />
-      {!isLoading && pickedFComp && !pickedCSchema && <CompContextualMenu />}
+      {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
+      {props.schema && (
+        <CompForm
+          schema={props.schema}
+          schemas={props.schemas}
+          comp={props.comp}
+          context={props.context}
+          onSubmit={props.onSubmit}
+        />
+      )}
     </PerfectScrollbar>
   )
 }
-
-export default CompPanel

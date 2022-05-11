@@ -4,7 +4,8 @@
     "saved": "Сохранено"
   },
   "fieldNames": {
-    "name": "имя"
+    "name": "имя",
+    "title": "заголовок"
   },
   "pagesNames": {
     "createUser": "Создать пользователя",
@@ -21,7 +22,8 @@
   },
   "formConstructorPage": {
     "bindings": "Связывание",
-    "addBindings": "Добавить связывание"
+    "addBindings": "Добавить связывание",
+    "editThisForm": "Редактировать эту форму"
   },
   "buttons": {
     "add": "Добавить",

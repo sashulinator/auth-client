@@ -1,4 +1,4 @@
-import { Norm, Schema } from '@/common/types'
+import { Norm, Schema } from '@/entities/schema'
 
 export function isSchema(input: unknown): asserts input is Schema {
   return

@@ -1,0 +1,56 @@
+import {
+  ErrorCollection,
+  ErrorCollector,
+  Schema,
+  and,
+  assertNotUndefined,
+  buildErrorTree,
+  only,
+  or,
+  withValue,
+} from '@savchenko91/schema-validator'
+
+import { assertionList } from './assertion-list'
+import { formToOneValueIfNeeded } from './form-to-one-value'
+
+import { ROOT_ID } from '@/constants/common'
+import { CompValidator, Norm } from '@/entities/schema'
+
+const rootOnly = only.bind({ handleError: buildErrorTree })
+
+export default function buildValidator(
+  validators: Norm<CompValidator> | undefined
+): ErrorCollector<ErrorCollection> | undefined {
+  if (validators === undefined) {
+    return undefined
+  } else {
+    const schema = rootOnly({ thereCouldBeYourAddvertisement: factory(ROOT_ID, validators) })
+    return schema.thereCouldBeYourAddvertisement as ErrorCollector<ErrorCollection>
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function factory(compValidatorId: string, compValidators: Norm<CompValidator>): Schema<any> {
+  const compValidator = compValidators[compValidatorId]
+  assertNotUndefined(compValidator)
+
+  const isOr = compValidator.name === 'and'
+  const isAnd = compValidator.name === 'or'
+
+  if (isAnd || isOr) {
+    const validators = compValidator?.children.map((id) => factory(id, compValidators))
+    return isAnd ? and(...validators) : or(...validators)
+  }
+
+  const assertionItem = assertionList[compValidator.name]
+  assertNotUndefined(assertionItem)
+
+  const isWithValueAssertion = assertionItem.type === 'withValue'
+
+  if (isWithValueAssertion) {
+    const input2 = formToOneValueIfNeeded(compValidator.input2)
+    return withValue(input2, assertionItem.assertion)
+  }
+
+  return assertionItem.assertion
+}

@@ -1,35 +1,28 @@
 import './preview.css'
 
-import { CSchemasState } from '../../comp-panel/model/comp-schema'
 import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
-import React, { FC, useEffect, useLayoutEffect } from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
-import { useRecoilState, useResetRecoilState } from 'recoil'
 
-import { FSchemaHistoryState, pickedFCompIdsState } from '@/pages/form-constructor/preview/model/form-schema'
-import CompDrawer from '@/shared/draw-comps'
+import { Norm, Schema } from '@/entities/schema'
+import CompDrawer from '@/shared/schema-drawer'
 
-const Preview: FC = (): JSX.Element => {
-  const [FSchemaHistory] = useRecoilState(FSchemaHistoryState)
-  const [CSchemas] = useRecoilState(CSchemasState)
-  const resetFSchema = useResetRecoilState(FSchemaHistoryState)
-  const [pickedFCompIds] = useRecoilState(pickedFCompIdsState)
-  const resetPickedFCompId = useResetRecoilState(pickedFCompIdsState)
+interface PreviewProps {
+  schema: Schema
+  schemas: Norm<Schema> | null
+  selectedCompIds: string[]
+}
 
+export default function Preview(props: PreviewProps): JSX.Element {
+  const { schemas, schema } = props
   useLayoutEffect(() => {
     removeAllSelectionHighlights()
-
-    pickedFCompIds.forEach((compId) => {
+    props.selectedCompIds.forEach((compId) => {
       highlightSelection(compId)
     })
-  }, [pickedFCompIds, FSchemaHistory.data])
+  }, [props.selectedCompIds, props.schema])
 
-  useEffect(() => {
-    resetFSchema()
-    resetPickedFCompId()
-  }, [])
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function onSubmit(data: any) {
+  function onSubmit(data: unknown) {
     console.log('data', data)
   }
 
@@ -37,14 +30,14 @@ const Preview: FC = (): JSX.Element => {
     <div className="Preview">
       <div className="selectorArea" />
       <div className="hoverArea" />
-      {CSchemas && (
+      {schemas && schema && (
         <Form
-          key={JSON.stringify(FSchemaHistory)}
+          key={JSON.stringify(props.schema)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                {FSchemaHistory && <CompDrawer schemas={CSchemas} comps={FSchemaHistory.data.comps} />}
+                <CompDrawer schema={schema} schemas={schemas} context={{ formState: formProps.form.getState() }} />
               </form>
             )
           }}
@@ -53,5 +46,3 @@ const Preview: FC = (): JSX.Element => {
     </div>
   )
 }
-
-export default Preview

@@ -1,0 +1,12 @@
+.CompPanel .CompContextualMenu {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+
+h2 {
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  width: calc(100% - 40px) !important;
+}

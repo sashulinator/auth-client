@@ -1,7 +1,6 @@
 import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
 import { ErrorCollection } from '@savchenko91/schema-validator'
 
-import { FSchemaHistoryState, setFSchema } from '../model/form-schema'
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
@@ -11,14 +10,14 @@ import uuid from 'uuid-random'
 
 import { createSchema, updateSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
-import { FormType, Schema } from '@/common/types'
 import ROUTES from '@/constants/routes'
+import { FormType, Schema, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import useAppMutation from '@/lib/use-mutation'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
-import { componentNameOptions } from '@/shared/draw-comps/lib/component-list'
 import { Dropdown } from '@/shared/dropdown'
 import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
 import FieldError from '@/shared/field-error'
+import { componentNameOptions } from '@/shared/schema-drawer/lib/component-list'
 import CustomTextField from '@/shared/textfield'
 import { successMessage } from '@/shared/toast'
 
@@ -26,7 +25,7 @@ const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
 export default function SchemaForm(): JSX.Element {
   const { t, i18n } = useTranslation()
-  const [FSchemaHistory, setFSchemaHistory] = useRecoilState(FSchemaHistoryState)
+  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -52,7 +51,7 @@ export default function SchemaForm(): JSX.Element {
       onclick: async () => {
         const response = await fetch('/api/v1/schemas', {
           method: 'DELETE',
-          body: JSON.stringify({ ids: [FSchemaHistory.data.id] }),
+          body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
           headers: {
             'content-type': 'application/json',
             accept: '*/*',
@@ -66,25 +65,25 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(submitFschemaData: Schema): Promise<void | ErrorCollection> {
-    const { name, type } = submitFschemaData
+  async function onSubmit(submitSchemaData: Schema): Promise<void | ErrorCollection> {
+    const { title, type } = submitSchemaData
 
-    const newComponentName = type !== FormType.COMP ? null : submitFschemaData.componentName
+    const newComponentName = type !== FormType.COMP ? null : submitSchemaData.componentName
     const newId = id ? id : uuid()
 
-    const newFSchema = {
-      ...FSchemaHistory.data,
+    const newSchema: Schema = {
+      ...currentSchemaHistory.data,
       id: newId,
       componentName: newComponentName,
-      name,
+      title,
       type,
     }
 
     try {
       if (id) {
-        await apiUpdateSchema(newFSchema)
+        await apiUpdateSchema(newSchema)
       } else {
-        await apiCreateSchema(newFSchema)
+        await apiCreateSchema(newSchema)
       }
       // TODO возвращать ошибки валидатора только плюс потом появится бэк на джаве
       // и надо будет изменять формат этих ошибок под формат final-form
@@ -94,14 +93,14 @@ export default function SchemaForm(): JSX.Element {
   }
 
   function onDropdownChange(type: FormType) {
-    setFSchemaHistory(setFSchema({ ...FSchemaHistory.data, type }))
+    setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, type }))
   }
 
   //TODO обновить схему в стэйте если меняется дропдаун для componentName
 
   return (
     <Form<Schema, Schema>
-      initialValues={FSchemaHistory.data}
+      initialValues={currentSchemaHistory.data}
       onSubmit={onSubmit}
       render={(formProps) => {
         return (
@@ -114,11 +113,11 @@ export default function SchemaForm(): JSX.Element {
             verticalAlign="center"
             tokens={{ childrenGap: 20, padding: '15px 40px' }}
           >
-            <Field<string> name="name" validate={(v) => schemaValidator.name(v)}>
+            <Field<string> name="title" validate={(v) => schemaValidator.title(v)}>
               {({ input, meta }) => {
                 return (
                   <div className="FieldErrorPositionRelative">
-                    <CustomTextField key="1" label={t(`fieldNames.name`)} underlined {...input} />
+                    <CustomTextField key="1" label={t(`fieldNames.title`)} underlined {...input} />
                     <FieldError key="2" meta={meta} />
                   </div>
                 )

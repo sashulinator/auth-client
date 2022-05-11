@@ -1,2 +1,2 @@
-export { default } from './ui'
+export { default } from './ui/palette-modal'
 export * from './model'

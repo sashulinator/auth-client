@@ -4,8 +4,8 @@ import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
 import { assertsSchema } from '@/common/schemas'
-import { Norm, Schema } from '@/common/types'
 import { isNormSchemas } from '@/common/validators'
+import { Norm, Schema } from '@/entities/schema'
 import ErrorFromObject from '@/lib/error-from-object'
 
 type GetSchemaParams = {
@@ -140,7 +140,7 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
   return schemas as Norm<Schema>
 }
 
-export function useGetSchemaDependency(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
+export function useGetDependencySchemas(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
   return useQuery(['schemasDependencies', ...ids], queryFn)
 
   async function queryFn(): Promise<Norm<Schema> | undefined> {

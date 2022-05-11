@@ -2,8 +2,8 @@ import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import uniqid from 'uniqid'
 
-import { Norm } from '@/common/types'
 import { ROOT_ID } from '@/constants/common'
+import { Norm } from '@/entities/schema'
 import { insert, remove, replace, replaceById } from '@/lib/change-unmutable'
 
 export interface Entity {

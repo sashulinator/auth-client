@@ -46,7 +46,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         >
           {isOneOfMultipleDragging
             ? `multiple ${props.item.data?.pickedIds.length || ''}`
-            : props.item.data?.comp.name || ''}
+            : props.item.data?.comp.title || ''}
         </Text>
       </Stack>
     </div>
