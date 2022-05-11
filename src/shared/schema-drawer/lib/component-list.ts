@@ -5,8 +5,8 @@ import { ComponentNames } from '../model/types'
 import CustomDatePicker from '@/shared/date-picker'
 import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
-import Table from '@/shared/table'
 import { Pivot, PivotItem } from '@/shared/pivot'
+import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'
 
@@ -68,7 +68,7 @@ const componentList = {
     type: 'input',
     component: Table,
   },
- 
+
   Label: {
     type: 'content',
     component: Label,
