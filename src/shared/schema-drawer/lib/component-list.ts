@@ -5,6 +5,7 @@ import { ComponentNames } from '../model/types'
 import CustomDatePicker from '@/shared/date-picker'
 import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
+import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'
 
@@ -56,9 +57,15 @@ const componentList = {
     type: 'content',
     component: PrimaryButton,
   },
+
   Text: {
     type: 'content',
     component: Text,
+  },
+
+  Table: {
+    type: 'input',
+    component: Table,
   },
 } as const
 
