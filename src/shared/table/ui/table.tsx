@@ -9,8 +9,8 @@ interface TableProps {
 }
 
 export default function Table(props: TableProps): JSX.Element {
-  const items = normilize<Record<string, unknown>>(props.items)
-  const columns = normilize<IColumn>(props.columns)
+  const items = normilize<Record<string, unknown>>(props.items) ?? []
+  const columns = normilize<IColumn>(props.columns) ?? []
 
   return <DetailsList items={items} columns={columns} />
 }

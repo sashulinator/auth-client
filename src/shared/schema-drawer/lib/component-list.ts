@@ -3,6 +3,7 @@ import { Checkbox, IDropdownOption, Label, PrimaryButton, Stack, Text } from '@f
 import { ComponentNames } from '../model/types'
 
 import CustomDatePicker from '@/shared/date-picker'
+import { Dropdown } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
 import { Pivot, PivotItem } from '@/shared/pivot'
@@ -46,6 +47,11 @@ const componentList = {
   JSONEditor: {
     type: 'input',
     component: JSONEditor,
+  },
+
+  Dropdown: {
+    type: 'input',
+    component: Dropdown,
   },
 
   // Contents

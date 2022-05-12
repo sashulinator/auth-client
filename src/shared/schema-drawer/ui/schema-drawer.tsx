@@ -69,7 +69,14 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   assertCompSchema(schema)
 
   const сomponentItem = componentListBlind[schema.componentName]
-  assertNotUndefined(сomponentItem)
+
+  if (!сomponentItem) {
+    return (
+      <div style={{ backgroundColor: 'red' }}>
+        Похоже вы используете старую версию фронта, в которой {schema.componentName} ещё не существует
+      </div>
+    )
+  }
 
   if (isInputType(сomponentItem)) {
     return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />
