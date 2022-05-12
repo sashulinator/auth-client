@@ -5,8 +5,7 @@ import clsx from 'clsx'
 import React from 'react'
 
 import { ROOT_ID } from '@/constants/common'
-import { Dropdown } from '@/shared/dropdown'
-import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
+import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
 import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
@@ -17,11 +16,12 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const { validator } = props.item.data
 
   const isRoot = props.item.data.validator.id === ROOT_ID
+  const rootLabel = 'ro ot'
   const isAnd = validator.name === 'and'
   const isOr = validator.name === 'or'
   const isOperator = validator.name === 'and' || validator.name === 'or'
   const isPicked = props.item.data.pickedItemId === props.item.data.validator.id
-  const options = isOperator ? buildOptionsFromStringArray(['or', 'and']) : assertionNameOptions
+  const options = isOperator ? optionsFromStringArray(['or', 'and']) : assertionNameOptions
 
   return (
     <div
@@ -42,28 +42,14 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
           iconProps={{ iconName: 'Cancel' }}
           onClick={() => props.item.data?.remove(props.item.id)}
         />
-        <div className="type">
-          {isRoot ? (
-            <span>
-              ro
-              <br />
-              ot
-            </span>
-          ) : isAnd ? (
-            '&'
-          ) : isOr ? (
-            '||'
-          ) : (
-            'A'
-          )}
-        </div>
+        <div className="type">{isRoot ? rootLabel : isAnd ? '&' : isOr ? '||' : 'A'}</div>
         <Stack className="treeLeafText" horizontal>
           <Dropdown
             name="hereCouldBeYourAd"
-            styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
-            onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
             value={validator.name}
             options={options}
+            onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
+            styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
           />
         </Stack>
       </Stack>

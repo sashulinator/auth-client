@@ -3,6 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import assertCompSchema from '../lib/assert-comp-schema'
 import { componentListBlind } from '../lib/component-list'
 import isInputType from '../lib/is-field-component'
+// import eventsFactory from '../lib/subscribe-on-events'
 import { Context } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -29,8 +30,9 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const rootComp = props.schema.comps[ROOT_ID]
+  // const addEventListener = useCallback(() => eventsFactory(context), [])
 
+  const rootComp = props.schema.comps[ROOT_ID]
   assertNotUndefined(rootComp)
 
   if (props.schemas === null) {
@@ -67,7 +69,14 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   assertCompSchema(schema)
 
   const сomponentItem = componentListBlind[schema.componentName]
-  assertNotUndefined(сomponentItem)
+
+  if (!сomponentItem) {
+    return (
+      <div style={{ backgroundColor: 'red' }}>
+        Похоже вы используете старую версию фронта, в которой {schema.componentName} ещё не существует
+      </div>
+    )
+  }
 
   if (isInputType(сomponentItem)) {
     return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />

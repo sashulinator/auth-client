@@ -168,6 +168,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
                       formState: formProps.form.getState(),
                       fns: {
                         changeField: formProps.form.change,
+                        formSubscribe: formProps.form.subscribe,
                       },
                     }}
                   />

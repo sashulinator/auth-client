@@ -2,11 +2,9 @@ import {
   ANY_KEY,
   _null,
   and,
-  buildErrorTree,
   ignorePattern,
   keyDoesNotExist,
   notEmptyString,
-  only,
   or,
   string,
   withRef,
@@ -18,8 +16,7 @@ import { Schema } from '../entities/schema'
 import { assertSchemaComponentNameIsValid } from './assertions'
 
 import ErrorFromObject from '@/lib/error-from-object'
-
-const rootOnly = only.bind({ handleError: buildErrorTree })
+import { rootOnly } from '@/lib/validators'
 
 export const schemaValidator = rootOnly({
   componentName: or(_null, withRef('type', assertSchemaComponentNameIsValid)),

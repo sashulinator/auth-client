@@ -14,8 +14,7 @@ import ROUTES from '@/constants/routes'
 import { FormType, Schema, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import useAppMutation from '@/lib/use-mutation'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
-import { Dropdown } from '@/shared/dropdown'
-import { buildOptionsFromStringArray } from '@/shared/dropdown/lib/options'
+import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
 import { componentNameOptions } from '@/shared/schema-drawer/lib/component-list'
 import CustomTextField from '@/shared/textfield'
@@ -42,7 +41,7 @@ export default function SchemaForm(): JSX.Element {
     },
   })
 
-  const options = useMemo(() => buildOptionsFromStringArray(typeArray, t), [i18n.language])
+  const options = useMemo(() => optionsFromStringArray(typeArray, t), [i18n.language])
 
   const items: IContextualMenuItem[] = [
     {
