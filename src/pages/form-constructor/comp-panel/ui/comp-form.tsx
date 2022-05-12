@@ -42,6 +42,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                     ...props.context,
                     fns: {
                       changeField: formProps.form.change,
+                      formSubscribe: formProps.form.subscribe,
                     },
                   }}
                 />

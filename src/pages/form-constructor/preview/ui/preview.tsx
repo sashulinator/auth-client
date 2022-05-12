@@ -44,6 +44,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
                     formState: formProps.form.getState(),
                     fns: {
                       changeField: formProps.form.change,
+                      formSubscribe: formProps.form.subscribe,
                     },
                   }}
                 />
