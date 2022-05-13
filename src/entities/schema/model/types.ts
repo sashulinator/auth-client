@@ -16,6 +16,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: Norm<CompValidator>
+  bindings?: Norm<CompBinding>
   injections?: [
     {
       from: 'string'
@@ -52,5 +53,7 @@ export interface CompValidator {
 export interface CompBinding {
   id: string
   name: string
+  type: string
   children: string[]
+  props?: Record<string, unknown>
 }

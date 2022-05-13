@@ -1,15 +1,19 @@
-import { FormApi } from 'final-form'
+import { FormState } from 'final-form'
+import { FormRenderProps } from 'react-final-form'
 
 export type Context = {
-  formState: unknown
-  fns: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    changeField: FormApi<any, any>['change']
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    formSubscribe: FormApi<any, any>['subscribe']
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } & Record<string, (...args: any[]) => any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formState: FormState<any, any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formProps: FormRenderProps<any, any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fns?: Record<string, (...args: any[]) => any>
 } & Record<string, unknown>
+
+export type DrawerContext = Context & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  formStatePrev: FormState<any, any>
+}
 
 export enum ComponentNames {
   TextField = 'TextField',

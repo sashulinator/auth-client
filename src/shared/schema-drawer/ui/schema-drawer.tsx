@@ -3,11 +3,12 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import assertCompSchema from '../lib/assert-comp-schema'
 import { componentListBlind } from '../lib/component-list'
 import isInputType from '../lib/is-field-component'
-// import eventsFactory from '../lib/subscribe-on-events'
-import { Context } from '../model/types'
+import createBindingsFactory from '../lib/subscribe-on-events'
+import { Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import React, { useState } from 'react'
+import { FormState } from 'final-form'
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { Comp, Norm, Schema } from '@/entities/schema'
@@ -20,9 +21,18 @@ interface SchemaDrawerProps {
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 
-  const context = {
+  useLayoutEffect(() => {
+    formStatePrev.current = props.context.formState
+  })
+
+  const getRidOfCurrent = { formStatePrev: formStatePrev.current }
+
+  const context: DrawerContext = {
     fetchedData: fetchedDataContext,
+    ...getRidOfCurrent,
     ...props.context,
     fns: {
       ...props.context.fns,
@@ -30,7 +40,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  // const addEventListener = useCallback(() => eventsFactory(context), [])
+  const bindingFactory = useMemo(() => createBindingsFactory(context), [])
 
   const rootComp = props.schema.comps[ROOT_ID]
   assertNotUndefined(rootComp)
@@ -38,7 +48,15 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   if (props.schemas === null) {
     return null
   }
-  return <ComponentFactory context={context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
+  return (
+    <ComponentFactory
+      context={context}
+      comps={props.schema.comps}
+      compId={rootComp.id}
+      schemas={props.schemas}
+      bindingFactory={bindingFactory}
+    />
+  )
 }
 
 /**
@@ -53,6 +71,7 @@ interface ComponentFactoryProps {
   comps: Norm<Comp>
   compId: string
   context: Context
+  bindingFactory: (...args: any[]) => any
 }
 
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
@@ -78,11 +97,20 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     )
   }
 
+  props.bindingFactory(comp.bindings)
+
   if (isInputType(сomponentItem)) {
     return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />
   }
 
   return (
-    <ContentComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
+    <ContentComponent
+      bindingFactory={props.bindingFactory}
+      context={props.context}
+      comp={comp}
+      schema={schema}
+      schemas={props.schemas}
+      comps={props.comps}
+    />
   )
 }

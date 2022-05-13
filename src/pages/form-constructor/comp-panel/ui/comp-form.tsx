@@ -39,11 +39,8 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   schemas={props.schemas}
                   context={{
                     formState: formProps.form.getState(),
+                    formProps,
                     ...props.context,
-                    fns: {
-                      changeField: formProps.form.change,
-                      formSubscribe: formProps.form.subscribe,
-                    },
                   }}
                 />
               </Stack>
