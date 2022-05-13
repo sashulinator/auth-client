@@ -1,7 +1,13 @@
-import { Dropdown as DropdownUI, IDropdownProps } from '@fluentui/react'
+import { Dropdown as DropdownUI, IDropdownProps, IDropdownStyles } from '@fluentui/react'
 
 import React, { FC } from 'react'
 import { useForm } from 'react-final-form'
+
+const dropdownStyles: Partial<IDropdownStyles> = {
+  dropdown: { width: 300 },
+  dropdownOptionText: { overflow: 'hidden', whiteSpace: 'auto' },
+  dropdownItem: { height: 'auto' },
+}
 
 /**
  * Дропдаун от FluentUI не совместим с final-form из-за аргументов в onChange
@@ -16,6 +22,7 @@ const DropdownMultipleSelect: FC<IDropdownProps & { onChange: (value?: any) => v
     <DropdownUI
       {...props}
       multiSelect
+      styles={dropdownStyles}
       onChange={(event, action) => {
         if (action?.selected) {
           form.change(props.name, [...props.value, action.key])
