@@ -72,7 +72,7 @@ const FormConstructor: FC = (): JSX.Element => {
     },
   }
 
-  const { data: fetchedCurrentSchema } = useQuery(['schema', id], getSchema)
+  const { data: fetchedCurrentSchema, isLoading: isCurrentSchemaLoading } = useQuery(['schema', id], getSchema)
 
   const { data: fetchedDependencySchemas, isLoading: isDependencySchemasLoading } = useGetDependencySchemas(
     missingSchemaIds
@@ -248,6 +248,7 @@ const FormConstructor: FC = (): JSX.Element => {
           selectAndUnselectComp={selectAndUnselectComp}
           upsertComps={updateCompsInCurrentSchemaState}
           selectedCompIds={selectedCompIds}
+          isLoading={isCurrentSchemaLoading}
         />
         <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
         <CompPanel

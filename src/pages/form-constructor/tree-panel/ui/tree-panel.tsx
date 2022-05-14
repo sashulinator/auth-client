@@ -15,6 +15,7 @@ import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
+import LoadingAria from '@/shared/loading-aria'
 import Tree from '@/shared/tree'
 
 interface TreePanelProps {
@@ -22,6 +23,7 @@ interface TreePanelProps {
   schema: Schema
   selectedCompIds: string[]
   upsertComps: (comps: Norm<Comp>) => void
+  isLoading: boolean
 }
 
 function TreePanel(props: TreePanelProps): JSX.Element {
@@ -117,17 +119,19 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
-      {tree && (
-        <PerfectScrollbar className="TreePanel">
-          <Tree
-            renderItem={TreeLeaf}
-            tree={tree}
-            onDragStart={PreventMovingUnpickedItems}
-            onDragEnd={onDragEnd}
-            setTree={setTree}
-          />
-        </PerfectScrollbar>
-      )}
+      <PerfectScrollbar className="TreePanel">
+        <LoadingAria loading={props.isLoading}>
+          {tree && (
+            <Tree
+              renderItem={TreeLeaf}
+              tree={tree}
+              onDragStart={PreventMovingUnpickedItems}
+              onDragEnd={onDragEnd}
+              setTree={setTree}
+            />
+          )}
+        </LoadingAria>
+      </PerfectScrollbar>
     </>
   )
 }
