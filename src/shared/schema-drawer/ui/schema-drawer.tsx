@@ -97,7 +97,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     )
   }
 
-  props.bindingFactory(comp.bindings)
+  props.bindingFactory(comp.events)
 
   if (isInputType(сomponentItem)) {
     return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />

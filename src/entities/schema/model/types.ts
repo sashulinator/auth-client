@@ -11,18 +11,17 @@ export interface Comp {
   compSchemaId: string
   name: string
   title: string
-  // дефвалуе вынести в пропс и юзер не должен в пас писать слово пропс для формы элемента
   defaultValue?: string
   props?: Record<string, unknown>
   children?: string[]
-  validators?: Norm<CompValidator>
-  bindings?: Norm<CompBinding>
-  injections?: [
-    {
-      from: 'string'
-      to: 'string'
-    }
-  ]
+  validators?: Norm<ValidatorItem>
+  events?: Norm<EventItem>
+  injections?: Injection[]
+}
+
+interface Injection {
+  from: 'string'
+  to: 'string'
 }
 
 export type Schema = Omit<CompSchema, 'componentName'> & {
@@ -43,17 +42,29 @@ export enum FormType {
   COMP = 'COMP',
 }
 
-export interface CompValidator {
+export interface BindingItem {
   id: string
   name: string
   children: string[]
-  input2?: unknown
+  props?: unknown
 }
 
-export interface CompBinding {
-  id: string
-  name: string
-  type: string
-  children: string[]
-  props?: Record<string, unknown>
+export interface ValidatorItem extends BindingItem {
+  type: ValidatorItemType
+}
+
+export enum ValidatorItemType {
+  OPERATOR = 'OPERATOR',
+  ASSERTION = 'ASSERTION',
+}
+
+export interface EventItem extends BindingItem {
+  type: EventItemType
+}
+
+export enum EventItemType {
+  EVENT = 'EVENT',
+  ACTION = 'ACTION',
+  OPERATOR = 'OPERATOR',
+  ASSERTION = 'ASSERTION',
 }

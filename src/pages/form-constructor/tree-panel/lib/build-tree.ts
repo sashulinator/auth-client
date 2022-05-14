@@ -4,7 +4,7 @@ import { TreeItemAdditionalData } from '../types'
 
 import { ROOT_ID } from '@/constants/common'
 import { Comp, Norm } from '@/entities/schema'
-import { mapObject } from '@/lib/map-object'
+import { mutateObject } from '@/lib/mutate-object'
 
 export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeItemAdditionalData): TreeData | undefined {
   if (comps === undefined) {
@@ -17,8 +17,7 @@ export function buildTree(comps: Norm<Comp> | undefined, additionalData: TreeIte
     children: [ROOT_ID],
   }
 
-  const treeItems = mapObject(
-    comps,
+  const treeItems = mutateObject(comps)(
     (comp): TreeItem => {
       return {
         ...comp,

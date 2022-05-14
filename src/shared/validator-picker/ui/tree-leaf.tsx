@@ -1,12 +1,21 @@
+import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 import { IconButton, Stack } from '@fluentui/react'
 
-import { TreeLeafProps } from '../types'
+import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { ROOT_ID } from '@/constants/common'
+import { ValidatorItem, ValidatorItemType } from '@/entities/schema'
 import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
 import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
+
+export interface TreeLeafProps extends RenderItemParams {
+  item: Omit<TreeItem, 'data'> & {
+    data?: AdditionalData & {
+      validator: ValidatorItem
+    }
+  }
+}
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   if (props.item.data === undefined) {
@@ -15,24 +24,23 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
 
   const { validator } = props.item.data
 
-  const isRoot = props.item.data.validator.id === ROOT_ID
-  const rootLabel = 'ro ot'
-  const isAnd = validator.name === 'and'
-  const isOr = validator.name === 'or'
-  const isOperator = validator.name === 'and' || validator.name === 'or'
-  const isPicked = props.item.data.pickedItemId === props.item.data.validator.id
+  const isPicked = props.item.data.selectedItemId === props.item.data.validator.id
+  const isOperator = validator.type === ValidatorItemType.OPERATOR
   const options = isOperator ? optionsFromStringArray(['or', 'and']) : assertionNameOptions
 
   return (
     <div
+      ref={props.provided.innerRef}
       role="button"
       tabIndex={0}
       className={clsx('TreeLeaf', isPicked && 'picked')}
-      onClick={() => props.item.data?.pickItemId(props.item.id.toString())}
-      onKeyDown={() => props.item.data?.pickItemId(props.item.id.toString())}
+      onClick={() => props.item.data?.selectItemId(props.item.id.toString())}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
-      ref={props.provided.innerRef}
+      onKeyDown={(e) => {
+        props.provided.dragHandleProps.onKeyDown(e)
+        props.item.data?.selectItemId(props.item.id.toString())
+      }}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBackgroundColor" />
@@ -42,10 +50,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
           iconProps={{ iconName: 'Cancel' }}
           onClick={() => props.item.data?.remove(props.item.id)}
         />
-        <div className="type">{isRoot ? rootLabel : isAnd ? '&' : isOr ? '||' : 'A'}</div>
+        <div className="type">{isOperator ? 'O' : 'A'}</div>
         <Stack className="treeLeafText" horizontal>
           <Dropdown
-            name="hereCouldBeYourAd"
             value={validator.name}
             options={options}
             onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
