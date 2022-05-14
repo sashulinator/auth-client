@@ -45,7 +45,7 @@ export enum FormType {
 export interface BindingItem {
   id: string
   name: string
-  children: string[]
+  children?: string[]
   props?: unknown
 }
 

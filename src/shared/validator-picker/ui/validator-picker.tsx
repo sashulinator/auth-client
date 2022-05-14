@@ -56,11 +56,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     if (validatorItems && props.name) {
       const validator = findEntity(id, validatorItems)
       const newValidators = replace(validatorItems, id, {
-        id: validator.id,
-        type: validator.type,
+        ...validator,
         name,
-        newValProps: newValidatorItemProps,
-        children: validator.children,
+        props: newValidatorItemProps,
       })
 
       props.onChange(omitEmpty(newValidators))
@@ -74,7 +72,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
     const toParentValidator = findEntity(to.parentId, validatorItems)
     const fromParentValidator = findEntity(from.parentId, validatorItems)
-    const validatorId = fromParentValidator.children[from.index]
+    const validatorId = fromParentValidator?.children?.[from.index]
 
     assertNotUndefined(validatorId)
 
