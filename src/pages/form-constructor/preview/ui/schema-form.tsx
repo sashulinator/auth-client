@@ -13,6 +13,7 @@ import { schemaValidator } from '@/common/schemas'
 import ROUTES from '@/constants/routes'
 import { FormType, Schema, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import useAppMutation from '@/lib/use-mutation'
+import Autosave from '@/shared/autosave'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
@@ -91,11 +92,9 @@ export default function SchemaForm(): JSX.Element {
     }
   }
 
-  function onDropdownChange(type: FormType) {
-    setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, type }))
+  function saveLocaly(schema: Schema) {
+    setCurrentSchemaHistory(schemaSetter(schema))
   }
-
-  //TODO обновить схему в стэйте если меняется дропдаун для componentName
 
   return (
     <Form<Schema, Schema>
@@ -112,6 +111,7 @@ export default function SchemaForm(): JSX.Element {
             verticalAlign="center"
             tokens={{ childrenGap: 20, padding: '15px 40px' }}
           >
+            <Autosave save={saveLocaly} debounce={700} />
             <Field<string> name="title" validate={(v) => schemaValidator.title(v)}>
               {({ input, meta }) => {
                 return (
@@ -123,23 +123,12 @@ export default function SchemaForm(): JSX.Element {
               }}
             </Field>
             <Field<string> name="type">
-              {({ input }) => (
-                <Dropdown
-                  styles={{ root: { width: '150px' } }}
-                  options={options}
-                  key="1"
-                  {...input}
-                  onChange={(v) => {
-                    onDropdownChange(v)
-                    input.onChange(v)
-                  }}
-                />
-              )}
+              {({ input }) => <Dropdown styles={{ root: { width: '150px' } }} options={options} {...input} />}
             </Field>
             {formProps.form.getFieldState('type')?.value === 'COMP' && (
               <Field<string> name="componentName">
                 {({ input }) => (
-                  <Dropdown styles={{ root: { width: '150px' } }} options={componentNameOptions} key="1" {...input} />
+                  <Dropdown styles={{ root: { width: '150px' } }} options={componentNameOptions} {...input} />
                 )}
               </Field>
             )}

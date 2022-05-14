@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 7px;
 }
 
 .ValidatorPicker.notEmpty .wrapper {
