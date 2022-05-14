@@ -13,6 +13,7 @@ interface ContentComponentProps {
   comps: Norm<Comp>
   comp: Comp
   context: Context
+  bindingFactory: (...args: any[]) => any
 }
 
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {
@@ -37,6 +38,7 @@ const ContentComponent = memo(function ContentComponent(props: ContentComponentP
             compId={compId}
             schemas={props.schemas}
             context={props.context}
+            bindingFactory={props.bindingFactory}
           />
         )
       })}

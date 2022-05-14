@@ -1,10 +1,11 @@
 import { ROOT_ID } from '@/constants/common'
-import { CompValidator, Norm } from '@/entities/schema'
+import { Norm, ValidatorItem, ValidatorItemType } from '@/entities/schema'
 
-export const defaultCompValidators: Norm<CompValidator> = {
+export const defaultCompValidators: Norm<ValidatorItem> = {
   [ROOT_ID]: {
     id: ROOT_ID,
     name: 'and',
+    type: ValidatorItemType.OPERATOR,
     children: [],
   },
 }

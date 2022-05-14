@@ -13,7 +13,7 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, CompValidator, Norm, Schema } from '@/entities/schema'
+import { Comp, Norm, Schema, ValidatorItem, ValidatorItemType } from '@/entities/schema'
 import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
@@ -25,20 +25,20 @@ import Tree from '@/shared/tree/ui/tree'
 export interface ValidatorsTreeProps {
   comp: Comp
   comps: Norm<Comp>
-  onChange: (value: Norm<CompValidator> | undefined) => void
+  onChange: (value: Norm<ValidatorItem> | undefined) => void
   schemas: Norm<Schema>
-  value: Norm<CompValidator> | undefined
+  value: Norm<ValidatorItem> | undefined
   name?: string
   label?: string
 }
 
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
-  const [selectedItemId, pickItemId] = useState('')
+  const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-  const validators = props.value
-  const validator = validators?.[selectedItemId]
-  const assertionItem = assertionList[validator?.name || '']
+  const validatorItems = props.value
+  const validatorItem = validatorItems?.[selectedItemId]
+  const assertionItem = assertionList[validatorItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
@@ -46,18 +46,18 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     return buildTree(props.value || undefined, {
       changeValidator,
       remove,
-      pickItemId,
-      pickedItemId: selectedItemId,
+      selectItemId,
+      selectedItemId,
     })
   }
 
-  function changeValidator(id: string | number, name: string, input2: unknown) {
-    if (validators && props.name) {
-      const validator = findEntity(id, validators)
-      const newValidators = replace(validators, id, {
+  function changeValidator(id: string | number, name: string, newValidatorItemProps: unknown) {
+    if (validatorItems && props.name) {
+      const validator = findEntity(id, validatorItems)
+      const newValidators = replace(validatorItems, id, {
         id: validator.id,
         name,
-        input2,
+        newValProps: newValidatorItemProps,
       })
 
       props.onChange(newValidators)
@@ -65,17 +65,17 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !validators || to.parentId === 'rootId') {
+    if (!to || !tree || !validatorItems || to.parentId === 'rootId') {
       return
     }
 
-    const toParentValidator = findEntity(to.parentId, validators)
-    const fromParentValidator = findEntity(from.parentId, validators)
+    const toParentValidator = findEntity(to.parentId, validatorItems)
+    const fromParentValidator = findEntity(from.parentId, validatorItems)
     const validatorId = fromParentValidator.children[from.index]
 
     assertNotUndefined(validatorId)
 
-    const validator = findEntity(validatorId, validators)
+    const validator = findEntity(validatorId, validatorItems)
 
     const isParentOperator = toParentValidator?.name === 'and' || toParentValidator?.name === 'or'
 
@@ -83,17 +83,18 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       return
     }
 
-    if (validators) {
-      props.onChange(moveEntity(validator, to.parentId, to.index || 0, validators))
+    if (validatorItems) {
+      props.onChange(moveEntity(validator, to.parentId, to.index || 0, validatorItems))
       setTree(moveItemOnTree(tree, from, to))
     }
   }
 
-  function addValidator(): void {
+  function addAssertion(): void {
     const id = uniqid()
-    const currentValidators = validators ? validators : defaultCompValidators
-    const validator: CompValidator = {
+    const currentValidators = validatorItems ? validatorItems : defaultCompValidators
+    const validator: ValidatorItem = {
       id,
+      type: ValidatorItemType.ASSERTION,
       name: 'string',
       children: [],
     }
@@ -107,42 +108,43 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
   function addOperator() {
     const id = uniqid()
-    const currentValidators = validators ? validators : defaultCompValidators
-    const validator: CompValidator = {
+    const currentValidators = validatorItems ? validatorItems : defaultCompValidators
+    const validator: ValidatorItem = {
       id,
       name: 'and',
+      type: ValidatorItemType.OPERATOR,
       children: [],
     }
 
     const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
 
-    if (validators) {
+    if (validatorItems) {
       props.onChange(newValidators)
     }
   }
 
   function remove(id: string | number): void {
-    if (validators) {
-      const newValidators = removeEntity(id, validators)
+    if (validatorItems) {
+      const newValidators = removeEntity(id, validatorItems)
 
       if (newValidators === undefined) {
         props.onChange(undefined)
       } else if (Object.keys(newValidators).length === 1) {
         props.onChange(undefined)
       } else {
-        props.onChange(removeEntity(id, validators))
+        props.onChange(removeEntity(id, validatorItems))
       }
     }
   }
 
   return (
-    <div className={clsx('ValidatorPicker', validators && 'notEmpty')}>
+    <div className={clsx('ValidatorPicker', validatorItems && 'notEmpty')}>
       {props.label && <Label>{props.label}</Label>}
       <Stack className="wrapper" verticalAlign="space-between">
         <div className="validatorPickerBackground" />
         <Stack>
           <Stack horizontal horizontalAlign="space-between">
-            <PrimaryButton onClick={addValidator}>add assertion</PrimaryButton>
+            <PrimaryButton onClick={addAssertion}>add assertion</PrimaryButton>
             <IconButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
           </Stack>
           {tree && (
@@ -152,24 +154,24 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
-        {isWithValueAssertionItem(assertionItem) && validator && (
+        {isWithValueAssertionItem(assertionItem) && validatorItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
-            initialValues={validator.input2}
+            initialValues={validatorItem.props}
             render={(formProps) => {
               return (
                 <>
-                  <Autosave save={(input2) => changeValidator(validator.id, validator.name, input2)} debounce={500} />
+                  <Autosave
+                    save={(input2) => changeValidator(validatorItem.id, validatorItem.name, input2)}
+                    debounce={500}
+                  />
                   <SchemaDrawer
                     schema={assertionItem.schema}
                     schemas={dummySchemas}
                     context={{
                       formState: formProps.form.getState(),
-                      fns: {
-                        changeField: formProps.form.change,
-                        formSubscribe: formProps.form.subscribe,
-                      },
+                      formProps,
                     }}
                   />
                 </>

@@ -14,12 +14,12 @@ import { assertionList } from './assertion-list'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
-import { CompValidator, Norm } from '@/entities/schema'
+import { BindingItem, Norm } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
 export default function buildValidator(
-  validators: Norm<CompValidator> | undefined
+  validators: Norm<BindingItem> | undefined
 ): ErrorCollector<ErrorCollection> | undefined {
   if (validators === undefined) {
     return undefined
@@ -30,7 +30,7 @@ export default function buildValidator(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function factory(compValidatorId: string, compValidators: Norm<CompValidator>): Schema<any> {
+function factory(compValidatorId: string, compValidators: Norm<BindingItem>): Schema<any> {
   const compValidator = compValidators[compValidatorId]
   assertNotUndefined(compValidator)
 
@@ -48,8 +48,8 @@ function factory(compValidatorId: string, compValidators: Norm<CompValidator>): 
   const isWithValueAssertion = assertionItem.type === 'withValue'
 
   if (isWithValueAssertion) {
-    const input2 = formToOneValueIfNeeded(compValidator.input2)
-    return withValue(input2, assertionItem.assertion)
+    const props = formToOneValueIfNeeded(compValidator.props)
+    return withValue(props, assertionItem.assertion)
   }
 
   return assertionItem.assertion

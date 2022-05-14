@@ -32,7 +32,6 @@ export default function Preview(props: PreviewProps): JSX.Element {
       <div className="hoverArea" />
       {schemas && schema && (
         <Form
-          key={JSON.stringify(props.schema)}
           onSubmit={onSubmit}
           render={(formProps) => {
             return (
@@ -42,10 +41,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
                   schemas={schemas}
                   context={{
                     formState: formProps.form.getState(),
-                    fns: {
-                      changeField: formProps.form.change,
-                      formSubscribe: formProps.form.subscribe,
-                    },
+                    formProps,
                   }}
                 />
               </form>
