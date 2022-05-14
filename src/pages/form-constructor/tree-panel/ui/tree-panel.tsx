@@ -117,8 +117,8 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
-      <PerfectScrollbar className="TreePanel">
-        {tree && (
+      {tree && (
+        <PerfectScrollbar className="TreePanel">
           <Tree
             renderItem={TreeLeaf}
             tree={tree}
@@ -126,8 +126,8 @@ function TreePanel(props: TreePanelProps): JSX.Element {
             onDragEnd={onDragEnd}
             setTree={setTree}
           />
-        )}
-      </PerfectScrollbar>
+        </PerfectScrollbar>
+      )}
     </>
   )
 }

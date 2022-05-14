@@ -162,8 +162,21 @@ export function removeEntity<T extends Entity>(entityId: string | number, entiti
   if (parentEntity === undefined) {
     return undefined
   }
+
+  const entityToRemove = findEntity(entityId, entities)
+  assertNotUndefined(entityToRemove)
+
+  // Remove children recursively
+  const entitiesWithoutChildren =
+    entityToRemove.children?.reduce<Norm<T> | undefined>((accEntities, id) => {
+      if (accEntities) {
+        return removeEntity(id, accEntities)
+      }
+      return accEntities
+    }, entities) ?? entities
+
   // Remove from entities
-  const newEntities = remove(entities, entityId)
+  const newEntities = remove(entitiesWithoutChildren, entityId)
   // Remove from parent
   const newParentEntity = removeChildId(parentEntity, entityId)
 

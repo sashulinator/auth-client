@@ -1,5 +1,5 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { IconButton, Label, PrimaryButton, Stack } from '@fluentui/react'
+import { ActionButton, Label, Stack } from '@fluentui/react'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './validator-picker.css'
@@ -8,6 +8,7 @@ import buildTree from '../lib/build-tree'
 import { defaultCompValidators } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
+import omitEmpty from 'omit-empty-es'
 import React, { useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
@@ -56,11 +57,13 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       const validator = findEntity(id, validatorItems)
       const newValidators = replace(validatorItems, id, {
         id: validator.id,
+        type: validator.type,
         name,
         newValProps: newValidatorItemProps,
+        children: validator.children,
       })
 
-      props.onChange(newValidators)
+      props.onChange(omitEmpty(newValidators))
     }
   }
 
@@ -109,27 +112,26 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addOperator() {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validator: ValidatorItem = {
+    const validatorItem: ValidatorItem = {
       id,
       name: 'and',
       type: ValidatorItemType.OPERATOR,
       children: [],
     }
 
-    const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
+    const newValidatorItems = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
 
     if (validatorItems) {
-      props.onChange(newValidators)
+      props.onChange(newValidatorItems)
     }
   }
 
   function remove(id: string | number): void {
     if (validatorItems) {
       const newValidators = removeEntity(id, validatorItems)
+      assertNotUndefined(newValidators)
 
-      if (newValidators === undefined) {
-        props.onChange(undefined)
-      } else if (Object.keys(newValidators).length === 1) {
+      if (Object.keys(newValidators).length === 1) {
         props.onChange(undefined)
       } else {
         props.onChange(removeEntity(id, validatorItems))
@@ -144,8 +146,10 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
         <div className="validatorPickerBackground" />
         <Stack>
           <Stack horizontal horizontalAlign="space-between">
-            <PrimaryButton onClick={addAssertion}>add assertion</PrimaryButton>
-            <IconButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+            <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
+              assertion
+            </ActionButton>
+            <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
           </Stack>
           {tree && (
             <Stack tokens={{ padding: '2px 0' }}>
