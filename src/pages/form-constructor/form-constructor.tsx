@@ -38,6 +38,7 @@ import {
   copyEntities,
   findDependencyIds,
   findEntities,
+  findEntity,
   findEntityPosition,
   findRootParentIds,
   removeEntity,
@@ -127,7 +128,10 @@ const FormConstructor: FC = (): JSX.Element => {
     setCurrentSchemaHistory(updateCompsSetter(comps))
 
     if (compId === propertyPanelComp?.id) {
-      setSelectedCompIds([])
+      const compLocation = findEntityPosition(compId, currentSchemaHistory.data.comps)
+      const parentComp = findEntity(compLocation?.parentId || '', comps)
+      const siblingId = parentComp.children?.[compLocation?.index || 0]
+      siblingId ? setSelectedCompIds([siblingId]) : setSelectedCompIds([])
     }
   }
 
