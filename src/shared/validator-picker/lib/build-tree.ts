@@ -11,13 +11,7 @@ export default function buildTree(validators: Norm<CompValidator> | undefined, a
     return undefined
   }
 
-  const rootTreeItem = {
-    id: 'rootId',
-    isExpanded: true,
-    children: [ROOT_ID],
-  }
-
-  const treeItems = mapObject(
+  const items = mapObject(
     validators,
     (validator): TreeItem => {
       return {
@@ -31,10 +25,8 @@ export default function buildTree(validators: Norm<CompValidator> | undefined, a
     }
   )
 
-  const items = { rootId: rootTreeItem, ...treeItems }
-
   return {
-    rootId: rootTreeItem.id,
+    rootId: ROOT_ID,
     items,
   }
 }
