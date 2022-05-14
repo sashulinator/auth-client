@@ -1,4 +1,4 @@
-import { TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { FontIcon, PrimaryButton } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
@@ -26,7 +26,7 @@ interface TreePanelProps {
 
 function TreePanel(props: TreePanelProps): JSX.Element {
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
-  const [tree, setTree] = useState(rebuildTree)
+  const [tree, setTree] = useState<TreeData | undefined>()
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
@@ -43,8 +43,8 @@ function TreePanel(props: TreePanelProps): JSX.Element {
     }
   }, [props.schema])
 
-  function rebuildTree() {
-    return buildTree(props.schema.comps, {
+  function rebuildTree(): TreeData | undefined {
+    return buildTree(tree, props.schema.comps, {
       pickedIds: props.selectedCompIds,
       onItemClick,
       onMouseOver: highlightHover,
