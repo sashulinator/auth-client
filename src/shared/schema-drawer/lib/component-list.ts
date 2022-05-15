@@ -6,6 +6,7 @@ import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
+import CustomNumberField from '@/shared/numberfield'
 import { Pivot, PivotItem } from '@/shared/pivot'
 import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
@@ -32,6 +33,11 @@ const componentList = {
   [ComponentNames.TextField]: {
     type: 'input',
     component: CustomTextField,
+  },
+
+  [ComponentNames.NumberField]: {
+    type: 'input',
+    component: CustomNumberField,
   },
 
   DatePicker: {
