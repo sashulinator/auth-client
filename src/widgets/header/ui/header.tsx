@@ -1,10 +1,11 @@
+import { PrimaryButton } from '@fluentui/react'
 import { Stack } from '@fluentui/react/lib/Stack'
 
 import './header.css'
 
 import React from 'react'
 // import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import ROUTES, { getCurrentRoute } from '@/constants/routes'
 import { SchemaForm } from '@/pages/form-constructor/preview'
@@ -20,8 +21,15 @@ export default function Header(props: HeaderProps): JSX.Element {
 
   // ререндерит header при изменении пути
   useLocation()
+  const navigate = useNavigate()
 
   const isFormConstructorPage = getCurrentRoute()?.PATH === ROUTES.FORM_CONSTRUCTOR.PATH
+
+  function logout() {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('refresh_token')
+    navigate(ROUTES.LOGIN.buildURL())
+  }
 
   return (
     <>
@@ -44,6 +52,9 @@ export default function Header(props: HeaderProps): JSX.Element {
           </li>
           <li>
             <LanguageDropdown />
+          </li>
+          <li>
+            <PrimaryButton onClick={logout}>Logout</PrimaryButton>
           </li>
         </Stack>
       </Stack>

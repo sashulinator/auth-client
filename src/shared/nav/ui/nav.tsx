@@ -16,7 +16,7 @@ const navStyles: Partial<INavStyles> = {
 
 const navLinkGroups: INavLinkGroup[] = [
   {
-    links: [ROUTES.LOGIN, ROUTES.SCHEMA_LIST, ROUTES.ACCIDENT_LIST].map((route) => {
+    links: [ROUTES.SCHEMA_LIST, ROUTES.ACCIDENT_LIST].map((route) => {
       return {
         name: route.NAME,
         url: route.buildURL(),
