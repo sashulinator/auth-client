@@ -18,4 +18,5 @@ export type DrawerContext = Context & {
 export enum ComponentNames {
   TextField = 'TextField',
   Stack = 'Stack',
+  NumberField = 'NumberField',
 }
