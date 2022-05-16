@@ -241,7 +241,6 @@ const FormConstructor: FC = (): JSX.Element => {
         redo={redo}
       />
       <Header />
-      <div className="fakeHeader" />
       <Stack as="main" className="FormConstructor">
         <TreePanel
           schema={currentSchemaHistory.data}
