@@ -1,9 +1,9 @@
-import { Checkbox, IDropdownOption, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
+import { Checkbox, IDropdownOption, IconButton, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import { ComponentNames } from '../model/types'
 
 import CustomDatePicker from '@/shared/date-picker'
-import { Dropdown } from '@/shared/dropdown'
+import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
 import { Pivot, PivotItem } from '@/shared/pivot'
@@ -54,6 +54,11 @@ const componentList = {
     component: Dropdown,
   },
 
+  DropdownMultipleSelect: {
+    type: 'input',
+    component: DropdownMultipleSelect,
+  },
+
   // Contents
 
   [ComponentNames.Stack]: {
@@ -86,6 +91,11 @@ const componentList = {
   PivotItem: {
     type: 'content',
     component: PivotItem,
+  },
+
+  IconButton: {
+    type: 'content',
+    component: IconButton,
   },
 } as const
 

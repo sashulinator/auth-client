@@ -1,5 +1,7 @@
 import { DetailsList, IColumn, SelectionMode } from '@fluentui/react'
 
+import './table.css'
+
 import normilize from '../lib/normalize'
 import React from 'react'
 
