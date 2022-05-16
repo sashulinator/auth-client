@@ -7,7 +7,7 @@ const ROUTES = {
     },
   },
   LOGIN: {
-    NAME: 'login',
+    NAME: 'Login',
     PATH: '/login',
     buildURL() {
       return this.PATH
@@ -16,6 +16,13 @@ const ROUTES = {
   SCHEMA_LIST: {
     NAME: 'Schema list',
     PATH: '/schema-list',
+    buildURL() {
+      return this.PATH
+    },
+  },
+  ACCIDENT_LIST: {
+    NAME: 'Accident list',
+    PATH: '/accident-list',
     buildURL() {
       return this.PATH
     },

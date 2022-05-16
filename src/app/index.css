@@ -12,13 +12,13 @@ body,
 #root > div {
   display: grid;
   grid-template-areas:
-    'header header'
-    'main main';
+    'header header header'
+    'nav main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
-  grid-template-columns: 1fr;
+  grid-template-columns: 230px 1fr;
 }
 
-header {
+.fakeHeader {
   grid-area: header;
 }
 footer {
@@ -26,4 +26,14 @@ footer {
 }
 main {
   grid-area: main;
+}
+.fakeNav {
+  grid-area: nav;
+}
+.Nav {
+  position: fixed;
+  left: 0;
+  top: calc(var(--headerHeight) * 1px);
+  height: 100%;
+  width: 100%;
 }
