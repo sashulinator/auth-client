@@ -1,4 +1,4 @@
-import { Checkbox, IDropdownOption, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
+import { Checkbox, IDropdownOption, IconButton, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import { ComponentNames } from '../model/types'
 
@@ -91,6 +91,11 @@ const componentList = {
   PivotItem: {
     type: 'content',
     component: PivotItem,
+  },
+
+  IconButton: {
+    type: 'content',
+    component: IconButton,
   },
 } as const
 

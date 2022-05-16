@@ -7,6 +7,7 @@ const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 300 },
   dropdownOptionText: { overflow: 'hidden', whiteSpace: 'auto' },
   dropdownItem: { height: 'auto' },
+  dropdownItemSelected: { height: 'auto' },
 }
 
 /**
