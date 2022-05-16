@@ -1,32 +1,21 @@
-import { ITextFieldProps, TextField } from '@fluentui/react'
+import { ITextFieldProps } from '@fluentui/react'
 
-import React, { forwardRef } from 'react'
+import React, { useState } from 'react'
 
-import { useAutoFocus } from '@/lib/use-autofocus'
+import CustomTextField from '@/shared/textfield/ui/textfield'
 
-const CustomNumberField = forwardRef<HTMLInputElement | null, ITextFieldProps & { autoFocusDelay?: number }>(
-  (props, ref): JSX.Element => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { autoFocus, ...restProps } = props
-    const setRef = useAutoFocus({
-      isAutoFocus: autoFocus,
-      ref,
-      delay: props.autoFocusDelay,
-    })
+export default function NumberField(props: ITextFieldProps) {
+  const [value, setValue] = useState('')
 
-    return (
-      <TextField
-        autoComplete="off"
-        {...restProps}
-        onRenderInput={(inputProps) => {
-          return <input {...inputProps} ref={setRef} />
-        }}
-        type="number"
-      />
-    )
+  function onChange(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, value?: string) {
+    const parsedValue = parseFloat(value ?? '')
+    if (isNaN(parsedValue)) {
+      props.onChange?.(event, (parsedValue as unknown) as string)
+    }
+    if (value?.match(/^-?[0-9]+\,?[0-9]*$/g)) {
+      setValue(value)
+    }
   }
-)
 
-CustomNumberField.displayName = 'CustomNumberField'
-
-export default CustomNumberField
+  return <CustomTextField {...props} value={value?.toString()} onChange={onChange} />
+}
