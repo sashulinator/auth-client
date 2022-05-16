@@ -36,9 +36,11 @@ export default function Header(props: HeaderProps): JSX.Element {
       <div className="fakeHeader" />
       <Stack as="header" horizontal horizontalAlign="space-between" className="Header">
         <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 10, padding: '15px 40px' }}>
-          <li>
-            <Link to={ROUTES.SCHEMA_LIST.buildURL()}>Schemas</Link>
-          </li>
+          {isFormConstructorPage && (
+            <li>
+              <Link to={ROUTES.SCHEMA_LIST.buildURL()}>{'< Back'}</Link>
+            </li>
+          )}
         </Stack>
         <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 20, padding: '15px 40px' }}>
           {isFormConstructorPage && (

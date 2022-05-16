@@ -16,7 +16,7 @@ const navStyles: Partial<INavStyles> = {
 
 const navLinkGroups: INavLinkGroup[] = [
   {
-    links: [ROUTES.SCHEMA_LIST, ROUTES.ACCIDENT_LIST].map((route) => {
+    links: [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST].map((route) => {
       return {
         name: route.NAME,
         url: route.buildURL(),
@@ -43,7 +43,7 @@ export default function Nav(): JSX.Element | null {
 
   return (
     <>
-      {[ROUTES.SCHEMA_LIST.NAME, ROUTES.ACCIDENT_LIST.NAME].includes(currentRoute?.NAME) && (
+      {[ROUTES.SCHEMA_LIST.NAME, ROUTES.INCIDENT_LIST.NAME].includes(currentRoute?.NAME) && (
         <>
           <div className="fakeNav" />
           <div className="Nav">

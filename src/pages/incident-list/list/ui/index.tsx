@@ -23,8 +23,8 @@ function List(): JSX.Element {
   // }
 
   return (
-    <Stack className="AccidentList">
-      AccidentList
+    <Stack className="IncidentList">
+      IncidentList
       {/* <DetailsList
         items={data || []}
         columns={[

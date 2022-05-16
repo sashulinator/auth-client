@@ -20,9 +20,9 @@ const ROUTES = {
       return this.PATH
     },
   },
-  ACCIDENT_LIST: {
-    NAME: 'Accident list',
-    PATH: '/accident-list',
+  INCIDENT_LIST: {
+    NAME: 'incident list',
+    PATH: '/incident-list',
     buildURL() {
       return this.PATH
     },

@@ -2,8 +2,8 @@ import ROUTES, { getCurrentRoute } from '../constants/routes'
 import React, { FC } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
-import AccidentListPage from '@/pages/accident-list'
 import FormConstructor from '@/pages/form-constructor/form-constructor'
+import IncidentListPage from '@/pages/incident-list'
 import LoginPage from '@/pages/login'
 import SchemaListPage from '@/pages/schema-list'
 import Nav from '@/shared/nav'
@@ -27,7 +27,7 @@ const RootRoutes: FC = () => {
           <Route path=":id" element={<FormConstructor />} />
         </Route>
         <Route path={ROUTES.SCHEMA_LIST.PATH} element={<SchemaListPage />} />
-        <Route path={ROUTES.ACCIDENT_LIST.PATH} element={<AccidentListPage />} />
+        <Route path={ROUTES.INCIDENT_LIST.PATH} element={<IncidentListPage />} />
         <Route path={ROUTES.LOGIN.PATH} element={<LoginPage />}>
           {/* <Route path=":id" element={<FormConstructor />} /> */}
         </Route>
