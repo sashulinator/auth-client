@@ -23,6 +23,8 @@ import { successMessage } from '@/shared/toast'
 
 const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
 
+type SchemaFormValues = Pick<Schema, 'title' | 'componentName' | 'type'>
+
 export default function SchemaForm(): JSX.Element {
   const { t, i18n } = useTranslation()
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
@@ -65,7 +67,7 @@ export default function SchemaForm(): JSX.Element {
     },
   ]
 
-  async function onSubmit(submitSchemaData: Schema): Promise<void | ErrorCollection> {
+  async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
 
     const newComponentName = type !== FormType.COMP ? null : submitSchemaData.componentName
@@ -92,13 +94,17 @@ export default function SchemaForm(): JSX.Element {
     }
   }
 
-  function saveLocaly(schema: Schema) {
-    setCurrentSchemaHistory(schemaSetter(schema))
+  function saveLocaly(schema: SchemaFormValues) {
+    setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, ...schema }))
   }
 
   return (
-    <Form<Schema, Schema>
-      initialValues={currentSchemaHistory.data}
+    <Form<SchemaFormValues, SchemaFormValues>
+      initialValues={{
+        title: currentSchemaHistory.data?.title,
+        componentName: currentSchemaHistory.data?.componentName,
+        type: currentSchemaHistory.data?.type,
+      }}
       onSubmit={onSubmit}
       render={(formProps) => {
         return (

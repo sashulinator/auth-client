@@ -6,6 +6,7 @@ import React from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
+import LoadingAria from '@/shared/loading-aria'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -26,16 +27,20 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
 
   return (
     <PerfectScrollbar className="CompPanel">
-      {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
-      {props.schema && (
-        <CompForm
-          schema={props.schema}
-          schemas={props.schemas}
-          comp={props.comp}
-          context={props.context}
-          onSubmit={props.onSubmit}
-        />
-      )}
+      <LoadingAria loading={props.isLoading}>
+        <>
+          {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
+          {props.schema && (
+            <CompForm
+              schema={props.schema}
+              schemas={props.schemas}
+              comp={props.comp}
+              context={props.context}
+              onSubmit={props.onSubmit}
+            />
+          )}
+        </>
+      </LoadingAria>
     </PerfectScrollbar>
   )
 }

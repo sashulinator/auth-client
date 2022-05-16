@@ -38,6 +38,7 @@ import {
   copyEntities,
   findDependencyIds,
   findEntities,
+  findEntity,
   findEntityPosition,
   findRootParentIds,
   removeEntity,
@@ -71,7 +72,7 @@ const FormConstructor: FC = (): JSX.Element => {
     },
   }
 
-  const { data: fetchedCurrentSchema } = useQuery(['schema', id], getSchema)
+  const { data: fetchedCurrentSchema, isLoading: isCurrentSchemaLoading } = useQuery(['schema', id], getSchema)
 
   const { data: fetchedDependencySchemas, isLoading: isDependencySchemasLoading } = useGetDependencySchemas(
     missingSchemaIds
@@ -127,7 +128,10 @@ const FormConstructor: FC = (): JSX.Element => {
     setCurrentSchemaHistory(updateCompsSetter(comps))
 
     if (compId === propertyPanelComp?.id) {
-      setSelectedCompIds([])
+      const compLocation = findEntityPosition(compId, currentSchemaHistory.data.comps)
+      const parentComp = findEntity(compLocation?.parentId || '', comps)
+      const siblingId = parentComp.children?.[compLocation?.index || 0]
+      siblingId ? setSelectedCompIds([siblingId]) : setSelectedCompIds([])
     }
   }
 
@@ -244,6 +248,7 @@ const FormConstructor: FC = (): JSX.Element => {
           selectAndUnselectComp={selectAndUnselectComp}
           upsertComps={updateCompsInCurrentSchemaState}
           selectedCompIds={selectedCompIds}
+          isLoading={isCurrentSchemaLoading}
         />
         <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
         <CompPanel

@@ -14,12 +14,12 @@ import { assertionList } from './assertion-list'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
-import { BindingItem, Norm } from '@/entities/schema'
+import { Norm, ValidatorItem } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
 export default function buildValidator(
-  validators: Norm<BindingItem> | undefined
+  validators: Norm<ValidatorItem> | undefined
 ): ErrorCollector<ErrorCollection> | undefined {
   if (validators === undefined) {
     return undefined
@@ -30,7 +30,7 @@ export default function buildValidator(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function factory(compValidatorId: string, compValidators: Norm<BindingItem>): Schema<any> {
+function factory(compValidatorId: string, compValidators: Norm<ValidatorItem>): Schema<any> {
   const compValidator = compValidators[compValidatorId]
   assertNotUndefined(compValidator)
 
@@ -38,7 +38,7 @@ function factory(compValidatorId: string, compValidators: Norm<BindingItem>): Sc
   const isAnd = compValidator.name === 'or'
 
   if (isAnd || isOr) {
-    const validators = compValidator?.children.map((id) => factory(id, compValidators))
+    const validators = compValidator?.children?.map((id) => factory(id, compValidators)) ?? []
     return isAnd ? and(...validators) : or(...validators)
   }
 

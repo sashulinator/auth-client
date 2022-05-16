@@ -1,5 +1,7 @@
 import { Modal, Pivot, PivotItem, PrimaryButton, Stack } from '@fluentui/react'
 
+import './palette-modal.css'
+
 import { paletteModalState } from '../model'
 import React from 'react'
 import { useQuery } from 'react-query'
@@ -34,37 +36,44 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   }
 
   return (
-    <Modal titleAriaId={'Add comp'} isOpen={isOpen} onDismiss={() => setOpen(false)} isBlocking={false}>
-      <Pivot
-        aria-label="Palette of components"
-        styles={{ root: { width: '1000px', display: 'flex', justifyContent: 'center' } }}
-      >
+    <Modal
+      className="PaletteModal"
+      titleAriaId={'Add comp'}
+      isOpen={isOpen}
+      onDismiss={() => setOpen(false)}
+      isBlocking={false}
+    >
+      <Pivot aria-label="Palette of components" styles={{ root: { display: 'flex', justifyContent: 'center' } }}>
         <PivotItem headerText="Компоненты">
-          <Stack tokens={{ padding: '20px', childrenGap: '10px' }} horizontal>
-            {data?.map((schema) => {
-              if (schema.type === 'PRESET' || schema.type === 'FORM') {
-                return null
-              }
-              return (
-                <PrimaryButton key={schema.id} onClick={() => onAdd(schema)}>
-                  {schema.title}
-                </PrimaryButton>
-              )
-            })}
-          </Stack>
-        </PivotItem>
-        <PivotItem headerText="Пресеты">
-          <Stack tokens={{ padding: '20px', childrenGap: '10px' }} horizontal>
-            {data?.map((schema) => {
-              if (schema.type === 'PRESET') {
+          <Stack className="rootContainer">
+            <Stack className="container">
+              {data?.map((schema) => {
+                if (schema.type === 'PRESET' || schema.type === 'FORM') {
+                  return null
+                }
                 return (
-                  <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
+                  <PrimaryButton key={schema.id} onClick={() => onAdd(schema)}>
                     {schema.title}
                   </PrimaryButton>
                 )
-              }
-              return null
-            })}
+              })}
+            </Stack>
+          </Stack>
+        </PivotItem>
+        <PivotItem headerText="Пресеты">
+          <Stack className="rootContainer">
+            <Stack className="container">
+              {data?.map((schema) => {
+                if (schema.type === 'PRESET') {
+                  return (
+                    <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
+                      {schema.title}
+                    </PrimaryButton>
+                  )
+                }
+                return null
+              })}
+            </Stack>
           </Stack>
         </PivotItem>
       </Pivot>

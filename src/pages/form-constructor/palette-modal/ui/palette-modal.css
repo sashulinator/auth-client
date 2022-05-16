@@ -1,0 +1,19 @@
+.PaletteModal .container {
+}
+
+.PaletteModal .rootContainer {
+  width: 70vw;
+  height: 50vh;
+  padding: 32px 24px 0;
+}
+
+.PaletteModal .container {
+  width: 100%;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.PaletteModal .container > * {
+  margin: 10px;
+}

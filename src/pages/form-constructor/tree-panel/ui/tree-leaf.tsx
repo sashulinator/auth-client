@@ -41,7 +41,11 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         {isExpandButton && <ExpandButton {...props} />}
         <Text
           as="div"
-          onClick={(e) => props.item.data?.onItemClick(e, props.item.data.comp.id)}
+          onClick={(e) => {
+            props.item.data?.onItemClick(e, props.item.data.comp.id)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ;(document as any)?.activeElement?.blur()
+          }}
           className={clsx('treeLeafText', !isExpandButton && 'addOneButtonSpace')}
         >
           {isOneOfMultipleDragging

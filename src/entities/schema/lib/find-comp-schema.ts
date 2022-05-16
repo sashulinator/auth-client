@@ -1,5 +1,3 @@
-import { assertNotUndefined } from '@savchenko91/schema-validator'
-
 import { Comp, Norm, Schema } from '@/entities/schema'
 
 export default function findCompSchema(comp: Comp | null, schemas: Norm<Schema> | null): Schema | null {
@@ -8,7 +6,10 @@ export default function findCompSchema(comp: Comp | null, schemas: Norm<Schema> 
   }
 
   const schema = schemas[comp.compSchemaId]
-  assertNotUndefined(schema)
+
+  if (!schema) {
+    return null
+  }
 
   return schema
 }

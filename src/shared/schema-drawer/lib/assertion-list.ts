@@ -65,6 +65,7 @@ export const assertionList: Norm<AssertionListItem> = {
           title: 'stackRoot',
           name: 'hello',
           children: ['pattern'],
+          props: { tokens: { padding: '5px' } },
           compSchemaId: ComponentNames.Stack,
         },
         pattern: {

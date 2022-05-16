@@ -1,4 +1,4 @@
-import { DetailsList, IColumn } from '@fluentui/react'
+import { DetailsList, IColumn, SelectionMode } from '@fluentui/react'
 
 import normilize from '../lib/normalize'
 import React from 'react'
@@ -12,5 +12,9 @@ export default function Table(props: TableProps): JSX.Element {
   const items = normilize<Record<string, unknown>>(props.items) ?? []
   const columns = normilize<IColumn>(props.columns) ?? []
 
-  return <DetailsList items={items} columns={columns} />
+  return <DetailsList {...props} items={items} columns={columns} />
+}
+
+Table.defaultProps = {
+  selectionMode: SelectionMode.none,
 }
