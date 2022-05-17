@@ -37,7 +37,9 @@
     "toggleSelectionForAll": "Переключить выделение для всего списка",
     "filter": "Фильтр",
     "close": "Закрыть",
-    "remove": "Удалить"
+    "remove": "Удалить",
+    "logout": "Выйти",
+    "login": "Войти"
   },
   "pagination": {
     "firstPage": "Перейти на первую страницу",

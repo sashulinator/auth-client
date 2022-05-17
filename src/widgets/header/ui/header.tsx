@@ -1,57 +1,32 @@
-import { ActionButton, PrimaryButton } from '@fluentui/react'
 import { Stack } from '@fluentui/react/lib/Stack'
 
+import RouteContent from './route-content'
 import React from 'react'
-// import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 import ROUTES, { getCurrentRoute } from '@/constants/routes'
-import { SchemaForm } from '@/pages/form-constructor/preview'
+import LogoutButton from '@/entities/user/ui/logout-button'
 import LanguageDropdown from '@/shared/language-dropdown'
 import ThemeDropdown from '@/shared/theme'
 
-interface HeaderProps {
-  children?: React.ReactChild
-}
+export default function Header(): JSX.Element | null {
+  const currentRoute = getCurrentRoute()
 
-export default function Header(props: HeaderProps): JSX.Element {
-  // const { t } = useTranslation()
-
-  // ререндерит header при изменении пути
-  useLocation()
-  const navigate = useNavigate()
-
-  const isFormConstructorPage = getCurrentRoute()?.PATH === ROUTES.FORM_CONSTRUCTOR.PATH
-
-  function logout() {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    navigate(ROUTES.LOGIN.buildURL())
+  if (currentRoute?.NAME === ROUTES.LOGIN.NAME) {
+    return null
   }
 
   return (
     <>
-      <div className="fakeHeader" />
-      <Stack as="header" horizontal horizontalAlign="space-between" className="Header">
-        <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16, padding: '16px 16px' }}>
-          {isFormConstructorPage && (
-            <ActionButton
-              iconProps={{ iconName: 'ChevronLeft' }}
-              onClick={() => {
-                navigate(ROUTES.SCHEMA_LIST.buildURL())
-              }}
-            >
-              Back
-            </ActionButton>
-          )}
-        </Stack>
-        <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16, padding: '16px 16px' }}>
-          {isFormConstructorPage && (
-            <li>
-              <SchemaForm />
-            </li>
-          )}
-          <>{props.children}</>
+      <Stack
+        as="header"
+        horizontal
+        horizontalAlign="end"
+        verticalAlign="center"
+        className="Header"
+        tokens={{ childrenGap: 32, padding: '16px 16px' }}
+      >
+        <RouteContent />
+        <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
           <li>
             <ThemeDropdown />
           </li>
@@ -59,10 +34,11 @@ export default function Header(props: HeaderProps): JSX.Element {
             <LanguageDropdown />
           </li>
           <li>
-            <PrimaryButton onClick={logout}>Logout</PrimaryButton>
+            <LogoutButton />
           </li>
         </Stack>
       </Stack>
+      <div className="fakeHeader" />
     </>
   )
 }

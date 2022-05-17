@@ -1,5 +1,5 @@
 import { Stack } from '@fluentui/react'
-import { DetailsList, IColumn } from '@fluentui/react/lib/DetailsList'
+import { DetailsList, IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList'
 
 import React from 'react'
 import { useQuery } from 'react-query'
@@ -22,7 +22,7 @@ function List(): JSX.Element {
   }
 
   return (
-    <Stack className="IncidentList">
+    <Stack className="IncidentList" style={{ maxWidth: '900px' }} tokens={{ padding: '32px 32px 50vh 0' }}>
       <DetailsList
         items={data || []}
         columns={[
@@ -30,6 +30,7 @@ function List(): JSX.Element {
           { key: 'description', name: 'Description', fieldName: 'description', minWidth: 100 },
         ]}
         setKey="set"
+        selectionMode={SelectionMode.none}
         selectionPreservedOnEmptyClick={true}
         ariaLabelForSelectionColumn="Toggle selection"
         ariaLabelForSelectAllCheckbox="Toggle selection for all items"
