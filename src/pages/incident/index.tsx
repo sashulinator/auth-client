@@ -22,8 +22,6 @@ export default function Incident(): JSX.Element {
     }
   }, [fetchedDependencySchemas])
 
-  console.log('incidentSchema', incidentSchema)
-
   return (
     <Stack as="main" className="Incident" style={{ padding: '0 0 30vh' }}>
       {incidentSchema && schemas && <IncidentForm schemas={schemas} schema={incidentSchema} />}

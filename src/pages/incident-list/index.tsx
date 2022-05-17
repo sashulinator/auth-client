@@ -11,7 +11,7 @@ export default function SchemaListPage(): JSX.Element {
   const navigate = useNavigate()
 
   return (
-    <>
+    <Stack className="mainLayout">
       <Header>
         <PrimaryButton
           onClick={() => {
@@ -24,6 +24,6 @@ export default function SchemaListPage(): JSX.Element {
       <Stack as="main" className="SchemaList">
         <List />
       </Stack>
-    </>
+    </Stack>
   )
 }

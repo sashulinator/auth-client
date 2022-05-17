@@ -7,9 +7,19 @@ body,
 
 #root > div {
   min-height: 100%;
+  height: 100%;
 }
 
-#root > div {
+.headerOnlyLayout {
+  display: grid;
+  grid-template-areas:
+    'header header header'
+    'main main main';
+  grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
+  grid-template-columns: 230px 1fr;
+}
+
+.mainLayout {
   display: grid;
   grid-template-areas:
     'header header header'
