@@ -16,29 +16,26 @@ export default function Header(): JSX.Element | null {
   }
 
   return (
-    <>
-      <Stack
-        as="header"
-        horizontal
-        horizontalAlign="end"
-        verticalAlign="center"
-        className="Header"
-        tokens={{ childrenGap: 32, padding: '16px 16px' }}
-      >
-        <RouteContent />
-        <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
-          <li>
-            <ThemeDropdown />
-          </li>
-          <li>
-            <LanguageDropdown />
-          </li>
-          <li>
-            <LogoutButton />
-          </li>
-        </Stack>
+    <Stack
+      as="header"
+      horizontal
+      horizontalAlign="end"
+      verticalAlign="center"
+      className="Header"
+      tokens={{ childrenGap: 32, padding: '16px 16px' }}
+    >
+      <RouteContent />
+      <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
+        <li>
+          <ThemeDropdown />
+        </li>
+        <li>
+          <LanguageDropdown />
+        </li>
+        <li>
+          <LogoutButton />
+        </li>
       </Stack>
-      <div className="fakeHeader" />
-    </>
+    </Stack>
   )
 }
