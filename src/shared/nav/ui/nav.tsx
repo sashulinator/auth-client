@@ -1,9 +1,10 @@
 import { INavLink, INavLinkGroup, INavStyles, Nav as NavUI, Stack } from '@fluentui/react'
+import { getCurrent } from '@savchenko91/rc-route-constant'
 
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import ROUTES, { getCurrentRoute } from '@/constants/routes'
+import ROUTES from '@/constants/routes'
 
 const navStyles: Partial<INavStyles> = {
   root: {
@@ -19,7 +20,7 @@ const navLinkGroups: INavLinkGroup[] = [
     links: [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST].map((route) => {
       return {
         name: route.NAME,
-        url: route.buildURL(),
+        url: route.PATH,
         key: route.PATH,
       }
     }),
@@ -27,8 +28,9 @@ const navLinkGroups: INavLinkGroup[] = [
 ]
 
 export default function Nav(): JSX.Element | null {
-  const currentRoute = getCurrentRoute()
   const navigate = useNavigate()
+
+  const currentRoute = getCurrent(ROUTES)
 
   function onLinkClick(ev?: React.MouseEvent<HTMLElement>, item?: INavLink) {
     ev?.preventDefault()
@@ -37,13 +39,9 @@ export default function Nav(): JSX.Element | null {
     }
   }
 
-  if (!currentRoute) {
-    return null
-  }
-
   return (
     <>
-      {![ROUTES.LOGIN.NAME, ROUTES.FORM_CONSTRUCTOR.NAME].includes(currentRoute?.NAME) && (
+      {!ROUTES.LOGIN.isCurrent && !ROUTES.FORM_CONSTRUCTOR.isCurrent && (
         <Stack className="Nav">
           <NavUI
             onLinkClick={onLinkClick}

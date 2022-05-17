@@ -1882,6 +1882,11 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@savchenko91/rc-route-constant@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@savchenko91/rc-route-constant/-/rc-route-constant-4.0.4.tgz#e948b8090bcf05a09a6f69f13a60aaed27c299ea"
+  integrity sha512-9Hw2yv8zNR3YnlvZWUzVv4nxUGOi/tHm5AMG7kryXJU6n6ykLElJolMo4wYGOgiPDdafgUZabRPUcK5pnrn2wQ==
+
 "@savchenko91/schema-validator@0.2.9":
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.9.tgz#a79d971ce2cb478fde9694d6622a001ffa035abe"
@@ -6896,7 +6901,7 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-omit-empty-es@^1.1.3:
+omit-empty-es@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/omit-empty-es/-/omit-empty-es-1.1.3.tgz#cba9f93ea329ecec2222cd2b47912ce3c1f49791"
   integrity sha512-rqEprmXZ0CaOcY7vtCdRLm7QPrmyst30GN4WWsUwcbvosHF55cszEZ6Gg9SNnVIiXC91luURcSp+xChg2ymjkA==

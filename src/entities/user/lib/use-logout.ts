@@ -8,7 +8,7 @@ export default function useLogout() {
   function logout() {
     localStorage.removeItem('access_token')
     localStorage.removeItem('refresh_token')
-    navigate(ROUTES.LOGIN.buildURL())
+    navigate(ROUTES.LOGIN.PATH)
   }
 
   return logout
