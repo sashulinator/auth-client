@@ -183,6 +183,24 @@ export function removeEntity<T extends Entity>(entityId: string | number, entiti
   return replaceById(newParentEntity, newEntities)
 }
 
+/**
+ * Removes only one entity without going deep
+ */
+export function removeOnlyEntity<T extends Entity>(entityId: string | number, entities: Norm<T>): Norm<T> | undefined {
+  const parentEntity = findParent(entityId, entities)
+
+  // undefined if we remove root
+  if (parentEntity === undefined) {
+    return undefined
+  }
+  // Remove from entities
+  const newEntities = remove(entities, entityId)
+  // Remove from parent
+  const newParentEntity = removeChildId(parentEntity, entityId)
+
+  return replaceById(newParentEntity, newEntities)
+}
+
 export function addEntity<T extends Entity>(
   entity: T,
   newParentId: string | number,
@@ -207,9 +225,9 @@ export function moveEntity<T extends Entity>(
   newIndex: number,
   entities: Norm<T>
 ): Norm<T> {
-  const entitiesWithoutMovingentity = removeEntity(entity.id, entities)
-  assertNotUndefined(entitiesWithoutMovingentity)
-  const entitiesWithMovingentity = addEntity(entity, toParentId, newIndex, entitiesWithoutMovingentity)
+  const entitiesWithoutMovingEntity = removeOnlyEntity(entity.id, entities)
+  assertNotUndefined(entitiesWithoutMovingEntity)
+  const entitiesWithMovingentity = addEntity(entity, toParentId, newIndex, entitiesWithoutMovingEntity)
 
   return entitiesWithMovingentity
 }
