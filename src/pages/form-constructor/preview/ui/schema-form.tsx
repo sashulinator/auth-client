@@ -46,23 +46,59 @@ export default function SchemaForm(): JSX.Element {
 
   const options = useMemo(() => optionsFromStringArray(typeArray, t), [i18n.language])
 
+  async function copySchema() {
+    const response = await fetch('/api/v1/schemas', {
+      method: 'POST',
+      // TODO копируется текущий стейт а не тот что пришел с сервера
+      body: JSON.stringify({
+        ...currentSchemaHistory.data,
+        id: uuid(),
+        title: `${currentSchemaHistory.data.title}_copy`,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        accept: '*/*',
+      },
+    })
+
+    const data = await response.json()
+    console.log('data', data)
+
+    if (response.ok) {
+      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+    }
+  }
+
+  async function deleteSchema() {
+    const response = await fetch('/api/v1/schemas', {
+      method: 'DELETE',
+      body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
+      headers: {
+        'content-type': 'application/json',
+        accept: '*/*',
+      },
+    })
+
+    if (response.ok) {
+      navigate(ROUTES.SCHEMA_LIST.buildURL())
+    }
+  }
+
   const items: IContextualMenuItem[] = [
     {
       key: 'delete',
       text: 'delete',
-      onclick: async () => {
-        const response = await fetch('/api/v1/schemas', {
-          method: 'DELETE',
-          body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
-          headers: {
-            'content-type': 'application/json',
-            accept: '*/*',
-          },
-        })
-
-        if (response.ok) {
-          navigate(ROUTES.SCHEMA_LIST.buildURL())
-        }
+      onClick: () => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        deleteSchema()
+      },
+    },
+    {
+      key: 'copy',
+      text: 'copy',
+      onClick: () => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        copySchema()
       },
     },
   ]
