@@ -1,4 +1,4 @@
-import { INavLink, INavLinkGroup, INavStyles, Nav as NavUI } from '@fluentui/react'
+import { INavLink, INavLinkGroup, INavStyles, Nav as NavUI, Stack } from '@fluentui/react'
 
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -46,7 +46,7 @@ export default function Nav(): JSX.Element | null {
       {![ROUTES.LOGIN.NAME, ROUTES.FORM_CONSTRUCTOR.NAME].includes(currentRoute?.NAME) && (
         <>
           <div className="fakeNav" />
-          <div className="Nav">
+          <Stack className="Nav">
             <NavUI
               onLinkClick={onLinkClick}
               selectedKey={currentRoute?.PATH}
@@ -54,7 +54,7 @@ export default function Nav(): JSX.Element | null {
               styles={navStyles}
               groups={navLinkGroups}
             />
-          </div>
+          </Stack>
         </>
       )}
     </>
