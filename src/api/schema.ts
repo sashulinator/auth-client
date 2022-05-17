@@ -140,6 +140,7 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
   return schemas as Norm<Schema>
 }
 
+// TODO по сути должен принимать один id так как бэк сам найдет остальные зависимости
 export function useGetDependencySchemas(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
   return useQuery(['schemasDependencies', ...ids], queryFn)
 

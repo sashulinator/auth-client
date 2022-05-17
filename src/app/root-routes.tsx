@@ -3,6 +3,7 @@ import React, { FC } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import FormConstructor from '@/pages/form-constructor/form-constructor'
+import IncidentPage from '@/pages/incident'
 import IncidentListPage from '@/pages/incident-list'
 import LoginPage from '@/pages/login'
 import SchemaListPage from '@/pages/schema-list'
@@ -26,11 +27,12 @@ const RootRoutes: FC = () => {
         <Route path={ROUTES.FORM_CONSTRUCTOR.PATH} element={<FormConstructor />}>
           <Route path=":id" element={<FormConstructor />} />
         </Route>
-        <Route path={ROUTES.SCHEMA_LIST.PATH} element={<SchemaListPage />} />
-        <Route path={ROUTES.INCIDENT_LIST.PATH} element={<IncidentListPage />} />
-        <Route path={ROUTES.LOGIN.PATH} element={<LoginPage />}>
-          {/* <Route path=":id" element={<FormConstructor />} /> */}
+        <Route path={ROUTES.INCIDENT.PATH} element={<IncidentPage />}>
+          <Route path=":id" element={<IncidentPage />} />
         </Route>
+        <Route path={ROUTES.INCIDENT_LIST.PATH} element={<IncidentListPage />} />
+        <Route path={ROUTES.SCHEMA_LIST.PATH} element={<SchemaListPage />} />
+        <Route path={ROUTES.LOGIN.PATH} element={<LoginPage />} />
       </Routes>
     </>
   )

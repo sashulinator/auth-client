@@ -15,7 +15,7 @@ export default function SchemaListPage(): JSX.Element {
       <Header>
         <PrimaryButton
           onClick={() => {
-            navigate(ROUTES.FORM_CONSTRUCTOR.buildURL())
+            navigate(ROUTES.INCIDENT.buildURL())
           }}
         >
           Create new
