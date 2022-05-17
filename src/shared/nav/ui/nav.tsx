@@ -43,7 +43,7 @@ export default function Nav(): JSX.Element | null {
 
   return (
     <>
-      {[ROUTES.SCHEMA_LIST.NAME, ROUTES.INCIDENT_LIST.NAME].includes(currentRoute?.NAME) && (
+      {![ROUTES.LOGIN.NAME, ROUTES.FORM_CONSTRUCTOR.NAME].includes(currentRoute?.NAME) && (
         <>
           <div className="fakeNav" />
           <div className="Nav">

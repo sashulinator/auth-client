@@ -5,7 +5,7 @@ import React, { useLayoutEffect } from 'react'
 import { Form } from 'react-final-form'
 
 import { Norm, Schema } from '@/entities/schema'
-import CompDrawer from '@/shared/schema-drawer'
+import SchemaDrawer from '@/shared/schema-drawer'
 
 interface PreviewProps {
   schema: Schema
@@ -15,6 +15,7 @@ interface PreviewProps {
 
 export default function Preview(props: PreviewProps): JSX.Element {
   const { schemas, schema } = props
+
   useLayoutEffect(() => {
     removeAllSelectionHighlights()
     props.selectedCompIds.forEach((compId) => {
@@ -36,7 +37,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
           render={(formProps) => {
             return (
               <form onSubmit={formProps.handleSubmit}>
-                <CompDrawer
+                <SchemaDrawer
                   schema={schema}
                   schemas={schemas}
                   context={{

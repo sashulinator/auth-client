@@ -1,34 +1,32 @@
 import { Stack } from '@fluentui/react'
+import { DetailsList, IColumn } from '@fluentui/react/lib/DetailsList'
 
-// import { DetailsList, IColumn } from '@fluentui/react/lib/DetailsList'
 import React from 'react'
+import { useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
 
-// import { useQuery } from 'react-query'
-// import { Link } from 'react-router-dom'
-
-// import { getSchemaList } from '@/api/schema'
-// import ROUTES from '@/constants/routes'
-// import { Schema } from '@/entities/schema'
+import { getIncidentList } from '@/api/incident'
+import ROUTES from '@/constants/routes'
+import { Incident } from '@/entities/incident/model/types'
 
 function List(): JSX.Element {
-  // const { data } = useQuery('schemas', getSchemaList)
+  const { data } = useQuery('incidents', getIncidentList)
 
-  // function renderItemColumn(item: Schema, index?: number, column?: IColumn): JSX.Element {
-  //   const fieldContent = item[column?.fieldName as keyof Schema] as string
+  function renderItemColumn(item: Incident, index?: number, column?: IColumn): JSX.Element {
+    const fieldContent = item[column?.fieldName as keyof Incident] as string
 
-  //   if (column?.key === 'title') {
-  //     return <Link to={ROUTES.FORM_CONSTRUCTOR.buildURL(item.id)}>{item.title}</Link>
-  //   }
-  //   return <span>{fieldContent}</span>
-  // }
+    if (column?.key === 'name') {
+      return <Link to={ROUTES.INCIDENT.buildURL(item.id)}>{item.name}</Link>
+    }
+    return <span>{fieldContent}</span>
+  }
 
   return (
     <Stack className="IncidentList">
-      IncidentList
-      {/* <DetailsList
+      <DetailsList
         items={data || []}
         columns={[
-          { key: 'title', name: 'Title', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
+          { key: 'name', name: 'Name', fieldName: 'name', minWidth: 100, maxWidth: 200, isResizable: true },
           { key: 'description', name: 'Description', fieldName: 'description', minWidth: 100 },
         ]}
         setKey="set"
@@ -37,7 +35,7 @@ function List(): JSX.Element {
         ariaLabelForSelectAllCheckbox="Toggle selection for all items"
         checkButtonAriaLabel="select row"
         onRenderItemColumn={renderItemColumn}
-      /> */}
+      />
     </Stack>
   )
 }

@@ -27,6 +27,13 @@ const ROUTES = {
       return this.PATH
     },
   },
+  INCIDENT: {
+    NAME: 'incident',
+    PATH: '/incident',
+    buildURL(id?: string) {
+      return id ? `${this.PATH}/${id}` : this.PATH
+    },
+  },
 }
 
 export type Route = typeof ROUTES[keyof typeof ROUTES]
