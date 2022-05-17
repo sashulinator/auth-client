@@ -1,5 +1,6 @@
 import { assertNotNil, isEmpty } from '@savchenko91/schema-validator'
 
+import apiFetch from './api-fetch'
 import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
@@ -7,6 +8,11 @@ import { assertsSchema } from '@/common/schemas'
 import { isNormSchemas } from '@/common/validators'
 import { Norm, Schema } from '@/entities/schema'
 import ErrorFromObject from '@/lib/error-from-object'
+
+const headers = {
+  'content-type': 'application/json',
+  accept: 'application/json',
+}
 
 type GetSchemaParams = {
   queryKey: (string | undefined)[]
@@ -17,24 +23,19 @@ type GetSchemaParams = {
 export async function createSchema(newFSchema: Schema): Promise<Schema> {
   assertsSchema(newFSchema)
 
-  const response = await fetch('/api/v1/schemas', {
+  const response = await apiFetch('/api/v1/schemas', {
     method: 'POST',
-    body: JSON.stringify(newFSchema),
-    headers: {
-      'content-type': 'application/json',
-      accept: 'application/json',
-    },
+    body: newFSchema,
+    headers,
   })
 
-  const data = await response.json()
-
   if (!response.ok) {
-    throw new ErrorFromObject(data)
+    throw new ErrorFromObject(response.body)
   }
 
   assertsSchema(newFSchema)
 
-  return data
+  return response.body
 }
 
 // UPDATE SCHEMA

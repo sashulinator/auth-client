@@ -18,7 +18,7 @@ export default function Login(): JSX.Element {
   }
 
   return (
-    <Stack as="main" className="Login">
+    <Stack className="Login">
       <Form
         onSubmit={onSubmit}
         render={(formProps) => {

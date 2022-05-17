@@ -19,5 +19,9 @@ export default function MyThemeProvider(props: MyThemeProviderProps) {
     errorColor: '#ff8080',
   })
 
-  return <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+  return (
+    <ThemeProvider className="themeProvider" theme={theme}>
+      {props.children}
+    </ThemeProvider>
+  )
 }

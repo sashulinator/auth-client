@@ -22,7 +22,7 @@ const Dropdown: FC<IDropdownProps & { onChange: (value?: any) => void; value: an
       {...props}
       options={options}
       selectedKey={props.value}
-      styles={dropdownStyles}
+      styles={{ ...dropdownStyles, ...props.styles }}
       onChange={(event, action) => {
         if (action?.key) {
           props.onChange(action.key)

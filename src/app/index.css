@@ -1,18 +1,17 @@
 html,
 body,
-#root {
-  height: 100%;
-  width: 100%;
-}
-
-#root > div {
+#root,
+.themeProvider {
   min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
 }
 
 .headerOnlyLayout {
   display: grid;
   grid-template-areas:
-    'header header header'
+    'fakeHeader fakeHeader fakeHeader'
     'main main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
   grid-template-columns: 230px 1fr;
@@ -21,28 +20,36 @@ body,
 .mainLayout {
   display: grid;
   grid-template-areas:
-    'header header header'
-    'nav main main';
+    'fakeHeader fakeHeader fakeHeader'
+    'fakeNav main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
   grid-template-columns: 230px 1fr;
 }
 
-.fakeHeader {
-  grid-area: header;
-}
-footer {
-  grid-area: footer;
-}
 main {
   grid-area: main;
 }
-.fakeNav {
-  grid-area: nav;
+.fakeHeader {
+  grid-area: fakeHeader;
 }
+.fakeNav {
+  grid-area: fakeNav;
+}
+
 .Nav {
   position: fixed;
   left: 0;
   top: calc(var(--headerHeight) * 1px);
   height: 100%;
   width: 100%;
+}
+
+.Header {
+  background-color: var(--neutralLighterAlt);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: calc(var(--headerHeight) * 1px);
 }

@@ -151,7 +151,7 @@ export default function SchemaForm(): JSX.Element {
             horizontal
             horizontalAlign="space-between"
             verticalAlign="center"
-            tokens={{ childrenGap: 20, padding: '15px 40px' }}
+            tokens={{ childrenGap: 16, padding: '16px 0 16px' }}
           >
             <Autosave save={saveLocaly} debounce={700} />
             <Field<string> name="title" validate={(v) => schemaValidator.title(v)}>
@@ -174,12 +174,12 @@ export default function SchemaForm(): JSX.Element {
                 )}
               </Field>
             )}
-            <PrimaryButton type="submit">
-              {id ? t('buttons.save').toString() : t('buttons.create').toString()}
-            </PrimaryButton>
             <ContextualMenu items={items}>
               <Icon iconName="More" />
             </ContextualMenu>
+            <PrimaryButton type="submit">
+              {id ? t('buttons.save').toString() : t('buttons.create').toString()}
+            </PrimaryButton>
           </Stack>
         )
       }}
