@@ -229,7 +229,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   return (
-    <>
+    <Stack className="headerOnlyLayout">
       <KeyListener
         selectedCompIds={selectedCompIds}
         schema={currentSchemaHistory.data}
@@ -269,7 +269,7 @@ const FormConstructor: FC = (): JSX.Element => {
         />
         <PaletteModal addNewComps={addNewComps} selectAndUnselectComp={selectAndUnselectComp} />
       </Stack>
-    </>
+    </Stack>
   )
 }
 

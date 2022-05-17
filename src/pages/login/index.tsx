@@ -1,4 +1,4 @@
-import { PrimaryButton, Stack } from '@fluentui/react'
+import { PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import './index.css'
 
@@ -24,9 +24,18 @@ export default function Login(): JSX.Element {
         render={(formProps) => {
           return (
             <form onSubmit={formProps.handleSubmit}>
-              <Field<string> name="username">{({ input }) => <CustomTextField label="username" {...input} />}</Field>
-              <Field<string> name="password">{({ input }) => <CustomTextField label="password" {...input} />}</Field>
-              <PrimaryButton type="submit">Login</PrimaryButton>
+              <Stack tokens={{ childrenGap: 8 }} style={{ width: '300px' }}>
+                <Stack horizontalAlign="center">
+                  <Text nowrap variant="mega">
+                    OMS
+                  </Text>
+                </Stack>
+                <Field<string> name="username">{({ input }) => <CustomTextField label="username" {...input} />}</Field>
+                <Field<string> name="password">{({ input }) => <CustomTextField label="password" {...input} />}</Field>
+                <PrimaryButton type="submit" style={{ margin: '24px 0 0' }}>
+                  Login
+                </PrimaryButton>
+              </Stack>
             </form>
           )
         }}
