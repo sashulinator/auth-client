@@ -44,18 +44,15 @@ export default function Nav(): JSX.Element | null {
   return (
     <>
       {![ROUTES.LOGIN.NAME, ROUTES.FORM_CONSTRUCTOR.NAME].includes(currentRoute?.NAME) && (
-        <>
-          <div className="fakeNav" />
-          <Stack className="Nav">
-            <NavUI
-              onLinkClick={onLinkClick}
-              selectedKey={currentRoute?.PATH}
-              ariaLabel="Navigation"
-              styles={navStyles}
-              groups={navLinkGroups}
-            />
-          </Stack>
-        </>
+        <Stack className="Nav">
+          <NavUI
+            onLinkClick={onLinkClick}
+            selectedKey={currentRoute?.PATH}
+            ariaLabel="Navigation"
+            styles={navStyles}
+            groups={navLinkGroups}
+          />
+        </Stack>
       )}
     </>
   )

@@ -29,12 +29,6 @@ body,
 main {
   grid-area: main;
 }
-.fakeHeader {
-  grid-area: fakeHeader;
-}
-.fakeNav {
-  grid-area: fakeNav;
-}
 
 .Nav {
   position: fixed;
