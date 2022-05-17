@@ -3,6 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import buildValidator from '../lib/build-validators'
 import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
+import isRequired from '../lib/is-required'
 import { Context } from '../model/types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
@@ -35,7 +36,12 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
       {({ input, meta }) => {
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
-            <сomponentItem.component {...input} {...injectedComp.props} {...props.context.fns} />
+            <сomponentItem.component
+              {...input}
+              {...injectedComp.props}
+              {...props.context.fns}
+              required={isRequired(props.comp.validators)}
+            />
             <FieldError meta={meta} />
           </div>
         )

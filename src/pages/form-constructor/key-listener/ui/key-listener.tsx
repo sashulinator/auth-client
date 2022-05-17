@@ -20,7 +20,8 @@ export default function KeyListener(props: KeyListenerProps): null {
   function main() {
     function action(event: KeyboardEvent): void {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if ((document?.activeElement as any)?.type === 'text') {
+
+      if ((document?.activeElement as any)?.type === 'text' || (document?.activeElement as any)?.type === 'number') {
         return
       }
 
