@@ -14,21 +14,21 @@ const ROUTES = {
     },
   },
   SCHEMA_LIST: {
-    NAME: 'Schema list',
+    NAME: 'Schemas',
     PATH: '/schema-list',
     buildURL() {
       return this.PATH
     },
   },
   INCIDENT_LIST: {
-    NAME: 'incident list',
+    NAME: 'Incidents',
     PATH: '/incident-list',
     buildURL() {
       return this.PATH
     },
   },
   INCIDENT: {
-    NAME: 'incident',
+    NAME: 'Incident',
     PATH: '/incident',
     buildURL(id?: string) {
       return id ? `${this.PATH}/${id}` : this.PATH

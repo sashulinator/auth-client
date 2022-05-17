@@ -43,7 +43,6 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import Header from '@/widgets/header'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
@@ -240,7 +239,6 @@ const FormConstructor: FC = (): JSX.Element => {
         undo={undo}
         redo={redo}
       />
-      <Header />
       <Stack as="main" className="FormConstructor">
         <TreePanel
           schema={currentSchemaHistory.data}
@@ -251,7 +249,6 @@ const FormConstructor: FC = (): JSX.Element => {
         />
         <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
         <CompPanel
-          // key={JSON.stringify(selectedCompIds)}
           onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
           context={context}

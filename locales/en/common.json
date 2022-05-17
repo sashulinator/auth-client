@@ -37,7 +37,9 @@
     "create": "Create",
     "filter": "Filter",
     "close": "Close",
-    "remove": "Remove"
+    "remove": "Remove",
+    "logout": "Logout",
+    "login": "Login"
   },
   "pagination": {
     "firstPage": "Go to the first page",
