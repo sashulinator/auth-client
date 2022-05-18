@@ -11,8 +11,9 @@ import Preview from './preview'
 import TreePanel from './tree-panel'
 import React, { FC, useEffect } from 'react'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState } from 'recoil'
+import uuid from 'uuid-random'
 
 import { getSchema, useGetDependencySchemas } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
@@ -47,6 +48,7 @@ import {
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const [schemas, setSchemas] = useRecoilState(schemasState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
@@ -228,9 +230,47 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
+  async function copySchema() {
+    const response = await fetch('/api/v1/schemas', {
+      method: 'POST',
+      // TODO копируется текущий стейт а не тот что пришел с сервера
+      body: JSON.stringify({
+        ...currentSchemaHistory.data,
+        id: uuid(),
+        title: `${currentSchemaHistory.data.title}_copy`,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        accept: '*/*',
+      },
+    })
+
+    const data = await response.json()
+    console.log('data', data)
+
+    if (response.ok) {
+      navigate(ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', data.id))
+    }
+  }
+
+  async function deleteSchema() {
+    const response = await fetch('/api/v1/schemas', {
+      method: 'DELETE',
+      body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
+      headers: {
+        'content-type': 'application/json',
+        accept: '*/*',
+      },
+    })
+
+    if (response.ok) {
+      navigate(ROUTES.SCHEMA_LIST.PATH)
+    }
+  }
+
   return (
     <Stack className="headerOnlyLayout">
-      <HeaderContent />
+      <HeaderContent deleteSchema={deleteSchema} copySchema={copySchema} />
       <KeyListener
         selectedCompIds={selectedCompIds}
         schema={currentSchemaHistory.data}
