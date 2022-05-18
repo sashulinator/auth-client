@@ -112,20 +112,22 @@ function TreePanel(props: TreePanelProps): JSX.Element {
   }
 
   return (
-    <PerfectScrollbar className="TreePanel">
+    <div className="TreePanel">
       <ResizeTarget name="treePanelWidth" direction="left" />
-      <LoadingAria loading={props.isLoading}>
-        {tree && (
-          <Tree
-            renderItem={TreeLeaf}
-            tree={tree}
-            onDragStart={PreventMovingUnpickedItems}
-            onDragEnd={onDragEnd}
-            setTree={setTree}
-          />
-        )}
-      </LoadingAria>
-    </PerfectScrollbar>
+      <PerfectScrollbar className="treePanelScrollable">
+        <LoadingAria loading={props.isLoading}>
+          {tree && (
+            <Tree
+              renderItem={TreeLeaf}
+              tree={tree}
+              onDragStart={PreventMovingUnpickedItems}
+              onDragEnd={onDragEnd}
+              setTree={setTree}
+            />
+          )}
+        </LoadingAria>
+      </PerfectScrollbar>
+    </div>
   )
 }
 
