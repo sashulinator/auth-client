@@ -20,20 +20,6 @@
   z-index: 300;
 }
 
-.FormConstructor .addCompButton {
-  display: var(--treePanelWidth_expanded, none);
-  position: fixed;
-  top: 59px;
-  left: calc(var(--treePanelWidth, 300) * 1px);
-  transform: translateX(-150%);
-  border-radius: 50%;
-  min-width: 50px;
-  max-width: 50px;
-  min-height: 50px;
-  max-height: 50px;
-  z-index: 6;
-}
-
 .Preview {
   min-height: calc(100% - 60px);
   min-width: 300px;

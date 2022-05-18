@@ -1,12 +1,15 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { FontIcon, PrimaryButton } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
 
+import { paletteModalState } from '../../palette-modal'
 import { buildTree } from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
+import { useRecoilState } from 'recoil'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
@@ -26,6 +29,7 @@ interface TreePanelProps {
 
 function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
+  const [, setPaletteOpen] = useRecoilState(paletteModalState)
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
@@ -112,20 +116,25 @@ function TreePanel(props: TreePanelProps): JSX.Element {
   }
 
   return (
-    <PerfectScrollbar className="TreePanel">
+    <div className="TreePanel">
+      <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
+        <FontIcon aria-label="Add Comp" iconName="Add" />
+      </PrimaryButton>
       <ResizeTarget name="treePanelWidth" direction="left" />
-      <LoadingAria loading={props.isLoading}>
-        {tree && (
-          <Tree
-            renderItem={TreeLeaf}
-            tree={tree}
-            onDragStart={PreventMovingUnpickedItems}
-            onDragEnd={onDragEnd}
-            setTree={setTree}
-          />
-        )}
-      </LoadingAria>
-    </PerfectScrollbar>
+      <PerfectScrollbar className="treePanelScrollable">
+        <LoadingAria loading={props.isLoading}>
+          {tree && (
+            <Tree
+              renderItem={TreeLeaf}
+              tree={tree}
+              onDragStart={PreventMovingUnpickedItems}
+              onDragEnd={onDragEnd}
+              setTree={setTree}
+            />
+          )}
+        </LoadingAria>
+      </PerfectScrollbar>
+    </div>
   )
 }
 

@@ -1,9 +1,9 @@
 .TreePanel {
   background-color: var(--white);
-  z-index: 5;
-  padding: 15px 15px 30vh;
   box-sizing: border-box;
-  overflow: auto !important;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
 }
 
 .TreePanel .ResizeTarget {
@@ -17,6 +17,23 @@
   opacity: 0.7;
 }
 
-.TreePanel::-webkit-scrollbar {
+.FormConstructor .addCompButton {
+  position: absolute;
+  top: 7px;
+  right: 17px;
+  border-radius: 50%;
+  min-width: 50px;
+  max-width: 50px;
+  min-height: 50px;
+  max-height: 50px;
+  z-index: 6;
+}
+
+.TreePanel .treePanelScrollable {
+  padding: 15px 15px 30vh;
+  box-sizing: border-box;
+}
+
+.TreePanel .treePanelScrollable::-webkit-scrollbar {
   display: none;
 }
