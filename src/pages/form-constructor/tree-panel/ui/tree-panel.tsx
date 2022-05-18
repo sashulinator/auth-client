@@ -120,7 +120,7 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
         <FontIcon aria-label="Add Comp" iconName="Add" />
       </PrimaryButton>
-      <ResizeTarget name="treePanelWidth" direction="left" />
+      <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
       <PerfectScrollbar className="treePanelScrollable">
         <LoadingAria loading={props.isLoading}>
           {tree && (
