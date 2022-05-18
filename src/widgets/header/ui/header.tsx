@@ -1,17 +1,16 @@
 import { Stack } from '@fluentui/react/lib/Stack'
 
-import RouteContent from './route-content'
 import React from 'react'
 
-import ROUTES, { getCurrentRoute } from '@/constants/routes'
+import ROUTES from '@/constants/routes'
 import LogoutButton from '@/entities/user/ui/logout-button'
 import LanguageDropdown from '@/shared/language-dropdown'
 import ThemeDropdown from '@/shared/theme'
 
-export default function Header(): JSX.Element | null {
-  const currentRoute = getCurrentRoute()
+export const HEADER_PORTAL_CLASSNAME = '.headerPortal'
 
-  if (currentRoute?.NAME === ROUTES.LOGIN.NAME) {
+export default function Header(): JSX.Element | null {
+  if (ROUTES.LOGIN.isCurrent) {
     return null
   }
 
@@ -24,7 +23,13 @@ export default function Header(): JSX.Element | null {
       className="Header"
       tokens={{ childrenGap: 32, padding: '16px 16px' }}
     >
-      <RouteContent />
+      <Stack
+        horizontal
+        className={HEADER_PORTAL_CLASSNAME}
+        horizontalAlign="end"
+        verticalAlign="center"
+        style={{ width: '100%' }}
+      />
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
         <li>
           <ThemeDropdown />

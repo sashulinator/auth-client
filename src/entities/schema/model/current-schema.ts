@@ -12,8 +12,8 @@ export const currentSchemaHistoryState = atom<History<Schema>>({
     prev: null,
     next: null,
     data: {
-      // TODO Попробовать удалить id
-      id: '',
+      // we cannot omit id so let's make it localSchema
+      id: 'localSchema',
       componentName: null,
       title: 'Name',
       type: FormType.FORM,

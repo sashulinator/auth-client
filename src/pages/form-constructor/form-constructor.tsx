@@ -4,6 +4,7 @@ import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator
 import './form-constructor.css'
 
 import CompPanel from './comp-panel'
+import HeaderContent from './header-content'
 import KeyListener from './key-listener'
 import PaletteModal from './palette-modal'
 import Preview from './preview'
@@ -135,7 +136,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function openSchemaInNewTab(schemaId: string): void {
-    const url = ROUTES.FORM_CONSTRUCTOR.buildURL(schemaId)
+    const url = ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', schemaId)
     window.open(url, '_blanc')?.focus()
   }
 
@@ -229,6 +230,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
   return (
     <Stack className="headerOnlyLayout">
+      <HeaderContent />
       <KeyListener
         selectedCompIds={selectedCompIds}
         schema={currentSchemaHistory.data}

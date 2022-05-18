@@ -14,7 +14,7 @@ export default function Login(): JSX.Element {
   function onSubmit() {
     localStorage.setItem('access_token', 'access_token')
     localStorage.setItem('refresh_token', 'refresh_token')
-    navigate(ROUTES.INCIDENT_LIST.buildURL())
+    navigate(ROUTES.INCIDENT_LIST.PATH)
   }
 
   return (
