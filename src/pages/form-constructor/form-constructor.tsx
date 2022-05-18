@@ -1,4 +1,4 @@
-import { FontIcon, PrimaryButton, Stack } from '@fluentui/react'
+import { Stack } from '@fluentui/react'
 import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './form-constructor.css'
@@ -6,7 +6,7 @@ import './form-constructor.css'
 import CompPanel from './comp-panel'
 import HeaderContent from './header-content'
 import KeyListener from './key-listener'
-import PaletteModal, { paletteModalState } from './palette-modal'
+import PaletteModal from './palette-modal'
 import Preview from './preview'
 import TreePanel from './tree-panel'
 import React, { FC, useEffect } from 'react'
@@ -52,7 +52,6 @@ const FormConstructor: FC = (): JSX.Element => {
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
-  const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const resetSchemas = useResetRecoilState(schemasState)
   const resetCurrentSchemaHistory = useResetRecoilState(currentSchemaHistoryState)
   const resetSelectedCompIds = useResetRecoilState(selectedCompIdsState)
@@ -243,9 +242,6 @@ const FormConstructor: FC = (): JSX.Element => {
         redo={redo}
       />
       <Stack as="main" className="FormConstructor">
-        <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
-          <FontIcon aria-label="Add Comp" iconName="Add" />
-        </PrimaryButton>
         <TreePanel
           schema={currentSchemaHistory.data}
           selectAndUnselectComp={selectAndUnselectComp}
