@@ -113,7 +113,7 @@ function TreePanel(props: TreePanelProps): JSX.Element {
 
   return (
     <PerfectScrollbar className="TreePanel">
-      <ResizeTarget name="treePanelWidth" />
+      <ResizeTarget name="treePanelWidth" direction="left" />
       <LoadingAria loading={props.isLoading}>
         {tree && (
           <Tree

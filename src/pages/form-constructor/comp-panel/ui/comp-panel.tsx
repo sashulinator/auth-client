@@ -7,6 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
 import LoadingAria from '@/shared/loading-aria'
+import ResizeTarget from '@/shared/resize-target'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -27,6 +28,7 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
 
   return (
     <PerfectScrollbar className="CompPanel">
+      <ResizeTarget name="compPanelWidth" direction="right" />
       <LoadingAria loading={props.isLoading}>
         <>
           {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}

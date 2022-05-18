@@ -6,6 +6,7 @@ import { removeCSSVar, setCSSVar } from '@/shared/theme'
 
 interface ResizeTargetProps {
   name: string
+  direction: 'left' | 'right'
 }
 
 export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
@@ -55,7 +56,7 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     }
 
     const parentRect = parent.getBoundingClientRect()
-    setInitParentWidth(parentRect.width)
+    setInitParentWidth(Math.round(parentRect.width))
 
     document.body.style.cursor = 'col-resize'
     document.onselectstart = (): boolean => false
@@ -79,7 +80,13 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
       return
     }
 
-    const newWidth = event.clientX + initParentWidth
+    const parentRect = parent.getBoundingClientRect()
+    const diff =
+      props.direction === 'left'
+        ? event.clientX - (initParentWidth + parentRect.left)
+        : Math.abs(event.clientX - parentRect.right)
+
+    const newWidth = Math.round(initParentWidth + diff)
     const { minWidth, maxWidth } = getComputedStyle(parent)
 
     if (newWidth > parseInt(maxWidth) || newWidth < parseInt(minWidth)) {
@@ -125,7 +132,6 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     } else {
       setCollapsed(true)
       parent.style.transition = '.3s'
-      parent.style.transform = 'translate(calc(-100% + 5px))'
       setTimeout(() => {
         parent.style.transition = ''
       }, 300)
