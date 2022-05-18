@@ -1,7 +1,7 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
-import './index.css'
+import './tree-panel.css'
 
 import { buildTree } from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'

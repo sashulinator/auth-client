@@ -20,6 +20,7 @@
 }
 
 .FormConstructor .addCompButton {
+  display: var(--treePanelWidth_expanded, none);
   position: fixed;
   top: 59px;
   left: calc(var(--treePanelWidth, 300) * 1px);
