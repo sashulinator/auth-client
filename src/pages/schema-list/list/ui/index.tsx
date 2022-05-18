@@ -16,7 +16,7 @@ function List(): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof Schema] as string
 
     if (column?.key === 'title') {
-      return <Link to={ROUTES.FORM_CONSTRUCTOR.buildURL(item.id)}>{item.title}</Link>
+      return <Link to={ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', item.id)}>{item.title}</Link>
     }
     return <span>{fieldContent}</span>
   }

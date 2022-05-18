@@ -16,7 +16,7 @@ function List(): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof Incident] as string
 
     if (column?.key === 'name') {
-      return <Link to={ROUTES.INCIDENT.buildURL(item.id)}>{item.name}</Link>
+      return <Link to={ROUTES.INCIDENT.PATH}>{item.name}</Link>
     }
     return <span>{fieldContent}</span>
   }

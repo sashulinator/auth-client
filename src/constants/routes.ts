@@ -1,55 +1,22 @@
+import Route from '@savchenko91/rc-route-constant'
+
 const ROUTES = {
-  FORM_CONSTRUCTOR: {
-    NAME: 'Form constructor',
-    PATH: '/form-constructor',
-    buildURL(id?: string) {
-      return id ? `${this.PATH}/${id}` : this.PATH
-    },
-  },
-  LOGIN: {
-    NAME: 'Login',
-    PATH: '/login',
-    buildURL() {
-      return this.PATH
-    },
-  },
-  SCHEMA_LIST: {
-    NAME: 'Schemas',
-    PATH: '/schema-list',
-    buildURL() {
-      return this.PATH
-    },
-  },
-  INCIDENT_LIST: {
-    NAME: 'Incidents',
-    PATH: '/incident-list',
-    buildURL() {
-      return this.PATH
-    },
-  },
-  INCIDENT: {
-    NAME: 'Incident',
-    PATH: '/incident',
-    buildURL(id?: string) {
-      return id ? `${this.PATH}/${id}` : this.PATH
-    },
-  },
+  FORM_CONSTRUCTOR: new Route({ name: 'Form constructor', path: '/form-constructor' }),
+  FORM_CONSTRUCTOR_EDIT: new Route({ name: 'Form constructor', path: '/form-constructor/:id' }),
+
+  // return id ? `${this.PATH}/${id}` : this.PATH
+
+  LOGIN: new Route({ name: 'Login', path: '/login' }),
+
+  SCHEMA_LIST: new Route({ name: 'Schemas', path: '/schema-list' }),
+
+  INCIDENT_LIST: new Route({ name: 'Incidents', path: '/incident-list' }),
+
+  INCIDENT: new Route({ name: 'Incident', path: '/incident' }),
+
+  // return id ? `${this.PATH}/${id}` : this.PATH
 }
 
-export type Route = typeof ROUTES[keyof typeof ROUTES]
 export type Routes = typeof ROUTES
-
-export function getCurrentRoute(): Route | undefined {
-  return Object.values(ROUTES).find((route) => {
-    return buildRegExpFromPath(route.PATH).test(window?.location?.pathname)
-  })
-}
-
-export function buildRegExpFromPath(path: string): RegExp {
-  // replace all params like ':id' and then replace optional params like ':id?'
-  const regExp = path?.replace(/:([^/])+/g, '([^/])+').replace(/\/:([^/])+\?/, '/?([^/]?)+')
-
-  return new RegExp(`${regExp}(/)?`)
-}
 
 export default ROUTES

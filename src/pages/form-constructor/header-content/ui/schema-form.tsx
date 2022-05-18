@@ -33,7 +33,7 @@ export default function SchemaForm(): JSX.Element {
 
   const { mutateAsync: apiCreateSchema } = useAppMutation(createSchema, {
     onSuccess: (data) => {
-      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+      navigate(ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', data.id))
       successMessage(t('messages.saved'))
     },
   })
@@ -65,7 +65,7 @@ export default function SchemaForm(): JSX.Element {
     console.log('data', data)
 
     if (response.ok) {
-      navigate(ROUTES.FORM_CONSTRUCTOR.buildURL(data.id))
+      navigate(ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', data.id))
     }
   }
 
@@ -80,7 +80,7 @@ export default function SchemaForm(): JSX.Element {
     })
 
     if (response.ok) {
-      navigate(ROUTES.SCHEMA_LIST.buildURL())
+      navigate(ROUTES.SCHEMA_LIST.PATH)
     }
   }
 
