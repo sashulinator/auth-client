@@ -1,4 +1,4 @@
-import { Checkbox, IDropdownOption, IconButton, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
+import { ActionButton, Checkbox, IDropdownOption, IconButton, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
 
 import { ComponentNames } from '../model/types'
 
@@ -102,6 +102,11 @@ const componentList = {
   IconButton: {
     type: 'content',
     component: IconButton,
+  },
+
+  ActionButton: {
+    type: 'content',
+    component: ActionButton,
   },
 } as const
 
