@@ -7,6 +7,7 @@ import { removeCSSVar, setCSSVar } from '@/shared/theme'
 interface ResizeTargetProps {
   name: string
   direction: 'left' | 'right'
+  callapsible?: boolean
 }
 
 export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
@@ -19,7 +20,10 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     }
 
     ref.current.addEventListener('mousedown', onMouseDown)
-    ref.current.addEventListener('dblclick', dblclick)
+
+    if (props.callapsible) {
+      ref.current.addEventListener('dblclick', dblclick)
+    }
 
     const value = localStorage.getItem(props.name)
 
