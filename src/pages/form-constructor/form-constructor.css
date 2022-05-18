@@ -9,12 +9,27 @@
 
 .TreePanel {
   position: fixed;
-  width: 300px;
+  width: calc(var(--treePanelWidth, 300) * 1px);
+  min-width: 200px;
+  max-width: 777px;
   max-height: calc(100% - var(--headerHeight) * 1px);
   min-height: calc(100% - var(--headerHeight) * 1px);
   top: calc(var(--headerHeight) * 1px);
   left: 0;
   z-index: 300;
+}
+
+.FormConstructor .addCompButton {
+  position: fixed;
+  top: 59px;
+  left: calc(var(--treePanelWidth, 300) * 1px);
+  transform: translateX(-150%);
+  border-radius: 50%;
+  min-width: 50px;
+  max-width: 50px;
+  min-height: 50px;
+  max-height: 50px;
+  z-index: 6;
 }
 
 .Preview {

@@ -6,18 +6,16 @@
   overflow: auto !important;
 }
 
-.TreePanel::-webkit-scrollbar {
-  display: none;
+.TreePanel .ResizeTarget {
+  position: absolute;
+  top: 50%;
+  right: -2px;
+  transform: translateY(-50%);
+  z-index: 200;
+  background-color: var(--themePrimary);
+  opacity: 0.5;
 }
 
-.addCompButton {
-  position: fixed;
-  top: 63px;
-  left: 265px;
-  border-radius: 50%;
-  min-width: 50px;
-  max-width: 50px;
-  min-height: 50px;
-  max-height: 50px;
-  z-index: 6;
+.TreePanel::-webkit-scrollbar {
+  display: none;
 }

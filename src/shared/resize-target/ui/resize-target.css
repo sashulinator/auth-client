@@ -1,0 +1,7 @@
+.ResizeTarget {
+  background-color: red;
+  width: 5px;
+  height: 100px;
+  position: absolute;
+  cursor: col-resize;
+}

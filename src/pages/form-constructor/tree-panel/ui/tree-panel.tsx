@@ -1,5 +1,4 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { FontIcon, PrimaryButton } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './index.css'
@@ -8,14 +7,13 @@ import { buildTree } from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-import { useRecoilState } from 'recoil'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
-import { paletteModalState } from '@/pages/form-constructor/palette-modal'
 import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
+import ResizeTarget from '@/shared/resize-target'
 import Tree from '@/shared/tree'
 
 interface TreePanelProps {
@@ -27,7 +25,6 @@ interface TreePanelProps {
 }
 
 function TreePanel(props: TreePanelProps): JSX.Element {
-  const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [tree, setTree] = useState<TreeData | undefined>()
 
   const wrapperRef = useRef<HTMLDivElement | null>(null)
@@ -115,24 +112,20 @@ function TreePanel(props: TreePanelProps): JSX.Element {
   }
 
   return (
-    <>
-      <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
-        <FontIcon aria-label="Add Comp" iconName="Add" />
-      </PrimaryButton>
-      <PerfectScrollbar className="TreePanel">
-        <LoadingAria loading={props.isLoading}>
-          {tree && (
-            <Tree
-              renderItem={TreeLeaf}
-              tree={tree}
-              onDragStart={PreventMovingUnpickedItems}
-              onDragEnd={onDragEnd}
-              setTree={setTree}
-            />
-          )}
-        </LoadingAria>
-      </PerfectScrollbar>
-    </>
+    <PerfectScrollbar className="TreePanel">
+      <ResizeTarget name="treePanelWidth" />
+      <LoadingAria loading={props.isLoading}>
+        {tree && (
+          <Tree
+            renderItem={TreeLeaf}
+            tree={tree}
+            onDragStart={PreventMovingUnpickedItems}
+            onDragEnd={onDragEnd}
+            setTree={setTree}
+          />
+        )}
+      </LoadingAria>
+    </PerfectScrollbar>
   )
 }
 
