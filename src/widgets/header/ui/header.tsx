@@ -25,7 +25,7 @@ export default function Header(): JSX.Element | null {
     >
       <Stack
         horizontal
-        className={HEADER_PORTAL_CLASSNAME}
+        className={HEADER_PORTAL_CLASSNAME.replace('.', '')}
         horizontalAlign="end"
         verticalAlign="center"
         style={{ width: '100%' }}
