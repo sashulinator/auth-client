@@ -1,4 +1,15 @@
-import { ActionButton, Checkbox, IDropdownOption, IconButton, Label, PrimaryButton, Stack, Text } from '@fluentui/react'
+import {
+  ActionButton,
+  Checkbox,
+  IDropdownOption,
+  IconButton,
+  Label,
+  Link,
+  PrimaryButton,
+  SearchBox,
+  Stack,
+  Text,
+} from '@fluentui/react'
 
 import { ComponentNames } from '../model/types'
 
@@ -71,6 +82,7 @@ const componentList = {
     type: 'content',
     component: Stack,
   },
+
   PrimaryButton: {
     type: 'content',
     component: PrimaryButton,
@@ -79,6 +91,11 @@ const componentList = {
   Text: {
     type: 'content',
     component: Text,
+  },
+
+  Link: {
+    type: 'content',
+    component: Link,
   },
 
   Table: {
@@ -90,10 +107,12 @@ const componentList = {
     type: 'content',
     component: Label,
   },
+
   Pivot: {
     type: 'content',
     component: Pivot,
   },
+
   PivotItem: {
     type: 'content',
     component: PivotItem,
@@ -107,6 +126,11 @@ const componentList = {
   ActionButton: {
     type: 'content',
     component: ActionButton,
+  },
+
+  SearchBox: {
+    type: 'content',
+    component: SearchBox,
   },
 } as const
 

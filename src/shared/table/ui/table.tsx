@@ -1,4 +1,4 @@
-import { DetailsList, IColumn, SelectionMode } from '@fluentui/react'
+import { DetailsList, IColumn, IColumnReorderOptions } from '@fluentui/react'
 
 import './table.css'
 
@@ -8,15 +8,17 @@ import React from 'react'
 interface TableProps {
   items: Record<string, unknown>[]
   columns: IColumn[]
+  columnReorderOptions: IColumnReorderOptions
 }
 
 export default function Table(props: TableProps): JSX.Element {
   const items = normilize<Record<string, unknown>>(props.items) ?? []
   const columns = normilize<IColumn>(props.columns) ?? []
+  const columnReorderOptions = props.columnReorderOptions ?? null
 
-  return <DetailsList {...props} items={items} columns={columns} />
+  return <DetailsList {...props} items={items} columns={columns} columnReorderOptions={columnReorderOptions} />
 }
 
-Table.defaultProps = {
-  selectionMode: SelectionMode.none,
-}
+//  Table.defaultProps = {
+//    selectionMode: SelectionMode.none,
+//   }
