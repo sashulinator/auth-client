@@ -208,11 +208,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function addNewComps(comps: Norm<Comp>) {
-    console.log('comps', comps)
-
     const copiedComps = copyEntities(comps, ['name'])
-
-    console.log('copiedComps', copiedComps, comps)
 
     const rootCompIds = findRootParentIds(copiedComps)
     const rootComps = findEntities(rootCompIds, copiedComps)
@@ -234,22 +230,6 @@ const FormConstructor: FC = (): JSX.Element => {
     }, mergedComps)
 
     setCurrentSchemaHistory(updateCompsSetter(newComps))
-  }
-
-  function pasteFromClipboard() {
-    const stringifiedComps = localStorage.getItem('copyClipboard') || ''
-
-    const comps = JSON.parse(stringifiedComps) as Norm<Comp>
-
-    schemaValidator.comps(comps)
-
-    if (comps) {
-      addNewComps(comps)
-
-      if (selectedCompIds.length === 0) {
-        setSelectedCompIds(comps[0] ? [comps[0].id] : [])
-      }
-    }
   }
 
   async function copySchema() {
