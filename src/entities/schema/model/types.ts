@@ -15,7 +15,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: Norm<ValidatorItem>
-  events?: Norm<EventItem>
+  events?: Norm<BindingItem>
   injections?: Injection[]
 }
 
@@ -42,14 +42,14 @@ export enum FormType {
   COMP = 'COMP',
 }
 
-export interface BindingItem {
+export interface BindingValidatorItem {
   id: string
   name: string
   children?: string[]
   props?: unknown
 }
 
-export interface ValidatorItem extends BindingItem {
+export interface ValidatorItem extends BindingValidatorItem {
   type: ValidatorItemType
 }
 
@@ -58,11 +58,11 @@ export enum ValidatorItemType {
   ASSERTION = 'ASSERTION',
 }
 
-export interface EventItem extends BindingItem {
-  type: EventItemType
+export interface BindingItem extends BindingValidatorItem {
+  type: BindingItemType
 }
 
-export enum EventItemType {
+export enum BindingItemType {
   EVENT = 'EVENT',
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
