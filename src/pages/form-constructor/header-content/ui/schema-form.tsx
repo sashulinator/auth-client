@@ -1,4 +1,4 @@
-import { IContextualMenuItem, Icon, PrimaryButton, Stack } from '@fluentui/react'
+import { PrimaryButton, Stack } from '@fluentui/react'
 import { ErrorCollection } from '@savchenko91/schema-validator'
 
 import React, { useMemo } from 'react'
@@ -14,7 +14,6 @@ import ROUTES from '@/constants/routes'
 import { FormType, Schema, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
-import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
 import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
 import { componentNameOptions } from '@/shared/schema-drawer/lib/component-list'
@@ -45,63 +44,6 @@ export default function SchemaForm(): JSX.Element {
   })
 
   const options = useMemo(() => optionsFromStringArray(typeArray, t), [i18n.language])
-
-  async function copySchema() {
-    const response = await fetch('/api/v1/schemas', {
-      method: 'POST',
-      // TODO копируется текущий стейт а не тот что пришел с сервера
-      body: JSON.stringify({
-        ...currentSchemaHistory.data,
-        id: uuid(),
-        title: `${currentSchemaHistory.data.title}_copy`,
-      }),
-      headers: {
-        'content-type': 'application/json',
-        accept: '*/*',
-      },
-    })
-
-    const data = await response.json()
-    console.log('data', data)
-
-    if (response.ok) {
-      navigate(ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', data.id))
-    }
-  }
-
-  async function deleteSchema() {
-    const response = await fetch('/api/v1/schemas', {
-      method: 'DELETE',
-      body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
-      headers: {
-        'content-type': 'application/json',
-        accept: '*/*',
-      },
-    })
-
-    if (response.ok) {
-      navigate(ROUTES.SCHEMA_LIST.PATH)
-    }
-  }
-
-  const items: IContextualMenuItem[] = [
-    {
-      key: 'delete',
-      text: 'delete',
-      onClick: () => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        deleteSchema()
-      },
-    },
-    {
-      key: 'copy',
-      text: 'copy',
-      onClick: () => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        copySchema()
-      },
-    },
-  ]
 
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
@@ -174,9 +116,6 @@ export default function SchemaForm(): JSX.Element {
                 )}
               </Field>
             )}
-            <ContextualMenu items={items}>
-              <Icon iconName="More" />
-            </ContextualMenu>
             <PrimaryButton type="submit">
               {id ? t('buttons.save').toString() : t('buttons.create').toString()}
             </PrimaryButton>
