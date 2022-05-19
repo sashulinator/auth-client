@@ -73,7 +73,6 @@ export default function DatePicker(props: IDatePickerProps): JSX.Element {
       }}
       formatDate={(date) => date?.toLocaleDateString(t('locale')) || ''}
       firstDayOfWeek={parseInt(t('calendar.firstDayOfTheWeek'), 10) ?? 1}
-      disabled={isIcorrectData}
     />
   )
 }
