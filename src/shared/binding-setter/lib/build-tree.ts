@@ -6,24 +6,24 @@ import { mutateObject } from '@/lib/mutate-object'
 
 export interface AdditionalData {
   remove: (id: string | number) => void
-  changeValidator: (id: string | number, name: string, withValue?: unknown) => void
+  changeBinding: (id: string | number, name: string, withValue?: unknown) => void
   selectItemId: React.Dispatch<React.SetStateAction<string>>
   selectedItemId: string
 }
 
-export default function buildTree(validators: Norm<BindingItem> | undefined, additionalData: AdditionalData) {
-  if (validators === undefined) {
+export default function buildTree(bindings: Norm<BindingItem> | undefined, additionalData: AdditionalData) {
+  if (bindings === undefined) {
     return undefined
   }
 
-  const items = mutateObject<TreeItem, Norm<BindingItem>>(validators)((validator) => {
+  const items = mutateObject<TreeItem, Norm<BindingItem>>(bindings)((binding) => {
     return {
-      ...validator,
-      id: validator.id,
+      ...binding,
+      id: binding.id,
       isExpanded: true,
-      hasChildren: validator.children !== undefined,
-      children: validator.children || [],
-      data: { validator, ...additionalData },
+      hasChildren: binding.children !== undefined,
+      children: binding.children || [],
+      data: { binding, ...additionalData },
     }
   })
 

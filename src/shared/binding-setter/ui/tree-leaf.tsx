@@ -12,7 +12,7 @@ import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      validator: BindingItem
+      binding: BindingItem
     }
   }
 }
@@ -22,10 +22,10 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     return null
   }
 
-  const { validator } = props.item.data
+  const { binding: binding } = props.item.data
 
-  const isPicked = props.item.data.selectedItemId === props.item.data.validator.id
-  const isOperator = validator.type === BindingItemType.OPERATOR
+  const isPicked = props.item.data.selectedItemId === props.item.data.binding.id
+  const isOperator = binding.type === BindingItemType.OPERATOR
   const options = isOperator ? optionsFromStringArray(['or', 'and']) : assertionNameOptions
 
   return (
@@ -53,9 +53,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
         <div className="type">{isOperator ? 'O' : 'A'}</div>
         <Stack className="treeLeafText" horizontal>
           <Dropdown
-            value={validator.name}
+            value={binding.name}
             options={options}
-            onChange={(name) => props.item.data?.changeValidator?.(props.item.id, name)}
+            onChange={(name) => props.item.data?.changeBinding?.(props.item.id, name)}
             styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
           />
         </Stack>

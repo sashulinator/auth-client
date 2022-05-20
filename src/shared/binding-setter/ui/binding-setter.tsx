@@ -5,7 +5,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import './binding-setter.css'
 
 import buildTree from '../lib/build-tree'
-import { defaultCompValidators } from '../lib/constants'
+import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
@@ -23,7 +23,7 @@ import SchemaDrawer from '@/shared/schema-drawer'
 import { assertionList, isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
 
-export interface ValidatorsTreeProps {
+export interface BindingSetterProps {
   comp: Comp
   comps: Norm<Comp>
   onChange: (value: Norm<BindingItem> | undefined) => void
@@ -33,115 +33,115 @@ export interface ValidatorsTreeProps {
   label?: string
 }
 
-export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
+export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-  const validatorItems = props.value
-  const validatorItem = validatorItems?.[selectedItemId]
-  const assertionItem = assertionList[validatorItem?.name || '']
+  const bindingItems = props.value
+  const bindingItem = bindingItems?.[selectedItemId]
+  const assertionItem = assertionList[bindingItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
     return buildTree(props.value || undefined, {
-      changeValidator,
+      changeBinding,
       remove,
       selectItemId,
       selectedItemId,
     })
   }
 
-  function changeValidator(id: string | number, name: string, newValidatorItemProps: unknown) {
-    if (validatorItems && props.name) {
-      const validator = findEntity(id, validatorItems)
-      const newValidators = replace(validatorItems, id, {
-        ...validator,
+  function changeBinding(id: string | number, name: string, newBindingItemProps: unknown) {
+    if (bindingItems && props.name) {
+      const binding = findEntity(id, bindingItems)
+      const newBindings = replace(bindingItems, id, {
+        ...binding,
         name,
-        props: newValidatorItemProps,
+        props: newBindingItemProps,
       })
 
-      props.onChange(omitEmpty(newValidators))
+      props.onChange(omitEmpty(newBindings))
     }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !validatorItems || to.parentId === 'rootId') {
+    if (!to || !tree || !bindingItems || to.parentId === 'rootId') {
       return
     }
 
-    const toParentValidator = findEntity(to.parentId, validatorItems)
-    const fromParentValidator = findEntity(from.parentId, validatorItems)
-    const validatorId = fromParentValidator?.children?.[from.index]
+    const toParentBinding = findEntity(to.parentId, bindingItems)
+    const fromParentBinding = findEntity(from.parentId, bindingItems)
+    const bindingId = fromParentBinding?.children?.[from.index]
 
-    assertNotUndefined(validatorId)
+    assertNotUndefined(bindingId)
 
-    const validator = findEntity(validatorId, validatorItems)
+    const binding = findEntity(bindingId, bindingItems)
 
-    const isParentOperator = toParentValidator?.name === 'and' || toParentValidator?.name === 'or'
+    const isParentOperator = toParentBinding?.name === 'and' || toParentBinding?.name === 'or'
 
     if (!isParentOperator) {
       return
     }
 
-    if (validatorItems) {
-      props.onChange(moveEntity(validator, to.parentId, to.index || 0, validatorItems))
+    if (bindingItems) {
+      props.onChange(moveEntity(binding, to.parentId, to.index || 0, bindingItems))
       setTree(moveItemOnTree(tree, from, to))
     }
   }
 
   function addAssertion(): void {
     const id = uniqid()
-    const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validator: BindingItem = {
+    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const binding: BindingItem = {
       id,
       type: BindingItemType.ASSERTION,
       name: 'string',
       children: [],
     }
 
-    const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
+    const newBindings = addEntity(binding, ROOT_ID, 0, currentBindings)
 
     if (props.name) {
-      props.onChange(newValidators)
+      props.onChange(newBindings)
     }
   }
 
   function addOperator() {
     const id = uniqid()
-    const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validatorItem: BindingItem = {
+    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const bindingItem: BindingItem = {
       id,
       name: 'and',
       type: BindingItemType.OPERATOR,
       children: [],
     }
 
-    const newValidatorItems = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
+    const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
 
-    if (validatorItems) {
-      props.onChange(newValidatorItems)
+    if (bindingItems) {
+      props.onChange(newBindingItems)
     }
   }
 
   function remove(id: string | number): void {
-    if (validatorItems) {
-      const newValidators = removeEntity(id, validatorItems)
-      assertNotUndefined(newValidators)
+    if (bindingItems) {
+      const newBindings = removeEntity(id, bindingItems)
+      assertNotUndefined(newBindings)
 
-      if (Object.keys(newValidators).length === 1) {
+      if (Object.keys(newBindings).length === 1) {
         props.onChange(undefined)
       } else {
-        props.onChange(removeEntity(id, validatorItems))
+        props.onChange(removeEntity(id, bindingItems))
       }
     }
   }
 
   return (
-    <div className={clsx('ValidatorPicker', validatorItems && 'notEmpty')}>
+    <div className={clsx('BindingPicker', bindingItems && 'notEmpty')}>
       {props.label && <Label>{props.label}</Label>}
       <Stack className="wrapper" verticalAlign="space-between">
-        <div className="validatorPickerBackground" />
+        <div className="bindingPickerBackground" />
         <Stack>
           <Stack horizontal horizontalAlign="space-between">
             <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
@@ -156,18 +156,15 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
-        {isWithValueAssertionItem(assertionItem) && validatorItem && (
+        {isWithValueAssertionItem(assertionItem) && bindingItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
-            initialValues={validatorItem.props}
+            initialValues={bindingItem.props}
             render={(formProps) => {
               return (
                 <>
-                  <Autosave
-                    save={(input2) => changeValidator(validatorItem.id, validatorItem.name, input2)}
-                    debounce={500}
-                  />
+                  <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
                   <SchemaDrawer
                     schema={assertionItem.schema}
                     schemas={dummySchemas}
