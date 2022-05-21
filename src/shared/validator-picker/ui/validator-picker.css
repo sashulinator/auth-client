@@ -1,12 +1,9 @@
 .ValidatorPicker {
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
   width: 100%;
-}
-
-.ValidatorPicker.notEmpty .wrapper {
-  min-height: 250px;
 }
 
 .ValidatorPicker .wrapper {
