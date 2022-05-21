@@ -17,7 +17,7 @@
   min-height: calc(100% - var(--headerHeight) * 1px);
   top: calc(var(--headerHeight) * 1px);
   left: 0;
-  z-index: 300;
+  z-index: 4;
 }
 
 .Preview {
@@ -37,4 +37,5 @@
   background-color: var(--white);
   top: calc(var(--headerHeight) * 1px);
   right: 0;
+  z-index: 4;
 }

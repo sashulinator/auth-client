@@ -6,6 +6,17 @@
   grid-template-columns: 1fr;
 }
 
+.TreePanel .treePanelScrollable {
+  padding: 15px 15px 30vh;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto !important;
+}
+
+.TreePanel .treePanelScrollable::-webkit-scrollbar {
+  display: none;
+}
+
 .TreePanel .ResizeTarget {
   position: absolute;
   top: 50%;
@@ -27,15 +38,4 @@
   min-height: 50px;
   max-height: 50px;
   z-index: 6;
-}
-
-.TreePanel .treePanelScrollable {
-  padding: 15px 15px 30vh;
-  box-sizing: border-box;
-  height: 100%;
-  overflow: auto !important;
-}
-
-.TreePanel .treePanelScrollable::-webkit-scrollbar {
-  display: none;
 }

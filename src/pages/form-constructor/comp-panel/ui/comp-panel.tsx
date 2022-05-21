@@ -1,3 +1,5 @@
+import { Stack } from '@fluentui/react'
+
 import './comp-panel.css'
 
 import CompForm from './comp-form'
@@ -27,10 +29,10 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
   }
 
   return (
-    <PerfectScrollbar className="CompPanel">
+    <Stack className="CompPanel">
       <ResizeTarget name="compPanelWidth" direction="right" />
-      <LoadingAria loading={props.isLoading}>
-        <>
+      <PerfectScrollbar className="compPanelScrollable">
+        <LoadingAria loading={props.isLoading}>
           {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
           {props.schema && (
             <CompForm
@@ -41,8 +43,8 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
               onSubmit={props.onSubmit}
             />
           )}
-        </>
-      </LoadingAria>
-    </PerfectScrollbar>
+        </LoadingAria>
+      </PerfectScrollbar>
+    </Stack>
   )
 }

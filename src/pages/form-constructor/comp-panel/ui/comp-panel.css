@@ -1,7 +1,20 @@
-.CompPanel .CompContextualMenu {
-  position: absolute;
-  top: 15px;
-  right: 20px;
+.CompPanel {
+  background-color: var(--white);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+}
+
+.CompPanel .compPanelScrollable {
+  padding: 15px 15px 30vh;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto !important;
+}
+
+.CompPanel .compPanelScrollable::-webkit-scrollbar {
+  display: none;
 }
 
 .CompPanel .ResizeTarget {
@@ -13,6 +26,18 @@
   z-index: 200;
   background-color: var(--themePrimary);
   opacity: 0.7;
+}
+
+.CompPanel .wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.CompPanel .CompContextualMenu {
+  position: absolute;
+  top: 15px;
+  right: 20px;
 }
 
 h2 {

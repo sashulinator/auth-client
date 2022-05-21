@@ -2,6 +2,7 @@ import { Checkbox, IDropdownOption, IconButton, Label, PrimaryButton, Stack, Tex
 
 import { ComponentNames } from '../model/types'
 
+import BindingPicker from '@/shared/binding-setter'
 import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
@@ -43,6 +44,11 @@ const componentList = {
   DatePicker: {
     type: 'input',
     component: CustomDatePicker,
+  },
+
+  BindingPicker: {
+    type: 'input',
+    component: BindingPicker,
   },
 
   Fetcher: {

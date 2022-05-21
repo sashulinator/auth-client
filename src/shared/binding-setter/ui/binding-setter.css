@@ -1,18 +1,21 @@
-.ValidatorPicker {
-  box-sizing: border-box;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
+.BindingSetter {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
-.ValidatorPicker .wrapper {
+.BindingSetter.notEmpty .wrapper {
+  min-height: 250px;
+}
+
+.BindingSetter .wrapper {
   position: relative;
   width: 100%;
   box-sizing: border-box;
 }
 
-.ValidatorPicker .wrapper .validatorPickerBackground {
+.BindingSetter .wrapper .bindingPickerBackground {
   position: absolute;
   top: 0;
   left: 0;
@@ -25,7 +28,7 @@
   box-sizing: border-box;
 }
 
-.ValidatorPicker .type {
+.BindingSetter .type {
   min-width: 25px;
   min-height: 25px;
   background-color: var(--black);
