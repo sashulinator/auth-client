@@ -11,8 +11,6 @@ export function removeCSSVar(name: string, element = document.documentElement) {
 }
 
 export const setCSSVariables = (theme: Record<string, string | number | undefined>): void => {
-  document.body.parentElement?.setAttribute('style', '')
-
   Object.entries(theme).forEach(([key, value]) => {
     setCSSVar(key, value as string)
   })
