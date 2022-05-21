@@ -138,10 +138,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   }
 
   return (
-    <div className={clsx('BindingPicker', bindingItems && 'notEmpty')}>
+    <div className={clsx('BindingSetter', bindingItems && 'notEmpty')}>
       {props.label && <Label>{props.label}</Label>}
       <Stack className="wrapper" verticalAlign="space-between">
-        <div className="bindingPickerBackground" />
+        <div className="bindingSetterBackground" />
         <Stack>
           <Stack horizontal horizontalAlign="space-between">
             <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
