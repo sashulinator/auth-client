@@ -1,13 +1,15 @@
 .FormConstructor {
-  padding-top: calc(var(--headerHeight) * 1px);
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: var(--neutralLighter);
+  overflow: hidden;
+  display: grid;
+  grid-template-areas: 'treePanel preview compPanel';
+  grid-template-rows: 1fr;
+  grid-template-columns: auto 1fr auto;
 }
 
 .TreePanel {
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   transform: translate(var(--treePanelWidth_expanded, calc(-100% + 5px)));
   position: fixed;
   width: calc(var(--treePanelWidth, 300) * 1px);
@@ -20,14 +22,25 @@
   z-index: 4;
 }
 
+.Header {
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.PreviewPanel {
+  grid-area: preview;
+  position: relative;
+}
+
 .Preview {
-  min-height: calc(100% - 60px);
+  position: absolute;
   min-width: 300px;
-  margin: 50px;
   background-color: var(--white);
+  top: calc(var(--previewTop) * 1px);
+  left: calc(var(--previewLeft) * 1px);
 }
 
 .CompPanel {
+  box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   max-height: calc(100% - var(--headerHeight) * 1px);
   min-height: calc(100% - var(--headerHeight) * 1px);

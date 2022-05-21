@@ -297,7 +297,9 @@ const FormConstructor: FC = (): JSX.Element => {
             isLoading={isCurrentSchemaLoading}
           />
         </div>
-        <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
+        <div className="PreviewPanel">
+          <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
+        </div>
         <CompPanel
           onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
