@@ -1,7 +1,9 @@
+import { assertNotNull } from '@savchenko91/schema-validator'
+
 import './preview.css'
 
 import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
 import { Norm, Schema } from '@/entities/schema'
@@ -44,19 +46,72 @@ export default function Preview(props: PreviewProps): JSX.Element {
     console.log('data', data)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const parent = ref.current?.parentElement
 
     if (parent) {
-      parent.addEventListener('mousedown', onMouseDown)
+      assertNotNull(ref.current)
+      parent.addEventListener('mousedown', onMouseDown, true)
+      parent.addEventListener('wheel', onWheel)
+
+      const { width } = getComputedStyle(parent)
+      const { width: previewWidth } = getComputedStyle(ref.current)
+
+      setCSSVar('previewLeft', parseInt(width, 10) / 2 - parseInt(previewWidth) / 2)
+      setCSSVar('previewTop', 77)
+
+      localStorage.setItem(
+        'position',
+        JSON.stringify({
+          el: { x: parseInt(width, 10) / 2 - parseInt(previewWidth) / 2, y: 77 },
+          client: { x: 0, y: 0 },
+        })
+      )
     }
 
     return () => {
       if (parent) {
-        parent.removeEventListener('mousedown', onMouseDown)
+        parent.removeEventListener('wheel', onWheel)
+        parent.removeEventListener('mousedown', onMouseDown, true)
       }
     }
   }, [])
+
+  function onWheel(event: WheelEvent) {
+    const previewEl = ref.current
+    const parent = previewEl?.parentElement
+    const positionString = localStorage.getItem('position')
+
+    if (!previewEl || !parent) {
+      return
+    }
+
+    const { top, left } = getComputedStyle(previewEl)
+
+    if (!positionString) {
+      localStorage.setItem(
+        'position',
+        JSON.stringify({
+          el: { x: parseInt(left), y: parseInt(top) },
+          client: { x: event.clientX, y: event.clientY },
+        })
+      )
+      return
+    }
+
+    const position: Positions = JSON.parse(positionString)
+
+    localStorage.setItem(
+      'position',
+      JSON.stringify({
+        el: { x: position.el.x - event.deltaX, y: position.el.y - event.deltaY },
+        client: { x: event.clientX, y: event.clientY },
+      })
+    )
+
+    setCSSVar('previewLeft', position.el.x - event.deltaX)
+    setCSSVar('previewTop', position.el.y - event.deltaY)
+  }
 
   function onMouseDown(event: MouseEvent) {
     const previewEl = ref.current
@@ -68,8 +123,6 @@ export default function Preview(props: PreviewProps): JSX.Element {
 
     const { top, left } = getComputedStyle(previewEl)
 
-    console.log('event', event)
-
     localStorage.setItem(
       'position',
       JSON.stringify({
@@ -78,7 +131,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
       })
     )
 
-    document.body.style.cursor = 'col-resize'
+    document.body.style.cursor = 'move'
     document.onselectstart = (): boolean => false
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
