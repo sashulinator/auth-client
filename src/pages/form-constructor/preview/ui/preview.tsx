@@ -1,7 +1,7 @@
 import './preview.css'
 
 import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Form } from 'react-final-form'
 
 import { Norm, Schema } from '@/entities/schema'
@@ -16,11 +16,21 @@ interface PreviewProps {
 export default function Preview(props: PreviewProps): JSX.Element {
   const { schemas, schema } = props
 
-  useLayoutEffect(() => {
-    removeAllSelectionHighlights()
-    props.selectedCompIds.forEach((compId) => {
-      highlightSelection(compId)
-    })
+  useEffect(() => {
+    function updateHighlights() {
+      setTimeout(() => {
+        removeAllSelectionHighlights()
+        props.selectedCompIds.forEach((compId) => {
+          highlightSelection(compId)
+        })
+      })
+    }
+
+    document.addEventListener('click', updateHighlights)
+
+    return () => {
+      document.removeEventListener('click', updateHighlights)
+    }
   }, [props.selectedCompIds, props.schema])
 
   function onSubmit(data: unknown) {
