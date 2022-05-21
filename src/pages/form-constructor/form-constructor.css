@@ -1,10 +1,7 @@
 .FormConstructor {
-  padding-top: calc(var(--headerHeight) * 1px);
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: var(--neutralLighter);
+  overflow: hidden;
 }
 
 .TreePanel {
@@ -21,10 +18,11 @@
 }
 
 .Preview {
-  min-height: calc(100% - 60px);
+  position: absolute;
   min-width: 300px;
-  margin: 50px;
   background-color: var(--white);
+  top: calc(var(--previewTop) * 1px);
+  left: calc(var(--previewLeft) * 1px);
 }
 
 .CompPanel {
