@@ -67,4 +67,5 @@ export enum BindingItemType {
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
+  ROOT = 'ROOT',
 }

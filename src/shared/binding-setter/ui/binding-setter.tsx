@@ -124,6 +124,23 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     }
   }
 
+  function addAction() {
+    const id = uniqid()
+    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const bindingItem: BindingItem = {
+      id,
+      name: 'setValue',
+      type: BindingItemType.ACTION,
+      children: [],
+    }
+
+    const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
+
+    if (bindingItems) {
+      props.onChange(newBindingItems)
+    }
+  }
+
   function remove(id: string | number): void {
     if (bindingItems) {
       const newBindings = removeEntity(id, bindingItems)
@@ -147,7 +164,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
             <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
               assertion
             </ActionButton>
-            <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+            <Stack horizontal>
+              <ActionButton iconProps={{ iconName: 'LightningBolt' }} onClick={addAction} />
+              <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+            </Stack>
           </Stack>
           {tree && (
             <Stack tokens={{ padding: '2px 0' }}>
