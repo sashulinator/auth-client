@@ -6,6 +6,11 @@ export const defaultCompBindings: Norm<BindingItem> = {
     id: ROOT_ID,
     name: 'root',
     type: BindingItemType.ROOT,
-    children: [],
+    children: ['onChange'],
+  },
+  onChange: {
+    id: 'onChange',
+    name: 'onChange',
+    type: BindingItemType.EVENT,
   },
 }
