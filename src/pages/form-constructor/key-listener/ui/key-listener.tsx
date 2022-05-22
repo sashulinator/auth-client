@@ -21,7 +21,11 @@ export default function KeyListener(props: KeyListenerProps): null {
     function action(event: KeyboardEvent): void {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-      if ((document?.activeElement as any)?.type === 'text' || (document?.activeElement as any)?.type === 'number') {
+      if (
+        (document?.activeElement as any)?.type === 'text' ||
+        (document?.activeElement as any)?.type === 'number' ||
+        (document?.activeElement as any)?.type === 'textarea'
+      ) {
         return
       }
 
