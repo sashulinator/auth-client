@@ -3,6 +3,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { isEmpty } from '@savchenko91/schema-validator'
+
 import { Config, FormApi, FormState } from 'final-form'
 import diff from 'object-diff'
 import React, { useEffect, useRef, useState } from 'react'
@@ -54,7 +56,10 @@ function Autosave(props: AutosaveLogicProps): JSX.Element | null {
     // diff бывает выкидывает ошибку если null прилетит
     // непонятно откуда он прилетает
     try {
-      const difference = diff(state.values, values)
+      const difference1 = diff(state.values, values)
+      const difference2 = diff(values, state.values)
+
+      const difference = isEmpty(difference1) ? difference2 : difference1
 
       if (Object.keys(difference).length) {
         setState({ submitting: true, values })
