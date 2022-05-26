@@ -15,7 +15,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: Norm<ValidatorItem>
-  events?: Norm<BindingItem>
+  bindings?: Norm<BindingItem>
   injections?: Injection[]
 }
 

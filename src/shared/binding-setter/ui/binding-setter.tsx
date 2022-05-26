@@ -94,7 +94,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       children: [],
     }
 
-    const newBindings = addEntity(binding, ROOT_ID, 0, currentBindings)
+    const newBindings = addEntity(binding, ROOT_ID, 1, currentBindings)
 
     if (props.name) {
       props.onChange(newBindings)
@@ -111,7 +111,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       children: [],
     }
 
-    const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
+    const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
 
     if (bindingItems) {
       props.onChange(newBindingItems)
@@ -128,7 +128,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       children: [],
     }
 
-    const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
+    const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
 
     if (bindingItems) {
       props.onChange(newBindingItems)

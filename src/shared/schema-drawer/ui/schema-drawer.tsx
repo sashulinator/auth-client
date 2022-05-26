@@ -2,8 +2,8 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import assertCompSchema from '../lib/assert-comp-schema'
 import { componentListBlind } from '../lib/component-list'
+import createBindingsFactory from '../lib/create-binding-factory'
 import isInputType from '../lib/is-field-component'
-import createBindingsFactory from '../lib/subscribe-on-events'
 import { Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -71,6 +71,7 @@ interface ComponentFactoryProps {
   comps: Norm<Comp>
   compId: string
   context: Context
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bindingFactory: (...args: any[]) => any
 }
 
@@ -97,7 +98,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     )
   }
 
-  props.bindingFactory(comp.events)
+  props.bindingFactory(comp.bindings)
 
   if (isInputType(сomponentItem)) {
     return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />
