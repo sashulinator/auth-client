@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { componentListBlind } from '../lib/component-list'
-import { Context } from '../model/types'
+import { DrawerContext } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 
@@ -12,7 +12,8 @@ interface ContentComponentProps {
   schema: CompSchema
   comps: Norm<Comp>
   comp: Comp
-  context: Context
+  context: DrawerContext
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bindingFactory: (...args: any[]) => any
 }
 

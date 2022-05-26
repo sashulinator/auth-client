@@ -32,6 +32,8 @@ export default function createEventsFactory(context: DrawerContext) {
       return acc
     }, [])
 
-    eventItem?.function(context, actionItems, event.props)
+    const unsubscribe = eventItem?.function(context, actionItems, event.props)
+
+    context.eventUnsubscribers.push(unsubscribe)
   }
 }

@@ -8,7 +8,7 @@ import { Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import { FormState } from 'final-form'
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { Comp, Norm, Schema } from '@/entities/schema'
@@ -32,6 +32,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
 
   const context: DrawerContext = {
     fetchedData: fetchedDataContext,
+    eventUnsubscribers: [],
     ...getRidOfCurrent,
     ...props.context,
     fns: {
@@ -70,7 +71,7 @@ interface ComponentFactoryProps {
   schemas: Norm<Schema>
   comps: Norm<Comp>
   compId: string
-  context: Context
+  context: DrawerContext
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   bindingFactory: (...args: any[]) => any
 }
@@ -80,6 +81,16 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   assertNotUndefined(comp)
 
   const schema = props.schemas[comp.compSchemaId]
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    props.bindingFactory(comp.bindings)
+    return () => {
+      props.context.eventUnsubscribers.forEach((unsubscribe) => {
+        unsubscribe()
+      })
+    }
+  }, [comp.bindings])
 
   // Схема еще не прогрузилась и поэтому undefined
   if (schema === undefined) {
@@ -97,8 +108,6 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
       </div>
     )
   }
-
-  props.bindingFactory(comp.bindings)
 
   if (isInputType(сomponentItem)) {
     return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />
