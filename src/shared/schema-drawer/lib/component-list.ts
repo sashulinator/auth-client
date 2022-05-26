@@ -14,6 +14,7 @@ import {
 import { ComponentNames } from '../model/types'
 
 import BindingPicker from '@/shared/binding-setter'
+import Collapse from '@/shared/collapse'
 import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
@@ -87,6 +88,11 @@ const componentList = {
   [ComponentNames.Stack]: {
     type: 'content',
     component: Stack,
+  },
+
+  Collapse: {
+    type: 'content',
+    component: Collapse,
   },
 
   PrimaryButton: {
