@@ -10,21 +10,14 @@ const collapseStyles = {
 type CollapseProps = {
   children: React.ReactNode
   style?: CSSProperties
+  labelUp: string
+  labelDown: string
+  isExpanded: boolean
 }
-// eslint-disable-next-line react/display-name
-/*const Collapse = forwardRef(
-  (props: CollapseProps, ref?: React.Ref<HTMLDivElement>): JSX.Element => {
-    return (
-      <div {...props} ref={ref}>
-        <div>{props.children}</div>
-      </div>
-    )
-  }
-) */
 
 export const Collapse = (props: CollapseProps) => {
   const { getCollapseProps, getToggleProps, isExpanded, setExpanded } = useCollapse({
-    defaultExpanded: true,
+    defaultExpanded: props.isExpanded,
   })
 
   console.log(props)
@@ -36,7 +29,7 @@ export const Collapse = (props: CollapseProps) => {
         iconProps={{ iconName: isExpanded ? 'ChevronUp' : 'ChevronDown' }}
         onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
       >
-        {isExpanded ? 'Close' : 'Open'}
+        {isExpanded ? props.labelUp : props.labelDown}
       </ActionButton>
       <section {...getCollapseProps()}>
         <div style={collapseStyles}>{props.children}</div>
