@@ -25,6 +25,10 @@ export default function Preview(props: PreviewProps): JSX.Element {
   const { schemas, schema } = props
   const ref = useRef<null | HTMLDivElement>(null)
 
+  function onSubmit(data: unknown) {
+    console.log('data', data)
+  }
+
   useEffect(() => {
     function updateHighlights() {
       setTimeout(() => {
@@ -42,16 +46,11 @@ export default function Preview(props: PreviewProps): JSX.Element {
     }
   }, [props.selectedCompIds, props.schema])
 
-  function onSubmit(data: unknown) {
-    console.log('data', data)
-  }
-
   useLayoutEffect(() => {
     const parent = ref.current?.parentElement
 
     if (parent) {
       assertNotNull(ref.current)
-      parent.addEventListener('mousedown', onMouseDown, true)
       parent.addEventListener('wheel', onWheel)
 
       const { width } = getComputedStyle(parent)
@@ -72,7 +71,6 @@ export default function Preview(props: PreviewProps): JSX.Element {
     return () => {
       if (parent) {
         parent.removeEventListener('wheel', onWheel)
-        parent.removeEventListener('mousedown', onMouseDown, true)
       }
     }
   }, [])
@@ -111,56 +109,6 @@ export default function Preview(props: PreviewProps): JSX.Element {
 
     setCSSVar('previewLeft', position.el.x - event.deltaX)
     setCSSVar('previewTop', position.el.y - event.deltaY)
-  }
-
-  function onMouseDown(event: MouseEvent) {
-    const previewEl = ref.current
-    const parent = previewEl?.parentElement
-
-    if (!previewEl || !parent) {
-      return
-    }
-
-    const { top, left } = getComputedStyle(previewEl)
-
-    localStorage.setItem(
-      'position',
-      JSON.stringify({
-        el: { x: parseInt(left), y: parseInt(top) },
-        client: { x: event.clientX, y: event.clientY },
-      })
-    )
-
-    document.body.style.cursor = 'move'
-    document.onselectstart = (): boolean => false
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-  }
-
-  function handleMouseUp(): void {
-    document.body.style.cursor = 'auto'
-    localStorage.removeItem('position')
-    document.onselectstart = null
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-  }
-
-  function handleMouseMove(event: MouseEvent): void {
-    const resizeEl = ref.current
-    const parent = resizeEl?.parentElement
-    const positionString = localStorage.getItem('position')
-
-    if (!resizeEl || !parent || !positionString) {
-      return
-    }
-
-    const position: Positions = JSON.parse(positionString)
-
-    const diffX = position.client.x - event.clientX
-    const diffY = position.client.y - event.clientY
-
-    setCSSVar('previewLeft', position.el.x - diffX)
-    setCSSVar('previewTop', position.el.y - diffY)
   }
 
   return (
