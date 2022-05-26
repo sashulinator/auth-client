@@ -30,10 +30,22 @@ export default function HeaderContent(props: HeaderContentProps): JSX.Element | 
       horizontal
       style={{ width: '100%' }}
     >
-      <Stack horizontalAlign="space-between">
+      <Stack horizontalAlign="space-between" horizontal>
         <ActionButton iconProps={{ iconName: 'ChevronLeft' }} onClick={() => navigate(ROUTES.SCHEMA_LIST.PATH)}>
           Back
         </ActionButton>
+        <ActionButton
+          iconProps={{ iconName: 'Move' }}
+          onClick={() => {
+            const isMoveBlocked = localStorage.getItem('moveBlocked')
+
+            if (isMoveBlocked === 'true') {
+              localStorage.removeItem('moveBlocked')
+            } else {
+              localStorage.setItem('moveBlocked', 'true')
+            }
+          }}
+        />
       </Stack>
       <Stack horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
         <SchemaForm />
