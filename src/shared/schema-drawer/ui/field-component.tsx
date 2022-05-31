@@ -11,7 +11,7 @@ import { Field } from 'react-final-form'
 import { Comp, CompSchema, Norm, Schema } from '@/entities/schema/model/types'
 import FieldError from '@/shared/field-error'
 
-interface FieldComponentProps {
+export interface FieldComponentProps {
   comp: Comp
   schema: CompSchema
   schemas: Norm<Schema>

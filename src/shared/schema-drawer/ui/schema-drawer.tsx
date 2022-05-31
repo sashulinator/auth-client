@@ -84,7 +84,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    props.bindingFactory(comp.bindings)
+    props.bindingFactory({ comp, schema, schemas: props.schemas })
     return () => {
       props.context.eventUnsubscribers.forEach((unsubscribe) => {
         unsubscribe()

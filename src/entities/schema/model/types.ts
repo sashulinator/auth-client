@@ -46,7 +46,8 @@ export interface BindingValidatorItem {
   id: string
   name: string
   children?: string[]
-  props?: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  props?: any
 }
 
 export interface ValidatorItem extends BindingValidatorItem {

@@ -5,8 +5,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isEmpty } from '@savchenko91/schema-validator'
 
+import { diff } from 'deep-object-diff'
 import { Config, FormApi, FormState } from 'final-form'
-import diff from 'object-diff'
 import React, { useEffect, useRef, useState } from 'react'
 import { FormSpy } from 'react-final-form'
 

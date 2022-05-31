@@ -1,32 +1,34 @@
 import { IDropdownOption } from '@fluentui/react'
-import { isEmpty } from '@savchenko91/schema-validator'
+import { assertNotUndefined, isEmpty } from '@savchenko91/schema-validator'
 
-import { DrawerContext } from '../model/types'
-import { ActionItem } from './action-list'
-import diff from 'object-diff'
+import { EventProps } from '../model/types'
+import actionList from './action-list'
+import { diff } from 'deep-object-diff'
 
 import { Norm, Schema } from '@/entities/schema'
 
 export interface EventItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function: (...ars: any[]) => any
+  function: (ars: EventProps) => any
   name: string
   schema?: Schema
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function onChange(context: DrawerContext, actionItems: ActionItem[], props?: any) {
-  context.formProps.form.subscribe(
-    (state) => {
-      const difference1 = diff(context.formStatePrev.values, state.values)
-      const difference2 = diff(context.formStatePrev.values, state.values)
-      const difference = isEmpty(difference1) ? difference2 : difference1
+function onChange(bindingParams: EventProps) {
+  const { context, actionBindings } = bindingParams
 
-      console.log('aaaa', difference)
+  return context.formProps.form.subscribe(
+    (state) => {
+      const difference = diff(context.formStatePrev.values, state.values)
+
       if (!isEmpty(difference)) {
         context.formStatePrev.values = state.values
-        actionItems.forEach((actionItem) => {
-          actionItem?.function(context, { ...props, difference })
+
+        Object.values(actionBindings).forEach((actionBinding) => {
+          const actionItem = actionList[actionBinding.name]
+          assertNotUndefined(actionItem)
+          actionItem?.function({ ...bindingParams, actionBinding, actionItem }, difference)
         })
       }
     },
@@ -34,7 +36,6 @@ function onChange(context: DrawerContext, actionItems: ActionItem[], props?: any
       values: true,
     }
   )
-  return
 }
 
 export const eventList: Norm<EventItem> = {

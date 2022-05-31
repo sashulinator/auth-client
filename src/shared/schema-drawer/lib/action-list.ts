@@ -1,14 +1,18 @@
 import { IDropdownOption } from '@fluentui/react'
 
-import { DrawerContext } from '../model/types'
+import { ActionProps } from '../model/types'
 import { ComponentNames } from './assertion-list'
 
 import { FormType, Norm, Schema } from '@/entities/schema'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function setValue(context: DrawerContext, props?: any) {
-  if (props.difference[props.name]) {
-    context.formProps.form.change(props.name, props.difference[props.name])
+export function setValue(bindingParams: ActionProps, difference: Record<string, unknown>) {
+  const { actionBinding, context, comp } = bindingParams
+  const eventFieldName = actionBinding.props.name
+  const eventFieldValue = difference[comp.name]
+
+  if (comp.name in difference) {
+    context.formProps.form.change(eventFieldName, eventFieldValue)
   }
 }
 

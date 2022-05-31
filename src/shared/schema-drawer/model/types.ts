@@ -1,5 +1,9 @@
+import { ActionItem } from '../lib/action-list'
+import { EventItem } from '../lib/event-list'
 import { FormState } from 'final-form'
 import { FormRenderProps } from 'react-final-form'
+
+import { BindingItem, Comp, Norm, Schema } from '@/entities/schema'
 
 export type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,4 +24,21 @@ export enum ComponentNames {
   TextField = 'TextField',
   Stack = 'Stack',
   NumberField = 'NumberField',
+}
+
+export interface EventProps {
+  comp: Comp
+  schema: Schema
+  schemas: Norm<Schema>
+  context: DrawerContext
+  actionBindings: Norm<BindingItem>
+  actionItems: ActionItem[]
+  eventItem: EventItem
+  eventBinding: BindingItem
+  bindings: Norm<BindingItem>
+}
+
+export interface ActionProps extends EventProps {
+  actionItem: ActionItem[]
+  actionBinding: BindingItem
 }
