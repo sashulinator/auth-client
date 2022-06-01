@@ -20,7 +20,8 @@ import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import SchemaDrawer from '@/shared/schema-drawer'
-import { assertionList, isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
+import actionList from '@/shared/schema-drawer/lib/action-list'
+import { isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
 
 export interface BindingSetterProps {
@@ -39,7 +40,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const bindingItems = props.value
   const bindingItem = bindingItems?.[selectedItemId]
-  const assertionItem = assertionList[bindingItem?.name || '']
+  const assertionItem = actionList[bindingItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
@@ -58,7 +59,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       const newBindings = replace(bindingItems, id, {
         ...binding,
         name,
-        props: newBindingItemProps,
+        ...(newBindingItemProps ? { props: newBindingItemProps } : undefined),
       })
 
       props.onChange(omitEmpty(newBindings))
@@ -70,19 +71,12 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       return
     }
 
-    const toParentBinding = findEntity(to.parentId, bindingItems)
     const fromParentBinding = findEntity(from.parentId, bindingItems)
     const bindingId = fromParentBinding?.children?.[from.index]
 
     assertNotUndefined(bindingId)
 
     const binding = findEntity(bindingId, bindingItems)
-
-    const isParentOperator = toParentBinding?.name === 'and' || toParentBinding?.name === 'or'
-
-    if (!isParentOperator) {
-      return
-    }
 
     if (bindingItems) {
       props.onChange(moveEntity(binding, to.parentId, to.index || 0, bindingItems))
@@ -100,7 +94,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       children: [],
     }
 
-    const newBindings = addEntity(binding, ROOT_ID, 0, currentBindings)
+    const newBindings = addEntity(binding, ROOT_ID, 1, currentBindings)
 
     if (props.name) {
       props.onChange(newBindings)
@@ -114,6 +108,40 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       id,
       name: 'and',
       type: BindingItemType.OPERATOR,
+      children: [],
+    }
+
+    const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
+
+    if (bindingItems) {
+      props.onChange(newBindingItems)
+    }
+  }
+
+  function addAction() {
+    const id = uniqid()
+    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const bindingItem: BindingItem = {
+      id,
+      name: 'setValue',
+      type: BindingItemType.ACTION,
+      children: [],
+    }
+
+    const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
+
+    if (bindingItems) {
+      props.onChange(newBindingItems)
+    }
+  }
+
+  function addEvent() {
+    const id = uniqid()
+    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const bindingItem: BindingItem = {
+      id,
+      name: 'onChange',
+      type: BindingItemType.EVENT,
       children: [],
     }
 
@@ -147,7 +175,11 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
             <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
               assertion
             </ActionButton>
-            <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+            <Stack horizontal>
+              <ActionButton iconProps={{ iconName: 'TouchPointer' }} onClick={addEvent} />
+              <ActionButton iconProps={{ iconName: 'LightningBolt' }} onClick={addAction} />
+              <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+            </Stack>
           </Stack>
           {tree && (
             <Stack tokens={{ padding: '2px 0' }}>

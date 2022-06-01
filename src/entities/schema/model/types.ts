@@ -15,7 +15,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: Norm<ValidatorItem>
-  events?: Norm<BindingItem>
+  bindings?: Norm<BindingItem>
   injections?: Injection[]
 }
 
@@ -46,7 +46,8 @@ export interface BindingValidatorItem {
   id: string
   name: string
   children?: string[]
-  props?: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  props?: any
 }
 
 export interface ValidatorItem extends BindingValidatorItem {
@@ -67,4 +68,5 @@ export enum BindingItemType {
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
+  ROOT = 'ROOT',
 }

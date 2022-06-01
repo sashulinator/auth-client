@@ -1,12 +1,9 @@
 .BindingSetter {
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
   width: 100%;
-}
-
-.BindingSetter.notEmpty .wrapper {
-  min-height: 250px;
 }
 
 .BindingSetter .wrapper {
@@ -15,7 +12,7 @@
   box-sizing: border-box;
 }
 
-.BindingSetter .wrapper .bindingPickerBackground {
+.BindingSetter .wrapper .bindingSetterBackground {
   position: absolute;
   top: 0;
   left: 0;

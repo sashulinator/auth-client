@@ -7,7 +7,9 @@ import React from 'react'
 
 import { BindingItem, BindingItemType } from '@/entities/schema'
 import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
+import { actionNameOptions } from '@/shared/schema-drawer/lib/action-list'
 import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
+import { eventNameOptions } from '@/shared/schema-drawer/lib/event-list'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
@@ -26,7 +28,15 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
 
   const isPicked = props.item.data.selectedItemId === props.item.data.binding.id
   const isOperator = binding.type === BindingItemType.OPERATOR
-  const options = isOperator ? optionsFromStringArray(['or', 'and']) : assertionNameOptions
+  const isAction = binding.type === BindingItemType.ACTION
+  const isEvent = binding.type === BindingItemType.EVENT
+  const options = isOperator
+    ? optionsFromStringArray(['or', 'and'])
+    : isAction
+    ? actionNameOptions
+    : isEvent
+    ? eventNameOptions
+    : assertionNameOptions
 
   return (
     <div
