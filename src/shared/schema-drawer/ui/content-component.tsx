@@ -7,14 +7,12 @@ import React, { memo } from 'react'
 
 import { Comp, CompSchema, Norm, Schema } from '@/entities/schema'
 
-interface ContentComponentProps {
+export interface ContentComponentProps {
   schemas: Norm<Schema>
   schema: CompSchema
   comps: Norm<Comp>
   comp: Comp
   context: DrawerContext
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  bindingFactory: (...args: any[]) => any
 }
 
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {
@@ -39,7 +37,6 @@ const ContentComponent = memo(function ContentComponent(props: ContentComponentP
             compId={compId}
             schemas={props.schemas}
             context={props.context}
-            bindingFactory={props.bindingFactory}
           />
         )
       })}

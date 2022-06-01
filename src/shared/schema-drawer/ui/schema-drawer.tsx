@@ -1,17 +1,17 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import assertCompSchema from '../lib/assert-comp-schema'
+import buildBinding from '../lib/build-binding'
 import { componentListBlind } from '../lib/component-list'
-import createBindingsFactory from '../lib/create-binding-factory'
 import isInputType from '../lib/is-field-component'
 import { Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import { FormState } from 'final-form'
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, Norm, Schema } from '@/entities/schema'
+import { Comp, CompSchema, Norm, Schema } from '@/entities/schema'
 
 interface SchemaDrawerProps {
   schemas: Norm<Schema>
@@ -41,23 +41,13 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const bindingFactory = useMemo(() => createBindingsFactory(context), [])
-
   const rootComp = props.schema.comps[ROOT_ID]
   assertNotUndefined(rootComp)
 
   if (props.schemas === null) {
     return null
   }
-  return (
-    <ComponentFactory
-      context={context}
-      comps={props.schema.comps}
-      compId={rootComp.id}
-      schemas={props.schemas}
-      bindingFactory={bindingFactory}
-    />
-  )
+  return <ComponentFactory context={context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
 }
 
 /**
@@ -72,25 +62,31 @@ interface ComponentFactoryProps {
   comps: Norm<Comp>
   compId: string
   context: DrawerContext
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  bindingFactory: (...args: any[]) => any
 }
 
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
   const comp = props.comps[props.compId]
   assertNotUndefined(comp)
 
-  const schema = props.schemas[comp.compSchemaId]
+  const schema = props.schemas[comp.compSchemaId] as CompSchema
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    props.bindingFactory({ comp, schema, schemas: props.schemas })
+    if (schema) {
+      buildBinding({
+        comp,
+        schema,
+        comps: props.comps,
+        schemas: props.schemas,
+        context: props.context,
+      })
+    }
     return () => {
       props.context.eventUnsubscribers.forEach((unsubscribe) => {
         unsubscribe()
       })
     }
-  }, [comp.bindings])
+  }, [comp.bindings, schema])
 
   // Схема еще не прогрузилась и поэтому undefined
   if (schema === undefined) {
@@ -114,13 +110,6 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   }
 
   return (
-    <ContentComponent
-      bindingFactory={props.bindingFactory}
-      context={props.context}
-      comp={comp}
-      schema={schema}
-      schemas={props.schemas}
-      comps={props.comps}
-    />
+    <ContentComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
   )
 }

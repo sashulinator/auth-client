@@ -17,14 +17,14 @@ type AssertionListItem = AssertionItem | WithValueAssertionItem
 
 export interface AssertionItem {
   type: 'assertion'
-  assertion: Assertion
+  function: Assertion
 }
 
 export interface WithValueAssertionItem {
   type: 'withValue'
   // второй аргумент в ассёршене это объект который сабмитит схема
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  assertion: (input: unknown, values: any) => void
+  function: (input: unknown, values: any) => void
   // значения схемы прилетят во второй аргумент ассёршена
   schema: Schema
 }
@@ -37,23 +37,23 @@ export enum ComponentNames {
 export const assertionList: Norm<AssertionListItem> = {
   string: {
     type: 'assertion',
-    assertion: assertString,
+    function: assertString,
   },
   undefined: {
     type: 'assertion',
-    assertion: assertUndefined,
+    function: assertUndefined,
   },
   'not undefined': {
     type: 'assertion',
-    assertion: assertNotUndefined,
+    function: assertNotUndefined,
   },
   null: {
     type: 'assertion',
-    assertion: assertNull,
+    function: assertNull,
   },
   matchPattern: {
     type: 'withValue',
-    assertion: assertMatchPattern,
+    function: assertMatchPattern,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',

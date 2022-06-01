@@ -4,7 +4,7 @@ import buildValidator from '../lib/build-validators'
 import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
-import { Context } from '../model/types'
+import { DrawerContext } from '../model/types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
@@ -15,7 +15,7 @@ export interface FieldComponentProps {
   comp: Comp
   schema: CompSchema
   schemas: Norm<Schema>
-  context: Context
+  context: DrawerContext
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {

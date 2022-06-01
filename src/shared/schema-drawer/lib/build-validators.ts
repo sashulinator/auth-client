@@ -49,8 +49,8 @@ function factory(compValidatorId: string, compValidators: Norm<ValidatorItem>): 
 
   if (isWithValueAssertion) {
     const props = formToOneValueIfNeeded(compValidator.props)
-    return withValue(props, assertionItem.assertion)
+    return withValue(props, assertionItem.function)
   }
 
-  return assertionItem.assertion
+  return assertionItem.function
 }
