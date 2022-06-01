@@ -16,11 +16,11 @@ import uniqid from 'uniqid'
 import { ROOT_ID } from '@/constants/common'
 import { Comp, Norm, Schema, ValidatorItem, ValidatorItemType } from '@/entities/schema'
 import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
+import SchemaDrawer from '@/entities/schema/schema-drawer'
+import { assertionList, isWithValueAssertionItem } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
-import SchemaDrawer from '@/shared/schema-drawer'
-import { assertionList, isWithValueAssertionItem } from '@/shared/schema-drawer/lib/assertion-list'
 import Tree from '@/shared/tree/ui/tree'
 
 export interface ValidatorsTreeProps {

@@ -5,7 +5,7 @@
 import { FormType } from '..'
 import { Norm, Schema } from './types'
 
-import { ComponentNames } from '@/shared/schema-drawer/model/types'
+import { ComponentNames } from '@/entities/schema/schema-drawer/model/types'
 
 export const dummySchemas: Norm<Schema> = {
   [ComponentNames.TextField]: {

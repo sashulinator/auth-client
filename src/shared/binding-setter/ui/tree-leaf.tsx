@@ -6,11 +6,11 @@ import clsx from 'clsx'
 import React from 'react'
 
 import { BindingItem, BindingItemType } from '@/entities/schema'
+import { actionNameOptions } from '@/entities/schema/schema-drawer/lib/action-list'
+import { assertionNameOptions } from '@/entities/schema/schema-drawer/lib/assertion-list'
+import { eventNameOptions } from '@/entities/schema/schema-drawer/lib/event-list'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 import { Dropdown } from '@/shared/dropdown'
-import { actionNameOptions } from '@/shared/schema-drawer/lib/action-list'
-import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
-import { eventNameOptions } from '@/shared/schema-drawer/lib/event-list'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
