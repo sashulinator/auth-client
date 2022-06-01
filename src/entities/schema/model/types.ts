@@ -1,5 +1,16 @@
 export type Norm<T> = Record<string, T>
 
+export interface Schema {
+  id: string
+  title: string
+  type: SchemaType
+  comps: Norm<Comp>
+  componentName: null | string
+}
+
+export type CompSchema = Omit<Schema, 'componentName'> & {
+  componentName: string
+}
 export interface History<Data> {
   prev: null | History<Data>
   next: null | History<Data>
@@ -24,33 +35,34 @@ interface Injection {
   to: 'string'
 }
 
-export type Schema = Omit<CompSchema, 'componentName'> & {
-  componentName: null | string
-}
-
-export interface CompSchema {
-  componentName: string
-  id: string
-  title: string
-  type: FormType
-  comps: Record<string, Comp>
-}
-
-export enum FormType {
+export enum SchemaType {
   FORM = 'FORM',
   PRESET = 'PRESET',
   COMP = 'COMP',
 }
 
-export interface BindingValidatorItem {
+// BINDING SCHEMAS
+
+export interface BindingSchema {
+  id: string
+  type: BindingSchemaType
+  bindings: Norm<Binding>
+}
+
+export enum BindingSchemaType {
+  ASSERTION = 'ASSERTION',
+  EVENT = 'EVENT',
+}
+
+export interface Binding {
   id: string
   name: string
-  children?: string[]
+  children: string[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: any
 }
 
-export interface ValidatorItem extends BindingValidatorItem {
+export interface ValidatorItem extends Binding {
   type: ValidatorItemType
 }
 
@@ -59,7 +71,7 @@ export enum ValidatorItemType {
   ASSERTION = 'ASSERTION',
 }
 
-export interface BindingItem extends BindingValidatorItem {
+export interface BindingItem extends Binding {
   type: BindingItemType
 }
 

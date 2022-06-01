@@ -1,6 +1,7 @@
 // TODO в дальнейшем тут будет обрабатывать unauthorized ошибка
 
-export type ApiFetchInit = Omit<RequestInit, 'body'> & { body: Record<string, unknown> | unknown[] }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ApiFetchInit = Omit<RequestInit, 'body'> & { body: Record<string, any> | any[] }
 
 export default async function apiFetch(url: string, init?: ApiFetchInit) {
   const res = await fetch(url, {

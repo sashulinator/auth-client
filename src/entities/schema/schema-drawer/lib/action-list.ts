@@ -3,7 +3,7 @@ import { IDropdownOption } from '@fluentui/react'
 import { ActionProps } from '../model/types'
 import { ComponentNames } from './assertion-list'
 
-import { FormType, Norm, Schema } from '@/entities/schema'
+import { Norm, Schema, SchemaType } from '@/entities/schema'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function setValue(bindingParams: ActionProps, difference: Record<string, unknown>) {
@@ -31,7 +31,7 @@ const actionList: Norm<ActionItem> = {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: FormType.FORM,
+      type: SchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',

@@ -11,7 +11,7 @@ import {
 
 // import { assertMatchPattern } from './custom-assertions'
 import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '@/constants/common'
-import { FormType, Norm, Schema } from '@/entities/schema'
+import { Norm, Schema, SchemaType } from '@/entities/schema'
 
 type AssertionListItem = AssertionItem | WithValueAssertionItem
 
@@ -58,7 +58,7 @@ export const assertionList: Norm<AssertionListItem> = {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: FormType.FORM,
+      type: SchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',

@@ -11,17 +11,17 @@ import uuid from 'uuid-random'
 import { createSchema, updateSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
 import ROUTES from '@/constants/routes'
-import { FormType, Schema, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
+import { Schema, SchemaType, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
+import { componentNameOptions } from '@/entities/schema/schema-drawer/lib/component-list'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
-import { componentNameOptions } from '@/shared/schema-drawer/lib/component-list'
 import CustomTextField from '@/shared/textfield'
 import { successMessage } from '@/shared/toast'
 
-const typeArray = [FormType.FORM, FormType.PRESET, FormType.COMP]
+const typeArray = [SchemaType.FORM, SchemaType.PRESET, SchemaType.COMP]
 
 type SchemaFormValues = Pick<Schema, 'title' | 'componentName' | 'type'>
 
@@ -49,7 +49,7 @@ export default function SchemaForm(): JSX.Element {
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
 
-    const newComponentName = type !== FormType.COMP ? null : submitSchemaData.componentName
+    const newComponentName = type !== SchemaType.COMP ? null : submitSchemaData.componentName
     const newId = id ? id : uuid()
 
     const newSchema: Schema = {

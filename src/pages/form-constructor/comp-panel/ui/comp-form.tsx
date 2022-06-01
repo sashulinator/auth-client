@@ -5,8 +5,8 @@ import React from 'react'
 import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
+import CompDrawer from '@/entities/schema/schema-drawer'
 import Autosave from '@/shared/autosave/ui/autosave'
-import CompDrawer from '@/shared/schema-drawer'
 
 interface CompFormProps {
   schema: Schema
@@ -19,6 +19,7 @@ interface CompFormProps {
 export default function CompForm(props: CompFormProps): JSX.Element {
   return (
     <Form<Comp, Comp>
+      key={props.comp.id}
       initialValues={props.comp || undefined}
       onSubmit={props.onSubmit}
       render={(formProps) => {
