@@ -42,11 +42,6 @@ const componentList = {
     component: Checkbox,
   },
 
-  MultiCheckbox: {
-    type: 'checkbox',
-    component: MultiCheckbox,
-  },
-
   // Inputs
 
   [ComponentNames.TextField]: {
@@ -87,6 +82,11 @@ const componentList = {
   DropdownMultipleSelect: {
     type: 'input',
     component: DropdownMultipleSelect,
+  },
+
+  MultiCheckbox: {
+    type: 'input',
+    component: MultiCheckbox,
   },
 
   // Contents

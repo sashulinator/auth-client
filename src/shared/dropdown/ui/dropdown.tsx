@@ -1,7 +1,8 @@
 import { Dropdown as DropdownUI, IDropdownProps, IDropdownStyles } from '@fluentui/react'
 
-import normalizeOptions from '../lib/normalize-options'
 import React, { FC } from 'react'
+
+import normalizeOptions from '@/lib/normalize-options'
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 'initial' },

@@ -1,49 +1,42 @@
-import { Checkbox } from '@fluentui/react'
+import { Checkbox, Label } from '@fluentui/react'
 
 import React, { useState } from 'react'
 
-export default function MultiCheckbox(): JSX.Element {
-  const [state, setState] = useState<{ picked: string[] }>({ picked: [] })
-  const options = [
-    ['RT1', 'операционный риск'],
-    ['RT2', 'репутационный риск'],
-    ['RT3', 'рыночный риск'],
-  ]
+import normalizeOptions from '@/lib/normalize-options'
+
+export default function MultiCheckbox(props: any): JSX.Element {
+  const [value, setValue] = useState<string[]>(props.value || [])
+  const options = normalizeOptions(props.options)
 
   function onChange(optionKey: string) {
-    const picked = state.picked
-    const index = picked.indexOf(optionKey)
+    const clonedValue = [...value]
+    const index = clonedValue.indexOf(optionKey)
 
     if (index > -1) {
-      picked.splice(index, 1)
+      clonedValue.splice(index, 1)
     } else {
-      picked.push(optionKey)
+      clonedValue.push(optionKey)
     }
 
-    setState({
-      picked: picked,
-    })
+    setValue(clonedValue)
+    props.onChange(clonedValue)
   }
 
   function groupedCheckboxes(): JSX.Element {
     return (
       <div>
+        <Label>{props.label}</Label>
         {options.map((option) => (
           <Checkbox
             styles={{ root: { margin: 3 } }}
-            key={option[0]}
-            label={option[1]}
-            onChange={() => onChange(option[0] || '')}
+            key={option.key}
+            label={option.text}
+            onChange={() => onChange(option.key.toString() || '')}
           ></Checkbox>
         ))}
       </div>
     )
   }
 
-  return (
-    <>
-      <div>{groupedCheckboxes()}</div>
-      <div>{state.picked.toString()}</div>
-    </>
-  )
+  return <>{groupedCheckboxes()}</>
 }
