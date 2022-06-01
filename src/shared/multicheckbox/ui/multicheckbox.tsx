@@ -1,10 +1,18 @@
-import { Checkbox, Label } from '@fluentui/react'
+import { Checkbox, IDropdownOption, Label, Stack } from '@fluentui/react'
 
 import React, { useState } from 'react'
 
 import normalizeOptions from '@/lib/normalize-options'
 
-export default function MultiCheckbox(props: any): JSX.Element {
+interface MultiCheckboxProps {
+  label: string
+  childrenGap: number
+  options: IDropdownOption[] | string[]
+  value: string[]
+  onChange: (value: string[]) => void
+}
+
+export default function MultiCheckbox(props: MultiCheckboxProps): JSX.Element {
   const [value, setValue] = useState<string[]>(props.value || [])
   const options = normalizeOptions(props.options)
 
@@ -24,17 +32,18 @@ export default function MultiCheckbox(props: any): JSX.Element {
 
   function groupedCheckboxes(): JSX.Element {
     return (
-      <div>
-        <Label>{props.label}</Label>
-        {options.map((option) => (
-          <Checkbox
-            styles={{ root: { margin: 3 } }}
-            key={option.key}
-            label={option.text}
-            onChange={() => onChange(option.key.toString() || '')}
-          ></Checkbox>
-        ))}
-      </div>
+      <Stack>
+        {props.label && <Label>{props.label}</Label>}
+        <Stack tokens={{ childrenGap: props.childrenGap }}>
+          {options.map((option) => (
+            <Checkbox
+              key={option.key}
+              label={option.text}
+              onChange={() => onChange(option.key.toString() || '')}
+            ></Checkbox>
+          ))}
+        </Stack>
+      </Stack>
     )
   }
 

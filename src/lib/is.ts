@@ -6,3 +6,8 @@ export function isStringArray(input: unknown): input is string[] {
   const errors = rootWrap([string])(input)
   return !errors
 }
+
+export function isStringArrayArray(input: unknown): input is [string, string][] {
+  const errors = rootWrap([[string]])(input)
+  return !errors
+}
