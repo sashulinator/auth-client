@@ -1,4 +1,4 @@
-import { Comp, FormType, History, Norm, Schema } from '../model/types'
+import { Comp, History, Norm, Schema, SchemaType } from '../model/types'
 import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
@@ -16,7 +16,7 @@ export const currentSchemaHistoryState = atom<History<Schema>>({
       id: 'localSchema',
       componentName: null,
       title: 'Name',
-      type: FormType.FORM,
+      type: SchemaType.FORM,
       comps: {
         [ROOT_ID]: {
           id: ROOT_ID,
