@@ -19,6 +19,7 @@ interface CompFormProps {
 export default function CompForm(props: CompFormProps): JSX.Element {
   return (
     <Form<Comp, Comp>
+      key={props.comp.id}
       initialValues={props.comp || undefined}
       onSubmit={props.onSubmit}
       render={(formProps) => {
