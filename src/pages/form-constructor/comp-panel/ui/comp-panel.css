@@ -7,7 +7,7 @@
 }
 
 .CompPanel .compPanelScrollable {
-  padding: 15px 15px 30vh;
+  padding: 15px 0 30vh;
   box-sizing: border-box;
   height: 100%;
   overflow: auto !important;
