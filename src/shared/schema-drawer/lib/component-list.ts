@@ -19,6 +19,7 @@ import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
 import JSONEditor from '@/shared/json-editor'
+import MultiCheckbox from '@/shared/multicheckbox'
 import CustomNumberField from '@/shared/numberfield'
 import { Pivot, PivotItem } from '@/shared/pivot'
 import Table from '@/shared/table'
@@ -81,6 +82,11 @@ const componentList = {
   DropdownMultipleSelect: {
     type: 'input',
     component: DropdownMultipleSelect,
+  },
+
+  MultiCheckbox: {
+    type: 'input',
+    component: MultiCheckbox,
   },
 
   // Contents

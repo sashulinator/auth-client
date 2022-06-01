@@ -18,8 +18,6 @@ export default function Fetcher(props: FetcherProps): null {
       const data = await res.json()
 
       props.setFetchedDataToContext((fetchContext) => {
-        console.log({ ...fetchContext, [props.name]: data })
-
         return { ...fetchContext, [props.name]: data }
       })
     }
