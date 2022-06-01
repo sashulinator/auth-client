@@ -1,17 +1,12 @@
 import { ActionButton } from '@fluentui/react'
 
-import React, { CSSProperties } from 'react'
+import React from 'react'
 import useCollapse from 'react-collapsed'
-
-const collapseStyles = {
-  width: '100%',
-}
 
 type CollapseProps = {
   children: React.ReactNode
-  style?: CSSProperties
-  labelUp: string
-  labelDown: string
+  labelExpanded: string
+  labelCollapsed: string
   isExpanded: boolean
 }
 
@@ -20,19 +15,17 @@ export const Collapse = (props: CollapseProps) => {
     defaultExpanded: props.isExpanded,
   })
 
-  console.log(props)
-
   return (
     <div>
       <ActionButton
         {...getToggleProps()}
-        iconProps={{ iconName: isExpanded ? 'ChevronUp' : 'ChevronDown' }}
+        iconProps={{ iconName: isExpanded ? 'ChevronDown' : 'ChevronRight' }}
         onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
       >
-        {isExpanded ? props.labelUp : props.labelDown}
+        {isExpanded ? props.labelExpanded : props.labelCollapsed}
       </ActionButton>
       <section {...getCollapseProps()}>
-        <div style={collapseStyles}>{props.children}</div>
+        <div>{props.children}</div>
       </section>
     </div>
   )
