@@ -6,7 +6,8 @@ import clsx from 'clsx'
 import React from 'react'
 
 import { ValidatorItem, ValidatorItemType } from '@/entities/schema'
-import { Dropdown, optionsFromStringArray } from '@/shared/dropdown'
+import optionsFromStringArray from '@/lib/options-from-string-array'
+import { Dropdown } from '@/shared/dropdown'
 import { assertionNameOptions } from '@/shared/schema-drawer/lib/assertion-list'
 
 export interface TreeLeafProps extends RenderItemParams {
