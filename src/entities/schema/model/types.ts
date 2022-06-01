@@ -41,7 +41,20 @@ export enum SchemaType {
   COMP = 'COMP',
 }
 
-export interface BindingValidatorItem {
+// BINDING SCHEMAS
+
+export interface BindingSchema {
+  id: string
+  type: BindingSchemaType
+  bindings: Norm<Binding>
+}
+
+export enum BindingSchemaType {
+  ASSERTION = 'ASSERTION',
+  EVENT = 'EVENT',
+}
+
+export interface Binding {
   id: string
   name: string
   children: string[]
@@ -49,7 +62,7 @@ export interface BindingValidatorItem {
   props?: any
 }
 
-export interface ValidatorItem extends BindingValidatorItem {
+export interface ValidatorItem extends Binding {
   type: ValidatorItemType
 }
 
@@ -58,7 +71,7 @@ export enum ValidatorItemType {
   ASSERTION = 'ASSERTION',
 }
 
-export interface BindingItem extends BindingValidatorItem {
+export interface BindingItem extends Binding {
   type: BindingItemType
 }
 
