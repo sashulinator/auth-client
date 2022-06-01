@@ -18,6 +18,7 @@ import Collapse from '@/shared/collapse'
 import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
+import HorizontalLine from '@/shared/horizontal-line'
 import JSONEditor from '@/shared/json-editor'
 import MultiCheckbox from '@/shared/multicheckbox'
 import CustomNumberField from '@/shared/numberfield'
@@ -99,6 +100,11 @@ const componentList = {
   Collapse: {
     type: 'content',
     component: Collapse,
+  },
+
+  HorizontalLine: {
+    type: 'content',
+    component: HorizontalLine,
   },
 
   PrimaryButton: {
