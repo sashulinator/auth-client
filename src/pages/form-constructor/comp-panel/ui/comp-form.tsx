@@ -1,7 +1,7 @@
 import { Stack } from '@fluentui/react'
 
 import { Config } from 'final-form'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
@@ -17,10 +17,16 @@ interface CompFormProps {
 }
 
 export default function CompForm(props: CompFormProps): JSX.Element {
+  const [initialValues, setInitialValues] = useState(props.comp || undefined)
+
+  useEffect(() => {
+    setInitialValues(props.comp)
+  }, [props.comp.id])
+
   return (
     <Form<Comp, Comp>
       key={props.comp.id}
-      initialValues={props.comp || undefined}
+      initialValues={initialValues}
       onSubmit={props.onSubmit}
       render={(formProps) => {
         return (

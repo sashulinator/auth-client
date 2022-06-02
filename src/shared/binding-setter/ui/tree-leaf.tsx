@@ -7,7 +7,7 @@ import React from 'react'
 
 import { EventUnit, EventUnitType } from '@/entities/schema'
 import { actionNameOptions } from '@/entities/schema/schema-drawer/lib/action-list'
-import { assertionNameOptions } from '@/entities/schema/schema-drawer/lib/assertion-list'
+import { eventAssertionNameOptions } from '@/entities/schema/schema-drawer/lib/event-assertion-list'
 import { eventNameOptions } from '@/entities/schema/schema-drawer/lib/event-list'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 import { Dropdown } from '@/shared/dropdown'
@@ -37,7 +37,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     ? actionNameOptions
     : isEvent
     ? eventNameOptions
-    : assertionNameOptions
+    : eventAssertionNameOptions
 
   return (
     <div
