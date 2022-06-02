@@ -63,10 +63,10 @@ export interface Binding {
 }
 
 export interface AssertionUnit extends Binding {
-  type: ValidatorItemType
+  type: AssertionUnitType
 }
 
-export enum ValidatorItemType {
+export enum AssertionUnitType {
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
 }
