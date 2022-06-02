@@ -5,7 +5,7 @@ import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { BindingItem, BindingItemType } from '@/entities/schema'
+import { EventUnit, EventUnitType } from '@/entities/schema'
 import { actionNameOptions } from '@/entities/schema/schema-drawer/lib/action-list'
 import { assertionNameOptions } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import { eventNameOptions } from '@/entities/schema/schema-drawer/lib/event-list'
@@ -15,7 +15,7 @@ import { Dropdown } from '@/shared/dropdown'
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      binding: BindingItem
+      binding: EventUnit
     }
   }
 }
@@ -28,9 +28,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const { binding: binding } = props.item.data
 
   const isPicked = props.item.data.selectedItemId === props.item.data.binding.id
-  const isOperator = binding.type === BindingItemType.OPERATOR
-  const isAction = binding.type === BindingItemType.ACTION
-  const isEvent = binding.type === BindingItemType.EVENT
+  const isOperator = binding.type === EventUnitType.OPERATOR
+  const isAction = binding.type === EventUnitType.ACTION
+  const isEvent = binding.type === EventUnitType.EVENT
   const options = isOperator
     ? optionsFromStringArray(['or', 'and'])
     : isAction

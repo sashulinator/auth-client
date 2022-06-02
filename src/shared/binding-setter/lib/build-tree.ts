@@ -1,7 +1,7 @@
 import { TreeItem } from '@atlaskit/tree'
 
 import { ROOT_ID } from '@/constants/common'
-import { BindingItem, Norm } from '@/entities/schema'
+import { EventUnit, Norm } from '@/entities/schema'
 import { mutateObject } from '@/lib/mutate-object'
 
 export interface AdditionalData {
@@ -11,12 +11,12 @@ export interface AdditionalData {
   selectedItemId: string
 }
 
-export default function buildTree(bindings: Norm<BindingItem> | undefined, additionalData: AdditionalData) {
+export default function buildTree(bindings: Norm<EventUnit> | undefined, additionalData: AdditionalData) {
   if (bindings === undefined) {
     return undefined
   }
 
-  const items = mutateObject<TreeItem, Norm<BindingItem>>(bindings)((binding) => {
+  const items = mutateObject<TreeItem, Norm<EventUnit>>(bindings)((binding) => {
     return {
       ...binding,
       id: binding.id,

@@ -3,7 +3,7 @@ import { EventItem } from '../lib/event-list'
 import { FormState } from 'final-form'
 import { FormRenderProps } from 'react-final-form'
 
-import { BindingItem, Comp, Norm, Schema } from '@/entities/schema'
+import { Comp, EventUnit, Norm, Schema } from '@/entities/schema'
 
 export type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,14 +31,14 @@ export interface EventProps {
   schema: Schema
   schemas: Norm<Schema>
   context: DrawerContext
-  actionBindings: Norm<BindingItem>
+  actionBindings: Norm<EventUnit>
   actionItems: ActionItem[]
   eventItem: EventItem
-  eventBinding: BindingItem
-  bindings: Norm<BindingItem>
+  eventBinding: EventUnit
+  bindings: Norm<EventUnit>
 }
 
 export interface ActionProps extends EventProps {
   actionItem: ActionItem[]
-  actionBinding: BindingItem
+  actionBinding: EventUnit
 }

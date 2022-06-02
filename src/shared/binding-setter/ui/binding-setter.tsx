@@ -14,7 +14,7 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { BindingItem, BindingItemType, Comp, Norm, Schema } from '@/entities/schema'
+import { Comp, EventUnit, EventUnitType, Norm, Schema } from '@/entities/schema'
 import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import SchemaDrawer from '@/entities/schema/schema-drawer'
 import actionList from '@/entities/schema/schema-drawer/lib/action-list'
@@ -27,9 +27,9 @@ import Tree from '@/shared/tree/ui/tree'
 export interface BindingSetterProps {
   comp: Comp
   comps: Norm<Comp>
-  onChange: (value: Norm<BindingItem> | undefined) => void
+  onChange: (value: Norm<EventUnit> | undefined) => void
   schemas: Norm<Schema>
-  value: Norm<BindingItem> | undefined
+  value: Norm<EventUnit> | undefined
   name?: string
   label?: string
 }
@@ -87,9 +87,9 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   function addAssertion(): void {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const binding: BindingItem = {
+    const binding: EventUnit = {
       id,
-      type: BindingItemType.ASSERTION,
+      type: EventUnitType.ASSERTION,
       name: 'string',
       children: [],
     }
@@ -104,10 +104,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   function addOperator() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: BindingItem = {
+    const bindingItem: EventUnit = {
       id,
       name: 'and',
-      type: BindingItemType.OPERATOR,
+      type: EventUnitType.OPERATOR,
       children: [],
     }
 
@@ -121,10 +121,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   function addAction() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: BindingItem = {
+    const bindingItem: EventUnit = {
       id,
       name: 'setValue',
-      type: BindingItemType.ACTION,
+      type: EventUnitType.ACTION,
       children: [],
     }
 
@@ -138,10 +138,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   function addEvent() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: BindingItem = {
+    const bindingItem: EventUnit = {
       id,
       name: 'onChange',
-      type: BindingItemType.EVENT,
+      type: EventUnitType.EVENT,
       children: [],
     }
 

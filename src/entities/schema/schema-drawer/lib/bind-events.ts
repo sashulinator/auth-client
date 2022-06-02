@@ -4,7 +4,7 @@ import { ContentComponentProps } from '../ui/content-component'
 import actionList from './action-list'
 import { eventList } from './event-list'
 
-import { BindingItem, BindingItemType, Norm } from '@/entities/schema'
+import { EventUnit, EventUnitType, Norm } from '@/entities/schema'
 import { findEntities } from '@/lib/entity-actions'
 
 export default function bindEvents(props: ContentComponentProps) {
@@ -41,6 +41,6 @@ export default function bindEvents(props: ContentComponentProps) {
   })
 }
 
-function getEventBindings(bindings: Norm<BindingItem>): BindingItem[] {
-  return Object.values(bindings).filter((binding) => binding.type === BindingItemType.EVENT)
+function getEventBindings(bindings: Norm<EventUnit>): EventUnit[] {
+  return Object.values(bindings).filter((binding) => binding.type === EventUnitType.EVENT)
 }
