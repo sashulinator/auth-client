@@ -22,6 +22,10 @@ function onChange(bindingParams: EventProps) {
     (state) => {
       const difference = diff(context.formStatePrev.values, state.values)
 
+      if (context.formStatePrev.values.id !== state.values.id) {
+        return
+      }
+
       if (!isEmpty(difference)) {
         // TODO в другом месте это должно быть
         context.formStatePrev.values = state.values
