@@ -11,26 +11,29 @@ import {
 } from '@savchenko91/schema-validator'
 
 import { assertionList } from './assertion-list'
+import { eventAssertionList } from './event-assertion-list'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
-import { Norm, ValidatorItem } from '@/entities/schema'
+import { BindingUnit, Norm } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
-export default function buildValidator(
-  validators: Norm<ValidatorItem> | undefined
+export default function bindAssertions(
+  units: Norm<BindingUnit> | undefined,
+  rootId = ROOT_ID
 ): ErrorCollector<ErrorCollection> | undefined {
-  if (validators === undefined) {
+  if (units === undefined) {
     return undefined
-  } else {
-    const schema = rootOnly({ thereCouldBeYourAddvertisement: factory(ROOT_ID, validators) })
-    return schema.thereCouldBeYourAddvertisement as ErrorCollector<ErrorCollection>
   }
+
+  const schema = rootOnly({ hereCouldBeYourAd: factory(rootId, units) })
+
+  return schema.hereCouldBeYourAd as ErrorCollector<ErrorCollection>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function factory(compValidatorId: string, compValidators: Norm<ValidatorItem>): Schema<any> {
+function factory(compValidatorId: string, compValidators: Norm<BindingUnit>): Schema<any> {
   const compValidator = compValidators[compValidatorId]
   assertNotUndefined(compValidator)
 
@@ -42,7 +45,7 @@ function factory(compValidatorId: string, compValidators: Norm<ValidatorItem>): 
     return isAnd ? and(...validators) : or(...validators)
   }
 
-  const assertionItem = assertionList[compValidator.name]
+  const assertionItem = assertionList[compValidator.name] || eventAssertionList[compValidator.name]
   assertNotUndefined(assertionItem)
 
   const isWithValueAssertion = assertionItem.type === 'withValue'

@@ -5,7 +5,7 @@ import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { ValidatorItem, ValidatorItemType } from '@/entities/schema'
+import { AssertionUnit, AssertionUnitType } from '@/entities/schema'
 import { assertionNameOptions } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 import { Dropdown } from '@/shared/dropdown'
@@ -13,7 +13,7 @@ import { Dropdown } from '@/shared/dropdown'
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      validator: ValidatorItem
+      validator: AssertionUnit
     }
   }
 }
@@ -26,7 +26,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const { validator } = props.item.data
 
   const isPicked = props.item.data.selectedItemId === props.item.data.validator.id
-  const isOperator = validator.type === ValidatorItemType.OPERATOR
+  const isOperator = validator.type === AssertionUnitType.OPERATOR
   const options = isOperator ? optionsFromStringArray(['or', 'and']) : assertionNameOptions
 
   return (

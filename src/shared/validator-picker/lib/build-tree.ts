@@ -1,7 +1,7 @@
 import { TreeItem } from '@atlaskit/tree'
 
 import { ROOT_ID } from '@/constants/common'
-import { Norm, ValidatorItem } from '@/entities/schema'
+import { AssertionUnit, Norm } from '@/entities/schema'
 import { mutateObject } from '@/lib/mutate-object'
 
 export interface AdditionalData {
@@ -11,12 +11,12 @@ export interface AdditionalData {
   selectedItemId: string
 }
 
-export default function buildTree(validators: Norm<ValidatorItem> | undefined, additionalData: AdditionalData) {
+export default function buildTree(validators: Norm<AssertionUnit> | undefined, additionalData: AdditionalData) {
   if (validators === undefined) {
     return undefined
   }
 
-  const items = mutateObject<TreeItem, Norm<ValidatorItem>>(validators)((validator) => {
+  const items = mutateObject<TreeItem, Norm<AssertionUnit>>(validators)((validator) => {
     return {
       ...validator,
       id: validator.id,

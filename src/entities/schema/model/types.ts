@@ -25,8 +25,8 @@ export interface Comp {
   defaultValue?: string
   props?: Record<string, unknown>
   children?: string[]
-  validators?: Norm<ValidatorItem>
-  bindings?: Norm<BindingItem>
+  validators?: Norm<AssertionUnit>
+  bindings?: Norm<EventUnit>
   injections?: Injection[]
 }
 
@@ -41,20 +41,7 @@ export enum SchemaType {
   COMP = 'COMP',
 }
 
-// BINDING SCHEMAS
-
-export interface BindingSchema {
-  id: string
-  type: BindingSchemaType
-  bindings: Norm<Binding>
-}
-
-export enum BindingSchemaType {
-  ASSERTION = 'ASSERTION',
-  EVENT = 'EVENT',
-}
-
-export interface Binding {
+export interface BindingUnit {
   id: string
   name: string
   children: string[]
@@ -62,20 +49,20 @@ export interface Binding {
   props?: any
 }
 
-export interface ValidatorItem extends Binding {
-  type: ValidatorItemType
+export interface AssertionUnit extends BindingUnit {
+  type: AssertionUnitType
 }
 
-export enum ValidatorItemType {
+export enum AssertionUnitType {
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
 }
 
-export interface BindingItem extends Binding {
-  type: BindingItemType
+export interface EventUnit extends BindingUnit {
+  type: EventUnitType
 }
 
-export enum BindingItemType {
+export enum EventUnitType {
   EVENT = 'EVENT',
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
