@@ -18,6 +18,7 @@ interface CompPanelProps {
   schemas: Norm<Schema> | null
   schema: Schema | null
   comp: Comp | null
+  previewSchema: Schema
   ContextualMenu: (props: { comp: Comp }) => JSX.Element
 }
 
@@ -41,6 +42,7 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
               comp={props.comp}
               context={props.context}
               onSubmit={props.onSubmit}
+              previewSchema={props.previewSchema}
             />
           )}
         </LoadingAria>

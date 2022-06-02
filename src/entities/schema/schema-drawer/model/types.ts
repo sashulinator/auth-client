@@ -18,6 +18,9 @@ export type DrawerContext = Context & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
   eventUnsubscribers: (() => void)[]
+  fns: {
+    setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
+  }
 }
 
 export enum ComponentNames {

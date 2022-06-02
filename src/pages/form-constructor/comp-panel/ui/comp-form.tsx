@@ -9,6 +9,7 @@ import CompDrawer from '@/entities/schema/schema-drawer'
 import Autosave from '@/shared/autosave/ui/autosave'
 
 interface CompFormProps {
+  previewSchema: Schema
   schema: Schema
   schemas: Norm<Schema>
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -47,6 +48,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   context={{
                     formState: formProps.form.getState(),
                     formProps,
+                    previewSchema: props.previewSchema,
                     ...props.context,
                   }}
                 />

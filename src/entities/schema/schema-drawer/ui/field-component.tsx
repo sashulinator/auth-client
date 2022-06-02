@@ -39,7 +39,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
             <сomponentItem.component
               {...input}
               {...injectedComp.props}
-              {...props.context.fns}
+              constext={props.context}
               required={isRequired(props.comp.validators)}
             />
             <FieldError meta={meta} />
