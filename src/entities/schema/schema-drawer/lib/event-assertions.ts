@@ -8,7 +8,6 @@ export function assertTargetInitValueUndefined(value: unknown, meta: EventAssert
   const { actionBinding, context } = meta.payload
   const eventFieldName = actionBinding.props.name as string
   const targetInitValue = context.formProps.form.getFieldState(eventFieldName)?.initial
-  console.log('targetInitValue', context.formProps.form.getFieldState(eventFieldName))
 
   if (targetInitValue !== undefined) {
     throw new Error('Target init value is not undefined!')

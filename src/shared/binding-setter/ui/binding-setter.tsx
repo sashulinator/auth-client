@@ -32,6 +32,7 @@ export interface BindingSetterProps {
   value: Norm<EventUnit> | undefined
   name?: string
   label?: string
+  context?: any
 }
 
 export default function BindingSetter(props: BindingSetterProps): JSX.Element {
@@ -201,6 +202,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
                     schema={assertionItem.schema}
                     schemas={dummySchemas}
                     context={{
+                      previewSchema: props.context?.previewSchema,
                       formState: formProps.form.getState(),
                       formProps,
                     }}

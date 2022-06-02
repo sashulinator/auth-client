@@ -301,6 +301,7 @@ const FormConstructor: FC = (): JSX.Element => {
           <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
         </div>
         <CompPanel
+          previewSchema={currentSchemaHistory.data}
           onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
           context={context}
