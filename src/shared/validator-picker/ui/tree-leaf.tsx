@@ -5,7 +5,7 @@ import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { ValidatorItem, ValidatorItemType } from '@/entities/schema'
+import { AssertionUnit, ValidatorItemType } from '@/entities/schema'
 import { assertionNameOptions } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 import { Dropdown } from '@/shared/dropdown'
@@ -13,7 +13,7 @@ import { Dropdown } from '@/shared/dropdown'
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      validator: ValidatorItem
+      validator: AssertionUnit
     }
   }
 }

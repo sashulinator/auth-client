@@ -14,7 +14,7 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, Norm, Schema, ValidatorItem, ValidatorItemType } from '@/entities/schema'
+import { AssertionUnit, Comp, Norm, Schema, ValidatorItemType } from '@/entities/schema'
 import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import SchemaDrawer from '@/entities/schema/schema-drawer'
 import { assertionList, isWithValueAssertionItem } from '@/entities/schema/schema-drawer/lib/assertion-list'
@@ -26,9 +26,9 @@ import Tree from '@/shared/tree/ui/tree'
 export interface ValidatorsTreeProps {
   comp: Comp
   comps: Norm<Comp>
-  onChange: (value: Norm<ValidatorItem> | undefined) => void
+  onChange: (value: Norm<AssertionUnit> | undefined) => void
   schemas: Norm<Schema>
-  value: Norm<ValidatorItem> | undefined
+  value: Norm<AssertionUnit> | undefined
   name?: string
   label?: string
 }
@@ -93,7 +93,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addAssertion(): void {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validator: ValidatorItem = {
+    const validator: AssertionUnit = {
       id,
       type: ValidatorItemType.ASSERTION,
       name: 'string',
@@ -110,7 +110,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addOperator() {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validatorItem: ValidatorItem = {
+    const validatorItem: AssertionUnit = {
       id,
       name: 'and',
       type: ValidatorItemType.OPERATOR,

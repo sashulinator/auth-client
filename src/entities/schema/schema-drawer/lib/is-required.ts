@@ -1,6 +1,6 @@
-import { Norm, ValidatorItem } from '@/entities/schema'
+import { AssertionUnit, Norm } from '@/entities/schema'
 
-export default function isRequired(validators?: Norm<ValidatorItem>) {
+export default function isRequired(validators?: Norm<AssertionUnit>) {
   if (!validators) {
     return undefined
   }

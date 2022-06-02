@@ -14,12 +14,12 @@ import { assertionList } from './assertion-list'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
-import { Norm, ValidatorItem } from '@/entities/schema'
+import { AssertionUnit, Norm } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
 export default function bindAssertions(
-  validators: Norm<ValidatorItem> | undefined
+  validators: Norm<AssertionUnit> | undefined
 ): ErrorCollector<ErrorCollection> | undefined {
   if (validators === undefined) {
     return undefined
@@ -30,7 +30,7 @@ export default function bindAssertions(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function factory(compValidatorId: string, compValidators: Norm<ValidatorItem>): Schema<any> {
+function factory(compValidatorId: string, compValidators: Norm<AssertionUnit>): Schema<any> {
   const compValidator = compValidators[compValidatorId]
   assertNotUndefined(compValidator)
 

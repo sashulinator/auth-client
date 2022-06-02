@@ -25,7 +25,7 @@ export interface Comp {
   defaultValue?: string
   props?: Record<string, unknown>
   children?: string[]
-  validators?: Norm<ValidatorItem>
+  validators?: Norm<AssertionUnit>
   bindings?: Norm<BindingItem>
   injections?: Injection[]
 }
@@ -62,7 +62,7 @@ export interface Binding {
   props?: any
 }
 
-export interface ValidatorItem extends Binding {
+export interface AssertionUnit extends Binding {
   type: ValidatorItemType
 }
 
