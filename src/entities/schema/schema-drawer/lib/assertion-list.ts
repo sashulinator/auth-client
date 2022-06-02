@@ -43,7 +43,7 @@ export const assertionList: Norm<AssertionListItem> = {
     type: 'assertion',
     function: assertUndefined,
   },
-  'not undefined': {
+  notUndefined: {
     type: 'assertion',
     function: assertNotUndefined,
   },
