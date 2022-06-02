@@ -22,6 +22,8 @@ export type DrawerContext = Context & {
   eventUnsubscribers: (() => void)[]
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onFieldChange: (name: string, action: (difference: any) => void) => () => void
   }
 }
 

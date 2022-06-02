@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { componentListBlind } from '../lib/component-list'
-import { DrawerContext } from '../model/types'
+import { ComponentContext } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 
@@ -12,7 +12,7 @@ export interface ContentComponentProps {
   schema: CompSchema
   comps: Norm<Comp>
   comp: Comp
-  context: DrawerContext
+  context: ComponentContext
 }
 
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {

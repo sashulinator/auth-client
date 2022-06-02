@@ -4,7 +4,7 @@ import bindAssertions from '../lib/bind-assertions'
 import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
-import { DrawerContext } from '../model/types'
+import { ComponentContext } from '../model/types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
@@ -15,7 +15,7 @@ export interface FieldComponentProps {
   comp: Comp
   schema: CompSchema
   schemas: Norm<Schema>
-  context: DrawerContext
+  context: ComponentContext
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {
