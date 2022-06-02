@@ -17,10 +17,17 @@ export type Context = {
 export type DrawerContext = Context & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
+  comps: Norm<Comp>
+  schemas: Norm<Schema>
   eventUnsubscribers: (() => void)[]
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
   }
+}
+
+export type ComponentContext = DrawerContext & {
+  comp: Comp
+  schema: Schema
 }
 
 export enum ComponentNames {
@@ -30,18 +37,15 @@ export enum ComponentNames {
 }
 
 export interface EventProps {
-  comp: Comp
-  schema: Schema
-  schemas: Norm<Schema>
-  context: DrawerContext
-  actionBindings: Norm<EventUnit>
+  context: ComponentContext
+  actionUnits: Norm<EventUnit>
   actionItems: ActionItem[]
   eventItem: EventItem
-  eventBinding: EventUnit
+  eventUnit: EventUnit
   bindings: Norm<EventUnit>
 }
 
 export interface ActionProps extends EventProps {
   actionItem: ActionItem[]
-  actionBinding: EventUnit
+  actionUnit: EventUnit
 }

@@ -16,19 +16,20 @@ export interface EventItem {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onChange(bindingParams: EventProps) {
-  const { context, actionBindings } = bindingParams
+  const { context, actionUnits } = bindingParams
 
   return context.formProps.form.subscribe(
     (state) => {
       const difference = diff(context.formStatePrev.values, state.values)
 
       if (!isEmpty(difference)) {
+        // TODO в другом месте это должно быть
         context.formStatePrev.values = state.values
 
-        Object.values(actionBindings).forEach((actionBinding) => {
-          const actionItem = actionList[actionBinding.name]
+        Object.values(actionUnits).forEach((actionUnit) => {
+          const actionItem = actionList[actionUnit.name]
           assertNotUndefined(actionItem)
-          actionItem?.function({ ...bindingParams, actionBinding, actionItem }, difference)
+          actionItem?.function({ ...bindingParams, actionUnit, actionItem }, difference)
         })
       }
     },

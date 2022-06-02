@@ -4,7 +4,7 @@ import assertCompSchema from '../lib/assert-comp-schema'
 import bindEvents from '../lib/bind-events'
 import { componentListBlind } from '../lib/component-list'
 import isInputType from '../lib/is-field-component'
-import { Context, DrawerContext } from '../model/types'
+import { ComponentContext, Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import { FormState } from 'final-form'
@@ -32,6 +32,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
 
   const context: DrawerContext = {
     fetchedData: fetchedDataContext,
+    comps: props.schema.comps,
+    schemas: props.schemas,
     eventUnsubscribers: [],
     ...getRidOfCurrent,
     ...props.context,
@@ -70,16 +72,15 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   const schema = props.schemas[comp.compSchemaId] as CompSchema
 
+  const context: ComponentContext = {
+    ...props.context,
+    comp: comp,
+    schema: schema,
+  }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     if (schema) {
-      bindEvents({
-        comp,
-        schema,
-        comps: props.comps,
-        schemas: props.schemas,
-        context: props.context,
-      })
+      bindEvents(context)
     }
     return () => {
       props.context.eventUnsubscribers.forEach((unsubscribe) => {
