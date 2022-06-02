@@ -14,9 +14,9 @@ export default function bindEvents(props: ContentComponentProps) {
     return
   }
 
-  const eventBindings = getEventBindings(bindings)
+  const unitsWithEventType = getEventUnits(bindings)
 
-  eventBindings.forEach((eventBinding) => {
+  unitsWithEventType.forEach((eventBinding) => {
     const eventItem = eventList[eventBinding.name]
     assertNotUndefined(eventItem)
 
@@ -41,6 +41,6 @@ export default function bindEvents(props: ContentComponentProps) {
   })
 }
 
-function getEventBindings(bindings: Norm<EventUnit>): EventUnit[] {
-  return Object.values(bindings).filter((binding) => binding.type === EventUnitType.EVENT)
+function getEventUnits(units: Norm<EventUnit>): EventUnit[] {
+  return Object.values(units).filter((binding) => binding.type === EventUnitType.EVENT)
 }
