@@ -1,14 +1,15 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import assertCompSchema from '../lib/assert-comp-schema'
-import bindEvents from '../lib/bind-events'
 import { componentListBlind } from '../lib/component-list'
+import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
+import handleBindEvents from '../lib/handle-bind-events'
 import isInputType from '../lib/is-field-component'
-import { Context, DrawerContext } from '../model/types'
+import { ComponentContext, Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import { FormState } from 'final-form'
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { Comp, CompSchema, Norm, Schema } from '@/entities/schema'
@@ -24,20 +25,19 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 
-  useLayoutEffect(() => {
-    formStatePrev.current = props.context.formState
-  })
-
-  const getRidOfCurrent = { formStatePrev: formStatePrev.current }
+  const onFieldChange = createOnFieldChangeEvent(props.context as DrawerContext)
 
   const context: DrawerContext = {
-    fetchedData: fetchedDataContext,
-    eventUnsubscribers: [],
-    ...getRidOfCurrent,
     ...props.context,
+    ...{ formStatePrev: formStatePrev.current },
+    fetchedData: fetchedDataContext,
+    comps: props.schema.comps,
+    schemas: props.schemas,
+    eventUnsubscribers: [],
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
+      onFieldChange,
     },
   }
 
@@ -70,22 +70,14 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   const schema = props.schemas[comp.compSchemaId] as CompSchema
 
+  const context: ComponentContext = {
+    ...props.context,
+    comp: comp,
+    schema: schema,
+  }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    if (schema) {
-      bindEvents({
-        comp,
-        schema,
-        comps: props.comps,
-        schemas: props.schemas,
-        context: props.context,
-      })
-    }
-    return () => {
-      props.context.eventUnsubscribers.forEach((unsubscribe) => {
-        unsubscribe()
-      })
-    }
+    schema && handleBindEvents(context)
   }, [comp.bindings, schema])
 
   // Схема еще не прогрузилась и поэтому undefined
@@ -106,10 +98,8 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   }
 
   if (isInputType(сomponentItem)) {
-    return <FieldComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} />
+    return <FieldComponent context={context} comp={comp} schema={schema} schemas={props.schemas} />
   }
 
-  return (
-    <ContentComponent context={props.context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
-  )
+  return <ContentComponent context={context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
 }

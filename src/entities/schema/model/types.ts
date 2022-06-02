@@ -53,13 +53,13 @@ export interface AssertionUnit extends BindingUnit {
   type: AssertionUnitType
 }
 
+export interface EventUnit extends BindingUnit {
+  type: EventUnitType
+}
+
 export enum AssertionUnitType {
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
-}
-
-export interface EventUnit extends BindingUnit {
-  type: EventUnitType
 }
 
 export enum EventUnitType {

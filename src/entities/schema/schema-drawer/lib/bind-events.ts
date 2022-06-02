@@ -1,14 +1,14 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { ContentComponentProps } from '../ui/content-component'
+import { ComponentContext } from '../model/types'
 import actionList from './action-list'
 import { eventList } from './event-list'
 
 import { EventUnit, EventUnitType, Norm } from '@/entities/schema'
 import { findEntities } from '@/lib/entity-actions'
 
-export default function bindEvents(props: ContentComponentProps) {
-  const { bindings } = props.comp
+export default function bindEvents(context: ComponentContext) {
+  const { bindings } = context.comp
 
   if (!bindings) {
     return
@@ -16,28 +16,28 @@ export default function bindEvents(props: ContentComponentProps) {
 
   const unitsWithEventType = getEventUnits(bindings)
 
-  unitsWithEventType.forEach((eventBinding) => {
-    const eventItem = eventList[eventBinding.name]
+  unitsWithEventType.forEach((eventUnit) => {
+    const eventItem = eventList[eventUnit.name]
     assertNotUndefined(eventItem)
 
-    const actionBindings = findEntities(eventBinding.children || [], bindings)
+    const actionUnits = findEntities(eventUnit.children || [], bindings)
 
-    const actionItems = Object.values(actionBindings)?.map((actionBinding) => {
-      const actionItem = actionList[actionBinding.name]
+    const actionItems = Object.values(actionUnits)?.map((actionUnit) => {
+      const actionItem = actionList[actionUnit.name]
       assertNotUndefined(actionItem)
       return actionItem
     })
 
     const unsubscribe = eventItem?.function({
-      ...props,
-      actionBindings,
-      eventBinding,
+      context,
+      actionUnits,
       actionItems,
+      eventUnit,
       eventItem,
       bindings,
     })
 
-    props.context.eventUnsubscribers.push(unsubscribe)
+    context.eventUnsubscribers.push(unsubscribe)
   })
 }
 
