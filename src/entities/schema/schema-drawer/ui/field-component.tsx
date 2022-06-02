@@ -1,6 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import buildValidator from '../lib/build-validators'
+import bindAssertions from '../lib/bind-assertions'
 import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
@@ -22,7 +22,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
   const сomponentItem = componentListBlind[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
-  const validate = buildValidator(props.comp.validators)
+  const validate = bindAssertions(props.comp.validators)
 
   const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
 

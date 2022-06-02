@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import assertCompSchema from '../lib/assert-comp-schema'
-import buildBinding from '../lib/build-binding'
+import bindEvents from '../lib/bind-events'
 import { componentListBlind } from '../lib/component-list'
 import isInputType from '../lib/is-field-component'
 import { Context, DrawerContext } from '../model/types'
@@ -73,7 +73,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     if (schema) {
-      buildBinding({
+      bindEvents({
         comp,
         schema,
         comps: props.comps,

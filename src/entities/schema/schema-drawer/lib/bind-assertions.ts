@@ -18,7 +18,7 @@ import { Norm, ValidatorItem } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
-export default function buildValidator(
+export default function bindAssertions(
   validators: Norm<ValidatorItem> | undefined
 ): ErrorCollector<ErrorCollection> | undefined {
   if (validators === undefined) {

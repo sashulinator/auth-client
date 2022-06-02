@@ -7,7 +7,7 @@ import { eventList } from './event-list'
 import { BindingItem, BindingItemType, Norm } from '@/entities/schema'
 import { findEntities } from '@/lib/entity-actions'
 
-export default function buildBinding(props: ContentComponentProps) {
+export default function bindEvents(props: ContentComponentProps) {
   const { bindings } = props.comp
 
   if (!bindings) {
