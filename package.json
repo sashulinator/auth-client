@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@atlaskit/tree": "8.6.0",
+    "@fluentui/example-data": "^8.4.1",
     "@fluentui/react": "8.49.0",
     "@savchenko91/rc-route-constant": "4.0.4",
     "@savchenko91/schema-validator": "0.2.9",
