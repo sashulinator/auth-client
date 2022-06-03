@@ -16,6 +16,7 @@ import { BasicComponentsNames } from '../..'
 import BindingPicker from '@/shared/binding-setter'
 import Collapse from '@/shared/collapse'
 import CustomDatePicker from '@/shared/date-picker'
+import DocumentCard from '@/shared/documentcard'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import Fetcher from '@/shared/fetcher'
 import HorizontalLine from '@/shared/horizontal-line'
@@ -88,6 +89,11 @@ const componentList = {
   MultiCheckbox: {
     type: 'input',
     component: MultiCheckbox,
+  },
+
+  DocumentCard: {
+    type: 'input',
+    component: DocumentCard,
   },
 
   // Contents
