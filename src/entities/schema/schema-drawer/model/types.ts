@@ -51,3 +51,11 @@ export interface ActionProps extends EventProps {
   actionItem: ActionItem[]
   actionUnit: EventUnit
 }
+
+export interface Item {
+  type: string
+  // второй аргумент в ассёршене это объект который сабмитит схема
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function: (input: unknown, values: any) => void
+  schema?: Schema
+}
