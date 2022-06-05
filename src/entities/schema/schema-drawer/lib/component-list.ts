@@ -75,7 +75,7 @@ const componentList = {
     component: JSONEditor,
   },
 
-  Dropdown: {
+  [ComponentNames.Dropdown]: {
     type: 'input',
     component: Dropdown,
   },

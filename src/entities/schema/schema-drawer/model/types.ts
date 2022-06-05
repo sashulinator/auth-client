@@ -37,6 +37,7 @@ export enum ComponentNames {
   TextField = 'TextField',
   Stack = 'Stack',
   NumberField = 'NumberField',
+  Dropdown = 'Dropdown',
 }
 
 export interface EventProps {
