@@ -19,6 +19,7 @@ import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import SchemaDrawer from '@/entities/schema/schema-drawer'
 import actionList from '@/entities/schema/schema-drawer/lib/action-list'
 import { isWithValueAssertionItem } from '@/entities/schema/schema-drawer/lib/assertion-list'
+import { eventAssertionList } from '@/entities/schema/schema-drawer/lib/event-assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
@@ -41,7 +42,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const bindingItems = props.value
   const bindingItem = bindingItems?.[selectedItemId]
-  const assertionItem = actionList[bindingItem?.name || '']
+  const assertionItem = actionList[bindingItem?.name || ''] || eventAssertionList[bindingItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 

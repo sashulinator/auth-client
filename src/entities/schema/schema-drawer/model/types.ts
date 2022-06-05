@@ -18,6 +18,7 @@ export type DrawerContext = Context & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
   comps: Norm<Comp>
+  compIds: string[]
   schemas: Norm<Schema>
   eventUnsubscribers: (() => void)[]
   fns: {

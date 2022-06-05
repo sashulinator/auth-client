@@ -13,3 +13,7 @@ export function assertTargetInitValueUndefined(value: unknown, meta: EventAssert
     throw new Error('Target init value is not undefined!')
   }
 }
+
+export function _undefined(value: unknown, values: any) {
+  console.log('value values', value, values)
+}
