@@ -204,6 +204,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
                     schemas={dummySchemas}
                     context={{
                       previewSchema: props.context?.previewSchema,
+                      previewData: props.context?.previewData,
                       formState: formProps.form.getState(),
                       formProps,
                     }}

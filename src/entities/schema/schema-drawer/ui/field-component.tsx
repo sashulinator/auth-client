@@ -26,6 +26,8 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
 
   const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
 
+  assertNotUndefined(injectedComp.name)
+
   return (
     <Field
       validate={(v) => validate?.(v)}

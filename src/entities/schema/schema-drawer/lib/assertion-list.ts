@@ -9,6 +9,8 @@ import {
   isObject,
 } from '@savchenko91/schema-validator'
 
+import { ComponentNames } from '../model/types'
+
 // import { assertMatchPattern } from './custom-assertions'
 import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '@/constants/common'
 import { Norm, Schema, SchemaType } from '@/entities/schema'
@@ -27,11 +29,6 @@ export interface WithValueAssertionItem {
   function: (input: unknown, values: any) => void
   // значения схемы прилетят во второй аргумент ассёршена
   schema: Schema
-}
-
-export enum ComponentNames {
-  TextField = 'TextField',
-  Stack = 'Stack',
 }
 
 export const assertionList: Norm<AssertionListItem> = {

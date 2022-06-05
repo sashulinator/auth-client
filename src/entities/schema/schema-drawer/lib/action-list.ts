@@ -1,7 +1,7 @@
 import { IDropdownOption } from '@fluentui/react'
 
+import { ComponentNames } from '../model/types'
 import { setValue } from './actions'
-import { ComponentNames } from './assertion-list'
 
 import { Norm, Schema, SchemaType } from '@/entities/schema'
 
@@ -26,16 +26,22 @@ const actionList: Norm<ActionItem> = {
           id: 'ROOT_ID',
           title: 'stackRoot',
           name: 'hello',
-          children: ['name'],
+          children: ['namesDropdown'],
           props: { tokens: { padding: '5px' } },
           compSchemaId: ComponentNames.Stack,
         },
-        name: {
-          id: 'name',
+        namesDropdown: {
+          id: 'namesDropdown',
           title: 'name',
           name: 'name',
           props: { label: 'name' },
-          compSchemaId: ComponentNames.TextField,
+          compSchemaId: ComponentNames.Dropdown,
+          injections: [
+            {
+              from: 'context.previewData.names',
+              to: 'props.options',
+            },
+          ],
         },
       },
     },

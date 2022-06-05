@@ -16,6 +16,7 @@ export interface EventItem {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function onChange(bindingParams: EventProps) {
   const { context, actionUnits } = bindingParams
+  assertNotUndefined(context.comp.name)
 
   return context.fns.onFieldChange(context.comp.name, (value) => {
     Object.values(actionUnits).forEach((actionUnit) => {
