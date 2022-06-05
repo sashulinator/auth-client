@@ -4,16 +4,13 @@ import { ActionProps } from '../model/types'
 
 type EventAssertionMeta = Meta & { payload: ActionProps }
 
-export function assertTargetInitValueUndefined(value: unknown, meta: EventAssertionMeta) {
+export function _undefined(value: unknown, meta: EventAssertionMeta) {
   const { actionUnit, context } = meta.payload
   const eventFieldName = actionUnit.props.name as string
-  const targetInitValue = context.formProps.form.getFieldState(eventFieldName)?.initial
+  const isInit = actionUnit.props.isInit as boolean
+  const targetValue = context.formProps.form.getFieldState(eventFieldName)?.[isInit ? 'initial' : 'value']
 
-  if (targetInitValue !== undefined) {
+  if (targetValue !== undefined) {
     throw new Error('Target init value is not undefined!')
   }
-}
-
-export function _undefined(value: unknown, values: any) {
-  console.log('value values', value, values)
 }

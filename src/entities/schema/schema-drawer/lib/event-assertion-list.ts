@@ -1,16 +1,12 @@
 import { ComponentNames, Item } from '../model/types'
-import { _undefined, assertTargetInitValueUndefined } from './event-assertions'
+import { _undefined } from './event-assertions'
 
 import { Norm, SchemaType } from '@/entities/schema'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 
 export const eventAssertionList: Norm<Item> = {
-  targetInitValueUndefined: {
-    type: 'assertion',
-    function: assertTargetInitValueUndefined,
-  },
   undefined: {
-    type: 'withValue',
+    type: 'assertion',
     function: _undefined,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -22,8 +18,8 @@ export const eventAssertionList: Norm<Item> = {
           id: 'ROOT_ID',
           title: 'stackRoot',
           name: 'hello',
-          children: ['namesDropdown'],
-          props: { tokens: { padding: '5px' } },
+          children: ['namesDropdown', 'isInit'],
+          props: { tokens: { padding: '5px', childrenGap: '4px' } },
           compSchemaId: ComponentNames.Stack,
         },
         namesDropdown: {
@@ -32,6 +28,19 @@ export const eventAssertionList: Norm<Item> = {
           name: 'name',
           props: { label: 'name' },
           compSchemaId: ComponentNames.Dropdown,
+          injections: [
+            {
+              from: 'context.previewData.names',
+              to: 'props.options',
+            },
+          ],
+        },
+        isInit: {
+          id: 'isInit',
+          title: 'initial value',
+          name: 'isInit',
+          props: { label: 'initial value' },
+          compSchemaId: ComponentNames.Checkbox,
           injections: [
             {
               from: 'context.previewData.names',
