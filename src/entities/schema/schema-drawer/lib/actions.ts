@@ -1,7 +1,13 @@
 import { Meta } from '@savchenko91/schema-validator'
 
+import { EventUnit, EventUnitType, Norm } from '../..'
 import { ActionProps } from '../model/types'
 import bindAssertions from './bind-assertions'
+
+import { insert, replace } from '@/lib/change-unmutable'
+import { findEntity } from '@/lib/entity-actions'
+
+const operatorId = 'operatorId'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function setValue(actionProps: ActionProps, value: Record<string, unknown>) {
@@ -9,7 +15,9 @@ export function setValue(actionProps: ActionProps, value: Record<string, unknown
   const eventFieldName = actionUnit.props.name as string
 
   if (actionUnit.children?.[0]) {
-    const validate = bindAssertions(bindings, actionUnit?.children?.[0])
+    const newBindings = addRootOperator(bindings, actionUnit.id)
+
+    const validate = bindAssertions(newBindings, operatorId)
 
     const errors = validate?.(value, { payload: actionProps } as Meta)
 
@@ -19,4 +27,19 @@ export function setValue(actionProps: ActionProps, value: Record<string, unknown
   }
 
   context.formProps.form.change(eventFieldName, value)
+}
+
+function addRootOperator(bindings: Norm<EventUnit>, actionId: string) {
+  const actionUnit = findEntity(actionId, bindings)
+  const newActionUnit = { ...actionUnit, children: [operatorId] }
+  const newBindings = replace(bindings, newActionUnit.id, newActionUnit)
+  const orOperator: EventUnit = {
+    id: operatorId,
+    name: 'and',
+    type: EventUnitType.OPERATOR,
+    children: actionUnit.children,
+  }
+  const newBindings2 = insert(newBindings, operatorId, orOperator)
+
+  return newBindings2
 }
