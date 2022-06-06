@@ -32,6 +32,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
     comps: props.schema.comps,
+    compIds: Object.keys(props.schema.comps),
     schemas: props.schemas,
     eventUnsubscribers: [],
     fns: {

@@ -38,4 +38,34 @@ export const dummySchemas: Norm<Schema> = {
       },
     },
   },
+  [ComponentNames.Dropdown]: {
+    id: ComponentNames.Dropdown,
+    title: ComponentNames.Dropdown,
+    componentName: ComponentNames.Dropdown,
+    type: SchemaType.COMP,
+    comps: {
+      ROOT_ID: {
+        id: 'ROOT_ID',
+        name: ComponentNames.TextField,
+        title: ComponentNames.Stack,
+        children: [],
+        compSchemaId: ComponentNames.Stack,
+      },
+    },
+  },
+  [ComponentNames.Checkbox]: {
+    id: ComponentNames.Checkbox,
+    title: ComponentNames.Checkbox,
+    componentName: ComponentNames.Checkbox,
+    type: SchemaType.COMP,
+    comps: {
+      ROOT_ID: {
+        id: 'ROOT_ID',
+        name: ComponentNames.TextField,
+        title: ComponentNames.Stack,
+        children: [],
+        compSchemaId: ComponentNames.Stack,
+      },
+    },
+  },
 }

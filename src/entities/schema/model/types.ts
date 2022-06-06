@@ -20,7 +20,7 @@ export interface History<Data> {
 export interface Comp {
   id: string
   compSchemaId: string
-  name: string
+  name?: string
   title: string
   defaultValue?: string
   props?: Record<string, unknown>
@@ -31,8 +31,8 @@ export interface Comp {
 }
 
 interface Injection {
-  from: 'string'
-  to: 'string'
+  from: string
+  to: string
 }
 
 export enum SchemaType {

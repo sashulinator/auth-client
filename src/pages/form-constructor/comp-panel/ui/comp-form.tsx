@@ -1,7 +1,7 @@
 import { Stack } from '@fluentui/react'
 
 import { Config } from 'final-form'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import { Comp, Norm, Schema } from '@/entities/schema'
@@ -23,6 +23,13 @@ export default function CompForm(props: CompFormProps): JSX.Element {
   useEffect(() => {
     setInitialValues(props.comp)
   }, [props.comp.id])
+
+  const names = useMemo(() => {
+    return Object.values(props.previewSchema.comps)
+      .filter((comp) => comp.name)
+      .map((comp) => comp.name)
+      .sort()
+  }, [])
 
   return (
     <Form<Comp, Comp>
@@ -49,6 +56,11 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                     formState: formProps.form.getState(),
                     formProps,
                     previewSchema: props.previewSchema,
+                    previewData: {
+                      schema: props.previewSchema,
+                      compIds: Object.keys(props.previewSchema.comps),
+                      names,
+                    },
                     ...props.context,
                   }}
                 />

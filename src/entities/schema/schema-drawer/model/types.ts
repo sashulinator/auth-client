@@ -18,6 +18,7 @@ export type DrawerContext = Context & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
   comps: Norm<Comp>
+  compIds: string[]
   schemas: Norm<Schema>
   eventUnsubscribers: (() => void)[]
   fns: {
@@ -36,6 +37,8 @@ export enum ComponentNames {
   TextField = 'TextField',
   Stack = 'Stack',
   NumberField = 'NumberField',
+  Dropdown = 'Dropdown',
+  Checkbox = 'Checkbox',
 }
 
 export interface EventProps {
@@ -50,4 +53,12 @@ export interface EventProps {
 export interface ActionProps extends EventProps {
   actionItem: ActionItem[]
   actionUnit: EventUnit
+}
+
+export interface Item {
+  type: string
+  // второй аргумент в ассёршене это объект который сабмитит схема
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function: ((input: unknown, values: any) => void) | ((input: unknown, value: any, values: any) => void)
+  schema?: Schema
 }
