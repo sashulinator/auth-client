@@ -1,6 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import assertCompSchema from '../lib/assert-comp-schema'
+import { assertCompSchema } from '../../lib/assertions'
 import { componentListBlind } from '../lib/component-list'
 import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
 import handleBindEvents from '../lib/handle-bind-events'
