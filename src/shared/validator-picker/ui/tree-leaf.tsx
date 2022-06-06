@@ -7,7 +7,7 @@ import React from 'react'
 
 import { AssertionUnit, AssertionUnitType } from '@/entities/schema'
 import { assertionNameOptions } from '@/entities/schema/schema-drawer/lib/assertion-list'
-import optionsFromStringArray from '@/lib/options-from-string-array'
+import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { Dropdown } from '@/shared/dropdown'
 
 export interface TreeLeafProps extends RenderItemParams {
@@ -27,7 +27,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
 
   const isPicked = props.item.data.selectedItemId === props.item.data.validator.id
   const isOperator = validator.type === AssertionUnitType.OPERATOR
-  const options = isOperator ? optionsFromStringArray(['or', 'and']) : assertionNameOptions
+  const options = isOperator ? generateOptionsFromStringArray(['or', 'and']) : assertionNameOptions
 
   return (
     <div

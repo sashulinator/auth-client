@@ -13,7 +13,7 @@ import { schemaValidator } from '@/common/schemas'
 import ROUTES from '@/constants/routes'
 import { Schema, SchemaType, currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import { componentNameOptions } from '@/entities/schema/schema-drawer/lib/component-list'
-import optionsFromStringArray from '@/lib/options-from-string-array'
+import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
@@ -44,7 +44,7 @@ export default function SchemaForm(): JSX.Element {
     },
   })
 
-  const options = useMemo(() => optionsFromStringArray(typeArray, t), [i18n.language])
+  const options = useMemo(() => generateOptionsFromStringArray(typeArray, t), [i18n.language])
 
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData

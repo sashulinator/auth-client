@@ -1,9 +1,8 @@
 import { IDropdownOption } from '@fluentui/react/lib/Dropdown'
 import { isObject } from '@savchenko91/schema-validator'
 
+import { generateOptionsFromArrayOfArrays, generateOptionsFromStringArray } from './generate-options'
 import { isDropdownOptions } from './is-dropdown-options'
-import fromArrayOfArrays from './options-from-array-of-arrays'
-import fromStringArray from './options-from-string-array'
 
 import { isStringArray, isStringArrayArray } from '@/lib/is'
 
@@ -14,14 +13,14 @@ export default function normalizeOptions(options: Options): IDropdownOption[] {
     const arrOptions = Object.values(options)
 
     if (isDropdownOptions(arrOptions)) {
-      return fromArrayOfArrays(arrOptions)
+      return generateOptionsFromArrayOfArrays(arrOptions)
     } else {
       return normalizeOptions(arrOptions)
     }
   }
 
   if (isStringArray(options)) {
-    return fromStringArray(options)
+    return generateOptionsFromStringArray(options)
   }
 
   if (isStringArrayArray(options)) {

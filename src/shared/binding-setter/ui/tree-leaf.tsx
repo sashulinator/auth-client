@@ -9,7 +9,7 @@ import { EventUnit, EventUnitType } from '@/entities/schema'
 import { actionNameOptions } from '@/entities/schema/schema-drawer/lib/action-list'
 import { eventAssertionNameOptions } from '@/entities/schema/schema-drawer/lib/event-assertion-list'
 import { eventNameOptions } from '@/entities/schema/schema-drawer/lib/event-list'
-import optionsFromStringArray from '@/lib/options-from-string-array'
+import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { Dropdown } from '@/shared/dropdown'
 
 export interface TreeLeafProps extends RenderItemParams {
@@ -32,7 +32,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const isAction = binding.type === EventUnitType.ACTION
   const isEvent = binding.type === EventUnitType.EVENT
   const options = isOperator
-    ? optionsFromStringArray(['or', 'and'])
+    ? generateOptionsFromStringArray(['or', 'and'])
     : isAction
     ? actionNameOptions
     : isEvent
