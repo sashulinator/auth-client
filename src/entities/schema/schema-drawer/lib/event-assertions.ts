@@ -4,7 +4,7 @@ import { ActionProps } from '../model/types'
 
 type EventAssertionMeta = Meta & { payload: ActionProps }
 
-export function assertUndefined(value: unknown, assertionProps: any, meta: EventAssertionMeta) {
+export function _undefined(value: unknown, assertionProps: any, meta: EventAssertionMeta) {
   const { context } = meta?.payload
   const eventFieldName = assertionProps?.name as string
   const isInit = assertionProps?.isInit as boolean

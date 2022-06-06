@@ -1,13 +1,13 @@
 import { ComponentNames, Item } from '../model/types'
-import { assertUndefined, visiting } from './event-assertions'
+import { _undefined, visiting } from './event-assertions'
 
 import { Norm, SchemaType } from '@/entities/schema'
 import optionsFromStringArray from '@/lib/options-from-string-array'
 
 export const eventAssertionList: Norm<Item> = {
-  assertUndefined: {
+  undefined: {
     type: 'withValue',
-    function: assertUndefined as any,
+    function: _undefined,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
@@ -47,7 +47,7 @@ export const eventAssertionList: Norm<Item> = {
   },
   visiting: {
     type: 'withValue',
-    function: visiting as any,
+    function: visiting,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',

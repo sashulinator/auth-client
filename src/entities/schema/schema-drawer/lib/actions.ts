@@ -3,6 +3,7 @@ import { Meta } from '@savchenko91/schema-validator'
 import { EventUnit, EventUnitType, Norm } from '../..'
 import { ActionProps } from '../model/types'
 import bindAssertions from './bind-assertions'
+import { eventAssertionList } from './event-assertion-list'
 
 import { insert, replace } from '@/lib/change-unmutable'
 import { findEntity } from '@/lib/entity-actions'
@@ -17,7 +18,7 @@ export function setValue(actionProps: ActionProps, value: Record<string, unknown
   if (actionUnit.children?.[0]) {
     const newBindings = addRootOperator(bindings, actionUnit.id)
 
-    const validate = bindAssertions(newBindings, operatorId)
+    const validate = bindAssertions(eventAssertionList, newBindings, operatorId)
 
     const errors = validate?.(value, { payload: actionProps } as Meta)
 
