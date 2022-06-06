@@ -6,7 +6,6 @@ import { generateOptionsFromObject } from '@/lib/generate-options'
 
 export const eventAssertionList: Norm<Item> = {
   undefined: {
-    type: 'assertion',
     function: _undefined,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -46,7 +45,6 @@ export const eventAssertionList: Norm<Item> = {
     },
   },
   visiting: {
-    type: 'assertion',
     function: visiting,
     schema: {
       id: 'hereCouldBeYourAd',

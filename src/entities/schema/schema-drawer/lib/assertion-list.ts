@@ -14,30 +14,24 @@ import { generateOptionsFromObject } from '@/lib/generate-options'
 // import { assertMatchPattern } from './custom-assertions'
 
 export interface AssertionItem {
-  type: 'assertion'
   function: (input: unknown, values: any) => void
   schema?: Schema
 }
 
 export const assertionList: Norm<AssertionItem> = {
   string: {
-    type: 'assertion',
     function: assertString,
   },
   undefined: {
-    type: 'assertion',
     function: assertUndefined,
   },
   notUndefined: {
-    type: 'assertion',
     function: assertNotUndefined,
   },
   null: {
-    type: 'assertion',
     function: assertNull,
   },
   matchPattern: {
-    type: 'assertion',
     function: assertMatchPattern,
     schema: {
       id: 'hereCouldBeYourAd',

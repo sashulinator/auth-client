@@ -47,7 +47,6 @@ export interface ActionProps extends EventProps {
 }
 
 export interface Item {
-  type: string
   // второй аргумент в ассёршене это объект который сабмитит схема
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: ((input: unknown, values: any) => void) | ((input: unknown, value: any, values: any) => void)
