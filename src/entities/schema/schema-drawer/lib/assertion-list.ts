@@ -9,6 +9,8 @@ import {
 
 import { BasicComponentsNames, MUTATE_ALL_FORM_VALUES_TO_STRING, Norm, Schema, SchemaType } from '../..'
 
+import { generateOptionsFromObject } from '@/lib/generate-options'
+
 // import { assertMatchPattern } from './custom-assertions'
 
 export interface AssertionItem {
@@ -63,9 +65,4 @@ export const assertionList: Norm<AssertionItem> = {
   },
 }
 
-export const assertionNameOptions: IDropdownOption[] = Object.keys(assertionList).map((assertionName) => {
-  return {
-    key: assertionName,
-    text: assertionName,
-  }
-})
+export const assertionNameOptions: IDropdownOption[] = generateOptionsFromObject(assertionList)

@@ -2,7 +2,7 @@ import { Item } from '../model/types'
 import { _undefined, visiting } from './event-assertions'
 
 import { BasicComponentsNames, Norm, SchemaType } from '@/entities/schema'
-import optionsFromStringArray from '@/lib/options-from-string-array'
+import { generateOptionsFromObject } from '@/lib/generate-options'
 
 export const eventAssertionList: Norm<Item> = {
   undefined: {
@@ -87,4 +87,4 @@ export const eventAssertionList: Norm<Item> = {
   },
 }
 
-export const eventAssertionNameOptions = optionsFromStringArray(Object.keys(eventAssertionList))
+export const eventAssertionNameOptions = generateOptionsFromObject(eventAssertionList)
