@@ -6,8 +6,7 @@ import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlig
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
-import { Norm, Schema } from '@/entities/schema'
-import SchemaDrawer from '@/entities/schema/schema-drawer'
+import { Norm, Schema, SchemaDrawer } from '@/entities/schema'
 import { setCSSVar } from '@/shared/theme'
 
 interface PreviewProps {

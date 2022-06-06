@@ -13,3 +13,6 @@ export { default as findCompSchema } from './lib/find-comp-schema'
 export { default as findContainingCompId } from './lib/find-schema-containing-comp-id'
 
 export { default as CompContextualMenu } from './ui/contextual-menu'
+
+export { default as SchemaDrawer } from './schema-drawer'
+export * from './schema-drawer'

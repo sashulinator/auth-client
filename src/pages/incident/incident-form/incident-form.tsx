@@ -6,8 +6,7 @@ import uuid from 'uuid-random'
 
 import { createIncident, getIncident } from '@/api/incident'
 import { Incident } from '@/entities/incident/model/types'
-import { Norm, Schema } from '@/entities/schema'
-import SchemaDrawer from '@/entities/schema/schema-drawer'
+import { Norm, Schema, SchemaDrawer } from '@/entities/schema'
 
 interface IncidentFormProps {
   schema: Schema
