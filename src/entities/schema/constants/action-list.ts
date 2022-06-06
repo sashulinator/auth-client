@@ -1,7 +1,8 @@
 import { IDropdownOption } from '@fluentui/react'
 
-import { BasicComponentsNames, Norm, Schema, SchemaType } from '../..'
-import { setValue } from './actions'
+import { setValue } from '../lib/actions'
+import { Norm, Schema, SchemaType } from '../model/types'
+import { BasicComponentsNames } from './basic-components-schemas'
 
 export interface ActionItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,7 +11,7 @@ export interface ActionItem {
   schema?: Schema
 }
 
-const actionList: Norm<ActionItem> = {
+export const actionList: Norm<ActionItem> = {
   setValue: {
     name: 'setValue',
     function: setValue,
@@ -45,8 +46,6 @@ const actionList: Norm<ActionItem> = {
     },
   },
 }
-
-export default actionList
 
 export const actionNameOptions: IDropdownOption[] = Object.keys(actionList).map((actionName) => {
   return {

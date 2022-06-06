@@ -1,6 +1,8 @@
 export * from './constants'
 
-export * from './model/basic-components-schemas'
+export * from './constants/basic-components-schemas'
+export * from './constants/action-list'
+
 export * from './model/comp-schema'
 export * from './model/current-schema'
 export * from './model/selected-comps'

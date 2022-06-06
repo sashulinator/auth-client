@@ -14,9 +14,16 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { AssertionUnit, AssertionUnitType, Comp, Norm, Schema, SchemaDrawer } from '@/entities/schema'
+import {
+  AssertionUnit,
+  AssertionUnitType,
+  Comp,
+  Norm,
+  Schema,
+  SchemaDrawer,
+  basicComponentsSchemas,
+} from '@/entities/schema'
 import { hasSchema } from '@/entities/schema/lib/is'
-import { basicComponentsSchemas } from '@/entities/schema/model/basic-components-schemas'
 import { assertionList } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'

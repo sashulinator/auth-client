@@ -1,9 +1,9 @@
 import { Meta } from '@savchenko91/schema-validator'
 
-import { EventUnit, EventUnitType, Norm } from '../..'
-import { ActionProps } from '../model/types'
-import bindAssertions from './bind-assertions'
-import { eventAssertionList } from './event-assertion-list'
+import { EventUnit, EventUnitType, Norm } from '..'
+import bindAssertions from '../schema-drawer/lib/bind-assertions'
+import { eventAssertionList } from '../schema-drawer/lib/event-assertion-list'
+import { ActionProps } from '../schema-drawer/model/types'
 
 import { insert, replace } from '@/lib/change-unmutable'
 import { findEntity } from '@/lib/entity-actions'

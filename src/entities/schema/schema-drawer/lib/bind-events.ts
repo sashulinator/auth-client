@@ -1,10 +1,9 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import { EventUnit, EventUnitType, Norm, actionList } from '../..'
 import { ComponentContext } from '../model/types'
-import actionList from './action-list'
 import { eventList } from './event-list'
 
-import { EventUnit, EventUnitType, Norm } from '@/entities/schema'
 import { findEntities } from '@/lib/entity-actions'
 
 export default function bindEvents(context: ComponentContext) {

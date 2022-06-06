@@ -1,10 +1,8 @@
 import { IDropdownOption } from '@fluentui/react'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import { Norm, Schema, actionList } from '../..'
 import { EventProps } from '../model/types'
-import actionList from './action-list'
-
-import { Norm, Schema } from '@/entities/schema'
 
 export interface EventItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
