@@ -1,9 +1,7 @@
 import { IDropdownOption } from '@fluentui/react'
 
-import { ComponentNames } from '../model/types'
+import { BasicComponentsNames, Norm, Schema, SchemaType } from '../..'
 import { setValue } from './actions'
-
-import { Norm, Schema, SchemaType } from '@/entities/schema'
 
 export interface ActionItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,14 +26,14 @@ const actionList: Norm<ActionItem> = {
           name: 'hello',
           children: ['namesDropdown'],
           props: { tokens: { padding: '5px' } },
-          compSchemaId: ComponentNames.Stack,
+          compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {
           id: 'namesDropdown',
           title: 'name',
           name: 'name',
           props: { label: 'name' },
-          compSchemaId: ComponentNames.Dropdown,
+          compSchemaId: BasicComponentsNames.Dropdown,
           injections: [
             {
               from: 'context.previewData.names',

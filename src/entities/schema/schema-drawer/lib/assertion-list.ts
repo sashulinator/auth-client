@@ -7,11 +7,9 @@ import {
   assertUndefined,
 } from '@savchenko91/schema-validator'
 
-import { ComponentNames } from '../model/types'
+import { BasicComponentsNames, MUTATE_ALL_FORM_VALUES_TO_STRING, Norm, Schema, SchemaType } from '../..'
 
 // import { assertMatchPattern } from './custom-assertions'
-import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '@/constants/common'
-import { Norm, Schema, SchemaType } from '@/entities/schema'
 
 export interface AssertionItem {
   type: 'assertion'
@@ -51,14 +49,14 @@ export const assertionList: Norm<AssertionItem> = {
           name: 'hello',
           children: ['pattern'],
           props: { tokens: { padding: '5px' } },
-          compSchemaId: ComponentNames.Stack,
+          compSchemaId: BasicComponentsNames.Stack,
         },
         pattern: {
           id: 'pattern',
           title: 'pattern',
           name: MUTATE_ALL_FORM_VALUES_TO_STRING,
           props: { label: 'pattern' },
-          compSchemaId: ComponentNames.TextField,
+          compSchemaId: BasicComponentsNames.TextField,
         },
       },
     },

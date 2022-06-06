@@ -1,9 +1,11 @@
+export * from './constants'
+
+export * from './model/basic-components-schemas'
+export * from './model/comp-schema'
 export * from './model/current-schema'
 export * from './model/selected-comps'
-export * from './model/comp-schema'
-
-export * from './model/types'
 export * from './model/types.bindings'
+export * from './model/types'
 
 export { default as createNewComp } from './lib/create-new-comp'
 export { default as defineSelectedComp } from './lib/define-property-panel-comp'

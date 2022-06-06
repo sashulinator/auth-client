@@ -33,14 +33,6 @@ export type ComponentContext = DrawerContext & {
   schema: Schema
 }
 
-export enum ComponentNames {
-  TextField = 'TextField',
-  Stack = 'Stack',
-  NumberField = 'NumberField',
-  Dropdown = 'Dropdown',
-  Checkbox = 'Checkbox',
-}
-
 export interface EventProps {
   context: ComponentContext
   actionUnits: Norm<EventUnit>
