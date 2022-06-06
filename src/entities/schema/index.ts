@@ -3,6 +3,7 @@ export * from './model/selected-comps'
 export * from './model/comp-schema'
 
 export * from './model/types'
+export * from './model/types.bindings'
 
 export { default as createNewComp } from './lib/create-new-comp'
 export { default as defineSelectedComp } from './lib/define-property-panel-comp'
