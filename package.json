@@ -15,7 +15,7 @@
     "@atlaskit/tree": "8.6.0",
     "@fluentui/react": "8.49.0",
     "@savchenko91/rc-route-constant": "4.0.4",
-    "@savchenko91/schema-validator": "0.2.10",
+    "@savchenko91/schema-validator": "0.2.12",
     "@types/lodash.get": "4.4.7",
     "@types/object-diff": "0.0.2",
     "@types/qs": "6.9.7",

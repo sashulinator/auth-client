@@ -14,10 +14,10 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { AssertionUnit, AssertionUnitType, Comp, Norm, Schema } from '@/entities/schema'
+import { AssertionUnit, AssertionUnitType, Comp, Norm, Schema, hasSchema } from '@/entities/schema'
 import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
 import SchemaDrawer from '@/entities/schema/schema-drawer'
-import { assertionList, isWithValueAssertionItem } from '@/entities/schema/schema-drawer/lib/assertion-list'
+import { assertionList } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
@@ -156,7 +156,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
-        {isWithValueAssertionItem(assertionItem) && validatorItem && (
+        {hasSchema(assertionItem) && validatorItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}

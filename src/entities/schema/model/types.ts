@@ -1,3 +1,5 @@
+import { isObject } from '@savchenko91/schema-validator'
+
 export type Norm<T> = Record<string, T>
 
 export interface Schema {
@@ -47,6 +49,14 @@ export interface BindingUnit {
   children: string[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: any
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function hasSchema<T>(input: T | undefined): input is T & { schema: Schema } {
+  if (isObject(input) && 'schema' in input) {
+    return true
+  }
+  return false
 }
 
 export interface AssertionUnit extends BindingUnit {

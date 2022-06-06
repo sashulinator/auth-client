@@ -6,7 +6,7 @@ import optionsFromStringArray from '@/lib/options-from-string-array'
 
 export const eventAssertionList: Norm<Item> = {
   undefined: {
-    type: 'withValue',
+    type: 'assertion',
     function: _undefined,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -46,7 +46,7 @@ export const eventAssertionList: Norm<Item> = {
     },
   },
   visiting: {
-    type: 'withValue',
+    type: 'assertion',
     function: visiting,
     schema: {
       id: 'hereCouldBeYourAd',

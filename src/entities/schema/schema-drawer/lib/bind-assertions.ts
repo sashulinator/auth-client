@@ -48,12 +48,7 @@ function factory(assertionList: Norm<Item>, units: Norm<BindingUnit>, unitId: st
   const assertionItem = assertionList[compValidator.name]
   assertNotUndefined(assertionItem)
 
-  const isWithValueAssertion = assertionItem.type === 'withValue'
+  const props = formToOneValueIfNeeded(compValidator.props)
 
-  if (isWithValueAssertion) {
-    const props = formToOneValueIfNeeded(compValidator.props)
-    return withValue(props, assertionItem.function)
-  }
-
-  return assertionItem.function as any
+  return withValue(props, assertionItem.function)
 }

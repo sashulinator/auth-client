@@ -1,12 +1,10 @@
 import { IDropdownOption } from '@fluentui/react'
 import {
-  Assertion,
   assertMatchPattern,
   assertNotUndefined,
   assertNull,
   assertString,
   assertUndefined,
-  isObject,
 } from '@savchenko91/schema-validator'
 
 import { ComponentNames } from '../model/types'
@@ -15,23 +13,13 @@ import { ComponentNames } from '../model/types'
 import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '@/constants/common'
 import { Norm, Schema, SchemaType } from '@/entities/schema'
 
-type AssertionListItem = AssertionItem | WithValueAssertionItem
-
 export interface AssertionItem {
   type: 'assertion'
-  function: Assertion
-}
-
-export interface WithValueAssertionItem {
-  type: 'withValue'
-  // второй аргумент в ассёршене это объект который сабмитит схема
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (input: unknown, values: any) => void
-  // значения схемы прилетят во второй аргумент ассёршена
-  schema: Schema
+  schema?: Schema
 }
 
-export const assertionList: Norm<AssertionListItem> = {
+export const assertionList: Norm<AssertionItem> = {
   string: {
     type: 'assertion',
     function: assertString,
@@ -49,7 +37,7 @@ export const assertionList: Norm<AssertionListItem> = {
     function: assertNull,
   },
   matchPattern: {
-    type: 'withValue',
+    type: 'assertion',
     function: assertMatchPattern,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -75,13 +63,6 @@ export const assertionList: Norm<AssertionListItem> = {
       },
     },
   },
-}
-
-export function isWithValueAssertionItem(input: unknown): input is WithValueAssertionItem {
-  if (isObject(input) && 'schema' in input) {
-    return true
-  }
-  return false
 }
 
 export const assertionNameOptions: IDropdownOption[] = Object.keys(assertionList).map((assertionName) => {
