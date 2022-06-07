@@ -21,10 +21,10 @@ import {
   Norm,
   Schema,
   SchemaDrawer,
+  assertionList,
   basicComponentsSchemas,
+  hasSchema,
 } from '@/entities/schema'
-import { hasSchema } from '@/entities/schema/lib/is'
-import { assertionList } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'

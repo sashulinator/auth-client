@@ -1,6 +1,5 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { assertionList } from '../lib/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
 import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
@@ -9,7 +8,7 @@ import { ComponentContext } from '../model/types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
-import { Comp, CompSchema, Norm, Schema } from '@/entities/schema/model/types'
+import { Comp, CompSchema, Norm, Schema, assertionList } from '@/entities/schema'
 import FieldError from '@/shared/field-error'
 
 export interface FieldComponentProps {
