@@ -1,6 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Norm, actionList } from '../..'
+import { actionList } from '../../constants/action-list'
+import { Norm } from '../../model/types'
 import { EventListItem, EventProps } from '../model/types'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
