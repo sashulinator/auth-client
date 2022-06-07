@@ -14,10 +14,8 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, EventUnit, EventUnitType, Norm, Schema } from '@/entities/schema'
-import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
-import SchemaDrawer from '@/entities/schema/schema-drawer'
-import { isWithValueAssertionItem } from '@/entities/schema/schema-drawer/lib/assertion-list'
+import { Comp, EventUnit, EventUnitType, Norm, Schema, SchemaDrawer, basicComponentsSchemas } from '@/entities/schema'
+import { hasSchema } from '@/entities/schema/lib/is'
 import { eventAssertionList } from '@/entities/schema/schema-drawer/lib/event-assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
@@ -189,7 +187,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
             </Stack>
           )}
         </Stack>
-        {isWithValueAssertionItem(assertionItem) && bindingItem && (
+        {hasSchema(assertionItem) && bindingItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
@@ -200,7 +198,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
                   <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
                   <SchemaDrawer
                     schema={assertionItem.schema}
-                    schemas={dummySchemas}
+                    schemas={basicComponentsSchemas}
                     context={{
                       previewSchema: props.context?.previewSchema,
                       previewData: props.context?.previewData,

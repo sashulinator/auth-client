@@ -1,20 +1,20 @@
-import { Checkbox, IDropdownOption, Label, Stack } from '@fluentui/react'
+import { Checkbox, Label, Stack } from '@fluentui/react'
 
 import React, { useState } from 'react'
 
-import normalizeOptions from '@/lib/normalize-options'
+import { generateOptionsFromUnknown } from '@/lib/generate-options'
 
 interface MultiCheckboxProps {
   label: string
   childrenGap: number
-  options: IDropdownOption[] | string[]
+  options: unknown
   value: string[]
   onChange: (value: string[]) => void
 }
 
 export default function MultiCheckbox(props: MultiCheckboxProps): JSX.Element {
   const [value, setValue] = useState<string[]>(props.value || [])
-  const options = normalizeOptions(props.options)
+  const options = generateOptionsFromUnknown(props.options)
 
   function onChange(optionKey: string) {
     const clonedValue = [...value]

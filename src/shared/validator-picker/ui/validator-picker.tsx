@@ -14,10 +14,17 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { AssertionUnit, AssertionUnitType, Comp, Norm, Schema } from '@/entities/schema'
-import { dummySchemas } from '@/entities/schema/model/dummy-schemas'
-import SchemaDrawer from '@/entities/schema/schema-drawer'
-import { assertionList, isWithValueAssertionItem } from '@/entities/schema/schema-drawer/lib/assertion-list'
+import {
+  AssertionUnit,
+  AssertionUnitType,
+  Comp,
+  Norm,
+  Schema,
+  SchemaDrawer,
+  basicComponentsSchemas,
+} from '@/entities/schema'
+import { hasSchema } from '@/entities/schema/lib/is'
+import { assertionList } from '@/entities/schema/schema-drawer/lib/assertion-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
@@ -156,7 +163,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
-        {isWithValueAssertionItem(assertionItem) && validatorItem && (
+        {hasSchema(assertionItem) && validatorItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
@@ -170,7 +177,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
                   />
                   <SchemaDrawer
                     schema={assertionItem.schema}
-                    schemas={dummySchemas}
+                    schemas={basicComponentsSchemas}
                     context={{
                       formState: formProps.form.getState(),
                       formProps,

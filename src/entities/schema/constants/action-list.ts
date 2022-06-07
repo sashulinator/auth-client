@@ -1,20 +1,12 @@
-import { IDropdownOption } from '@fluentui/react'
+import { setValue } from '../lib/actions'
+import { Norm, SchemaType } from '../model/types'
+import { ActionListItem } from '../schema-drawer'
+import { BasicComponentsNames } from './basic-components-schemas'
 
-import { ComponentNames } from '../model/types'
-import { setValue } from './actions'
+import { generateOptionsFromObject } from '@/lib/generate-options'
 
-import { Norm, Schema, SchemaType } from '@/entities/schema'
-
-export interface ActionItem {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function: (...ars: any[]) => any
-  name: string
-  schema?: Schema
-}
-
-const actionList: Norm<ActionItem> = {
+export const actionList: Norm<ActionListItem> = {
   setValue: {
-    name: 'setValue',
     function: setValue,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -28,14 +20,14 @@ const actionList: Norm<ActionItem> = {
           name: 'hello',
           children: ['namesDropdown'],
           props: { tokens: { padding: '5px' } },
-          compSchemaId: ComponentNames.Stack,
+          compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {
           id: 'namesDropdown',
           title: 'name',
           name: 'name',
           props: { label: 'name' },
-          compSchemaId: ComponentNames.Dropdown,
+          compSchemaId: BasicComponentsNames.Dropdown,
           injections: [
             {
               from: 'context.previewData.names',
@@ -48,11 +40,4 @@ const actionList: Norm<ActionItem> = {
   },
 }
 
-export default actionList
-
-export const actionNameOptions: IDropdownOption[] = Object.keys(actionList).map((actionName) => {
-  return {
-    key: actionName,
-    text: actionName,
-  }
-})
+export const actionNameOptions = generateOptionsFromObject(actionList)

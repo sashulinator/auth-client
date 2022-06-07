@@ -2,7 +2,7 @@ import { Dropdown as DropdownUI, IDropdownProps, IDropdownStyles } from '@fluent
 
 import React, { FC } from 'react'
 
-import normalizeOptions from '@/lib/normalize-options'
+import { generateOptionsFromUnknown } from '@/lib/generate-options'
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: { width: 'initial' },
@@ -17,7 +17,8 @@ const dropdownStyles: Partial<IDropdownStyles> = {
 const Dropdown: FC<IDropdownProps & { onChange: (value?: any) => void; value: any; name?: string }> = (
   props
 ): JSX.Element | null => {
-  const options = normalizeOptions(props.options)
+  const options = generateOptionsFromUnknown(props.options)
+
   return (
     <DropdownUI
       {...props}

@@ -1,13 +1,13 @@
-import { ComponentNames, Item } from '../model/types'
-import { _undefined, visiting } from './event-assertions'
+import { EventAssertionListItem } from '../model/types'
+import { assertUndefined, assertVisited } from './event-assertions'
 
-import { Norm, SchemaType } from '@/entities/schema'
-import optionsFromStringArray from '@/lib/options-from-string-array'
+import { BasicComponentsNames, Norm } from '@/entities/schema'
+import { SchemaType } from '@/entities/schema/model/types'
+import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const eventAssertionList: Norm<Item> = {
+export const eventAssertionList: Norm<EventAssertionListItem> = {
   undefined: {
-    type: 'withValue',
-    function: _undefined,
+    function: assertUndefined,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
@@ -20,14 +20,14 @@ export const eventAssertionList: Norm<Item> = {
           name: 'hello',
           children: ['namesDropdown', 'isInit'],
           props: { tokens: { padding: '5px', childrenGap: '4px' } },
-          compSchemaId: ComponentNames.Stack,
+          compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {
           id: 'namesDropdown',
           title: 'name',
           name: 'name',
           props: { label: 'name' },
-          compSchemaId: ComponentNames.Dropdown,
+          compSchemaId: BasicComponentsNames.Dropdown,
           injections: [
             {
               from: 'context.previewData.names',
@@ -40,14 +40,13 @@ export const eventAssertionList: Norm<Item> = {
           title: 'initial value',
           name: 'isInit',
           props: { label: 'initial value' },
-          compSchemaId: ComponentNames.Checkbox,
+          compSchemaId: BasicComponentsNames.Checkbox,
         },
       },
     },
   },
-  visiting: {
-    type: 'withValue',
-    function: visiting,
+  visited: {
+    function: assertVisited,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
@@ -58,16 +57,16 @@ export const eventAssertionList: Norm<Item> = {
           id: 'ROOT_ID',
           title: 'stackRoot',
           name: 'hello',
-          children: ['namesDropdown', 'isNotVisited'],
+          children: ['namesDropdown'],
           props: { tokens: { padding: '5px', childrenGap: '4px' } },
-          compSchemaId: ComponentNames.Stack,
+          compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {
           id: 'namesDropdown',
           title: 'name',
           name: 'name',
           props: { label: 'name' },
-          compSchemaId: ComponentNames.Dropdown,
+          compSchemaId: BasicComponentsNames.Dropdown,
           injections: [
             {
               from: 'context.previewData.names',
@@ -75,16 +74,9 @@ export const eventAssertionList: Norm<Item> = {
             },
           ],
         },
-        isNotVisited: {
-          id: 'isNotVisited',
-          title: 'not visited',
-          name: 'isNotVisited',
-          props: { label: 'assert not visited' },
-          compSchemaId: ComponentNames.Checkbox,
-        },
       },
     },
   },
 }
 
-export const eventAssertionNameOptions = optionsFromStringArray(Object.keys(eventAssertionList))
+export const eventAssertionNameOptions = generateOptionsFromObject(eventAssertionList)

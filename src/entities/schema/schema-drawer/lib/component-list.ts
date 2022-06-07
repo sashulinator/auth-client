@@ -11,7 +11,7 @@ import {
   Text,
 } from '@fluentui/react'
 
-import { ComponentNames } from '../model/types'
+import { BasicComponentsNames } from '../..'
 
 import BindingPicker from '@/shared/binding-setter'
 import Collapse from '@/shared/collapse'
@@ -38,19 +38,19 @@ const componentList = {
 
   // Checkboxes
 
-  Checkbox: {
+  [BasicComponentsNames.Checkbox]: {
     type: 'checkbox',
     component: Checkbox,
   },
 
   // Inputs
 
-  [ComponentNames.TextField]: {
+  [BasicComponentsNames.TextField]: {
     type: 'input',
     component: CustomTextField,
   },
 
-  [ComponentNames.NumberField]: {
+  [BasicComponentsNames.NumberField]: {
     type: 'input',
     component: CustomNumberField,
   },
@@ -75,7 +75,7 @@ const componentList = {
     component: JSONEditor,
   },
 
-  [ComponentNames.Dropdown]: {
+  [BasicComponentsNames.Dropdown]: {
     type: 'input',
     component: Dropdown,
   },
@@ -92,7 +92,7 @@ const componentList = {
 
   // Contents
 
-  [ComponentNames.Stack]: {
+  [BasicComponentsNames.Stack]: {
     type: 'content',
     component: Stack,
   },
