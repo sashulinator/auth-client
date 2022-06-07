@@ -4,7 +4,7 @@ import uniqid from 'uniqid'
 
 import { Comp, ComponentItem, Schema } from '@/shared/schema-drawer'
 
-export default function createNewComp(schema: Schema, componentList: Record<string, ComponentItem>): Comp {
+export function createNewComp(schema: Schema, componentList: Record<string, ComponentItem>): Comp {
   const component = componentList[schema.componentName || '']
   assertNotUndefined(component)
 

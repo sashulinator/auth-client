@@ -1,5 +1,5 @@
-import { Comp, Norm } from '@/shared/schema-drawer/model/types'
+import { Comp, Norm } from '@/shared/schema-drawer'
 
-export default function findSchemaDependencies(comps: Norm<Comp>) {
+export function findSchemaDependencies(comps: Norm<Comp>) {
   return Object.values(comps).map((comp) => comp.compSchemaId)
 }

@@ -14,7 +14,7 @@ interface CompContextualMenuProps {
   comp: Comp
 }
 
-export default function CompContextualMenu(props: CompContextualMenuProps): JSX.Element | null {
+export function CompContextualMenu(props: CompContextualMenuProps): JSX.Element | null {
   const { t } = useTranslation()
 
   const items: IContextualMenuItem[] = []
