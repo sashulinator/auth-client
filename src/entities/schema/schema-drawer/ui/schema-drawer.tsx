@@ -1,10 +1,11 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../../lib/assertions'
+import isInputType from '../../lib/is'
+import { Comp, CompSchema, Norm, Schema } from '../../model/types'
 import { componentListBlind } from '../lib/component-list'
 import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
 import handleBindEvents from '../lib/handle-bind-events'
-import isInputType from '../lib/is-field-component'
 import { ComponentContext, Context, DrawerContext } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -12,7 +13,6 @@ import { FormState } from 'final-form'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, CompSchema, Norm, Schema } from '@/entities/schema'
 
 interface SchemaDrawerProps {
   schemas: Norm<Schema>
