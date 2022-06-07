@@ -4,8 +4,8 @@ import { stringify } from 'qs'
 
 import { assertsSchema } from '@/common/schemas'
 import { Incident } from '@/entities/incident/model/types'
-import { Schema } from '@/entities/schema'
 import ErrorFromObject from '@/lib/error-from-object'
+import { Schema } from '@/shared/schema-drawer'
 
 type GetSchemaParams = {
   queryKey: (string | undefined)[]

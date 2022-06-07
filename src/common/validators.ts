@@ -1,4 +1,4 @@
-import { Norm, Schema } from '@/entities/schema'
+import { Norm, Schema } from '@/shared/schema-drawer'
 
 export function isSchema(input: unknown): asserts input is Schema {
   return

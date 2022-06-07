@@ -1,4 +1,4 @@
-import { Norm, Schema } from '@/entities/schema'
+import { Norm, Schema } from '@/shared/schema-drawer'
 
 export default function findSchemaContainingCompId(compId = '', schemas: Norm<Schema> | null): Schema | null {
   if (schemas === null) {

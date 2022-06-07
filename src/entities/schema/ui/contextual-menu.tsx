@@ -4,8 +4,8 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, Norm, Schema } from '@/entities/schema'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
+import { Comp, Norm, Schema } from '@/shared/schema-drawer'
 
 interface CompContextualMenuProps {
   remove: (compId: string) => void

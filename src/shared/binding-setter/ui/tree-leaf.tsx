@@ -5,10 +5,15 @@ import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { EventUnit, EventUnitType } from '@/entities/schema'
-import { actionNameOptions, eventAssertionNameOptions, eventNameOptions } from '@/entities/schema/schema-drawer'
 import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { Dropdown } from '@/shared/dropdown'
+import {
+  EventUnit,
+  EventUnitType,
+  actionNameOptions,
+  eventAssertionNameOptions,
+  eventNameOptions,
+} from '@/shared/schema-drawer'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {

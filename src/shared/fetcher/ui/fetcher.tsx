@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { DrawerContext } from '@/entities/schema'
+import { DrawerContext } from '@/shared/schema-drawer'
 
 interface FetcherProps {
   url: string

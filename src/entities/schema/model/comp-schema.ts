@@ -1,6 +1,6 @@
 import { atom } from 'recoil'
 
-import { Norm, Schema } from '@/entities/schema'
+import { Norm, Schema } from '@/shared/schema-drawer'
 
 export const schemasState = atom<null | Norm<Schema>>({
   key: 'schemasState',

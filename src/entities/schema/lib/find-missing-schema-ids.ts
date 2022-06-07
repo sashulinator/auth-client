@@ -1,5 +1,6 @@
-import { Norm, Schema } from '../schema-drawer/model/types'
 import findSchemaDependencies from './find-schema-dependencies'
+
+import { Norm, Schema } from '@/shared/schema-drawer'
 
 export default function findMissingSchemas(schema: Schema, schemas: Norm<Schema> | null) {
   if (!schemas) {

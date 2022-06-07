@@ -1,4 +1,4 @@
-import { AssertionUnit, Norm } from '@/entities/schema'
+import { AssertionUnit, Norm } from '@/shared/schema-drawer'
 
 export default function isRequired(validators?: Norm<AssertionUnit>) {
   if (!validators) {

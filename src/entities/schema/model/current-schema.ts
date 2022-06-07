@@ -1,8 +1,8 @@
-import { Comp, Norm, Schema, SchemaType } from '../schema-drawer/model/types'
 import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
+import { Comp, Norm, Schema, SchemaType } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 // STATES

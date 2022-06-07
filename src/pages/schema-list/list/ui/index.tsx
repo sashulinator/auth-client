@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import { getSchemaList } from '@/api/schema'
 import ROUTES from '@/constants/routes'
-import { Schema } from '@/entities/schema'
+import { Schema } from '@/shared/schema-drawer'
 
 function List(): JSX.Element {
   const { data } = useQuery('schemas', getSchemaList)

@@ -10,8 +10,9 @@ import { useRecoilState } from 'recoil'
 import { getSchemaList } from '@/api/schema'
 import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
-import { Comp, Norm, Schema, createNewComp } from '@/entities/schema'
+import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
+import { Comp, Norm, Schema } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
   addNewComps: (comps: Norm<Comp>) => void

@@ -2,7 +2,7 @@ import { IPivotProps, PivotItem, Pivot as PivotUI } from '@fluentui/react'
 
 import React from 'react'
 
-import { Comp, Norm } from '@/entities/schema'
+import { Comp, Norm } from '@/shared/schema-drawer'
 
 type PivotProps = IPivotProps & { label: string; children: React.ReactNode[] }
 

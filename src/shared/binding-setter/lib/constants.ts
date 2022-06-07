@@ -1,7 +1,7 @@
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { EventUnit, EventUnitType, Norm } from '@/entities/schema'
+import { EventUnit, EventUnitType, Norm } from '@/shared/schema-drawer'
 
 const id = uniqid()
 

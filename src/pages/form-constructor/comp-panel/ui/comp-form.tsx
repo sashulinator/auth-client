@@ -5,8 +5,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { Comp, Norm, Schema, SchemaDrawer } from '@/entities/schema'
 import Autosave from '@/shared/autosave/ui/autosave'
+import SchemaDrawer, { Comp, Norm, Schema } from '@/shared/schema-drawer'
 
 interface CompFormProps {
   previewSchema: Schema

@@ -15,11 +15,19 @@ import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
-import { Comp, EventUnit, EventUnitType, Norm, Schema, SchemaDrawer, hasSchema } from '@/entities/schema'
-import { basicComponentsSchemas, eventAssertionList } from '@/entities/schema/schema-drawer'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import SchemaDrawer, {
+  Comp,
+  EventUnit,
+  EventUnitType,
+  Norm,
+  Schema,
+  basicComponentsSchemas,
+  eventAssertionList,
+  hasSchema,
+} from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
 
 export interface BindingSetterProps {

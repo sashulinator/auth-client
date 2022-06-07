@@ -12,11 +12,11 @@ import {
   wrap,
 } from '@savchenko91/schema-validator'
 
-import { Schema } from '../entities/schema'
 import { assertSchemaComponentNameIsValid } from './assertions'
 
 import ErrorFromObject from '@/lib/error-from-object'
 import { rootOnly } from '@/lib/validators'
+import { Schema } from '@/shared/schema-drawer'
 
 export const schemaValidator = rootOnly({
   componentName: or(_null, withRef('type', assertSchemaComponentNameIsValid)),

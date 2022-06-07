@@ -7,7 +7,7 @@ import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { Norm, Schema, SchemaDrawer } from '@/entities/schema'
+import SchemaDrawer, { Norm, Schema } from '@/shared/schema-drawer'
 import { setCSSVar } from '@/shared/theme'
 
 interface PreviewProps {

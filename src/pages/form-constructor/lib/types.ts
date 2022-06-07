@@ -1,6 +1,6 @@
 import { SetterOrUpdater } from 'recoil'
 
-import { Comp, Norm, Schema } from '@/entities/schema'
+import { Comp, Norm, Schema } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 export interface PropertyPanelContext {

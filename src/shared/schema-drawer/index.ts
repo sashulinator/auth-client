@@ -11,3 +11,6 @@ export * from './lib/actions'
 export * from './lib/assertions'
 export * from './lib/event-assertions'
 export * from './lib/events'
+export * from './lib/is'
+
+export * from './model/types'
