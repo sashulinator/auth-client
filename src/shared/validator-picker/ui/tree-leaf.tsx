@@ -5,7 +5,8 @@ import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { AssertionUnit, AssertionUnitType, assertionNameOptions } from '@/entities/schema'
+import { AssertionUnit, AssertionUnitType } from '@/entities/schema'
+import { assertionNameOptions } from '@/entities/schema/schema-drawer'
 import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { Dropdown } from '@/shared/dropdown'
 

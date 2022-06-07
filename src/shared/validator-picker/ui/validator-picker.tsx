@@ -15,17 +15,8 @@ import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
-import {
-  AssertionUnit,
-  AssertionUnitType,
-  Comp,
-  Norm,
-  Schema,
-  SchemaDrawer,
-  assertionList,
-  basicComponentsSchemas,
-  hasSchema,
-} from '@/entities/schema'
+import { AssertionUnit, AssertionUnitType, Comp, Norm, Schema, SchemaDrawer, hasSchema } from '@/entities/schema'
+import { assertionList, basicComponentsSchemas } from '@/entities/schema/schema-drawer'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'

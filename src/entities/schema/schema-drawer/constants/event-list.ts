@@ -1,5 +1,5 @@
 import { onFieldChange } from '../lib/events'
-import { EventListItem, Norm } from '../schema-drawer/model/types'
+import { EventListItem, Norm } from '../model/types'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 

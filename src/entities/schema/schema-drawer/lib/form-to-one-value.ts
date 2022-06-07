@@ -1,6 +1,6 @@
 import { isObject } from '@savchenko91/schema-validator'
 
-import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '../../constants/constants'
+import { MUTATE_ALL_FORM_VALUES_TO_STRING } from '../constants/constants'
 
 /**
  * Mutates all form values to one if MUTATE_ALL_FORM_VALUES_TO_STRING set

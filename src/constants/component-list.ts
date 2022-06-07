@@ -1,6 +1,7 @@
 import { ActionButton, Checkbox, IconButton, Label, Link, PrimaryButton, SearchBox, Stack, Text } from '@fluentui/react'
 
-import { BasicComponentsNames, ComponentItem } from '@/entities/schema'
+import { ComponentItem } from '@/entities/schema'
+import { BasicComponentsNames } from '@/entities/schema/schema-drawer'
 import { generateOptionsFromObject } from '@/lib/generate-options'
 import BindingPicker from '@/shared/binding-setter'
 import Collapse from '@/shared/collapse'

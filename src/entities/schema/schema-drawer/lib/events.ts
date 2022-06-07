@@ -1,6 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { EventProps } from '../schema-drawer/model/types'
+import { EventProps } from '../model/types'
 
 export function onFieldChange(eventProps: EventProps) {
   const { context, emitActions } = eventProps

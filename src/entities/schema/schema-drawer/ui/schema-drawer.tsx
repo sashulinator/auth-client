@@ -1,7 +1,7 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { assertCompSchema } from '../../lib/assertions'
 import isInputType from '../../lib/is'
+import { assertCompSchema } from '../lib/assertions'
 import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
 import handleBindEvents from '../lib/handle-bind-events'
 import { Comp, CompSchema, ComponentContext, ComponentItem, Context, DrawerContext, Norm, Schema } from '../model/types'

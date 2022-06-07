@@ -1,5 +1,5 @@
 import { assertUndefined, assertVisited } from '../lib/event-assertions'
-import { EventAssertionListItem, Norm, SchemaType } from '../schema-drawer/model/types'
+import { EventAssertionListItem, Norm, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'

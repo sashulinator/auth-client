@@ -1,6 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { assertionList } from '../../constants/assertion-list'
+import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
