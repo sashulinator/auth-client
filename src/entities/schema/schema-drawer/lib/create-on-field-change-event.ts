@@ -1,4 +1,4 @@
-import { DrawerContext } from '../../model/types'
+import { DrawerContext } from '../model/types'
 import { diff } from 'deep-object-diff'
 import { getIn } from 'final-form'
 

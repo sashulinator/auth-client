@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { actionList } from '../../constants/action-list'
 import { eventAssertionList } from '../../constants/event-assertion-list'
 import { eventList } from '../../constants/event-list'
-import { ActionProps, ComponentContext, EventUnit, EventUnitType, Norm } from '../../model/types'
+import { ActionProps, ComponentContext, EventUnit, EventUnitType, Norm } from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { insert, replace } from '@/lib/change-unmutable'

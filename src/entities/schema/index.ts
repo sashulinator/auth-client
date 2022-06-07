@@ -9,7 +9,7 @@ export * from './constants/event-list'
 export * from './model/comp-schema'
 export * from './model/current-schema'
 export * from './model/selected-comps'
-export * from './model/types'
+export * from './schema-drawer/model/types'
 
 export * from './lib/is'
 export { default as createNewComp } from './lib/create-new-comp'

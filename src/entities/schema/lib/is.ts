@@ -1,6 +1,6 @@
 import { isObject } from '@savchenko91/schema-validator'
 
-import { Schema } from '../model/types'
+import { Schema } from '../schema-drawer/model/types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function hasSchema<T>(input: T | undefined): input is T & { schema: Schema } {

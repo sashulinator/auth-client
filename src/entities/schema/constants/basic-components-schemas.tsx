@@ -2,7 +2,7 @@
   По сути является мапингом на базовые компоненты для компсов
   Полезно когда нужно просто отрисовать простенькую форму
 */
-import { Norm, Schema, SchemaType } from '../model/types'
+import { Norm, Schema, SchemaType } from '../schema-drawer/model/types'
 
 export enum BasicComponentsNames {
   TextField = 'TextField',

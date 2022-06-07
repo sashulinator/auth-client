@@ -1,5 +1,5 @@
 import { setValue } from '../lib/actions'
-import { ActionListItem, Norm, SchemaType } from '../model/types'
+import { ActionListItem, Norm, SchemaType } from '../schema-drawer/model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'

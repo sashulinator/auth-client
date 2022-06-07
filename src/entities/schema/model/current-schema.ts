@@ -1,4 +1,4 @@
-import { Comp, Norm, Schema, SchemaType } from '../model/types'
+import { Comp, Norm, Schema, SchemaType } from '../schema-drawer/model/types'
 import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'

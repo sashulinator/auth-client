@@ -1,4 +1,4 @@
-import { Comp, Context } from '../../model/types'
+import { Comp, Context } from '../model/types'
 import get from 'lodash.get'
 
 import buildObject from '@/lib/build-object'
