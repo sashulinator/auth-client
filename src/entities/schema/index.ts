@@ -9,7 +9,6 @@ export * from './constants/event-list'
 export * from './model/comp-schema'
 export * from './model/current-schema'
 export * from './model/selected-comps'
-export * from './model/types.bindings'
 export * from './model/types'
 
 export * from './lib/is'
@@ -23,4 +22,3 @@ export { default as findContainingCompId } from './lib/find-schema-containing-co
 export { default as CompContextualMenu } from './ui/contextual-menu'
 
 export { default as SchemaDrawer } from './schema-drawer'
-export * from './schema-drawer'

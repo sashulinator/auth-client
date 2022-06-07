@@ -10,8 +10,7 @@ import {
   withValue,
 } from '@savchenko91/schema-validator'
 
-import { ListItem, Norm } from '../../model/types'
-import { BindingUnit } from '../../model/types.bindings'
+import { BindingUnit, ListItem, Norm } from '../../model/types'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
