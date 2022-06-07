@@ -3,7 +3,7 @@ export * from './model/current-schema'
 export * from './model/selected-comps'
 export * from './schema-drawer/model/types'
 
-export * from './lib/is'
+export * from './schema-drawer/lib/is'
 export { default as createNewComp } from './lib/create-new-comp'
 export { default as defineSelectedComp } from './lib/define-property-panel-comp'
 export { default as findMissingSchemaIds } from './lib/find-missing-schema-ids'
