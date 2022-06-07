@@ -1,10 +1,8 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { ComponentContext } from '../model/types'
+import { Comp, CompSchema, ComponentContext, ComponentItem, Norm, Schema } from '../../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
-
-import { Comp, CompSchema, ComponentItem, Norm, Schema } from '@/entities/schema'
 
 export interface ContentComponentProps {
   schemas: Norm<Schema>

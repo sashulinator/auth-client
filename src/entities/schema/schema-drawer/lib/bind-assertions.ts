@@ -10,11 +10,11 @@ import {
   withValue,
 } from '@savchenko91/schema-validator'
 
-import { ListItem } from '../model/types'
+import { ListItem, Norm } from '../../model/types'
+import { BindingUnit } from '../../model/types.bindings'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
-import { BindingUnit, Norm } from '@/entities/schema'
 
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
