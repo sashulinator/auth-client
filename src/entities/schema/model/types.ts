@@ -16,11 +16,6 @@ export interface Schema {
 export type CompSchema = Omit<Schema, 'componentName'> & {
   componentName: string
 }
-export interface History<Data> {
-  prev: null | History<Data>
-  next: null | History<Data>
-  data: Data
-}
 
 export interface Comp {
   id: string

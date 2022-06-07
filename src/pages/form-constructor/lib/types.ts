@@ -1,6 +1,7 @@
 import { SetterOrUpdater } from 'recoil'
 
-import { Comp, History, Norm, Schema } from '@/entities/schema'
+import { Comp, Norm, Schema } from '@/entities/schema'
+import { DoublyLinkedList } from '@/types/common'
 
 export interface PropertyPanelContext {
   states: {
@@ -11,7 +12,7 @@ export interface PropertyPanelContext {
     selectedCompSchema: Schema | null
   }
   functions: {
-    setCurrentSchemaHistory: SetterOrUpdater<History<Schema>>
+    setCurrentSchemaHistory: SetterOrUpdater<DoublyLinkedList<Schema>>
     setSelectedCompIds: SetterOrUpdater<string[]>
   }
 }

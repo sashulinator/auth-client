@@ -1,12 +1,13 @@
-import { Comp, History, Norm, Schema, SchemaType } from '../model/types'
+import { Comp, Norm, Schema, SchemaType } from '../model/types'
 import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
+import { DoublyLinkedList } from '@/types/common'
 
 // STATES
 
-export const currentSchemaHistoryState = atom<History<Schema>>({
+export const currentSchemaHistoryState = atom<DoublyLinkedList<Schema>>({
   key: 'currentSchemaHistoryState',
   default: {
     prev: null,
@@ -32,7 +33,7 @@ export const currentSchemaHistoryState = atom<History<Schema>>({
 // SETTERS
 
 export function schemaSetter(schema: Schema) {
-  return (currentSchemaHistory: History<Schema>): History<Schema> => {
+  return (currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> => {
     return {
       prev: currentSchemaHistory,
       next: null,
@@ -42,7 +43,7 @@ export function schemaSetter(schema: Schema) {
 }
 
 export function updateCompsSetter(comps: Norm<Comp>) {
-  return (currentSchemaHistory: History<Schema>): History<Schema> => {
+  return (currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> => {
     return {
       prev: currentSchemaHistory,
       next: null,
@@ -52,7 +53,7 @@ export function updateCompsSetter(comps: Norm<Comp>) {
 }
 
 export function updateCompSetter(comp: Comp) {
-  return (currentSchemaHistory: History<Schema>): History<Schema> => {
+  return (currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> => {
     const comps = replace(currentSchemaHistory.data.comps, comp.id, comp)
 
     return {
@@ -63,7 +64,7 @@ export function updateCompSetter(comp: Comp) {
   }
 }
 
-export function prevSetter(currentSchemaHistory: History<Schema>): History<Schema> {
+export function prevSetter(currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> {
   if (currentSchemaHistory.prev === null) {
     return currentSchemaHistory
   }
@@ -77,7 +78,7 @@ export function prevSetter(currentSchemaHistory: History<Schema>): History<Schem
   return newState
 }
 
-export function nextSetter(currentSchemaHistory: History<Schema>): History<Schema> {
+export function nextSetter(currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> {
   if (currentSchemaHistory.next === null) {
     return currentSchemaHistory
   }
