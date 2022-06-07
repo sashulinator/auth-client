@@ -1,8 +1,10 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { EventUnit, EventUnitType, Norm, actionList } from '../..'
+import { actionList } from '../../constants/action-list'
+import { eventList } from '../../constants/event-list'
+import { Norm } from '../../model/types'
+import { EventUnit, EventUnitType } from '../../model/types.bindings'
 import { ComponentContext } from '../model/types'
-import { eventList } from './event-list'
 
 import { findEntities } from '@/lib/entity-actions'
 

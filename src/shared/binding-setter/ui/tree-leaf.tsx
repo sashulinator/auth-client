@@ -5,8 +5,13 @@ import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
-import { EventUnit, EventUnitType, actionNameOptions, eventAssertionNameOptions } from '@/entities/schema'
-import { eventNameOptions } from '@/entities/schema/schema-drawer/lib/event-list'
+import {
+  EventUnit,
+  EventUnitType,
+  actionNameOptions,
+  eventAssertionNameOptions,
+  eventNameOptions,
+} from '@/entities/schema'
 import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { Dropdown } from '@/shared/dropdown'
 

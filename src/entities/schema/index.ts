@@ -4,6 +4,7 @@ export * from './constants/action-list'
 export * from './constants/assertion-list'
 export * from './constants/basic-components-schemas'
 export * from './constants/event-assertion-list'
+export * from './constants/event-list'
 
 export * from './model/comp-schema'
 export * from './model/current-schema'
