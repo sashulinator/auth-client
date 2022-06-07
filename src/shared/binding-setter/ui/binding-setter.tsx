@@ -14,6 +14,7 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
+import componentList from '@/constants/component-list'
 import {
   Comp,
   EventUnit,
@@ -205,6 +206,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
                 <>
                   <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
                   <SchemaDrawer
+                    componentList={componentList}
                     schema={assertionItem.schema}
                     schemas={basicComponentsSchemas}
                     context={{

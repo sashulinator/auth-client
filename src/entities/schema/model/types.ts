@@ -42,3 +42,9 @@ export enum SchemaType {
   PRESET = 'PRESET',
   COMP = 'COMP',
 }
+
+export interface ComponentItem {
+  type: 'checkbox' | 'input' | 'content'
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: any
+}

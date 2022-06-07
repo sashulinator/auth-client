@@ -14,6 +14,7 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
+import componentList from '@/constants/component-list'
 import {
   AssertionUnit,
   AssertionUnitType,
@@ -176,6 +177,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
                     debounce={500}
                   />
                   <SchemaDrawer
+                    componentList={componentList}
                     schema={assertionItem.schema}
                     schemas={basicComponentsSchemas}
                     context={{

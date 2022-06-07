@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 
 import { getSchemaList } from '@/api/schema'
 import { ROOT_ID } from '@/constants/common'
+import componentList from '@/constants/component-list'
 import { Comp, Norm, Schema, createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
 
@@ -23,7 +24,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   const { data } = useQuery('schemas', getSchemaList)
 
   function onAdd(schema: Schema) {
-    const createdNewComp = createNewComp(schema)
+    const createdNewComp = createNewComp(schema, componentList)
     props.addNewComps({ [createdNewComp.id]: createdNewComp })
     setOpen(false)
   }

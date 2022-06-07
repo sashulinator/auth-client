@@ -1,11 +1,10 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { componentListBlind } from '../lib/component-list'
 import { ComponentContext } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 
-import { Comp, CompSchema, Norm, Schema } from '@/entities/schema'
+import { Comp, CompSchema, ComponentItem, Norm, Schema } from '@/entities/schema'
 
 export interface ContentComponentProps {
   schemas: Norm<Schema>
@@ -13,10 +12,11 @@ export interface ContentComponentProps {
   comps: Norm<Comp>
   comp: Comp
   context: ComponentContext
+  componentList: Record<string, ComponentItem>
 }
 
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {
-  const сomponentItem = componentListBlind[props.schema.componentName]
+  const сomponentItem = props.componentList[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
   if (props.comp.children === undefined) {
@@ -37,6 +37,7 @@ const ContentComponent = memo(function ContentComponent(props: ContentComponentP
             compId={compId}
             schemas={props.schemas}
             context={props.context}
+            componentList={props.componentList}
           />
         )
       })}

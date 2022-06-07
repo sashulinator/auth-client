@@ -2,8 +2,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../../lib/assertions'
 import isInputType from '../../lib/is'
-import { Comp, CompSchema, Norm, Schema } from '../../model/types'
-import { componentListBlind } from '../lib/component-list'
+import { Comp, CompSchema, ComponentItem, Norm, Schema } from '../../model/types'
 import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
 import handleBindEvents from '../lib/handle-bind-events'
 import { ComponentContext, Context, DrawerContext } from '../model/types'
@@ -18,6 +17,7 @@ interface SchemaDrawerProps {
   schemas: Norm<Schema>
   schema: Schema
   context: Context
+  componentList: Record<string, ComponentItem>
 }
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
@@ -48,7 +48,15 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   if (props.schemas === null) {
     return null
   }
-  return <ComponentFactory context={context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
+  return (
+    <ComponentFactory
+      context={context}
+      comps={props.schema.comps}
+      compId={rootComp.id}
+      schemas={props.schemas}
+      componentList={props.componentList}
+    />
+  )
 }
 
 /**
@@ -63,6 +71,7 @@ interface ComponentFactoryProps {
   comps: Norm<Comp>
   compId: string
   context: DrawerContext
+  componentList: Record<string, ComponentItem>
 }
 
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
@@ -88,7 +97,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   assertCompSchema(schema)
 
-  const сomponentItem = componentListBlind[schema.componentName]
+  const сomponentItem = props.componentList[schema.componentName]
 
   if (!сomponentItem) {
     return (
@@ -99,8 +108,25 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   }
 
   if (isInputType(сomponentItem)) {
-    return <FieldComponent context={context} comp={comp} schema={schema} schemas={props.schemas} />
+    return (
+      <FieldComponent
+        context={context}
+        comp={comp}
+        schema={schema}
+        schemas={props.schemas}
+        componentList={props.componentList}
+      />
+    )
   }
 
-  return <ContentComponent context={context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
+  return (
+    <ContentComponent
+      context={context}
+      comp={comp}
+      schema={schema}
+      schemas={props.schemas}
+      comps={props.comps}
+      componentList={props.componentList}
+    />
+  )
 }

@@ -4,6 +4,7 @@ import { Config } from 'final-form'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Form } from 'react-final-form'
 
+import componentList from '@/constants/component-list'
 import { Comp, Norm, Schema, SchemaDrawer } from '@/entities/schema'
 import Autosave from '@/shared/autosave/ui/autosave'
 
@@ -49,6 +50,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
               </Stack>
               <Stack>
                 <SchemaDrawer
+                  componentList={componentList}
                   schema={props.schema}
                   schemas={props.schemas}
                   context={{
