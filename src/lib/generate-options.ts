@@ -1,11 +1,11 @@
 import { IDropdownOption } from '@fluentui/react'
 import { isObject, number, or, string } from '@savchenko91/schema-validator'
 
-import { isArrayOfStringArrays, isStringArray } from './is'
+import { isArrayOfStringArrays, isObjectWithNumberKeys, isStringArray } from './is'
 
-import { rootOnly } from '@/lib/validators'
+import { rootWrap } from '@/lib/validators'
 
-export function generateOptionsFromObject(object: Record<string, unknown>) {
+export function generateOptionsFromObject(object: Record<string, unknown>): IDropdownOption[] {
   return generateOptionsFromStringArray(Object.keys(object))
 }
 
@@ -18,7 +18,7 @@ export function generateOptionsFromArrayOfStringArrays(arrayOfArrays: [string, s
   })
 }
 
-export function generateOptionsFromStringArray(arr: string[], t?: (s: string) => string) {
+export function generateOptionsFromStringArray(arr: string[], t?: (s: string) => string): IDropdownOption[] {
   return arr.map((string) => ({
     text: t ? t(string.toString()) : string,
     key: string,
@@ -26,12 +26,12 @@ export function generateOptionsFromStringArray(arr: string[], t?: (s: string) =>
 }
 
 export function generateOptionsFromUnknown(options: unknown): IDropdownOption[] {
-  if (isDropdownOptions(options)) {
-    return options
+  if (isObjectWithNumberKeys(options)) {
+    return generateOptionsFromUnknown(Object.values(options))
   }
 
-  if (isObject(options)) {
-    generateOptionsFromObject(options)
+  if (isDropdownOptions(options)) {
+    return options
   }
 
   if (isStringArray(options)) {
@@ -42,13 +42,17 @@ export function generateOptionsFromUnknown(options: unknown): IDropdownOption[] 
     return generateOptionsFromArrayOfStringArrays(options)
   }
 
+  if (isObject(options)) {
+    return generateOptionsFromObject(options)
+  }
+
   return []
 }
 
 // Private
 
 function isDropdownOptions(input: unknown): input is IDropdownOption[] {
-  const validator = rootOnly([
+  const validator = rootWrap([
     {
       key: or(string, number),
       text: string,

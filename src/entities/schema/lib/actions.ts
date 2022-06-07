@@ -1,5 +1,3 @@
-import { Meta } from '@savchenko91/schema-validator'
-
 import { EventUnit, EventUnitType, Norm } from '..'
 import bindAssertions from '../schema-drawer/lib/bind-assertions'
 import { eventAssertionList } from '../schema-drawer/lib/event-assertion-list'
@@ -10,17 +8,20 @@ import { findEntity } from '@/lib/entity-actions'
 
 const operatorId = 'operatorId'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function setValue(actionProps: ActionProps, value: Record<string, unknown>) {
+interface SetValueProps {
+  name: string
+}
+
+export function setValue(actionProps: ActionProps, value: SetValueProps) {
   const { actionUnit, context, bindings } = actionProps
-  const eventFieldName = actionUnit.props.name as string
+  const eventFieldName = actionUnit.props.name
 
   if (actionUnit.children?.[0]) {
     const newBindings = addRootOperator(bindings, actionUnit.id)
 
     const validate = bindAssertions(eventAssertionList, newBindings, operatorId)
 
-    const errors = validate?.(value, { payload: actionProps } as Meta)
+    const errors = validate?.(value, { payload: actionProps, path: '' })
 
     if (errors) {
       return

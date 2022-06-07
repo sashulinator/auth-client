@@ -1,4 +1,3 @@
-import { IDropdownOption } from '@fluentui/react'
 import {
   assertMatchPattern,
   assertNotUndefined,
@@ -7,18 +6,11 @@ import {
   assertUndefined,
 } from '@savchenko91/schema-validator'
 
-import { BasicComponentsNames, MUTATE_ALL_FORM_VALUES_TO_STRING, Norm, Schema, SchemaType } from '../..'
+import { AssertionListItem, BasicComponentsNames, MUTATE_ALL_FORM_VALUES_TO_STRING, Norm, SchemaType } from '../..'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-// import { assertMatchPattern } from './custom-assertions'
-
-export interface AssertionItem {
-  function: (input: unknown, values: any) => void
-  schema?: Schema
-}
-
-export const assertionList: Norm<AssertionItem> = {
+export const assertionList: Norm<AssertionListItem> = {
   string: {
     function: assertString,
   },
@@ -59,4 +51,4 @@ export const assertionList: Norm<AssertionItem> = {
   },
 }
 
-export const assertionNameOptions: IDropdownOption[] = generateOptionsFromObject(assertionList)
+export const assertionNameOptions = generateOptionsFromObject(assertionList)

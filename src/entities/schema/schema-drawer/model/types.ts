@@ -1,8 +1,9 @@
-import { EventItem } from '../lib/event-list'
+import { Meta } from '@savchenko91/schema-validator'
+
 import { FormState } from 'final-form'
 import { FormRenderProps } from 'react-final-form'
 
-import { ActionItem, Comp, EventUnit, Norm, Schema } from '@/entities/schema'
+import { Comp, EventUnit, Norm, Schema } from '@/entities/schema'
 
 export type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,20 +36,40 @@ export type ComponentContext = DrawerContext & {
 export interface EventProps {
   context: ComponentContext
   actionUnits: Norm<EventUnit>
-  actionItems: ActionItem[]
-  eventItem: EventItem
+  actionItems: ActionListItem[]
+  eventItem: EventListItem
   eventUnit: EventUnit
   bindings: Norm<EventUnit>
 }
 
 export interface ActionProps extends EventProps {
-  actionItem: ActionItem[]
+  actionItem: ActionListItem
   actionUnit: EventUnit
 }
 
-export interface Item {
-  // второй аргумент в ассёршене это объект который сабмитит схема
+export interface ListItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function: ((input: unknown, values: any) => void) | ((input: unknown, value: any, values: any) => void)
+  function: (...args: any[]) => any
   schema?: Schema
+}
+
+export interface EventListItem extends ListItem {
+  function: (eventProps: EventProps) => () => void
+}
+
+export interface ActionListItem extends ListItem {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function: (actionProps: ActionProps, value: any) => void
+}
+
+export interface AssertionListItem extends ListItem {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function: (input: any, input2: any, meta: Meta) => void
+}
+
+export type EventAssertionMeta = Meta & { payload: ActionProps }
+
+export interface EventAssertionListItem extends ListItem {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function: (input: any, input2: any, meta: EventAssertionMeta) => void
 }

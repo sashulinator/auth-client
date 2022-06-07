@@ -1,12 +1,13 @@
-import { Item } from '../model/types'
-import { _undefined, visiting } from './event-assertions'
+import { EventAssertionListItem } from '../model/types'
+import { assertUndefined, assertVisited } from './event-assertions'
 
-import { BasicComponentsNames, Norm, SchemaType } from '@/entities/schema'
+import { BasicComponentsNames, Norm } from '@/entities/schema'
+import { SchemaType } from '@/entities/schema/model/types'
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const eventAssertionList: Norm<Item> = {
+export const eventAssertionList: Norm<EventAssertionListItem> = {
   undefined: {
-    function: _undefined,
+    function: assertUndefined,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
@@ -44,8 +45,8 @@ export const eventAssertionList: Norm<Item> = {
       },
     },
   },
-  visiting: {
-    function: visiting,
+  visited: {
+    function: assertVisited,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
@@ -56,7 +57,7 @@ export const eventAssertionList: Norm<Item> = {
           id: 'ROOT_ID',
           title: 'stackRoot',
           name: 'hello',
-          children: ['namesDropdown', 'isNotVisited'],
+          children: ['namesDropdown'],
           props: { tokens: { padding: '5px', childrenGap: '4px' } },
           compSchemaId: BasicComponentsNames.Stack,
         },
@@ -72,13 +73,6 @@ export const eventAssertionList: Norm<Item> = {
               to: 'props.options',
             },
           ],
-        },
-        isNotVisited: {
-          id: 'isNotVisited',
-          title: 'not visited',
-          name: 'isNotVisited',
-          props: { label: 'assert not visited' },
-          compSchemaId: BasicComponentsNames.Checkbox,
         },
       },
     },

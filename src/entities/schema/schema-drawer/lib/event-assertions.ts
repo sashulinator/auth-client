@@ -1,31 +1,31 @@
-import { Meta } from '@savchenko91/schema-validator'
+import { EventAssertionMeta } from '../model/types'
 
-import { ActionProps } from '../model/types'
+interface AssertUndefinedProps {
+  name: string
+  isInit: boolean
+}
 
-type EventAssertionMeta = Meta & { payload: ActionProps }
-
-export function _undefined(value: unknown, assertionProps: any, meta: EventAssertionMeta) {
-  const { context } = meta?.payload
-  const eventFieldName = assertionProps?.name as string
-  const isInit = assertionProps?.isInit as boolean
-  const targetValue = context?.formProps?.form?.getFieldState(eventFieldName)?.[isInit ? 'initial' : 'value']
+export function assertUndefined(v: unknown, assertionProps: AssertUndefinedProps, meta: EventAssertionMeta) {
+  const { context } = meta.payload
+  const fieldState = context.formProps.form.getFieldState(assertionProps.name)
+  const targetValue = fieldState?.[assertionProps.isInit ? 'initial' : 'value']
 
   if (targetValue !== undefined) {
     throw new Error('Target init value is not undefined!')
   }
 }
 
-export function visiting(value: unknown, assertionProps: any, meta: EventAssertionMeta) {
+//
+
+interface AssertVisitedProps {
+  name: string
+}
+
+export function assertVisited(v: unknown, assertionProps: AssertVisitedProps, meta: EventAssertionMeta) {
   const { context } = meta?.payload
-  const eventFieldName = assertionProps?.name as string
-  const isNotVisiting = assertionProps?.isNotVisited as string
-  const visited = context?.formProps?.form?.getFieldState(eventFieldName)?.visited
+  const visited = context.formProps.form.getFieldState(assertionProps.name)?.visited
 
-  if (isNotVisiting && visited) {
+  if (visited) {
     throw new Error('Field was not visited!')
-  }
-
-  if (!isNotVisiting && !visited) {
-    throw new Error('Field visited!')
   }
 }

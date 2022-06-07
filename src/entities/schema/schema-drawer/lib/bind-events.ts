@@ -40,6 +40,8 @@ export default function bindEvents(context: ComponentContext) {
   })
 }
 
+// Private
+
 function getEventUnits(units: Norm<EventUnit>): EventUnit[] {
   return Object.values(units).filter((binding) => binding.type === EventUnitType.EVENT)
 }

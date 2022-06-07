@@ -1887,10 +1887,10 @@
   resolved "https://registry.yarnpkg.com/@savchenko91/rc-route-constant/-/rc-route-constant-4.0.4.tgz#e948b8090bcf05a09a6f69f13a60aaed27c299ea"
   integrity sha512-9Hw2yv8zNR3YnlvZWUzVv4nxUGOi/tHm5AMG7kryXJU6n6ykLElJolMo4wYGOgiPDdafgUZabRPUcK5pnrn2wQ==
 
-"@savchenko91/schema-validator@0.2.12":
-  version "0.2.12"
-  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.12.tgz#c1039d2b27dbd05ad7b3ed2bd3353a50adf1009b"
-  integrity sha512-CKtt1RaMyfGJIPY6Cy1i6uzKW+Z7NZuMwkDqyP15fRF70NjS9dncL74s1GFIfJHE2Xi3MQFlQN2/J+1iUnqNrw==
+"@savchenko91/schema-validator@0.2.14":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@savchenko91/schema-validator/-/schema-validator-0.2.14.tgz#8d230e96bf260cd9cfd204b54248e66ea627290f"
+  integrity sha512-KTVKaRt8hlB3F2UrvegaSxu3lQzTU8yeIYdNWU2D4jTSEXdvTlMkMT7QH516g8x3IAcCgB5lGr+uXG8LhNVGgA==
 
 "@sinclair/typebox@^0.23.3":
   version "0.23.5"
