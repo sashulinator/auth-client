@@ -24,6 +24,7 @@ import SchemaDrawer, {
   EventUnitType,
   Norm,
   Schema,
+  actionList,
   basicComponentsSchemas,
   eventAssertionList,
   hasSchema,
@@ -47,7 +48,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const bindingItems = props.value
   const bindingItem = bindingItems?.[selectedItemId]
-  const assertionItem = eventAssertionList[bindingItem?.name || '']
+  const assertionItem = eventAssertionList[bindingItem?.name || ''] || actionList[bindingItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
