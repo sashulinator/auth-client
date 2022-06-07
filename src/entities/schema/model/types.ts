@@ -118,6 +118,7 @@ export interface EventProps {
   eventItem: EventListItem
   eventUnit: EventUnit
   bindings: Norm<EventUnit>
+  emitActions: (value: any) => void
 }
 
 export interface ActionProps extends EventProps {
