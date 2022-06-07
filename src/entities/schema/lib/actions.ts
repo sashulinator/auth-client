@@ -1,6 +1,7 @@
-import { EventUnit, EventUnitType, Norm } from '..'
+import { eventAssertionList } from '../constants/event-assertion-list'
+import { Norm } from '../model/types'
+import { EventUnit, EventUnitType } from '../model/types.bindings'
 import bindAssertions from '../schema-drawer/lib/bind-assertions'
-import { eventAssertionList } from '../schema-drawer/lib/event-assertion-list'
 import { ActionProps } from '../schema-drawer/model/types'
 
 import { insert, replace } from '@/lib/change-unmutable'

@@ -14,13 +14,21 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, EventUnit, EventUnitType, Norm, Schema, SchemaDrawer, basicComponentsSchemas } from '@/entities/schema'
-import { hasSchema } from '@/entities/schema/lib/is'
-import { eventAssertionList } from '@/entities/schema/schema-drawer/lib/event-assertion-list'
+import {
+  Comp,
+  EventUnit,
+  EventUnitType,
+  Norm,
+  Schema,
+  SchemaDrawer,
+  basicComponentsSchemas,
+  eventAssertionList,
+  hasSchema,
+} from '@/entities/schema'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
-import Tree from '@/shared/tree/ui/tree'
+import Tree from '@/shared/tree'
 
 export interface BindingSetterProps {
   comp: Comp

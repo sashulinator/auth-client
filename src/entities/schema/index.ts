@@ -2,6 +2,7 @@ export * from './constants'
 
 export * from './constants/basic-components-schemas'
 export * from './constants/action-list'
+export * from './constants/event-assertion-list'
 
 export * from './model/comp-schema'
 export * from './model/current-schema'
@@ -9,6 +10,7 @@ export * from './model/selected-comps'
 export * from './model/types.bindings'
 export * from './model/types'
 
+export * from './lib/is'
 export { default as createNewComp } from './lib/create-new-comp'
 export { default as defineSelectedComp } from './lib/define-property-panel-comp'
 export { default as findMissingSchemaIds } from './lib/find-missing-schema-ids'

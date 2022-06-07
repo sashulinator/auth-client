@@ -1,4 +1,4 @@
-import { EventAssertionMeta } from '../model/types'
+import { EventAssertionMeta } from '../schema-drawer/model/types'
 
 interface AssertUndefinedProps {
   name: string

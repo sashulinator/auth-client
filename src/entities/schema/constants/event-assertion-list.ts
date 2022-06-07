@@ -1,8 +1,8 @@
-import { EventAssertionListItem } from '../model/types'
-import { assertUndefined, assertVisited } from './event-assertions'
+import { assertUndefined, assertVisited } from '../lib/event-assertions'
+import { Norm, SchemaType } from '../model/types'
+import { EventAssertionListItem } from '../schema-drawer/model/types'
+import { BasicComponentsNames } from './basic-components-schemas'
 
-import { BasicComponentsNames, Norm } from '@/entities/schema'
-import { SchemaType } from '@/entities/schema/model/types'
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
 export const eventAssertionList: Norm<EventAssertionListItem> = {
