@@ -1,15 +1,18 @@
 import {
   DocumentCardLocation,
-  DocumentCard as DocumentCardUI, //   DocumentCardPreview,
-  //    DocumentCardDetails, DocumentCardTitle,
+  DocumentCardPreview, //    DocumentCardDetails, DocumentCardTitle,
   //    DocumentCardActivity,
-  //    IDocumentCardPreviewProps,
+  DocumentCard as DocumentCardUI,
   IDocumentCardLocationProps, //    Stack, IStackTokens
+  IDocumentCardPreviewProps,
   IDocumentCardProps, //    DocumentCardType,
   //    IDocumentCardActivityPerson,
 } from '@fluentui/react'
 
 import React from 'react'
+
+// import { generateOptionsFromUnknown } from '@/lib/generate-options'
+// import normilize from '@/shared/table/lib/normalize';
 
 // import { FC } from 'react'
 // import { getTheme } from '@fluentui/react/lib/Styling'
@@ -35,34 +38,80 @@ import React from 'react'
 // ],
 // styles: { previewIcon: { backgroundColor: palette.themePrimary } },
 // };
-
-// const previewProps: IDocumentCardPreviewProps = {
-//     getOverflowDocumentCountText: (overflowCount: number) => `+${overflowCount} more`,
-//     previewImages: [
-//       {
-//         name: 'Contoso Marketing Presentation',
-//         linkProps: {
-//           href: 'http://bing.com',
-//           target: '_blank',
-//         },
-//         previewImageSrc: 'Add',
-//         iconSrc: 'Add',
-//         width: 144,
+// const previewPropsDemo: IDocumentCardPreviewProps = {
+//   getOverflowDocumentCountText: (overflowCount: number) => `+${overflowCount} more`,
+//   previewImages: [
+//     {
+//       name: '2016 Conference Presentation',
+//       linkProps: {
+//         href: 'http://bing.com',
+//         target: '_blank',
 //       },
-//     ]
-//   }
+//       width: 318,
+//       height: 196,
+//     },
+//     {
+//       name: 'New Contoso Collaboration for Conference Presentation Draft',
+//       linkProps: {
+//         href: 'http://bing.com',
+//         target: '_blank',
+//       },
+//       width: 318,
+//       height: 196,
+//     },
+// {
+//   name: 'Spec Sheet for design',
+//   linkProps: {
+//     href: 'http://bing.com',
+//     target: '_blank',
+//   },
+//   width: 318,
+//   height: 196,
+// },
+// {
+//   name: 'Contoso Marketing Presentation',
+//   linkProps: {
+//     href: 'http://bing.com',
+//     target: '_blank',
+//   },
+//   width: 318,
+//   height: 196,
+// },
+// {
+//   name: 'Notes from Ignite conference',
+//   linkProps: {
+//     href: 'http://bing.com',
+//     target: '_blank',
+//   },
+//   width: 318,
+//   height: 196,
+// },
+// {
+//   name: 'FY17 Cost Projections',
+//   linkProps: {
+//     href: 'http://bing.com',
+//     target: '_blank',
+//   },
+//   width: 318,
+//   height: 196,
+// },
+//   ],
+// };
 
-type DocumentCardProps = IDocumentCardProps & { label: string; children: React.ReactNode[] }
-type DocumentCardLocationProps = IDocumentCardLocationProps
+type DocumentCardProps = IDocumentCardProps &
+  IDocumentCardPreviewProps &
+  IDocumentCardLocationProps & { label: string; children: React.ReactNode[] }
 
-export default function DocumentCard(props: DocumentCardProps, locationProps: DocumentCardLocationProps): JSX.Element {
+function DocumentCard(props: DocumentCardProps): JSX.Element | null {
   return (
-    <DocumentCardUI
-      {...props}
-      aria-label="Document Card with multiple items, commands and views. Marketing documents. 6 files were uploaded.
-      Created by Annie Lindqvist in February 23, 2016. 432 views."
-    >
-      <DocumentCardLocation {...locationProps} />
+    <DocumentCardUI aria-label={props.label}>
+      <DocumentCardPreview
+        getOverflowDocumentCountText={(overflowCount: number) => `+${overflowCount} more`}
+        previewImages={props.previewImages}
+      />
+      <DocumentCardLocation location={props.location} locationHref={props.locationHref} />
     </DocumentCardUI>
   )
 }
+
+export default DocumentCard
