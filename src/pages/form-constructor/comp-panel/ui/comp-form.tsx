@@ -33,7 +33,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
 
   return (
     <Form<Comp, Comp>
-      key={props.comp.id}
+      key={`${initialValues.id}${props.schema.id}${props.comp.id}`}
       initialValues={initialValues}
       onSubmit={props.onSubmit}
       render={(formProps) => {

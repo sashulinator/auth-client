@@ -11,7 +11,7 @@ export function assertUndefined(v: unknown, assertionProps: AssertUndefinedProps
   const targetValue = fieldState?.[assertionProps.isInit ? 'initial' : 'value']
 
   if (targetValue !== undefined) {
-    throw new Error('Target init value is not undefined!')
+    throw new Error('Target init value is not undefined')
   }
 }
 
@@ -26,6 +26,22 @@ export function assertVisited(v: unknown, assertionProps: AssertVisitedProps, me
   const visited = context.formProps.form.getFieldState(assertionProps.name)?.visited
 
   if (visited) {
-    throw new Error('Field was not visited!')
+    throw new Error('Field was not visited')
+  }
+}
+
+interface AssertMatchPatternProps {
+  pattern: string
+  name: string
+}
+
+export function assertMatchPattern(v: unknown, assertionProps: AssertMatchPatternProps, meta: EventAssertionMeta) {
+  const { context } = meta?.payload
+  const targetValue = context.formProps.form.getFieldState(assertionProps.name)?.value
+
+  const isMatch = new RegExp(assertionProps.pattern).test(targetValue?.toString())
+
+  if (!isMatch) {
+    throw new Error('Does not match the pattern')
   }
 }

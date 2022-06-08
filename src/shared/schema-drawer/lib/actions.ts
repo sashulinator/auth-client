@@ -11,12 +11,22 @@ export function setValue(actionProps: ActionProps, value: any) {
   context.formProps.form.change(eventFieldName, value)
 }
 
-export function changeComponentProp(actionProps: ActionProps, value: any) {
+export function changeComponentProp(actionProps: ActionProps, eventFieldValue: any) {
   const { actionUnit, context } = actionProps
   const comp = context.comps[actionUnit?.props?.compId]
   assertNotUndefined(comp)
 
-  const newComp = buildObject(comp, actionUnit.props.prop, value)
+  let newComp = comp
+
+  if (actionUnit?.props.typeof === 'boolean') {
+    newComp = buildObject(comp, actionUnit.props.prop, actionUnit.props.booleanValue)
+  }
+  if (actionUnit?.props.typeof === 'undefined') {
+    newComp = buildObject(comp, actionUnit.props.prop, undefined)
+  }
+  if (actionUnit?.props.typeof === 'current field value') {
+    newComp = buildObject(comp, actionUnit.props.prop, eventFieldValue)
+  }
 
   context.fns.setComp(newComp)
 }

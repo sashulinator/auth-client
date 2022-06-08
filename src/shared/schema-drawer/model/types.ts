@@ -52,7 +52,7 @@ export interface ComponentItem {
 export interface BindingUnit {
   id: string
   name: string
-  children: string[]
+  children?: string[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: any
 }
