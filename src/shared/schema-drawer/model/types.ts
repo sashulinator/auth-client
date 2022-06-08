@@ -98,6 +98,7 @@ export type DrawerContext = Context & {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onFieldChange: (name: string, action: (difference: any) => void) => () => void
+    setComp: (comp: Comp) => void
   }
 }
 

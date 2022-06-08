@@ -69,8 +69,7 @@ const FormConstructor: FC = (): JSX.Element => {
       propertyPanelComp,
       selectedCompSchema,
     },
-    functions: {
-      setCurrentSchemaHistory,
+    fns: {
       setSelectedCompIds,
     },
   }

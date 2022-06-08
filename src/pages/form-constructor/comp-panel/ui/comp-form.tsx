@@ -48,6 +48,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
               >
                 <Stack as="h2">{props.comp.title}</Stack>
               </Stack>
+              <Stack tokens={{ padding: '20px 20px 0' }}>id: {props.comp.id}</Stack>
               <Stack>
                 <SchemaDrawer
                   componentList={componentList}

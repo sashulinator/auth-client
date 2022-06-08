@@ -18,7 +18,7 @@ export default function createOnFieldChangeEvent(context: DrawerContext) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const difference = diff({ one: fieldValuePrev }, { one: fieldValueNext }) as any
 
-        if (difference.one) {
+        if ('one' in difference) {
           onFieldChange(difference.one)
         }
 

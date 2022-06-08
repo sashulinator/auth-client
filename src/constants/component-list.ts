@@ -1,4 +1,4 @@
-import { ActionButton, Checkbox, IconButton, Label, Link, PrimaryButton, SearchBox, Stack, Text } from '@fluentui/react'
+import { ActionButton, Checkbox, IconButton, Label, Link, PrimaryButton, SearchBox, Text } from '@fluentui/react'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 import BindingPicker from '@/shared/binding-setter'
@@ -12,6 +12,7 @@ import MultiCheckbox from '@/shared/multicheckbox'
 import CustomNumberField from '@/shared/numberfield'
 import { Pivot, PivotItem } from '@/shared/pivot'
 import { BasicComponentsNames, ComponentItem } from '@/shared/schema-drawer'
+import Stack from '@/shared/stack'
 import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'

@@ -1,6 +1,6 @@
 import { isObject } from 'lodash'
 
-export default function buildObject(src: Record<string, unknown>, path: string, value: unknown, delimiter = '.') {
+export default function buildObject<T>(src: T, path: string, value: unknown, delimiter = '.'): T {
   const arrPath = path.split(delimiter)
   const copySrc = { ...src }
 

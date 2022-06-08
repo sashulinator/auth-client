@@ -11,6 +11,7 @@ import { FormState } from 'final-form'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
+import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
   schemas: Norm<Schema>
@@ -21,6 +22,9 @@ interface SchemaDrawerProps {
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
+  const [comps, setComps] = useState<Norm<Comp>>(props.schema.comps)
+
+  useEffect(() => setComps(props.schema.comps), [props.schema.comps])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 
@@ -30,18 +34,19 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
-    comps: props.schema.comps,
-    compIds: Object.keys(props.schema.comps),
+    comps: comps,
+    compIds: Object.keys(comps),
     schemas: props.schemas,
     eventUnsubscribers: [],
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
       onFieldChange,
+      setComp: (comp) => setComps((comps) => replace(comps, comp.id, comp)),
     },
   }
 
-  const rootComp = props.schema.comps[ROOT_ID]
+  const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)
 
   if (props.schemas === null) {
@@ -50,7 +55,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   return (
     <ComponentFactory
       context={context}
-      comps={props.schema.comps}
+      comps={comps}
       compId={rootComp.id}
       schemas={props.schemas}
       componentList={props.componentList}

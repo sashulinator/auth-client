@@ -27,7 +27,10 @@ import SchemaDrawer, {
   actionList,
   basicComponentsSchemas,
   eventAssertionList,
+  eventList,
   hasSchema,
+  onFieldChange,
+  setValue,
 } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
 
@@ -48,7 +51,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const bindingItems = props.value
   const bindingItem = bindingItems?.[selectedItemId]
-  const assertionItem = eventAssertionList[bindingItem?.name || ''] || actionList[bindingItem?.name || '']
+  const assertionItem =
+    eventAssertionList[bindingItem?.name || ''] ||
+    actionList[bindingItem?.name || ''] ||
+    eventList[bindingItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
@@ -98,7 +104,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     const binding: EventUnit = {
       id,
       type: EventUnitType.ASSERTION,
-      name: 'string',
+      name: 'undefined',
       children: [],
     }
 
@@ -131,7 +137,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
     const bindingItem: EventUnit = {
       id,
-      name: 'setValue',
+      name: setValue.name,
       type: EventUnitType.ACTION,
       children: [],
     }
@@ -148,7 +154,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
     const bindingItem: EventUnit = {
       id,
-      name: 'onChange',
+      name: onFieldChange.name,
       type: EventUnitType.EVENT,
       children: [],
     }
