@@ -3,8 +3,8 @@ import { TreeData, TreeItem } from '@atlaskit/tree'
 import { TreeItemAdditionalData } from '../types'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, Norm } from '@/entities/schema'
 import { mutateObject } from '@/lib/mutate-object'
+import { Comp, Norm } from '@/shared/schema-drawer'
 
 export function buildTree(
   currentTree: TreeData | undefined,

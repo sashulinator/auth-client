@@ -1,27 +1,30 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { assertCompSchema } from '../../lib/assertions'
-import { componentListBlind } from '../lib/component-list'
+import { assertCompSchema } from '../lib/assertions'
 import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
 import handleBindEvents from '../lib/handle-bind-events'
-import isInputType from '../lib/is-field-component'
-import { ComponentContext, Context, DrawerContext } from '../model/types'
+import isInputType from '../lib/is'
+import { Comp, CompSchema, ComponentContext, ComponentItem, Context, DrawerContext, Norm, Schema } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import { FormState } from 'final-form'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, CompSchema, Norm, Schema } from '@/entities/schema'
+import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
   schemas: Norm<Schema>
   schema: Schema
   context: Context
+  componentList: Record<string, ComponentItem>
 }
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
+  const [comps, setComps] = useState<Norm<Comp>>(props.schema.comps)
+
+  useEffect(() => setComps(props.schema.comps), [props.schema.comps])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 
@@ -31,24 +34,33 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
-    comps: props.schema.comps,
-    compIds: Object.keys(props.schema.comps),
+    comps: comps,
+    compIds: Object.keys(comps),
     schemas: props.schemas,
     eventUnsubscribers: [],
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
       onFieldChange,
+      setComp: (comp) => setComps((comps) => replace(comps, comp.id, comp)),
     },
   }
 
-  const rootComp = props.schema.comps[ROOT_ID]
+  const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)
 
   if (props.schemas === null) {
     return null
   }
-  return <ComponentFactory context={context} comps={props.schema.comps} compId={rootComp.id} schemas={props.schemas} />
+  return (
+    <ComponentFactory
+      context={context}
+      comps={comps}
+      compId={rootComp.id}
+      schemas={props.schemas}
+      componentList={props.componentList}
+    />
+  )
 }
 
 /**
@@ -63,6 +75,7 @@ interface ComponentFactoryProps {
   comps: Norm<Comp>
   compId: string
   context: DrawerContext
+  componentList: Record<string, ComponentItem>
 }
 
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
@@ -88,7 +101,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   assertCompSchema(schema)
 
-  const сomponentItem = componentListBlind[schema.componentName]
+  const сomponentItem = props.componentList[schema.componentName]
 
   if (!сomponentItem) {
     return (
@@ -99,8 +112,25 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   }
 
   if (isInputType(сomponentItem)) {
-    return <FieldComponent context={context} comp={comp} schema={schema} schemas={props.schemas} />
+    return (
+      <FieldComponent
+        context={context}
+        comp={comp}
+        schema={schema}
+        schemas={props.schemas}
+        componentList={props.componentList}
+      />
+    )
   }
 
-  return <ContentComponent context={context} comp={comp} schema={schema} schemas={props.schemas} comps={props.comps} />
+  return (
+    <ContentComponent
+      context={context}
+      comp={comp}
+      schema={schema}
+      schemas={props.schemas}
+      comps={props.comps}
+      componentList={props.componentList}
+    />
+  )
 }

@@ -1,7 +1,6 @@
-import { Context } from '../model/types'
+import { Comp, Context } from '../model/types'
 import get from 'lodash.get'
 
-import { Comp } from '@/entities/schema'
 import buildObject from '@/lib/build-object'
 
 export default function injectToComp(injections: Comp['injections'], context: Context, comp: Comp): Comp {

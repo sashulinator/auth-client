@@ -8,21 +8,20 @@ export default function createOnFieldChangeEvent(context: DrawerContext) {
     return context.formProps.form.subscribe(
       (state) => {
         if (context?.formStatePrev?.values.id !== state?.values.id) {
-          context.formStatePrev = state
+          setTimeout(() => (context.formStatePrev = state))
           return
         }
 
         const fieldValuePrev = getIn(context?.formStatePrev?.values, fieldName)
         const fieldValueNext = getIn(state?.values, fieldName)
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const difference = diff({ one: fieldValuePrev }, { one: fieldValueNext }) as any
 
-        if (difference.one) {
+        if ('one' in difference) {
           onFieldChange(difference.one)
         }
 
-        context.formStatePrev = state
+        setTimeout(() => (context.formStatePrev = state))
       },
       {
         values: true,

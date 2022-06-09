@@ -6,8 +6,8 @@ import { UseQueryResult, useQuery } from 'react-query'
 
 import { assertsSchema } from '@/common/schemas'
 import { isNormSchemas } from '@/common/validators'
-import { Norm, Schema } from '@/entities/schema'
 import ErrorFromObject from '@/lib/error-from-object'
+import { Norm, Schema } from '@/shared/schema-drawer'
 
 const headers = {
   'content-type': 'application/json',

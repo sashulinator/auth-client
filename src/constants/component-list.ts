@@ -1,18 +1,6 @@
-import {
-  ActionButton,
-  Checkbox,
-  IDropdownOption,
-  IconButton,
-  Label,
-  Link,
-  PrimaryButton,
-  SearchBox,
-  Stack,
-  Text,
-} from '@fluentui/react'
+import { ActionButton, Checkbox, IconButton, Label, Link, PrimaryButton, SearchBox, Text } from '@fluentui/react'
 
-import { BasicComponentsNames } from '../..'
-
+import { generateOptionsFromObject } from '@/lib/generate-options'
 import BindingPicker from '@/shared/binding-setter'
 import Collapse from '@/shared/collapse'
 import CustomDatePicker from '@/shared/date-picker'
@@ -23,12 +11,14 @@ import JSONEditor from '@/shared/json-editor'
 import MultiCheckbox from '@/shared/multicheckbox'
 import CustomNumberField from '@/shared/numberfield'
 import { Pivot, PivotItem } from '@/shared/pivot'
+import { BasicComponentsNames, ComponentItem } from '@/shared/schema-drawer'
+import Stack from '@/shared/stack'
 import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
 import ValidatorPicker from '@/shared/validator-picker'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const componentList = {
+const componentList: Record<string, ComponentItem> = {
   // Utils
 
   ValidatorPicker: {
@@ -156,23 +146,10 @@ const componentList = {
     type: 'content',
     component: SearchBox,
   },
-} as const
-
-// Blind???? Я хз как назвать но он типо не видит какие в нём есть ключи,
-// это полезно когда пытаешь получить значения динамически
-export const componentListBlind: Record<string, ComponentItem> = componentList
-
-interface ComponentItem {
-  type: 'checkbox' | 'input' | 'content'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: any
 }
 
-export const componentNameOptions: IDropdownOption[] = Object.keys(componentList).map((componentName) => {
-  return {
-    key: componentName,
-    text: componentName,
-  }
-})
+export const componentNameOptions = generateOptionsFromObject(componentList).sort((optA, optB) =>
+  optA.text > optB.text ? 1 : -1
+)
 
 export default componentList

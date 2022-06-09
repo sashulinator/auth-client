@@ -1,5 +1,5 @@
 import { ROOT_ID } from '@/constants/common'
-import { AssertionUnit, AssertionUnitType, Norm } from '@/entities/schema'
+import { AssertionUnit, AssertionUnitType, Norm } from '@/shared/schema-drawer'
 
 export const defaultCompValidators: Norm<AssertionUnit> = {
   [ROOT_ID]: {

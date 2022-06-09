@@ -1,4 +1,4 @@
-import { ComponentContext } from '..'
+import { ComponentContext } from '../model/types'
 import bindEvents from './bind-events'
 
 export default function handleBindEvents(context: ComponentContext) {

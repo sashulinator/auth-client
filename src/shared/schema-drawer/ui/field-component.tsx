@@ -1,15 +1,13 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { assertionList } from '../lib/assertion-list'
+import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
-import { componentListBlind } from '../lib/component-list'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
-import { ComponentContext } from '../model/types'
+import { Comp, CompSchema, ComponentContext, ComponentItem, Norm, Schema } from '../model/types'
 import React, { memo } from 'react'
 import { Field } from 'react-final-form'
 
-import { Comp, CompSchema, Norm, Schema } from '@/entities/schema/model/types'
 import FieldError from '@/shared/field-error'
 
 export interface FieldComponentProps {
@@ -17,10 +15,11 @@ export interface FieldComponentProps {
   schema: CompSchema
   schemas: Norm<Schema>
   context: ComponentContext
+  componentList: Record<string, ComponentItem>
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {
-  const сomponentItem = componentListBlind[props.schema.componentName]
+  const сomponentItem = props.componentList[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
   const validate = bindAssertions(assertionList, props.comp.validators)

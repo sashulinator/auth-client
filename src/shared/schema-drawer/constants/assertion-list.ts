@@ -6,7 +6,9 @@ import {
   assertUndefined,
 } from '@savchenko91/schema-validator'
 
-import { AssertionListItem, BasicComponentsNames, MUTATE_ALL_FORM_VALUES_TO_STRING, Norm, SchemaType } from '../..'
+import { AssertionListItem, Norm, SchemaType } from '../model/types'
+import { BasicComponentsNames } from './basic-components-schemas'
+import { MUTATE_ALL_FORM_VALUES_TO_STRING } from './constants'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 

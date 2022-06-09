@@ -14,20 +14,20 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import {
+import componentList from '@/constants/component-list'
+import { replace } from '@/lib/change-unmutable'
+import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import Autosave from '@/shared/autosave'
+import SchemaDrawer, {
   AssertionUnit,
   AssertionUnitType,
   Comp,
   Norm,
   Schema,
-  SchemaDrawer,
+  assertionList,
   basicComponentsSchemas,
-} from '@/entities/schema'
-import { hasSchema } from '@/entities/schema/lib/is'
-import { assertionList } from '@/entities/schema/schema-drawer/lib/assertion-list'
-import { replace } from '@/lib/change-unmutable'
-import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
-import Autosave from '@/shared/autosave'
+  hasSchema,
+} from '@/shared/schema-drawer'
 import Tree from '@/shared/tree/ui/tree'
 
 export interface ValidatorsTreeProps {
@@ -176,6 +176,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
                     debounce={500}
                   />
                   <SchemaDrawer
+                    componentList={componentList}
                     schema={assertionItem.schema}
                     schemas={basicComponentsSchemas}
                     context={{

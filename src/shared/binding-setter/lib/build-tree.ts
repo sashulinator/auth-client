@@ -1,8 +1,8 @@
 import { TreeItem } from '@atlaskit/tree'
 
 import { ROOT_ID } from '@/constants/common'
-import { EventUnit, Norm } from '@/entities/schema'
 import { mutateObject } from '@/lib/mutate-object'
+import { EventUnit, Norm } from '@/shared/schema-drawer'
 
 export interface AdditionalData {
   remove: (id: string | number) => void

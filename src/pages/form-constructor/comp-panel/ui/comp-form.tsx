@@ -4,8 +4,9 @@ import { Config } from 'final-form'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Form } from 'react-final-form'
 
-import { Comp, Norm, Schema, SchemaDrawer } from '@/entities/schema'
+import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave/ui/autosave'
+import SchemaDrawer, { Comp, Norm, Schema } from '@/shared/schema-drawer'
 
 interface CompFormProps {
   previewSchema: Schema
@@ -32,7 +33,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
 
   return (
     <Form<Comp, Comp>
-      key={props.comp.id}
+      key={`${initialValues.id}${props.schema.id}${props.comp.id}`}
       initialValues={initialValues}
       onSubmit={props.onSubmit}
       render={(formProps) => {
@@ -47,8 +48,10 @@ export default function CompForm(props: CompFormProps): JSX.Element {
               >
                 <Stack as="h2">{props.comp.title}</Stack>
               </Stack>
+              <Stack tokens={{ padding: '20px 20px 0' }}>id: {props.comp.id}</Stack>
               <Stack>
                 <SchemaDrawer
+                  componentList={componentList}
                   schema={props.schema}
                   schemas={props.schemas}
                   context={{

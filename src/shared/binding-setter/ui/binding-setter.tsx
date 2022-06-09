@@ -14,13 +14,25 @@ import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { Comp, EventUnit, EventUnitType, Norm, Schema, SchemaDrawer, basicComponentsSchemas } from '@/entities/schema'
-import { hasSchema } from '@/entities/schema/lib/is'
-import { eventAssertionList } from '@/entities/schema/schema-drawer/lib/event-assertion-list'
+import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
-import Tree from '@/shared/tree/ui/tree'
+import SchemaDrawer, {
+  Comp,
+  EventUnit,
+  EventUnitType,
+  Norm,
+  Schema,
+  actionList,
+  basicComponentsSchemas,
+  eventAssertionList,
+  eventList,
+  hasSchema,
+  onFieldChange,
+  setValue,
+} from '@/shared/schema-drawer'
+import Tree from '@/shared/tree'
 
 export interface BindingSetterProps {
   comp: Comp
@@ -39,7 +51,10 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const bindingItems = props.value
   const bindingItem = bindingItems?.[selectedItemId]
-  const assertionItem = eventAssertionList[bindingItem?.name || '']
+  const assertionItem =
+    eventAssertionList[bindingItem?.name || ''] ||
+    actionList[bindingItem?.name || ''] ||
+    eventList[bindingItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
@@ -89,7 +104,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     const binding: EventUnit = {
       id,
       type: EventUnitType.ASSERTION,
-      name: 'string',
+      name: 'undefined',
       children: [],
     }
 
@@ -122,7 +137,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
     const bindingItem: EventUnit = {
       id,
-      name: 'setValue',
+      name: setValue.name,
       type: EventUnitType.ACTION,
       children: [],
     }
@@ -139,7 +154,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
     const bindingItem: EventUnit = {
       id,
-      name: 'onChange',
+      name: onFieldChange.name,
       type: EventUnitType.EVENT,
       children: [],
     }
@@ -197,6 +212,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
                 <>
                   <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
                   <SchemaDrawer
+                    componentList={componentList}
                     schema={assertionItem.schema}
                     schemas={basicComponentsSchemas}
                     context={{

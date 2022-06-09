@@ -1,7 +1,7 @@
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { EventUnit, EventUnitType, Norm } from '@/entities/schema'
+import { EventUnit, EventUnitType, Norm, onFieldChange } from '@/shared/schema-drawer'
 
 const id = uniqid()
 
@@ -14,7 +14,7 @@ export const defaultCompBindings: Norm<EventUnit> = {
   },
   [id]: {
     id,
-    name: 'onChange',
+    name: onFieldChange.name,
     type: EventUnitType.EVENT,
     children: [],
   },

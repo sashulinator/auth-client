@@ -10,7 +10,7 @@ import {
   removeChildId,
 } from './entity-actions'
 
-import { Norm } from '@/entities/schema'
+import { Norm } from '@/shared/schema-drawer'
 
 describe('entity-actions', () => {
   it(copyEntities.name, () => {

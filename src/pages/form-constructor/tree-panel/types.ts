@@ -2,7 +2,7 @@ import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
 import React from 'react'
 
-import { Comp } from '@/entities/schema'
+import { Comp } from '@/shared/schema-drawer'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {

@@ -20,11 +20,10 @@ import { schemaValidator } from '@/common/schemas'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import {
-  Comp,
   CompContextualMenu,
-  Norm,
   currentSchemaHistoryState,
   defineSelectedComp as definePropertyPanelComp,
+  findCompSchema,
   findMissingSchemaIds,
   nextSetter,
   prevSetter,
@@ -34,7 +33,6 @@ import {
   updateCompSetter,
   updateCompsSetter,
 } from '@/entities/schema'
-import findCompSchema from '@/entities/schema/lib/find-comp-schema'
 import {
   addEntity,
   copyEntities,
@@ -46,6 +44,7 @@ import {
   removeEntity,
 } from '@/lib/entity-actions'
 import ResizeTarget from '@/shared/resize-target'
+import { Comp, Norm } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
@@ -70,8 +69,7 @@ const FormConstructor: FC = (): JSX.Element => {
       propertyPanelComp,
       selectedCompSchema,
     },
-    functions: {
-      setCurrentSchemaHistory,
+    fns: {
       setSelectedCompIds,
     },
   }

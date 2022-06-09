@@ -6,7 +6,8 @@ import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlig
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
-import { Norm, Schema, SchemaDrawer } from '@/entities/schema'
+import componentList from '@/constants/component-list'
+import SchemaDrawer, { Norm, Schema } from '@/shared/schema-drawer'
 import { setCSSVar } from '@/shared/theme'
 
 interface PreviewProps {
@@ -180,6 +181,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
               return (
                 <form onSubmit={formProps.handleSubmit}>
                   <SchemaDrawer
+                    componentList={componentList}
                     schema={schema}
                     schemas={schemas}
                     context={{

@@ -5,7 +5,8 @@ import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
 import { useGetDependencySchemas } from '@/api/schema'
-import { Norm, Schema, schemasState } from '@/entities/schema'
+import { schemasState } from '@/entities/schema'
+import { Norm, Schema } from '@/shared/schema-drawer'
 
 const IncidentId = 'e84eabbb-b048-4d39-ab10-673605c718e2'
 

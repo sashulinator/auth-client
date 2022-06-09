@@ -8,11 +8,11 @@ import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
-import { Comp, Norm, Schema } from '@/entities/schema'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
+import { Comp, Norm, Schema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
 
 interface TreePanelProps {

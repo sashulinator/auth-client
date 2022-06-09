@@ -5,8 +5,9 @@ import { useParams } from 'react-router-dom'
 import uuid from 'uuid-random'
 
 import { createIncident, getIncident } from '@/api/incident'
+import componentList from '@/constants/component-list'
 import { Incident } from '@/entities/incident/model/types'
-import { Norm, Schema, SchemaDrawer } from '@/entities/schema'
+import SchemaDrawer, { Norm, Schema } from '@/shared/schema-drawer'
 
 interface IncidentFormProps {
   schema: Schema
@@ -42,6 +43,7 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
           return (
             <form onSubmit={formProps.handleSubmit}>
               <SchemaDrawer
+                componentList={componentList}
                 schema={props.schema}
                 schemas={props.schemas}
                 context={{
