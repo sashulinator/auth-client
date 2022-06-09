@@ -6,7 +6,7 @@ export function onFieldChange(eventProps: EventProps) {
   const { context, emitActions } = eventProps
   assertNotUndefined(context.comp.name)
 
-  return context.fns.onFieldChange(context.comp.name, emitActions)
+  return context.fns.onFieldChange(emitActions)
 }
 
 export function onInit(eventProps: EventProps) {
@@ -17,8 +17,6 @@ export function onInit(eventProps: EventProps) {
     const value = context.formProps.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   })
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  return () => {}
 }
 
 export function onFieldLife(eventProps: EventProps) {

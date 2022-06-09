@@ -2,11 +2,14 @@ import { DrawerContext } from '../model/types'
 import { diff } from 'deep-object-diff'
 import { getIn } from 'final-form'
 
-export default function createOnFieldChangeEvent(context: DrawerContext) {
+export function interceptFieldChangeEvent(context: DrawerContext, fieldName?: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (fieldName: string, onFieldChange: (value: any) => void) => {
+  return (onFieldChange: (value: any) => void) => {
     return context.formProps.form.subscribe(
       (state) => {
+        if (fieldName === undefined) {
+          return
+        }
         if (context?.formStatePrev?.values.id !== state?.values.id) {
           setTimeout(() => (context.formStatePrev = state))
           return

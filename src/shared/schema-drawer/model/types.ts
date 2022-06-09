@@ -94,11 +94,9 @@ export type DrawerContext = Context & {
   comps: Norm<Comp>
   compIds: string[]
   schemas: Norm<Schema>
-  eventUnsubscribers: (() => void)[]
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onFieldChange: (name: string, action: (difference: any) => void) => () => void
     setComp: (comp: Comp) => void
   }
 }
@@ -108,8 +106,21 @@ export type ComponentContext = DrawerContext & {
   schema: Schema
 }
 
+export type ContentComponentContext = ComponentContext & {
+  fns: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // onClick: (...args: any[]) => void
+  }
+}
+
+export type FieldComponentContext = ContentComponentContext & {
+  fns: {
+    onFieldChange: (action: (difference: any) => void) => void
+  }
+}
+
 export interface EventProps {
-  context: ComponentContext
+  context: FieldComponentContext | ContentComponentContext
   actionUnits: Norm<EventUnit>
   actionItems: ActionListItem[]
   eventItem: EventListItem

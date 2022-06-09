@@ -1,7 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
-import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
 import isInputType from '../lib/is'
 import { Comp, CompSchema, ComponentContext, ComponentItem, Context, DrawerContext, Norm, Schema } from '../model/types'
 import ContentComponent from './content-component'
@@ -27,8 +26,6 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 
-  const onFieldChange = createOnFieldChangeEvent(props.context as DrawerContext)
-
   const context: DrawerContext = {
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
@@ -36,11 +33,9 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     comps: comps,
     compIds: Object.keys(comps),
     schemas: props.schemas,
-    eventUnsubscribers: [],
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
-      onFieldChange,
       setComp: (comp) => setComps((comps) => replace(comps, comp.id, comp)),
     },
   }
