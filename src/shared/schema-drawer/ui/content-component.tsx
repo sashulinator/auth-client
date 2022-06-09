@@ -1,8 +1,9 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import handleBindEvents from '../lib/handle-bind-events'
 import { Comp, CompSchema, ComponentContext, ComponentItem, Norm, Schema } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 
 export interface ContentComponentProps {
   schemas: Norm<Schema>
@@ -16,6 +17,8 @@ export interface ContentComponentProps {
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {
   const сomponentItem = props.componentList[props.schema.componentName]
   assertNotUndefined(сomponentItem)
+
+  useEffect(() => handleBindEvents(props.context), [props.comp.bindings, props.schema])
 
   if (props.comp.children === undefined) {
     return (

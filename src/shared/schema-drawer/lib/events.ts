@@ -11,16 +11,17 @@ export function onFieldChange(eventProps: EventProps) {
 
 export function onInit(eventProps: EventProps) {
   const { context, emitActions } = eventProps
-  assertNotUndefined(context.comp.name)
 
-  const value = context.formProps.form.getFieldState(context.comp.name)?.value
-
-  emitActions(value)
+  setTimeout(() => {
+    assertNotUndefined(context.comp.name)
+    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    emitActions(value)
+  })
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   return () => {}
 }
 
 export function onFieldLife(eventProps: EventProps) {
-  setTimeout(() => onInit(eventProps))
+  onInit(eventProps)
   return onFieldChange(eventProps)
 }

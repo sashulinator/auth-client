@@ -1,5 +1,5 @@
-import { changeComponentProp, setValue } from '../lib/actions'
-import { ActionListItem, EventUnitType, Norm, SchemaType } from '../model/types'
+import { setCompProp, setValue } from '../lib/actions'
+import { ActionListItem, AssertionUnitType, EventUnitType, Norm, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -27,6 +27,19 @@ export const actionList: Norm<ActionListItem> = {
           name: 'name',
           props: { label: 'name' },
           compSchemaId: BasicComponentsNames.Dropdown,
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
           injections: [
             {
               from: 'context.previewData.names',
@@ -37,8 +50,8 @@ export const actionList: Norm<ActionListItem> = {
       },
     },
   },
-  [changeComponentProp.name]: {
-    function: changeComponentProp,
+  [setCompProp.name]: {
+    function: setCompProp,
     schema: {
       id: '7021a575-562a-42f8-a640-4292afb2977e',
       title: 'Training',
@@ -66,10 +79,37 @@ export const actionList: Norm<ActionListItem> = {
           },
           title: 'compId',
           compSchemaId: BasicComponentsNames.TextField,
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
         },
         l458ijf3: {
           id: 'l458ijf3',
           name: 'typeof',
+          title: 'typeof',
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
           props: {
             options: [
               {
@@ -83,7 +123,6 @@ export const actionList: Norm<ActionListItem> = {
             ],
             placeholder: 'Выберите значение',
           },
-          title: 'typeof',
           bindings: {
             ROOT_ID: {
               id: 'ROOT_ID',
@@ -99,7 +138,7 @@ export const actionList: Norm<ActionListItem> = {
             },
             l459q4jl: {
               id: 'l459q4jl',
-              name: 'changeComponentProp',
+              name: setCompProp.name,
               type: EventUnitType.ACTION,
               props: {
                 prop: 'props.hidden',
@@ -120,7 +159,7 @@ export const actionList: Norm<ActionListItem> = {
             },
             l45givi5: {
               id: 'l45givi5',
-              name: 'changeComponentProp',
+              name: setCompProp.name,
               type: EventUnitType.ACTION,
               props: {
                 prop: 'props.hidden',
@@ -141,7 +180,7 @@ export const actionList: Norm<ActionListItem> = {
             },
             l45ikto6: {
               id: 'l45ikto6',
-              name: 'changeComponentProp',
+              name: setCompProp.name,
               type: EventUnitType.ACTION,
               props: {
                 prop: 'props.hidden',
@@ -152,7 +191,7 @@ export const actionList: Norm<ActionListItem> = {
             },
             l45im2fr: {
               id: 'l45im2fr',
-              name: 'changeComponentProp',
+              name: setCompProp.name,
               type: EventUnitType.ACTION,
               props: {
                 prop: 'props.hidden',
@@ -180,7 +219,8 @@ export const actionList: Norm<ActionListItem> = {
         },
         l458nm4r: {
           id: 'l458nm4r',
-          name: 'value',
+          name: 'booleanValue',
+          defaultValue: false,
           props: {
             label: 'value',
           },
@@ -189,12 +229,25 @@ export const actionList: Norm<ActionListItem> = {
         },
         l45am25m: {
           id: 'l45am25m',
-          name: 'propname',
+          name: 'prop',
           props: {
-            label: 'propname',
+            label: 'prop name',
           },
-          title: 'propname',
+          title: 'prop name',
           compSchemaId: BasicComponentsNames.TextField,
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
         },
         l45gg3ha: {
           id: 'l45gg3ha',
@@ -211,8 +264,11 @@ export const actionList: Norm<ActionListItem> = {
         },
         l45ggn2c: {
           id: 'l45ggn2c',
-          name: 'l45ggn2d',
+          name: 'stringValue',
           title: 'TextField',
+          props: {
+            label: 'value',
+          },
           compSchemaId: BasicComponentsNames.TextField,
         },
       },
