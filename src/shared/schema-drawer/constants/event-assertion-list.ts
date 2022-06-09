@@ -1,5 +1,5 @@
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
-import { EventAssertionListItem, Norm, SchemaType } from '../model/types'
+import { AssertionUnitType, EventAssertionListItem, Norm, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -33,6 +33,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
               to: 'props.options',
             },
           ],
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
         },
         isInit: {
           id: 'isInit',
@@ -72,6 +85,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
               to: 'props.options',
             },
           ],
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
         },
       },
     },
@@ -98,6 +124,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           name: 'pattern',
           props: { label: 'pattern' },
           compSchemaId: BasicComponentsNames.TextField,
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
         },
         namesDropdown: {
           id: 'namesDropdown',
@@ -111,6 +150,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
               to: 'props.options',
             },
           ],
+          validators: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
+          },
         },
       },
     },

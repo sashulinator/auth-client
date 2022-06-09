@@ -22,7 +22,8 @@ export interface Comp {
   compSchemaId: string
   name?: string
   title: string
-  defaultValue?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
   validators?: Norm<AssertionUnit>
@@ -114,6 +115,7 @@ export interface EventProps {
   eventItem: EventListItem
   eventUnit: EventUnit
   bindings: Norm<EventUnit>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }
 

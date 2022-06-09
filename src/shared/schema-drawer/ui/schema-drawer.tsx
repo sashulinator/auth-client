@@ -2,7 +2,6 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
 import createOnFieldChangeEvent from '../lib/create-on-field-change-event'
-import handleBindEvents from '../lib/handle-bind-events'
 import isInputType from '../lib/is'
 import { Comp, CompSchema, ComponentContext, ComponentItem, Context, DrawerContext, Norm, Schema } from '../model/types'
 import ContentComponent from './content-component'
@@ -89,10 +88,6 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     comp: comp,
     schema: schema,
   }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    schema && handleBindEvents(context)
-  }, [comp.bindings, schema])
 
   // Схема еще не прогрузилась и поэтому undefined
   if (schema === undefined) {

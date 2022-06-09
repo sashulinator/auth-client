@@ -4,22 +4,43 @@ import { ActionProps } from '../model/types'
 
 import buildObject from '@/lib/build-object'
 
-export function setValue(actionProps: ActionProps, value: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function setValue(actionProps: ActionProps, eventFieldValue: any) {
   const { actionUnit, context } = actionProps
   const eventFieldName = actionUnit.props.name
 
-  context.formProps.form.change(eventFieldName, value)
+  try {
+    assertNotUndefined(actionUnit.props.name)
+  } catch (e) {
+    // event was draged and droped
+    return
+  }
+
+  context.formProps.form.change(eventFieldName, eventFieldValue)
 }
 
-export function changeComponentProp(actionProps: ActionProps, eventFieldValue: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function setCompProp(actionProps: ActionProps, eventFieldValue: any) {
   const { actionUnit, context } = actionProps
   const comp = context.comps[actionUnit?.props?.compId]
-  assertNotUndefined(comp)
+
+  try {
+    assertNotUndefined(comp)
+    assertNotUndefined(actionUnit.props.prop)
+  } catch (e) {
+    // TODO сделать валидацию в validator-picker чтобы
+    // TODO он внутри себя стейт хранил но не сохранял в schema если невалидно
+    // event was draged and droped
+    return
+  }
 
   let newComp = comp
 
   if (actionUnit?.props.typeof === 'boolean') {
     newComp = buildObject(comp, actionUnit.props.prop, actionUnit.props.booleanValue)
+  }
+  if (actionUnit?.props.typeof === 'string') {
+    newComp = buildObject(comp, actionUnit.props.prop, actionUnit.props.stringValue)
   }
   if (actionUnit?.props.typeof === 'undefined') {
     newComp = buildObject(comp, actionUnit.props.prop, undefined)

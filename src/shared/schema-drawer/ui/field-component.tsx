@@ -2,10 +2,11 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
+import handleBindEvents from '../lib/handle-bind-events'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
 import { Comp, CompSchema, ComponentContext, ComponentItem, Norm, Schema } from '../model/types'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { Field } from 'react-final-form'
 
 import FieldError from '@/shared/field-error'
@@ -36,6 +37,9 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
       defaultValue={injectedComp.defaultValue}
     >
       {({ input, meta }) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => handleBindEvents(props.context), [props.comp.bindings, props.schema])
+
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
             <сomponentItem.component
