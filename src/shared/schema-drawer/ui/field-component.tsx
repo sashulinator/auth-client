@@ -3,11 +3,13 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
 import bindEvents from '../lib/bind-events'
+import { onBlur, onDestroy, onInit } from '../lib/events'
 import injectToComp from '../lib/inject-to-comp'
-import { interceptFieldChangeEvent } from '../lib/interceptors'
 import isRequired from '../lib/is-required'
+import { Observer } from '../lib/observer'
+import { registerFieldChangeEvent } from '../lib/register-field-change-event'
 import { Comp, CompSchema, ComponentContext, ComponentItem, FieldComponentContext, Norm, Schema } from '../model/types'
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useMemo } from 'react'
 import { Field } from 'react-final-form'
 
 import FieldError from '@/shared/field-error'
@@ -39,15 +41,30 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
       defaultValue={injectedComp.defaultValue}
     >
       {({ input, meta }) => {
-        const context: FieldComponentContext = {
-          ...props.context,
-          fns: {
-            ...props.context.fns,
-            onFieldChange: interceptFieldChangeEvent(props.context, injectedComp.name),
-          },
-        }
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => bindEvents(context), [props.comp.bindings, props.schema])
+        const context = useMemo<FieldComponentContext>(
+          () => ({
+            ...props.context,
+            observer: new Observer(),
+          }),
+          [props.comp.bindings]
+        )
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+          bindEvents(context)
+
+          registerFieldChangeEvent(context)
+
+          context.observer.addEvent(onBlur.name, input.onBlur)
+
+          // Я не знаю почему с таймаутом робит а без нет
+          setTimeout(() => context.observer.emitEvent(onInit.name)())
+
+          return () => {
+            context.observer.emitEvent(onDestroy.name)()
+          }
+        }, [props.comp.bindings])
 
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
@@ -56,6 +73,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               {...injectedComp.props}
               context={props.context}
               required={isRequired(props.comp.validators)}
+              onBlur={context.observer.emitEvent('onBlur')}
             />
             <FieldError meta={meta} />
           </div>

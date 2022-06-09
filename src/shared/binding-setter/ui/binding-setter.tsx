@@ -204,6 +204,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
         </Stack>
         {hasSchema(assertionItem) && bindingItem && (
           <Form
+            key={selectedItemId}
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
             initialValues={bindingItem.props}

@@ -55,7 +55,11 @@ export default function bindEvents(context: FieldComponentContext) {
       })
     }
 
-    eventItem?.function({ ...basicProps, emitActions })
+    const eventProps = { ...basicProps, emitActions }
+
+    const createdEvent = eventItem.function(eventProps)
+
+    context.observer.addEvent(eventUnit.name, createdEvent)
   })
 }
 
