@@ -2,11 +2,14 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
-import handleBindEvents from '../lib/handle-bind-events'
+import bindEvents from '../lib/bind-events'
+import { onBlur, onChange, onDestroy, onFocus, onInit } from '../lib/events'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
-import { Comp, CompSchema, ComponentContext, ComponentItem, Norm, Schema } from '../model/types'
-import React, { memo, useEffect } from 'react'
+import { Observer } from '../lib/observer'
+import { registerFieldChangeEvent } from '../lib/register-field-change-event'
+import { Comp, CompSchema, ComponentContext, ComponentItem, FieldComponentContext, Norm, Schema } from '../model/types'
+import React, { memo, useEffect, useMemo } from 'react'
 import { Field } from 'react-final-form'
 
 import FieldError from '@/shared/field-error'
@@ -25,6 +28,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
 
   const validate = bindAssertions(assertionList, props.comp.validators)
 
+  // TODO move to ComponentFactory
   const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
 
   assertNotUndefined(injectedComp.name)
@@ -38,7 +42,29 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
     >
       {({ input, meta }) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(() => handleBindEvents(props.context), [props.comp.bindings, props.schema])
+        const context = useMemo<FieldComponentContext>(
+          () => ({
+            ...props.context,
+            observer: new Observer(),
+          }),
+          [props.comp.bindings]
+        )
+
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+          context.observer.addEvent(onBlur.name, input.onBlur)
+          context.observer.addEvent(onFocus.name, input.onFocus)
+          context.observer.addEvent(onChange.name, input.onChange)
+
+          registerFieldChangeEvent(context)
+
+          bindEvents(context)
+
+          // Я не знаю почему с таймаутом робит а без нет
+          setTimeout(() => context.observer.emitEvent(onInit.name)())
+
+          return context.observer.emitEvent(onDestroy.name)
+        }, [props.comp.bindings])
 
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
@@ -47,6 +73,10 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               {...injectedComp.props}
               context={props.context}
               required={isRequired(props.comp.validators)}
+              onBlur={context.observer.emitEvent('onBlur')}
+              onFocus={context.observer.emitEvent('onFocus')}
+              onClick={context.observer.emitEvent('onClick')}
+              onChange={context.observer.emitEvent('onChange')}
             />
             <FieldError meta={meta} />
           </div>

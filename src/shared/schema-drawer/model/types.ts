@@ -1,5 +1,6 @@
 import { Meta } from '@savchenko91/schema-validator'
 
+import { Observer } from '../lib/observer'
 import { FormState } from 'final-form'
 import { FormRenderProps } from 'react-final-form'
 
@@ -94,11 +95,9 @@ export type DrawerContext = Context & {
   comps: Norm<Comp>
   compIds: string[]
   schemas: Norm<Schema>
-  eventUnsubscribers: (() => void)[]
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onFieldChange: (name: string, action: (difference: any) => void) => () => void
     setComp: (comp: Comp) => void
   }
 }
@@ -108,8 +107,18 @@ export type ComponentContext = DrawerContext & {
   schema: Schema
 }
 
+export type ContentComponentContext = ComponentContext & {
+  observer: Observer
+  fns: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // onClick: (...args: any[]) => void
+  }
+}
+
+export type FieldComponentContext = ContentComponentContext
+
 export interface EventProps {
-  context: ComponentContext
+  context: FieldComponentContext | ContentComponentContext
   actionUnits: Norm<EventUnit>
   actionItems: ActionListItem[]
   eventItem: EventListItem
@@ -131,7 +140,7 @@ export interface ListItem {
 }
 
 export interface EventListItem extends ListItem {
-  function: (eventProps: EventProps) => () => void
+  function: (eventProps: EventProps) => (eventOrValue: any) => void
 }
 
 export interface ActionListItem extends ListItem {

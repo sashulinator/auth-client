@@ -121,7 +121,6 @@ export const actionList: Norm<ActionListItem> = {
                 text: 'string',
               },
             ],
-            placeholder: 'Выберите значение',
           },
           bindings: {
             ROOT_ID: {
