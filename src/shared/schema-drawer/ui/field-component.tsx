@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
 import bindEvents from '../lib/bind-events'
-import { onBlur, onDestroy, onInit } from '../lib/events'
+import { onBlur, onChange, onDestroy, onFocus, onInit } from '../lib/events'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
 import { Observer } from '../lib/observer'
@@ -52,18 +52,18 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-          bindEvents(context)
+          context.observer.addEvent(onBlur.name, input.onBlur)
+          context.observer.addEvent(onFocus.name, input.onFocus)
+          context.observer.addEvent(onChange.name, input.onChange)
 
           registerFieldChangeEvent(context)
 
-          context.observer.addEvent(onBlur.name, input.onBlur)
+          bindEvents(context)
 
           // Я не знаю почему с таймаутом робит а без нет
           setTimeout(() => context.observer.emitEvent(onInit.name)())
 
-          return () => {
-            context.observer.emitEvent(onDestroy.name)()
-          }
+          return context.observer.emitEvent(onDestroy.name)
         }, [props.comp.bindings])
 
         return (
@@ -74,6 +74,9 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               context={props.context}
               required={isRequired(props.comp.validators)}
               onBlur={context.observer.emitEvent('onBlur')}
+              onFocus={context.observer.emitEvent('onFocus')}
+              onClick={context.observer.emitEvent('onClick')}
+              onChange={context.observer.emitEvent('onChange')}
             />
             <FieldError meta={meta} />
           </div>

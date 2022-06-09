@@ -1,4 +1,4 @@
-import { onBlur, onDestroy, onFieldChange, onFieldLife, onInit } from '../lib/events'
+import { onBlur, onChange, onDestroy, onFieldChange, onFieldLife, onFocus, onInit } from '../lib/events'
 import { EventListItem, Norm } from '../model/types'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -7,14 +7,20 @@ export const eventList: Norm<EventListItem> = {
   [onFieldChange.name]: {
     function: onFieldChange,
   },
-  [onInit.name]: {
-    function: onInit,
-  },
   [onFieldLife.name]: {
     function: onFieldLife,
   },
+  [onChange.name]: {
+    function: onChange,
+  },
   [onBlur.name]: {
     function: onBlur,
+  },
+  [onFocus.name]: {
+    function: onFocus,
+  },
+  [onInit.name]: {
+    function: onInit,
   },
   [onDestroy.name]: {
     function: onDestroy,
