@@ -93,7 +93,7 @@ export const actionList: Norm<ActionListItem> = {
             },
             l459ocs7: {
               id: 'l459ocs7',
-              name: 'onFieldChange',
+              name: 'onFieldLife',
               type: EventUnitType.EVENT,
               children: ['l45ikto6', 'l45im2fr', 'l45givi5', 'l459q4jl'],
             },
@@ -163,6 +163,7 @@ export const actionList: Norm<ActionListItem> = {
             },
           },
           compSchemaId: BasicComponentsNames.Dropdown,
+          defaultValue: 'boolean',
         },
         l458n3rr: {
           id: 'l458n3rr',
