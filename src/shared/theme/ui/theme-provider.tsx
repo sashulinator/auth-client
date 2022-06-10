@@ -1,4 +1,4 @@
-import { ThemeProvider, createTheme } from '@fluentui/react'
+import { PartialTheme, ThemeProvider, createTheme } from '@fluentui/react'
 
 import { setCSSVariables } from '../lib/set-css-variables'
 import { themeState } from '../model'
@@ -11,7 +11,7 @@ interface MyThemeProviderProps {
 
 export default function MyThemeProvider(props: MyThemeProviderProps) {
   const [theme] = useRecoilState(themeState)
-  const generatedState = createTheme(theme)
+  const generatedState = createTheme(theme as PartialTheme)
 
   setCSSVariables({
     ...generatedState.palette,
@@ -20,7 +20,7 @@ export default function MyThemeProvider(props: MyThemeProviderProps) {
   })
 
   return (
-    <ThemeProvider className="themeProvider" theme={theme}>
+    <ThemeProvider className="themeProvider" theme={theme as PartialTheme}>
       {props.children}
     </ThemeProvider>
   )

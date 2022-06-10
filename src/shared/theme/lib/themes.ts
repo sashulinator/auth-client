@@ -1,6 +1,26 @@
-export const themes = {
+import { PartialTheme } from '@fluentui/react'
+
+interface AdditionalCSS {
+  [key: string]: {
+    palette: {
+      redBackground: string
+      blueBackground: string
+      greenBackground: string
+      yellowBackground: string
+      violetBackground: string
+    }
+  }
+}
+
+export const themes: AdditionalCSS & PartialTheme = {
   dark: {
     palette: {
+      redBackground: '#e74c3c',
+      blueBackground: '#3498db',
+      greenBackground: '#07bc0c',
+      yellowBackground: '#f1c40f',
+      violetBackground: '#bb86fc',
+
       themePrimary: '#ffd470',
       themeLighterAlt: '#0a0804',
       themeLighter: '#292212',
@@ -27,6 +47,12 @@ export const themes = {
   },
   default: {
     palette: {
+      redBackground: '#e74c3c',
+      blueBackground: '#3498db',
+      greenBackground: '#07bc0c',
+      yellowBackground: '#f1c40f',
+      violetBackground: '#bb86fc',
+
       themePrimary: '#0078d4',
       themeLighterAlt: '#eff6fc',
       themeLighter: '#deecf9',
@@ -49,58 +75,6 @@ export const themes = {
       neutralDark: '#201f1e',
       black: '#000000',
       white: '#ffffff',
-    },
-  },
-  maxim: {
-    palette: {
-      themePrimary: '#17b02e',
-      themeLighterAlt: '#f3fcf4',
-      themeLighter: '#d1f2d6',
-      themeLight: '#abe7b4',
-      themeTertiary: '#63d073',
-      themeSecondary: '#2bb941',
-      themeDarkAlt: '#159e29',
-      themeDark: '#118623',
-      themeDarker: '#0d631a',
-      neutralLighterAlt: '#373737',
-      neutralLighter: '#3f3f3f',
-      neutralLight: '#4c4c4c',
-      neutralQuaternaryAlt: '#545454',
-      neutralQuaternary: '#5b5b5b',
-      neutralTertiaryAlt: '#777777',
-      neutralTertiary: '#4d3b29',
-      neutralSecondary: '#997653',
-      neutralPrimaryAlt: '#e0ad79',
-      neutralPrimary: '#ffc48a',
-      neutralDark: '#ffd2a6',
-      black: '#ffdebd',
-      white: '#2e2e2e',
-    },
-  },
-  novikiv: {
-    palette: {
-      themePrimary: '#ff57f9',
-      themeLighterAlt: '#0a030a',
-      themeLighter: '#290e28',
-      themeLight: '#4d1a4b',
-      themeTertiary: '#993496',
-      themeSecondary: '#e04cdb',
-      themeDarkAlt: '#ff68fa',
-      themeDark: '#ff7ffb',
-      themeDarker: '#ffa1fc',
-      neutralLighterAlt: '#373737',
-      neutralLighter: '#3f3f3f',
-      neutralLight: '#4c4c4c',
-      neutralQuaternaryAlt: '#545454',
-      neutralQuaternary: '#5b5b5b',
-      neutralTertiaryAlt: '#777777',
-      neutralTertiary: '#c8c8c8',
-      neutralSecondary: '#d0d0d0',
-      neutralPrimaryAlt: '#dadada',
-      neutralPrimary: '#ffffff',
-      neutralDark: '#f4f4f4',
-      black: '#f8f8f8',
-      white: '#2e2e2e',
     },
   },
 }

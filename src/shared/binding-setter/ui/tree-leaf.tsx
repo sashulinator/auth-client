@@ -1,6 +1,8 @@
 import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 import { IconButton, Stack } from '@fluentui/react'
 
+import { labelCharacter } from '../constants/label-character'
+import { labelColors } from '../constants/label-colors'
 import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
@@ -64,7 +66,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
           iconProps={{ iconName: 'Cancel' }}
           onClick={() => props.item.data?.remove(props.item.id)}
         />
-        <div className="type">{isOperator ? 'O' : 'A'}</div>
+        <div className={clsx('label', labelColors[binding.type])}>{labelCharacter[binding.type]}</div>
         <Stack className="treeLeafText" horizontal>
           <Dropdown
             value={binding.name}
