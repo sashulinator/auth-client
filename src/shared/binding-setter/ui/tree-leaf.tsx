@@ -42,8 +42,6 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     ? eventNameOptions
     : eventAssertionNameOptions
 
-  console.log('leaf', props.item.data.errorId, props.item.id)
-
   return (
     <div
       ref={props.provided.innerRef}
