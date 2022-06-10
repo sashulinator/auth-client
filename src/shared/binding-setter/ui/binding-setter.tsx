@@ -1,6 +1,6 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { ActionButton, Label, Stack } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './binding-setter.css'
 
@@ -43,6 +43,7 @@ export interface BindingSetterProps {
   name?: string
   label?: string
   context?: any
+  validationError?: ValidationError
 }
 
 export default function BindingSetter(props: BindingSetterProps): JSX.Element {
@@ -64,6 +65,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       remove,
       selectItemId,
       selectedItemId,
+      errorId: props.validationError?._inputName,
     })
   }
 

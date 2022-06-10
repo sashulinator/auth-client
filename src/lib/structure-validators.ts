@@ -11,6 +11,7 @@ export const objectWithNumberKeys = createStructureValidator((schema, input, met
           input,
           code: 'assertObjectWithNumberKeys',
           message: 'Object keys are not numbers',
+          path: meta.path,
         })
       }
     })

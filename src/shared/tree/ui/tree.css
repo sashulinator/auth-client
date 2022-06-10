@@ -33,6 +33,16 @@
   border: solid 2px var(--themePrimary);
 }
 
+.TreeLeaf.isError .treeLeafBackgroundColor {
+  background-color: rgb(209, 33, 33);
+  opacity: 0.3;
+}
+
+.TreeLeaf.isError.picked .treeLeafContent .treeLeafBackgroundColor {
+  background-color: rgb(209, 33, 33);
+  opacity: 0.5;
+}
+
 .TreeLeaf .treeLeafText {
   display: flex;
   align-items: center;

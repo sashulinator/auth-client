@@ -28,7 +28,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     return null
   }
 
-  const { binding: binding } = props.item.data
+  const { binding } = props.item.data
 
   const isPicked = props.item.data.selectedItemId === props.item.data.binding.id
   const isOperator = binding.type === EventUnitType.OPERATOR
@@ -42,12 +42,14 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     ? eventNameOptions
     : eventAssertionNameOptions
 
+  console.log('leaf', props.item.data.errorId, props.item.id)
+
   return (
     <div
       ref={props.provided.innerRef}
       role="button"
       tabIndex={0}
-      className={clsx('TreeLeaf', isPicked && 'picked')}
+      className={clsx('TreeLeaf', isPicked && 'picked', props.item.data.errorId === props.item.id && 'isError')}
       onClick={() => props.item.data?.selectItemId(props.item.id.toString())}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}

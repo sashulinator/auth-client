@@ -9,6 +9,7 @@ export interface AdditionalData {
   changeBinding: (id: string | number, name: string, withValue?: unknown) => void
   selectItemId: React.Dispatch<React.SetStateAction<string>>
   selectedItemId: string
+  errorId?: string
 }
 
 export default function buildTree(bindings: Norm<EventUnit> | undefined, additionalData: AdditionalData) {

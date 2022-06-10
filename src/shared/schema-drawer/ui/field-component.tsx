@@ -77,6 +77,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               onFocus={context.observer.emitEvent('onFocus')}
               onClick={context.observer.emitEvent('onClick')}
               onChange={context.observer.emitEvent('onChange')}
+              validationError={meta.error}
             />
             <FieldError meta={meta} />
           </div>
