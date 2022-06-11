@@ -1,5 +1,5 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, Label, Stack } from '@fluentui/react'
+import { ActionButton, IButtonStyles, Label, Stack } from '@fluentui/react'
 import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './binding-setter.css'
@@ -35,6 +35,18 @@ import SchemaDrawer, {
   setValue,
 } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
+
+const buttonStyles: IButtonStyles = {
+  rootHovered: {
+    backgroundColor: 'var(--themePrimaryTransparent01)',
+  },
+  root: {
+    height: '32px',
+  },
+  label: {
+    color: 'var(--themePrimary)',
+  },
+}
 
 export interface BindingSetterProps {
   comp: Comp
@@ -195,13 +207,13 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
         <div className="bindingSetterBackground" />
         <Stack tokens={{ childrenGap: '24px' }}>
           <Stack horizontal horizontalAlign="space-between">
-            <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion}>
+            <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion} styles={buttonStyles}>
               assertion
             </ActionButton>
             <Stack horizontal tokens={{ childrenGap: '12px' }}>
-              <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} />
-              <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} />
-              <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} />
+              <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} styles={buttonStyles} />
+              <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} styles={buttonStyles} />
+              <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} styles={buttonStyles} />
             </Stack>
           </Stack>
           {tree && (

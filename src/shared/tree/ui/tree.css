@@ -86,7 +86,7 @@
   position: absolute;
   width: 100%;
   height: calc(100% - 1px);
-  /* ? needed? */
+  /* ! any button is on top focus border without it */
   z-index: 1;
   pointer-events: none;
 }
