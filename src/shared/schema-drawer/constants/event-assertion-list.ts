@@ -18,7 +18,7 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           title: 'stackRoot',
           name: 'hello',
           children: ['namesDropdown', 'isInit'],
-          props: { tokens: { padding: '5px', childrenGap: '4px' } },
+          props: { tokens: { padding: '5px', childrenGap: '24px' } },
           compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {

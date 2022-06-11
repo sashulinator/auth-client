@@ -9,7 +9,7 @@ import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
-import React, { useEffect, useState } from 'react'
+import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
@@ -18,6 +18,7 @@ import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Comp,
   EventUnit,
@@ -44,9 +45,14 @@ export interface BindingSetterProps {
   label?: string
   context?: any
   validationError?: ValidationError
+  isFocused: boolean
+  ref: LegacyRef<HTMLDivElement | null>
 }
 
-export default function BindingSetter(props: BindingSetterProps): JSX.Element {
+const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(function BindingSetter(
+  props,
+  ref
+): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
@@ -182,16 +188,16 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   }
 
   return (
-    <div className={clsx('BindingSetter', bindingItems && 'notEmpty')}>
+    <div className={clsx('BindingSetter', bindingItems && 'notEmpty', props.isFocused && 'isFocused')} ref={ref}>
       {props.label && <Label>{props.label}</Label>}
       <Stack className="wrapper" verticalAlign="space-between">
         <div className="bindingSetterBackground" />
-        <Stack>
+        <Stack tokens={{ childrenGap: '24px' }}>
           <Stack horizontal horizontalAlign="space-between">
             <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
               assertion
             </ActionButton>
-            <Stack horizontal>
+            <Stack horizontal tokens={{ childrenGap: '12px' }}>
               <ActionButton iconProps={{ iconName: 'TouchPointer' }} onClick={addEvent} />
               <ActionButton iconProps={{ iconName: 'LightningBolt' }} onClick={addAction} />
               <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
@@ -203,34 +209,39 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
               <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
             </Stack>
           )}
+          {hasSchema(assertionItem) && bindingItem && (
+            <Form
+              key={selectedItemId}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onSubmit={() => {}}
+              initialValues={bindingItem.props}
+              render={(formProps) => {
+                return (
+                  <>
+                    <Autosave
+                      save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)}
+                      debounce={500}
+                    />
+                    <SchemaDrawer
+                      componentList={componentList}
+                      schema={assertionItem.schema}
+                      schemas={basicComponentsSchemas}
+                      context={{
+                        previewSchema: props.context?.previewSchema,
+                        previewData: props.context?.previewData,
+                        formState: formProps.form.getState(),
+                        formProps,
+                      }}
+                    />
+                  </>
+                )
+              }}
+            />
+          )}
         </Stack>
-        {hasSchema(assertionItem) && bindingItem && (
-          <Form
-            key={selectedItemId}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onSubmit={() => {}}
-            initialValues={bindingItem.props}
-            render={(formProps) => {
-              return (
-                <>
-                  <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
-                  <SchemaDrawer
-                    componentList={componentList}
-                    schema={assertionItem.schema}
-                    schemas={basicComponentsSchemas}
-                    context={{
-                      previewSchema: props.context?.previewSchema,
-                      previewData: props.context?.previewData,
-                      formState: formProps.form.getState(),
-                      formProps,
-                    }}
-                  />
-                </>
-              )
-            }}
-          />
-        )}
       </Stack>
     </div>
   )
-}
+})
+
+export default FocusHOC(BindingSetter)

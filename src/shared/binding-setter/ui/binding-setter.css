@@ -10,6 +10,7 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  padding: 24px;
 }
 
 .BindingSetter .wrapper .bindingSetterBackground {
@@ -23,6 +24,10 @@
   opacity: 1;
   pointer-events: none;
   box-sizing: border-box;
+}
+
+.BindingSetter.isFocused .wrapper .bindingSetterBackground {
+  border: 2px solid var(--themePrimary);
 }
 
 .BindingSetter .label {
