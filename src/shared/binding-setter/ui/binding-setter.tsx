@@ -4,6 +4,7 @@ import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validat
 
 import './binding-setter.css'
 
+import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
 import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
@@ -194,13 +195,13 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
         <div className="bindingSetterBackground" />
         <Stack tokens={{ childrenGap: '24px' }}>
           <Stack horizontal horizontalAlign="space-between">
-            <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
+            <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion}>
               assertion
             </ActionButton>
             <Stack horizontal tokens={{ childrenGap: '12px' }}>
-              <ActionButton iconProps={{ iconName: 'TouchPointer' }} onClick={addEvent} />
-              <ActionButton iconProps={{ iconName: 'LightningBolt' }} onClick={addAction} />
-              <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+              <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} />
+              <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} />
+              <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} />
             </Stack>
           </Stack>
           {tree && (
