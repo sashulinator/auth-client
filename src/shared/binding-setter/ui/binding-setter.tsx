@@ -56,6 +56,7 @@ export interface BindingSetterProps {
   value: Norm<EventUnit> | undefined
   name?: string
   label?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context?: any
   validationError?: ValidationError
   isFocused: boolean
@@ -205,7 +206,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
       {props.label && <Label>{props.label}</Label>}
       <Stack className="wrapper" verticalAlign="space-between">
         <div className="bindingSetterBackground" />
-        <Stack tokens={{ childrenGap: '24px' }}>
+        <Stack tokens={{ childrenGap: '16px' }}>
           <Stack horizontal horizontalAlign="space-between">
             <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion} styles={buttonStyles}>
               assertion
