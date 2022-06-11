@@ -1,6 +1,8 @@
 import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 import { Icon, IconButton, Stack } from '@fluentui/react'
 
+import './tree-leaf.css'
+
 import { labelColors } from '../constants/label-colors'
 import { typeIcons } from '../constants/type-icons'
 import { AdditionalData } from '../lib/build-tree'
@@ -32,7 +34,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
 
   const { binding } = props.item.data
 
-  const isPicked = props.item.data.selectedItemId === props.item.data.binding.id
+  const isError = props.item.data.errorId === props.item.id
+  const isSelected = props.item.data.selectedItemId === props.item.data.binding.id
+
   const isOperator = binding.type === EventUnitType.OPERATOR
   const isAction = binding.type === EventUnitType.ACTION
   const isEvent = binding.type === EventUnitType.EVENT
@@ -49,7 +53,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
       ref={props.provided.innerRef}
       role="button"
       tabIndex={0}
-      className={clsx('TreeLeaf', isPicked && 'picked', props.item.data.errorId === props.item.id && 'isError')}
+      className={clsx('BindingTreeLeaf NewTreeLeaf', isSelected && 'isSelected', isError && 'isError')}
       onClick={() => props.item.data?.selectItemId(props.item.id.toString())}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
@@ -59,22 +63,24 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
       }}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
-        <div className="treeLeafBackgroundColor" />
-        <div className="treeLeafBorderColor" />
+        <div className="treeLeafBorder" />
+        <Icon iconName={typeIcons[binding.type]} className={clsx('label', labelColors[binding.type])} />
+        <Dropdown
+          value={binding.name}
+          options={options}
+          onChange={(name) => props.item.data?.changeBinding?.(props.item.id, name)}
+          styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
+        />
         <IconButton
           className="button"
+          styles={{
+            rootHovered: {
+              backgroundColor: 'var(--themePrimaryTransparent01)',
+            },
+          }}
           iconProps={{ iconName: 'Cancel' }}
           onClick={() => props.item.data?.remove(props.item.id)}
         />
-        <Icon iconName={typeIcons[binding.type]} className={clsx('label', labelColors[binding.type])} />
-        <Stack className="treeLeafText" horizontal>
-          <Dropdown
-            value={binding.name}
-            options={options}
-            onChange={(name) => props.item.data?.changeBinding?.(props.item.id, name)}
-            styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
-          />
-        </Stack>
       </Stack>
     </div>
   )

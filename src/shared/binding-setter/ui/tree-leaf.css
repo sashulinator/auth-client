@@ -1,0 +1,6 @@
+.BindingTreeLeaf:hover .ms-Dropdown-title,
+.BindingTreeLeaf:hover .ms-Dropdown-caretDown,
+.BindingTreeLeaf.isSelected .ms-Dropdown-title,
+.BindingTreeLeaf.isSelected .ms-Dropdown-caretDown {
+  color: var(--themePrimary);
+}

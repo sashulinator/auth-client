@@ -13,7 +13,7 @@
   padding: 24px;
 }
 
-.BindingSetter .wrapper .bindingSetterBackground {
+.BindingSetter .bindingSetterBackground {
   position: absolute;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@
   box-sizing: border-box;
 }
 
-.BindingSetter.isFocused .wrapper .bindingSetterBackground {
+.BindingSetter.isFocused .bindingSetterBackground {
   border: 2px solid var(--themePrimary);
 }
 
@@ -34,6 +34,7 @@
   min-width: 25px;
   min-height: 25px;
   border-radius: 50%;
+  margin: 0 4px;
   display: flex;
   align-items: center;
   justify-content: center;

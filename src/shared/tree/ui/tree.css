@@ -66,3 +66,57 @@
 .TreeLeaf .button {
   margin: 2px;
 }
+
+/* NEW TREE LEAF */
+
+.NewTreeLeaf:focus {
+  outline: none !important;
+}
+
+.NewTreeLeaf .treeLeafContent {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.NewTreeLeaf .treeLeafBorder {
+  border: solid 2px transparent;
+  box-sizing: border-box;
+  border-radius: 3px;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 1px);
+  /* ? needed? */
+  z-index: 1;
+  pointer-events: none;
+}
+
+div.NewTreeLeaf.isSelected .treeLeafContent {
+  background-color: var(--themePrimaryTransparent03);
+}
+
+.NewTreeLeaf:hover .treeLeafContent {
+  background-color: var(--themePrimaryTransparent01);
+}
+
+.NewTreeLeaf:focus .treeLeafBorder {
+  border: solid 2px var(--themePrimary);
+}
+
+.NewTreeLeaf.isError .treeLeafContent {
+  background-color: var(--red);
+}
+
+.NewTreeLeaf.isError.isSelected .treeLeafContent {
+  background-color: var(--red);
+}
+
+.NewTreeLeaf .treeLeafText {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  z-index: 1;
+  height: 32px;
+  white-space: nowrap;
+}
