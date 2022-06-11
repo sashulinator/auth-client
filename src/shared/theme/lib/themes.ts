@@ -3,11 +3,11 @@ import { PartialTheme } from '@fluentui/react'
 interface AdditionalCSS {
   [key: string]: {
     palette: {
-      redBackground: string
-      blueBackground: string
-      greenBackground: string
-      yellowBackground: string
-      violetBackground: string
+      red: string
+      blue: string
+      green: string
+      yellow: string
+      violet: string
     }
   }
 }
@@ -18,11 +18,11 @@ const defaultPrimary = 'rgba(0, 120, 212, alfa)'
 export const themes: AdditionalCSS & PartialTheme = {
   dark: {
     palette: {
-      redBackground: '#e74c3c',
-      blueBackground: '#3498db',
-      greenBackground: '#07bc0c',
-      yellowBackground: '#f1c40f',
-      violetBackground: '#bb86fc',
+      red: '#e74c3c',
+      blue: '#3498db',
+      green: '#07bc0c',
+      yellow: '#f1c40f',
+      violet: '#bb86fc',
 
       themePrimaryTransparent05: darkPrimary.replace('alfa', '0.5'),
       themePrimaryTransparent03: darkPrimary.replace('alfa', '0.3'),
@@ -54,11 +54,11 @@ export const themes: AdditionalCSS & PartialTheme = {
   },
   default: {
     palette: {
-      redBackground: '#e74c3c',
-      blueBackground: '#3498db',
-      greenBackground: '#07bc0c',
-      yellowBackground: '#f1c40f',
-      violetBackground: '#bb86fc',
+      red: '#e74c3c',
+      blue: '#3498db',
+      green: '#07bc0c',
+      yellow: '#f1c40f',
+      violet: '#bb86fc',
       themePrimaryTransparent05: defaultPrimary.replace('alfa', '0.5'),
       themePrimaryTransparent03: defaultPrimary.replace('alfa', '0.3'),
       themePrimaryTransparent01: defaultPrimary.replace('alfa', '0.1'),

@@ -1,19 +1,19 @@
 .redBackground {
-  background-color: #e74c3c;
+  background-color: var(--red);
 }
 
 .blueBackground {
-  background-color: #3498db;
+  background-color: var(--blue);
 }
 
 .greenBackground {
-  background-color: #07bc0c;
+  background-color: var(--green);
 }
 
 .yellowBackground {
-  background-color: #f1c40f;
+  background-color: var(--yellow);
 }
 
 .violetBackground {
-  background-color: #bb86fc;
+  background-color: var(--violet);
 }

@@ -34,12 +34,12 @@
 }
 
 .TreeLeaf.isError .treeLeafBackgroundColor {
-  background-color: var(--redBackground);
+  background-color: var(--red);
   opacity: 0.3;
 }
 
 .TreeLeaf.isError.picked .treeLeafContent .treeLeafBackgroundColor {
-  background-color: var(--redBackground);
+  background-color: var(--red);
   opacity: 0.5;
 }
 
