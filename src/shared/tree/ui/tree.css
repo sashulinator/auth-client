@@ -51,9 +51,7 @@
   z-index: 1;
   margin: 2px;
   height: 32px;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .TreeLeaf .treeLeafText.addOneButtonSpace {
@@ -62,6 +60,7 @@
 
 .TreeLeaf .treeLeafText {
   padding-left: 2px;
+  padding-right: 12px;
 }
 
 .TreeLeaf .button {

@@ -1,5 +1,7 @@
 .LoadingAria {
   position: relative;
+  min-width: fit-content;
+  width: 100%;
 }
 
 .spinnerContainer {
