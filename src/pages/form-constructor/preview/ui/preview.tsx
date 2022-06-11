@@ -114,9 +114,9 @@ export default function Preview(props: PreviewProps): JSX.Element {
   }
 
   function onMouseDown(event: MouseEvent) {
-    const isMoveBlocked = localStorage.getItem('moveBlocked')
+    const target: any = event.target
 
-    if (isMoveBlocked === 'true') {
+    if (!target?.classList.contains('PreviewPanel') && !target?.classList.contains('ms-Stack')) {
       return
     }
 
