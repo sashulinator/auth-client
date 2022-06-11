@@ -1,4 +1,5 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { ActionButton } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
@@ -8,6 +9,7 @@ import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
+import { ROOT_ID } from '@/constants/common'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
@@ -100,6 +102,27 @@ function TreePanel(props: TreePanelProps): JSX.Element {
   return (
     <PerfectScrollbar className="treePanelScrollable">
       <LoadingAria loading={props.isLoading}>
+        {!props.isLoading && (
+          <ActionButton
+            styles={{
+              root: {
+                borderRadius: '0',
+                width: '100%',
+                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
+                  ? 'var(--themePrimaryTransparent03)'
+                  : 'transparent',
+              },
+              rootHovered: {
+                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
+                  ? 'var(--themePrimaryTransparent03)'
+                  : 'var(--themePrimaryTransparent01)',
+              },
+            }}
+            onClick={() => props.selectAndUnselectComp([ROOT_ID])}
+          >
+            ROOT
+          </ActionButton>
+        )}
         {tree && (
           <Tree
             renderItem={TreeLeaf}

@@ -11,6 +11,7 @@
   transition: 0.3s opacity ease-in;
   position: absolute;
   z-index: 100;
+  pointer-events: none;
 }
 
 .LoadingAria--loading > .spinnerContainer {
