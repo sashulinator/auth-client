@@ -120,3 +120,7 @@ div.NewTreeLeaf.isSelected .treeLeafContent {
   height: 32px;
   white-space: nowrap;
 }
+
+.NewTreeLeaf .treeLeafText.addOneButtonSpace {
+  padding-left: 36px;
+}
