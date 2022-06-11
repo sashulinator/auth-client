@@ -12,23 +12,49 @@ interface AdditionalCSS {
   }
 }
 
-const darkPrimary = 'rgba(255, 212, 112, alfa)'
-const defaultPrimary = 'rgba(0, 120, 212, alfa)'
+const darkPrimary = 'rgba(255, 212, 112, alpha)'
+const defaultPrimary = 'rgba(0, 120, 212, alpha)'
+
+const darkWhite = 'rgba(46, 46, 46, alpha)'
+const defaultWhite = 'rgba(255, 255, 255, alpha)'
+
+const defaultBlack = 'rgba(46, 46, 46, alpha)'
+const darkBlack = 'rgba(249, 249, 249, alpha)'
+
+const alwaysWhite = 'rgba(255, 255, 255, alpha)'
+const alwaysBlack = 'rgba(0, 0, 0, alpha)'
+
+const red = 'rgba(231, 77, 60, alpha)'
+const blue = 'rgba(52, 152, 219, alpha)'
+const green = 'rgba(137, 184, 47, alpha)'
+const yellow = 'rgba(241, 196, 15, alpha)'
+const violet = 'rgba(187, 134, 252, alpha)'
 
 export const themes: AdditionalCSS & PartialTheme = {
   dark: {
     palette: {
-      red: '#e74c3c',
-      blue: '#3498db',
-      green: '#07bc0c',
-      yellow: '#f1c40f',
-      violet: '#bb86fc',
+      red: red.replace('alpha', '1'),
+      blue: blue.replace('alpha', '1'),
+      green: green.replace('alpha', '1'),
+      yellow: yellow.replace('alpha', '1'),
+      violet: violet.replace('alpha', '1'),
+      red02: red.replace('alpha', '0.2'),
+      blue02: blue.replace('alpha', '0.2'),
+      green02: green.replace('alpha', '0.2'),
+      yellow02: yellow.replace('alpha', '0.2'),
+      violet02: violet.replace('alpha', '0.2'),
+      alwaysWhite,
+      alwaysWhite02: alwaysWhite.replace('alpha', '0.2'),
+      alwaysWhite01: alwaysWhite.replace('alpha', '0.05'),
+      alwaysBlack,
+      alwaysBlack02: alwaysBlack.replace('alpha', '0.2'),
+      alwaysBlack01: alwaysBlack.replace('alpha', '0.05'),
 
-      themePrimaryTransparent05: darkPrimary.replace('alfa', '0.5'),
-      themePrimaryTransparent03: darkPrimary.replace('alfa', '0.3'),
-      themePrimaryTransparent01: darkPrimary.replace('alfa', '0.1'),
+      themePrimaryTransparent05: darkPrimary.replace('alpha', '0.5'),
+      themePrimaryTransparent03: darkPrimary.replace('alpha', '0.3'),
+      themePrimaryTransparent01: darkPrimary.replace('alpha', '0.1'),
 
-      themePrimary: darkPrimary.replace('alfa', '1'),
+      themePrimary: darkPrimary.replace('alpha', '1'),
       themeLighterAlt: '#0a0804',
       themeLighter: '#292212',
       themeLight: '#4d4022',
@@ -48,8 +74,12 @@ export const themes: AdditionalCSS & PartialTheme = {
       neutralPrimaryAlt: '#eaeaea',
       neutralPrimary: '#d1d1d1',
       neutralDark: '#f4f4f4',
-      black: '#f9f9f9',
-      white: '#2e2e2e',
+      black: darkBlack.replace('alpha', '1'),
+      black02: darkBlack.replace('alpha', '0.2'),
+      black01: darkBlack.replace('alpha', '0.1'),
+      white: darkWhite.replace('alpha', '1'),
+      white02: darkWhite.replace('alpha', '0.2'),
+      white01: darkWhite.replace('alpha', '0.1'),
     },
   },
   default: {
@@ -59,11 +89,18 @@ export const themes: AdditionalCSS & PartialTheme = {
       green: '#07bc0c',
       yellow: '#f1c40f',
       violet: '#bb86fc',
-      themePrimaryTransparent05: defaultPrimary.replace('alfa', '0.5'),
-      themePrimaryTransparent03: defaultPrimary.replace('alfa', '0.3'),
-      themePrimaryTransparent01: defaultPrimary.replace('alfa', '0.1'),
+      alwaysWhite,
+      alwaysWhite02: alwaysWhite.replace('alpha', '0.2'),
+      alwaysWhite01: alwaysWhite.replace('alpha', '0.05'),
+      alwaysBlack,
+      alwaysBlack02: alwaysBlack.replace('alpha', '0.2'),
+      alwaysBlack01: alwaysBlack.replace('alpha', '0.05'),
 
-      themePrimary: defaultPrimary.replace('alfa', '1'),
+      themePrimaryTransparent05: defaultPrimary.replace('alpha', '0.5'),
+      themePrimaryTransparent03: defaultPrimary.replace('alpha', '0.3'),
+      themePrimaryTransparent01: defaultPrimary.replace('alpha', '0.1'),
+
+      themePrimary: defaultPrimary.replace('alpha', '1'),
       themeLighterAlt: '#eff6fc',
       themeLighter: '#deecf9',
       themeLight: '#c7e0f4',
@@ -83,8 +120,12 @@ export const themes: AdditionalCSS & PartialTheme = {
       neutralPrimaryAlt: '#3b3a39',
       neutralPrimary: '#323130',
       neutralDark: '#201f1e',
-      black: '#000000',
-      white: '#ffffff',
+      black: defaultBlack.replace('alpha', '1'),
+      black02: defaultBlack.replace('alpha', '0.2'),
+      black01: defaultBlack.replace('alpha', '0.1'),
+      white: defaultWhite.replace('alpha', '1'),
+      white02: defaultWhite.replace('alpha', '0.2'),
+      white01: defaultWhite.replace('alpha', '0.1'),
     },
   },
 }
