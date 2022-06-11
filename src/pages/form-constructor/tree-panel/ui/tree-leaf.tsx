@@ -1,8 +1,17 @@
-import { IconButton, Stack, Text } from '@fluentui/react'
+import { IButtonStyles, IconButton, Stack, Text } from '@fluentui/react'
 
 import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
 import React from 'react'
+
+const buttonStyles: IButtonStyles = {
+  rootHovered: {
+    backgroundColor: 'transparent',
+  },
+  rootPressed: {
+    backgroundColor: 'transparent',
+  },
+}
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
   const isPicked = props.item.data?.pickedIds.includes(props.item.data?.comp.id)
@@ -64,6 +73,7 @@ function ExpandButton(p: TreeLeafProps) {
 
   return (
     <IconButton
+      styles={buttonStyles}
       className={clsx('button', p.item.isExpanded && 'turnChildRight90', 'transitionChild01')}
       iconProps={{ iconName: 'ChevronRight' }}
       onClick={toggle}
