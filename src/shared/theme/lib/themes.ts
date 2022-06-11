@@ -12,6 +12,9 @@ interface AdditionalCSS {
   }
 }
 
+const darkPrimary = 'rgba(255, 212, 112, alfa)'
+const defaultPrimary = 'rgba(0, 120, 212, alfa)'
+
 export const themes: AdditionalCSS & PartialTheme = {
   dark: {
     palette: {
@@ -21,7 +24,11 @@ export const themes: AdditionalCSS & PartialTheme = {
       yellowBackground: '#f1c40f',
       violetBackground: '#bb86fc',
 
-      themePrimary: '#ffd470',
+      themePrimaryTransparent05: darkPrimary.replace('alfa', '0.5'),
+      themePrimaryTransparent03: darkPrimary.replace('alfa', '0.3'),
+      themePrimaryTransparent01: darkPrimary.replace('alfa', '0.1'),
+
+      themePrimary: darkPrimary.replace('alfa', '1'),
       themeLighterAlt: '#0a0804',
       themeLighter: '#292212',
       themeLight: '#4d4022',
@@ -52,8 +59,11 @@ export const themes: AdditionalCSS & PartialTheme = {
       greenBackground: '#07bc0c',
       yellowBackground: '#f1c40f',
       violetBackground: '#bb86fc',
+      themePrimaryTransparent05: defaultPrimary.replace('alfa', '0.5'),
+      themePrimaryTransparent03: defaultPrimary.replace('alfa', '0.3'),
+      themePrimaryTransparent01: defaultPrimary.replace('alfa', '0.1'),
 
-      themePrimary: '#0078d4',
+      themePrimary: defaultPrimary.replace('alfa', '1'),
       themeLighterAlt: '#eff6fc',
       themeLighter: '#deecf9',
       themeLight: '#c7e0f4',
