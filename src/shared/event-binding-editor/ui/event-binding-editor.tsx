@@ -2,7 +2,7 @@ import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree }
 import { ActionButton, IButtonStyles, Label, Stack } from '@fluentui/react'
 import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
 
-import './binding-setter.css'
+import './event-binding-editor.css'
 
 import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
