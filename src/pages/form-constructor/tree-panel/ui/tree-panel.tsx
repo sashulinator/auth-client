@@ -101,7 +101,7 @@ function TreePanel(props: TreePanelProps): JSX.Element {
 
   return (
     <PerfectScrollbar className="treePanelScrollable">
-      <LoadingAria loading={props.isLoading}>
+      <LoadingAria loading={props.isLoading} label="Schema loading...">
         {!props.isLoading && (
           <ActionButton
             styles={{

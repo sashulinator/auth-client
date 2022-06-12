@@ -284,9 +284,11 @@ const FormConstructor: FC = (): JSX.Element => {
       <Stack as="main" className="FormConstructor">
         <div className="TreePanel">
           <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
-          <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
-            <FontIcon aria-label="Add Comp" iconName="Add" />
-          </PrimaryButton>
+          {!isDependencySchemasLoading && !isCurrentSchemaLoading && (
+            <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
+              <FontIcon aria-label="Add Comp" iconName="Add" />
+            </PrimaryButton>
+          )}
           <TreePanel
             schema={currentSchemaHistory.data}
             selectAndUnselectComp={selectAndUnselectComp}
@@ -296,7 +298,12 @@ const FormConstructor: FC = (): JSX.Element => {
           />
         </div>
         <div className="PreviewPanel">
-          <Preview schema={currentSchemaHistory.data} schemas={schemas} selectedCompIds={selectedCompIds} />
+          <Preview
+            isLoading={isDependencySchemasLoading}
+            schema={currentSchemaHistory.data}
+            schemas={schemas}
+            selectedCompIds={selectedCompIds}
+          />
         </div>
         <CompPanel
           previewSchema={currentSchemaHistory.data}
