@@ -1,6 +1,6 @@
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
-import { AssertionUnitType, EventAssertionListItem, Norm, SchemaType } from '../model/types'
+import { AssertionUnitType, EventAssertionListItem, EventToShowError, Norm, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -21,16 +21,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           },
         ],
         validators: {
-          ROOT_ID: {
-            id: 'ROOT_ID',
-            name: 'and',
-            type: AssertionUnitType.OPERATOR,
-            children: ['l46vi95c'],
-          },
-          l46vi95c: {
-            id: 'l46vi95c',
-            name: 'string',
-            type: AssertionUnitType.ASSERTION,
+          eventToShowError: EventToShowError.onBlur,
+          units: {
+            ROOT_ID: {
+              id: 'ROOT_ID',
+              name: 'and',
+              type: AssertionUnitType.OPERATOR,
+              children: ['l46vi95c'],
+            },
+            l46vi95c: {
+              id: 'l46vi95c',
+              name: 'string',
+              type: AssertionUnitType.ASSERTION,
+            },
           },
         },
       },
@@ -71,16 +74,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
             },
           ],
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
         },
@@ -110,16 +116,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           props: { label: 'pattern' },
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
         },
@@ -136,16 +145,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
             },
           ],
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
         },

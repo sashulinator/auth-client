@@ -26,7 +26,7 @@ export interface Comp {
   defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
-  validators?: Norm<AssertionUnit>
+  validators?: AssertionSchema
   bindings?: Norm<EventUnit>
   injections?: Injection[]
 }
@@ -52,7 +52,6 @@ export interface ComponentItem {
  */
 
 export interface BindingSchema<TUnit> {
-  type: string
   units: Norm<TUnit>
 }
 
@@ -76,9 +75,13 @@ export interface AssertionUnit extends BindingUnit {
   type: AssertionUnitType
 }
 
+export enum EventToShowError {
+  onBlur = 'onBlur',
+  onInit = 'onInit',
+}
+
 export interface AssertionSchema extends BindingSchema<AssertionUnit> {
-  type: 'ASSERTION'
-  eventToShowError: string
+  eventToShowError: EventToShowError
 }
 
 /**

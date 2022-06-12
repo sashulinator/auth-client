@@ -19,9 +19,11 @@ import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import SchemaDrawer, {
+  AssertionSchema,
   AssertionUnit,
   AssertionUnitType,
   Comp,
+  EventToShowError,
   Norm,
   Schema,
   assertionList,
@@ -33,9 +35,9 @@ import Tree from '@/shared/tree/ui/tree'
 export interface ValidatorsTreeProps {
   comp: Comp
   comps: Norm<Comp>
-  onChange: (value: Norm<AssertionUnit> | undefined) => void
+  onChange: (value: AssertionSchema | undefined) => void
   schemas: Norm<Schema>
-  value: Norm<AssertionUnit> | undefined
+  value: AssertionSchema | undefined
   name?: string
   label?: string
 }
@@ -44,14 +46,14 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   // TODO сделать проверку на невалидное значение
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-  const validatorItems = props.value
+  const validatorItems = props.value?.units
   const validatorItem = validatorItems?.[selectedItemId]
   const assertionItem = assertionList[validatorItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(props.value || undefined, {
+    return buildTree(props.value?.units || undefined, {
       changeValidator,
       remove,
       selectItemId,
@@ -92,7 +94,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     }
 
     if (validatorItems) {
-      props.onChange(moveEntity(validator, to.parentId, to.index || 0, validatorItems))
+      const units = moveEntity(validator, to.parentId, to.index || 0, validatorItems)
+      const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
+      props.onChange({ ...schema, units })
       setTree(moveItemOnTree(tree, from, to))
     }
   }
@@ -107,10 +111,11 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       children: [],
     }
 
-    const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
+    const units = addEntity(validator, ROOT_ID, 0, currentValidators)
+    const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
 
     if (props.name) {
-      props.onChange(newValidators)
+      props.onChange({ ...schema, units })
     }
   }
 
@@ -124,22 +129,25 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       children: [],
     }
 
-    const newValidatorItems = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
+    const units = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
+    const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
 
     if (validatorItems) {
-      props.onChange(newValidatorItems)
+      props.onChange({ ...schema, units })
     }
   }
 
   function remove(id: string | number): void {
     if (validatorItems) {
-      const newValidators = removeEntity(id, validatorItems)
-      assertNotUndefined(newValidators)
+      const units = removeEntity(id, validatorItems)
+      assertNotUndefined(units)
 
-      if (Object.keys(newValidators).length === 1) {
+      // isOnlyRoot?
+      if (Object.keys(units).length === 1) {
         props.onChange(undefined)
       } else {
-        props.onChange(removeEntity(id, validatorItems))
+        const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
+        props.onChange({ ...schema, units })
       }
     }
   }

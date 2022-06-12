@@ -1,5 +1,5 @@
 import { setCompProp, setValue } from '../lib/actions'
-import { ActionListItem, AssertionUnitType, EventUnitType, Norm, SchemaType } from '../model/types'
+import { ActionListItem, AssertionUnitType, EventToShowError, EventUnitType, Norm, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -28,16 +28,19 @@ export const actionList: Norm<ActionListItem> = {
           props: { label: 'name' },
           compSchemaId: BasicComponentsNames.Dropdown,
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
           injections: [
@@ -80,16 +83,19 @@ export const actionList: Norm<ActionListItem> = {
           title: 'compId',
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
         },
@@ -98,16 +104,19 @@ export const actionList: Norm<ActionListItem> = {
           name: 'typeof',
           title: 'typeof',
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
           props: {
@@ -235,16 +244,19 @@ export const actionList: Norm<ActionListItem> = {
           title: 'prop name',
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'and',
-              type: AssertionUnitType.OPERATOR,
-              children: ['l46vi95c'],
-            },
-            l46vi95c: {
-              id: 'l46vi95c',
-              name: 'string',
-              type: AssertionUnitType.ASSERTION,
+            eventToShowError: EventToShowError.onBlur,
+            units: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionUnitType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionUnitType.ASSERTION,
+              },
             },
           },
         },
