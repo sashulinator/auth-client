@@ -27,7 +27,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
       data-comp-id={props.item.id}
       onMouseOver={() => props.item.data?.onMouseOver?.(props.item.id)}
       onMouseLeave={() => props.item.data?.onMouseLeave?.(props.item.id)}
-      className={clsx('TreeLeaf', isPicked && 'picked', isExpandButton && 'isExpandButton')}
+      className={clsx('NewTreeLeaf', isPicked && 'isSelected', isExpandButton && 'isExpandButton')}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
       onFocus={(e) => {
@@ -45,8 +45,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
       ref={props.provided.innerRef}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
-        <div className="treeLeafBackgroundColor" />
-        <div className="treeLeafBorderColor" />
+        <div className="treeLeafBorder" />
         {isExpandButton && <ExpandButton {...props} />}
         <Text
           as="div"

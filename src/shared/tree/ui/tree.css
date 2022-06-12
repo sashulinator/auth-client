@@ -67,8 +67,6 @@
   margin: 2px;
 }
 
-/* NEW TREE LEAF */
-
 .NewTreeLeaf:focus {
   outline: none !important;
 }
@@ -86,13 +84,11 @@
   position: absolute;
   width: 100%;
   height: calc(100% - 1px);
-  /* ! any button is on top focus border without it */
-  z-index: 1;
-  pointer-events: none;
 }
 
 div.NewTreeLeaf.isSelected .treeLeafContent {
   background-color: var(--themePrimaryTransparent03);
+  z-index: 0;
 }
 
 .NewTreeLeaf:hover .treeLeafContent {
@@ -123,4 +119,17 @@ div.NewTreeLeaf.isSelected .treeLeafContent {
 
 .NewTreeLeaf .treeLeafText.addOneButtonSpace {
   padding-left: 36px;
+}
+
+.NewTreeLeaf .treeLeafText {
+  padding-left: 2px;
+  padding-right: 12px;
+}
+
+.NewTreeLeaf.isSelected .treeLeafText {
+  color: var(--themePrimary);
+}
+
+.NewTreeLeaf .button {
+  margin: 2px;
 }
