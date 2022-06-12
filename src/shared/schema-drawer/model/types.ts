@@ -76,8 +76,10 @@ export interface AssertionUnit extends BindingUnit {
 }
 
 export enum EventToShowError {
-  onBlur = 'onBlur',
+  onVisited = 'onVisited',
   onInit = 'onInit',
+  onTouched = 'onTouched',
+  onSubmit = 'onSubmit',
 }
 
 export interface AssertionSchema extends BindingSchema<AssertionUnit> {

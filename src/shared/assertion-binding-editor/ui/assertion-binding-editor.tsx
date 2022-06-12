@@ -95,7 +95,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
     if (validatorItems) {
       const units = moveEntity(validator, to.parentId, to.index || 0, validatorItems)
-      const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
+      const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
       props.onChange({ ...schema, units })
       setTree(moveItemOnTree(tree, from, to))
     }
@@ -112,7 +112,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     }
 
     const units = addEntity(validator, ROOT_ID, 0, currentValidators)
-    const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
+    const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
 
     if (props.name) {
       props.onChange({ ...schema, units })
@@ -130,7 +130,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     }
 
     const units = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
-    const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
+    const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
 
     if (validatorItems) {
       props.onChange({ ...schema, units })
@@ -146,7 +146,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       if (Object.keys(units).length === 1) {
         props.onChange(undefined)
       } else {
-        const schema = props.value ?? { eventToShowError: EventToShowError.onBlur }
+        const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
         props.onChange({ ...schema, units })
       }
     }

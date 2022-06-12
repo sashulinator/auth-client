@@ -5,15 +5,13 @@ import React, { useRef } from 'react'
 import { FieldMetaState } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 
+import { EventToShowError } from '@/shared/schema-drawer'
 import { ServerCollectableError } from '@/types/transfer'
 
 type FieldErrorProps = {
   className?: string
   meta?: FieldMetaState<unknown>
-  onTouched?: boolean
-  onInit?: boolean
-  onSubmit?: boolean
-  onVisited?: boolean
+  eventToShowError?: EventToShowError
 }
 
 export default function FieldError(props: FieldErrorProps): JSX.Element | null {
@@ -22,9 +20,10 @@ export default function FieldError(props: FieldErrorProps): JSX.Element | null {
 
   const error = (props?.meta?.error || props?.meta?.submitError) as ServerCollectableError
 
-  const isTouched = props.onTouched && props.meta?.touched
-  const isSubmit = props.onSubmit && props.meta?.submitting
-  const isVisited = props.onVisited && props.meta?.visited
+  const isVisited = props.eventToShowError === EventToShowError.onVisited && props.meta?.visited
+  const isTouched = props.eventToShowError === EventToShowError.onInit && props.meta?.touched
+  const isSubmit = props.eventToShowError === EventToShowError.onInit && props.meta?.submitting
+  const isInit = props.eventToShowError === EventToShowError.onInit
 
   const code = error?._code ?? ''
   const input2 = error?._input2 ? String(error?._input2) : ''
@@ -40,7 +39,7 @@ export default function FieldError(props: FieldErrorProps): JSX.Element | null {
     elementRef.current.innerHTML = complexMessage === tkey ? simpleMessage : complexMessage
   }
 
-  if (props.onInit || isTouched || isSubmit || isVisited) {
+  if (isInit || isVisited || isTouched || isSubmit) {
     return <div ref={elementRef} className={cx('FieldError', props.className)} />
   }
 
@@ -49,4 +48,5 @@ export default function FieldError(props: FieldErrorProps): JSX.Element | null {
 
 FieldError.defaultProps = {
   onTouched: true,
+  EventToShowError: EventToShowError.onVisited,
 }

@@ -21,7 +21,7 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           },
         ],
         validators: {
-          eventToShowError: EventToShowError.onBlur,
+          eventToShowError: EventToShowError.onVisited,
           units: {
             ROOT_ID: {
               id: 'ROOT_ID',
@@ -74,7 +74,7 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
             },
           ],
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',
@@ -116,7 +116,7 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           props: { label: 'pattern' },
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',
@@ -145,7 +145,7 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
             },
           ],
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',

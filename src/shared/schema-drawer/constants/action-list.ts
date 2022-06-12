@@ -28,7 +28,7 @@ export const actionList: Norm<ActionListItem> = {
           props: { label: 'name' },
           compSchemaId: BasicComponentsNames.Dropdown,
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',
@@ -83,7 +83,7 @@ export const actionList: Norm<ActionListItem> = {
           title: 'compId',
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',
@@ -104,7 +104,7 @@ export const actionList: Norm<ActionListItem> = {
           name: 'typeof',
           title: 'typeof',
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',
@@ -244,7 +244,7 @@ export const actionList: Norm<ActionListItem> = {
           title: 'prop name',
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
-            eventToShowError: EventToShowError.onBlur,
+            eventToShowError: EventToShowError.onVisited,
             units: {
               ROOT_ID: {
                 id: 'ROOT_ID',
