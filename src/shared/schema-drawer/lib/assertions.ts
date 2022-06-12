@@ -68,8 +68,6 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
     const eventUnits = findEntities(rootBinding.children, bindings)
 
     Object.values(eventUnits).forEach((eventUnit) => {
-      console.log('eventUnit.type', eventUnit.type)
-
       if (eventUnit.type !== EventUnitType.EVENT) {
         throw new ValidationError({
           inputName: eventUnit.id,
@@ -82,8 +80,6 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
       const actionUnits = findEntities(eventUnit.children || [], bindings)
 
       Object.values(actionUnits).forEach((actionUnit) => {
-        console.log('actionUnit.type', actionUnit.type)
-
         if (actionUnit.type !== EventUnitType.ACTION) {
           throw new ValidationError({
             inputName: actionUnit.id,
@@ -96,8 +92,6 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
         const assertionUnits = findEntities(actionUnit.children || [], bindings)
 
         Object.values(assertionUnits).forEach((assertionUnit) => {
-          console.log('assertionUnit.type', assertionUnit.type)
-
           if (assertionUnit.type !== EventUnitType.ASSERTION && assertionUnit.type !== EventUnitType.OPERATOR) {
             throw new ValidationError({
               inputName: assertionUnit.id,

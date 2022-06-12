@@ -1,6 +1,6 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { ActionButton, Label, Stack } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './assertion-binding-editor.css'
 
@@ -10,7 +10,7 @@ import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
 import React, { useEffect, useState } from 'react'
-import { Form } from 'react-final-form'
+import { Field, Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
@@ -18,6 +18,7 @@ import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
   AssertionSchema,
   AssertionUnit,
@@ -37,23 +38,27 @@ export interface ValidatorsTreeProps {
   comps: Norm<Comp>
   onChange: (value: AssertionSchema | undefined) => void
   schemas: Norm<Schema>
-  value: AssertionSchema | undefined
+  // string приходит от final-form при инициализации
+  value: AssertionSchema | undefined | string
   name?: string
   label?: string
 }
 
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
+  const assertionBindingSchema = isString(props.value) ? undefined : props.value
+
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-  const validatorItems = props.value?.units
+
+  const validatorItems = assertionBindingSchema?.units
   const validatorItem = validatorItems?.[selectedItemId]
   const assertionItem = assertionList[validatorItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(props.value?.units || undefined, {
+    return buildTree(assertionBindingSchema?.units || undefined, {
       changeValidator,
       remove,
       selectItemId,
@@ -69,8 +74,11 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
         name,
         props: newValidatorItemProps,
       })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const units: any = omitEmpty(newValidators)
+      assertNotUndefined(assertionBindingSchema)
 
-      props.onChange(omitEmpty(newValidators))
+      props.onChange({ ...assertionBindingSchema, units })
     }
   }
 
@@ -95,7 +103,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
     if (validatorItems) {
       const units = moveEntity(validator, to.parentId, to.index || 0, validatorItems)
-      const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
+      const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
       props.onChange({ ...schema, units })
       setTree(moveItemOnTree(tree, from, to))
     }
@@ -112,7 +120,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     }
 
     const units = addEntity(validator, ROOT_ID, 0, currentValidators)
-    const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
+    const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
 
     if (props.name) {
       props.onChange({ ...schema, units })
@@ -130,7 +138,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     }
 
     const units = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
-    const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
+    const schema = assertionBindingSchema || { eventToShowError: EventToShowError.onTouched }
 
     if (validatorItems) {
       props.onChange({ ...schema, units })
@@ -146,7 +154,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       if (Object.keys(units).length === 1) {
         props.onChange(undefined)
       } else {
-        const schema = props.value ?? { eventToShowError: EventToShowError.onVisited }
+        const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onVisited }
         props.onChange({ ...schema, units })
       }
     }
@@ -171,6 +179,25 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
+
+        {props.value && (
+          <Form
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onSubmit={() => {}}
+            initialValues={props.value}
+            render={() => {
+              return (
+                <>
+                  <Autosave save={(newSchema) => props.onChange(newSchema)} debounce={500} />
+                  <Field<string> name="eventToShowError">
+                    {({ input }) => <Dropdown label="eventToShowError" {...input} options={EventToShowError} />}
+                  </Field>
+                </>
+              )
+            }}
+          />
+        )}
+
         {hasSchema(assertionItem) && validatorItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function

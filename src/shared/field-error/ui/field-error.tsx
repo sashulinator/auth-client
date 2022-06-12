@@ -5,7 +5,7 @@ import React, { useRef } from 'react'
 import { FieldMetaState } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 
-import { EventToShowError } from '@/shared/schema-drawer'
+import { EventToShowError } from '@/shared/schema-drawer/model/types'
 import { ServerCollectableError } from '@/types/transfer'
 
 type FieldErrorProps = {
@@ -21,8 +21,8 @@ export default function FieldError(props: FieldErrorProps): JSX.Element | null {
   const error = (props?.meta?.error || props?.meta?.submitError) as ServerCollectableError
 
   const isVisited = props.eventToShowError === EventToShowError.onVisited && props.meta?.visited
-  const isTouched = props.eventToShowError === EventToShowError.onInit && props.meta?.touched
-  const isSubmit = props.eventToShowError === EventToShowError.onInit && props.meta?.submitting
+  const isTouched = props.eventToShowError === EventToShowError.onTouched && props.meta?.touched
+  const isSubmit = props.eventToShowError === EventToShowError.onSubmit && props.meta?.submitting
   const isInit = props.eventToShowError === EventToShowError.onInit
 
   const code = error?._code ?? ''
@@ -47,6 +47,5 @@ export default function FieldError(props: FieldErrorProps): JSX.Element | null {
 }
 
 FieldError.defaultProps = {
-  onTouched: true,
-  EventToShowError: EventToShowError.onVisited,
+  eventToShowError: EventToShowError.onTouched,
 }

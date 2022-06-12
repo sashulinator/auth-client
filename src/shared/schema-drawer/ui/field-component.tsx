@@ -79,7 +79,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               onChange={context.observer.emitEvent('onChange')}
               validationError={meta.error}
             />
-            <FieldError meta={meta} eventToShowError={injectedComp.validators?.eventToShowError} />
+            <FieldError meta={meta} eventToShowError={injectedComp?.validators?.eventToShowError} />
           </div>
         )
       }}
