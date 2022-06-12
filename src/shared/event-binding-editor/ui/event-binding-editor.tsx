@@ -1,14 +1,11 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, IButtonStyles, Label, Stack } from '@fluentui/react'
+import { ActionButton, IButtonStyles, Stack } from '@fluentui/react'
 import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
-
-import './event-binding-editor.css'
 
 import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
 import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
-import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
 import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
@@ -19,6 +16,7 @@ import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import { BindingEditor } from '@/shared/binding-editor'
 import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Comp,
@@ -202,59 +200,50 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   }
 
   return (
-    <div className={clsx('BindingSetter', bindingItems && 'notEmpty', props.isFocused && 'isFocused')} ref={ref}>
-      {props.label && <Label>{props.label}</Label>}
-      <Stack className="wrapper" verticalAlign="space-between">
-        <div className="bindingSetterBackground" />
-        <Stack tokens={{ childrenGap: '16px' }}>
-          <Stack horizontal horizontalAlign="space-between">
-            <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion} styles={buttonStyles}>
-              assertion
-            </ActionButton>
-            <Stack horizontal tokens={{ childrenGap: '12px' }}>
-              <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} styles={buttonStyles} />
-              <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} styles={buttonStyles} />
-              <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} styles={buttonStyles} />
-            </Stack>
-          </Stack>
-          {tree && (
-            <Stack tokens={{ padding: '2px 0' }}>
-              {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-              <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
-            </Stack>
-          )}
-          {hasSchema(assertionItem) && bindingItem && (
-            <Form
-              key={selectedItemId}
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-              onSubmit={() => {}}
-              initialValues={bindingItem.props}
-              render={(formProps) => {
-                return (
-                  <>
-                    <Autosave
-                      save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)}
-                      debounce={500}
-                    />
-                    <SchemaDrawer
-                      componentList={componentList}
-                      schema={assertionItem.schema}
-                      schemas={basicComponentsSchemas}
-                      context={{
-                        previewSchema: props.context?.previewSchema,
-                        previewData: props.context?.previewData,
-                        formState: formProps.form.getState(),
-                        formProps,
-                      }}
-                    />
-                  </>
-                )
-              }}
-            />
-          )}
+    <BindingEditor ref={ref} isFocused={props.isFocused} label={props.label} isNotEmpty={Boolean(bindingItems)}>
+      <Stack horizontal horizontalAlign="space-between">
+        <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion} styles={buttonStyles}>
+          assertion
+        </ActionButton>
+        <Stack horizontal tokens={{ childrenGap: '12px' }}>
+          <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} styles={buttonStyles} />
+          <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} styles={buttonStyles} />
+          <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} styles={buttonStyles} />
         </Stack>
       </Stack>
-    </div>
+      {tree && (
+        <Stack tokens={{ padding: '2px 0' }}>
+          {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
+          <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
+        </Stack>
+      )}
+      {hasSchema(assertionItem) && bindingItem && (
+        <Form
+          key={selectedItemId}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          onSubmit={() => {}}
+          initialValues={bindingItem.props}
+          render={(formProps) => {
+            return (
+              <>
+                <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
+                <SchemaDrawer
+                  componentList={componentList}
+                  schema={assertionItem.schema}
+                  schemas={basicComponentsSchemas}
+                  context={{
+                    previewSchema: props.context?.previewSchema,
+                    previewData: props.context?.previewData,
+                    formState: formProps.form.getState(),
+                    formProps,
+                  }}
+                />
+              </>
+            )
+          }}
+        />
+      )}
+    </BindingEditor>
   )
 })
 
