@@ -1,5 +1,5 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, IButtonStyles, Stack } from '@fluentui/react'
+import { Stack } from '@fluentui/react'
 import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { typeIcons } from '../constants/type-icons'
@@ -33,18 +33,6 @@ import SchemaDrawer, {
   setValue,
 } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
-
-const buttonStyles: IButtonStyles = {
-  rootHovered: {
-    backgroundColor: 'var(--themePrimaryTransparent01)',
-  },
-  root: {
-    height: '32px',
-  },
-  label: {
-    color: 'var(--themePrimary)',
-  },
-}
 
 export interface BindingSetterProps {
   comp: Comp
@@ -200,50 +188,50 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   }
 
   return (
-    <BindingEditor ref={ref} isFocused={props.isFocused} label={props.label} isNotEmpty={Boolean(bindingItems)}>
-      <Stack horizontal horizontalAlign="space-between">
-        <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion} styles={buttonStyles}>
-          assertion
-        </ActionButton>
-        <Stack horizontal tokens={{ childrenGap: '12px' }}>
-          <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} styles={buttonStyles} />
-          <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} styles={buttonStyles} />
-          <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} styles={buttonStyles} />
-        </Stack>
-      </Stack>
-      {tree && (
-        <Stack tokens={{ padding: '2px 0' }}>
-          {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-          <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
-        </Stack>
-      )}
-      {hasSchema(assertionItem) && bindingItem && (
-        <Form
-          key={selectedItemId}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          onSubmit={() => {}}
-          initialValues={bindingItem.props}
-          render={(formProps) => {
-            return (
-              <>
-                <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
-                <SchemaDrawer
-                  componentList={componentList}
-                  schema={assertionItem.schema}
-                  schemas={basicComponentsSchemas}
-                  context={{
-                    previewSchema: props.context?.previewSchema,
-                    previewData: props.context?.previewData,
-                    formState: formProps.form.getState(),
-                    formProps,
-                  }}
-                />
-              </>
-            )
-          }}
+    <BindingEditor.Root ref={ref} label={props.label}>
+      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(bindingItems)}>
+        <BindingEditor.ActionPanel
+          mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
+          buttons={[
+            { iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' },
+            { iconName: typeIcons.ACTION, onClick: addAction, name: 'Action' },
+            { iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' },
+          ]}
         />
-      )}
-    </BindingEditor>
+        {tree && (
+          <Stack tokens={{ padding: '2px 0' }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
+            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
+          </Stack>
+        )}
+        {hasSchema(assertionItem) && bindingItem && (
+          <Form
+            key={selectedItemId}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onSubmit={() => {}}
+            initialValues={bindingItem.props}
+            render={(formProps) => {
+              return (
+                <>
+                  <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
+                  <SchemaDrawer
+                    componentList={componentList}
+                    schema={assertionItem.schema}
+                    schemas={basicComponentsSchemas}
+                    context={{
+                      previewSchema: props.context?.previewSchema,
+                      previewData: props.context?.previewData,
+                      formState: formProps.form.getState(),
+                      formProps,
+                    }}
+                  />
+                </>
+              )
+            }}
+          />
+        )}
+      </BindingEditor>
+    </BindingEditor.Root>
   )
 })
 

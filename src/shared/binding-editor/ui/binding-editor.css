@@ -1,4 +1,4 @@
-.BindingEditor {
+.BindingEditorRoot {
   box-sizing: border-box;
   display: grid;
   grid-template-rows: 1fr;
@@ -6,7 +6,7 @@
   width: 100%;
 }
 
-.BindingEditor .wrapper {
+.BindingEditor {
   position: relative;
   width: 100%;
   box-sizing: border-box;
