@@ -56,6 +56,7 @@ export interface BindingSchema<TUnit> {
 }
 
 export interface BindingUnit {
+  type: string
   id: string
   name: string
   children?: string[] // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -164,6 +165,7 @@ export interface ListItem {
 }
 
 export interface EventListItem extends ListItem {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (eventProps: EventProps) => (eventOrValue: any) => void
 }
 

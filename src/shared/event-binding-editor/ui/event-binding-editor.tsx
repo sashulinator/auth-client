@@ -6,17 +6,16 @@ import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
 import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
-import omitEmpty from 'omit-empty-es'
 import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
-import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
+import { useBindingActions } from '@/shared/binding-editor/lib/use-binding-actions'
 import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Comp,
@@ -55,9 +54,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const [selectedItemId, selectItemId] = useState('')
-  const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const bindingItems = props.value
   const bindingItem = bindingItems?.[selectedItemId]
+  const { changeBinding } = useBindingActions(props.onChange, bindingItems)
+  const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
     eventAssertionList[bindingItem?.name || ''] ||
     actionList[bindingItem?.name || ''] ||
@@ -73,19 +73,6 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
       selectedItemId,
       errorId: props.validationError?._inputName,
     })
-  }
-
-  function changeBinding(id: string | number, name: string, newBindingItemProps: unknown) {
-    if (bindingItems && props.name) {
-      const binding = findEntity(id, bindingItems)
-      const newBindings = replace(bindingItems, id, {
-        ...binding,
-        name,
-        ...(newBindingItemProps ? { props: newBindingItemProps } : undefined),
-      })
-
-      props.onChange(omitEmpty(newBindings))
-    }
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
