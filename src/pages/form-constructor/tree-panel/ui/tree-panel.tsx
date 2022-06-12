@@ -23,6 +23,7 @@ interface TreePanelProps {
   selectedCompIds: string[]
   upsertComps: (comps: Norm<Comp>) => void
   isLoading: boolean
+  schemas: Norm<Schema> | null
 }
 
 function TreePanel(props: TreePanelProps): JSX.Element {
@@ -39,6 +40,7 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       onBlur: removeAllHoverHighlights,
       onMouseLeave: removeAllHoverHighlights,
       onKeyDown: selectOnEnterKey,
+      schemas: props.schemas,
     })
   }
 

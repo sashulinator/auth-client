@@ -291,6 +291,7 @@ const FormConstructor: FC = (): JSX.Element => {
           )}
           <TreePanel
             schema={currentSchemaHistory.data}
+            schemas={schemas}
             selectAndUnselectComp={selectAndUnselectComp}
             upsertComps={updateCompsInCurrentSchemaState}
             selectedCompIds={selectedCompIds}

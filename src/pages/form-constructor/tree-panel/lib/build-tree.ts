@@ -28,7 +28,7 @@ export function buildTree(
       return {
         ...comp,
         id: comp.id,
-        isExpanded: currentTreeItem?.isExpanded ?? true,
+        isExpanded: currentTreeItem?.isExpanded ?? false,
         data: { comp, ...additionalData },
         children: comp.children || [],
         hasChildren: comp.children !== undefined,
