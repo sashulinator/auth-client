@@ -10,6 +10,7 @@ import clsx from 'clsx'
 import React from 'react'
 
 import { generateOptionsFromStringArray } from '@/lib/generate-options'
+import { isEnter } from '@/lib/key-events'
 import { Dropdown } from '@/shared/dropdown'
 import {
   EventUnit,
@@ -62,9 +63,25 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
         props.item.data?.selectItemId(props.item.id.toString())
       }}
     >
-      <Stack className="treeLeafContent" horizontal verticalAlign="center">
+      <Stack
+        onFocus={() => props.item.data?.selectItemId(props.item.id.toString())}
+        className="treeLeafContent"
+        horizontal
+        verticalAlign="center"
+      >
         <div className="treeLeafBorder" />
-        <Icon iconName={typeIcons[binding.type]} className={clsx('label', labelColors[binding.type])} />
+        <Icon
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (isEnter(e)) {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const el: any = document.querySelector('.BindingSetter input')
+              setTimeout(() => el?.focus())
+            }
+          }}
+          className={clsx('label', labelColors[binding.type])}
+          iconName={typeIcons[binding.type]}
+        />
         <Dropdown
           value={binding.name}
           options={options}
