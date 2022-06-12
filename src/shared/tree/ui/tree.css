@@ -34,12 +34,12 @@
 }
 
 .TreeLeaf.isError .treeLeafBackgroundColor {
-  background-color: var(--red);
+  background-color: var(--red02);
   opacity: 0.3;
 }
 
 .TreeLeaf.isError.picked .treeLeafContent .treeLeafBackgroundColor {
-  background-color: var(--red);
+  background-color: var(--red02);
   opacity: 0.5;
 }
 
@@ -104,11 +104,11 @@ div.NewTreeLeaf.isSelected .treeLeafContent {
 }
 
 .NewTreeLeaf.isError .treeLeafContent {
-  background-color: var(--red);
+  background-color: var(--red02);
 }
 
 .NewTreeLeaf.isError.isSelected .treeLeafContent {
-  background-color: var(--red);
+  background-color: var(--red02);
 }
 
 .NewTreeLeaf .treeLeafText {

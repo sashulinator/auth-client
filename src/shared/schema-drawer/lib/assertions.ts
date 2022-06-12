@@ -2,6 +2,7 @@ import {
   ANY_KEY,
   ValidationError,
   _undefined,
+  assertNotUndefined,
   isObject,
   keyDoesNotExist,
   or,
@@ -10,6 +11,7 @@ import {
 
 import { BindingUnit, CompSchema, EventUnit, EventUnitType, Norm } from '../model/types'
 
+import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
 import { rootWrapArr } from '@/lib/validators'
 
@@ -20,6 +22,14 @@ export function assertCompSchema(input: unknown): asserts input is CompSchema {
 }
 
 export function assertEventBindings(input: unknown): asserts input is Norm<BindingUnit> {
+  const messages = {
+    [EventUnitType.EVENT]: 'event cannot be a child',
+    [EventUnitType.ACTION]: 'action must be a child of event',
+    [EventUnitType.ASSERTION]: 'assertion must be a child of action or operator',
+    [EventUnitType.OPERATOR]: 'operator must be a child of action or operator',
+    [EventUnitType.ROOT]: 'root must be root',
+  }
+
   const validateBindingUnit = rootWrapArr(
     or(
       {
@@ -51,44 +61,53 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
   if (isObject(input)) {
     const bindings = input as Norm<EventUnit>
 
-    const events = Object.values(bindings).filter((unit) => unit.type === EventUnitType.EVENT)
+    const rootBinding = bindings[ROOT_ID]
+    assertNotUndefined(rootBinding)
+    assertNotUndefined(rootBinding.children)
 
-    if (!events.length) {
-      throw new ValidationError({
-        inputName: 'eventBindings',
-        code: assertEventBindings.name,
-        path: 'eventBindings',
-        message: 'no events',
-      })
-    }
+    const eventUnits = findEntities(rootBinding.children, bindings)
 
-    events.forEach((unit) => {
-      if (unit.type === EventUnitType.EVENT) {
-        const actionUnits = findEntities(unit.children || [], bindings)
+    Object.values(eventUnits).forEach((eventUnit) => {
+      console.log('eventUnit.type', eventUnit.type)
 
-        Object.values(actionUnits).forEach((actionUnit) => {
-          if (actionUnit.type === EventUnitType.ACTION) {
-            const assertionUnits = findEntities(actionUnit.children || [], bindings)
-            Object.values(assertionUnits).forEach((assertionUnit) => {
-              if (assertionUnit.type === EventUnitType.ASSERTION || assertionUnit.type === EventUnitType.OPERATOR) {
-                throw new ValidationError({
-                  inputName: assertionUnit.id,
-                  code: assertEventBindings.name,
-                  path: assertionUnit.id,
-                  message: 'must be an assertion',
-                })
-              }
-            })
-          } else {
+      if (eventUnit.type !== EventUnitType.EVENT) {
+        throw new ValidationError({
+          inputName: eventUnit.id,
+          code: assertEventBindings.name,
+          path: eventUnit.id,
+          message: messages[eventUnit.type],
+        })
+      }
+
+      const actionUnits = findEntities(eventUnit.children || [], bindings)
+
+      Object.values(actionUnits).forEach((actionUnit) => {
+        console.log('actionUnit.type', actionUnit.type)
+
+        if (actionUnit.type !== EventUnitType.ACTION) {
+          throw new ValidationError({
+            inputName: actionUnit.id,
+            code: assertEventBindings.name,
+            path: actionUnit.id,
+            message: messages[actionUnit.type],
+          })
+        }
+
+        const assertionUnits = findEntities(actionUnit.children || [], bindings)
+
+        Object.values(assertionUnits).forEach((assertionUnit) => {
+          console.log('assertionUnit.type', assertionUnit.type)
+
+          if (assertionUnit.type !== EventUnitType.ASSERTION && assertionUnit.type !== EventUnitType.OPERATOR) {
             throw new ValidationError({
-              inputName: actionUnit.id,
+              inputName: assertionUnit.id,
               code: assertEventBindings.name,
-              path: actionUnit.id,
-              message: 'must be an action',
+              path: assertionUnit.id,
+              message: messages[assertionUnit.type],
             })
           }
         })
-      }
+      })
     })
   }
 }
