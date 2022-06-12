@@ -2,7 +2,7 @@ import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree }
 import { ActionButton, Label, Stack } from '@fluentui/react'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import './validator-picker.css'
+import './assertion-binding-editor.css'
 
 import buildTree from '../lib/build-tree'
 import { defaultCompValidators } from '../lib/constants'
