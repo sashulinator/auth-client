@@ -26,7 +26,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
   const сomponentItem = props.componentList[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
-  const validate = bindAssertions(assertionList, props.comp.validators)
+  const validate = bindAssertions(assertionList, props.comp.validators?.units)
 
   // TODO move to ComponentFactory
   const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
@@ -72,13 +72,14 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               {...input}
               {...injectedComp.props}
               context={props.context}
-              required={isRequired(props.comp.validators)}
+              required={isRequired(props.comp.validators?.units)}
               onBlur={context.observer.emitEvent('onBlur')}
               onFocus={context.observer.emitEvent('onFocus')}
               onClick={context.observer.emitEvent('onClick')}
               onChange={context.observer.emitEvent('onChange')}
+              validationError={meta.error}
             />
-            <FieldError meta={meta} />
+            <FieldError meta={meta} eventToShowError={injectedComp?.validators?.eventToShowError} />
           </div>
         )
       }}

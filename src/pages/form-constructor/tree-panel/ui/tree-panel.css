@@ -1,5 +1,4 @@
 .TreePanel {
-  background-color: var(--white);
   box-sizing: border-box;
   display: grid;
   grid-template-rows: 1fr;
@@ -7,8 +6,22 @@
   overflow: visible;
 }
 
+.TreePanel:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--white02);
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
+  border-right: 1px solid var(--alwaysWhite02);
+  outline: 1px solid var(--alwaysBlack02);
+}
+
 .TreePanel .treePanelScrollable {
-  padding: 15px 15px 30vh;
+  padding: 24px 24px 30vh;
   box-sizing: border-box;
   height: 100%;
   overflow: auto !important;
@@ -32,8 +45,8 @@
 
 .FormConstructor .addCompButton {
   position: absolute;
-  top: 7px;
-  right: 17px;
+  top: 18px;
+  right: 12px;
   border-radius: 50%;
   min-width: 50px;
   max-width: 50px;

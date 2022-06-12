@@ -1,8 +1,8 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { ActionButton, Label, Stack } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
-import './validator-picker.css'
+import './assertion-binding-editor.css'
 
 import buildTree from '../lib/build-tree'
 import { defaultCompValidators } from '../lib/constants'
@@ -10,7 +10,7 @@ import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
 import React, { useEffect, useState } from 'react'
-import { Form } from 'react-final-form'
+import { Field, Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
@@ -18,10 +18,13 @@ import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
+  AssertionSchema,
   AssertionUnit,
   AssertionUnitType,
   Comp,
+  EventToShowError,
   Norm,
   Schema,
   assertionList,
@@ -33,25 +36,29 @@ import Tree from '@/shared/tree/ui/tree'
 export interface ValidatorsTreeProps {
   comp: Comp
   comps: Norm<Comp>
-  onChange: (value: Norm<AssertionUnit> | undefined) => void
+  onChange: (value: AssertionSchema | undefined) => void
   schemas: Norm<Schema>
-  value: Norm<AssertionUnit> | undefined
+  // string приходит от final-form при инициализации
+  value: AssertionSchema | undefined | string
   name?: string
   label?: string
 }
 
 export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
   // TODO сделать проверку на невалидное значение
+  const assertionBindingSchema = isString(props.value) ? undefined : props.value
+
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
-  const validatorItems = props.value
+
+  const validatorItems = assertionBindingSchema?.units
   const validatorItem = validatorItems?.[selectedItemId]
   const assertionItem = assertionList[validatorItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(props.value || undefined, {
+    return buildTree(assertionBindingSchema?.units || undefined, {
       changeValidator,
       remove,
       selectItemId,
@@ -67,8 +74,11 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
         name,
         props: newValidatorItemProps,
       })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const units: any = omitEmpty(newValidators)
+      assertNotUndefined(assertionBindingSchema)
 
-      props.onChange(omitEmpty(newValidators))
+      props.onChange({ ...assertionBindingSchema, units })
     }
   }
 
@@ -92,7 +102,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     }
 
     if (validatorItems) {
-      props.onChange(moveEntity(validator, to.parentId, to.index || 0, validatorItems))
+      const units = moveEntity(validator, to.parentId, to.index || 0, validatorItems)
+      const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
+      props.onChange({ ...schema, units })
       setTree(moveItemOnTree(tree, from, to))
     }
   }
@@ -107,10 +119,11 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       children: [],
     }
 
-    const newValidators = addEntity(validator, ROOT_ID, 0, currentValidators)
+    const units = addEntity(validator, ROOT_ID, 0, currentValidators)
+    const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
 
     if (props.name) {
-      props.onChange(newValidators)
+      props.onChange({ ...schema, units })
     }
   }
 
@@ -124,22 +137,25 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       children: [],
     }
 
-    const newValidatorItems = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
+    const units = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
+    const schema = assertionBindingSchema || { eventToShowError: EventToShowError.onTouched }
 
     if (validatorItems) {
-      props.onChange(newValidatorItems)
+      props.onChange({ ...schema, units })
     }
   }
 
   function remove(id: string | number): void {
     if (validatorItems) {
-      const newValidators = removeEntity(id, validatorItems)
-      assertNotUndefined(newValidators)
+      const units = removeEntity(id, validatorItems)
+      assertNotUndefined(units)
 
-      if (Object.keys(newValidators).length === 1) {
+      // isOnlyRoot?
+      if (Object.keys(units).length === 1) {
         props.onChange(undefined)
       } else {
-        props.onChange(removeEntity(id, validatorItems))
+        const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onVisited }
+        props.onChange({ ...schema, units })
       }
     }
   }
@@ -163,6 +179,25 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             </Stack>
           )}
         </Stack>
+
+        {props.value && (
+          <Form
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            onSubmit={() => {}}
+            initialValues={props.value}
+            render={() => {
+              return (
+                <>
+                  <Autosave save={(newSchema) => props.onChange(newSchema)} debounce={500} />
+                  <Field<string> name="eventToShowError">
+                    {({ input }) => <Dropdown label="eventToShowError" {...input} options={EventToShowError} />}
+                  </Field>
+                </>
+              )
+            }}
+          />
+        )}
+
         {hasSchema(assertionItem) && validatorItem && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function

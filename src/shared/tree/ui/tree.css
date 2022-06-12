@@ -33,6 +33,16 @@
   border: solid 2px var(--themePrimary);
 }
 
+.TreeLeaf.isError .treeLeafBackgroundColor {
+  background-color: var(--red02);
+  opacity: 0.3;
+}
+
+.TreeLeaf.isError.picked .treeLeafContent .treeLeafBackgroundColor {
+  background-color: var(--red02);
+  opacity: 0.5;
+}
+
 .TreeLeaf .treeLeafText {
   display: flex;
   align-items: center;
@@ -41,9 +51,7 @@
   z-index: 1;
   margin: 2px;
   height: 32px;
-  text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .TreeLeaf .treeLeafText.addOneButtonSpace {
@@ -52,8 +60,76 @@
 
 .TreeLeaf .treeLeafText {
   padding-left: 2px;
+  padding-right: 12px;
 }
 
 .TreeLeaf .button {
+  margin: 2px;
+}
+
+.NewTreeLeaf:focus {
+  outline: none !important;
+}
+
+.NewTreeLeaf .treeLeafContent {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.NewTreeLeaf .treeLeafBorder {
+  border: solid 2px transparent;
+  box-sizing: border-box;
+  border-radius: 3px;
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 1px);
+}
+
+div.NewTreeLeaf.isSelected .treeLeafContent {
+  background-color: var(--themePrimaryTransparent03);
+  z-index: 0;
+}
+
+.NewTreeLeaf:hover .treeLeafContent {
+  background-color: var(--themePrimaryTransparent01);
+}
+
+.NewTreeLeaf:focus .treeLeafBorder {
+  border: solid 2px var(--themePrimary);
+}
+
+.NewTreeLeaf.isError .treeLeafContent {
+  background-color: var(--red02);
+}
+
+.NewTreeLeaf.isError.isSelected .treeLeafContent {
+  background-color: var(--red02);
+}
+
+.NewTreeLeaf .treeLeafText {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  width: 100%;
+  z-index: 1;
+  height: 32px;
+  white-space: nowrap;
+}
+
+.NewTreeLeaf .treeLeafText.addOneButtonSpace {
+  padding-left: 36px;
+}
+
+.NewTreeLeaf .treeLeafText {
+  padding-left: 2px;
+  padding-right: 12px;
+}
+
+.NewTreeLeaf.isSelected .treeLeafText {
+  color: var(--themePrimary);
+}
+
+.NewTreeLeaf .button {
   margin: 2px;
 }

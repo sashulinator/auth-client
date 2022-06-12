@@ -1,5 +1,7 @@
 .LoadingAria {
   position: relative;
+  min-width: fit-content;
+  width: 100%;
 }
 
 .spinnerContainer {
@@ -9,6 +11,7 @@
   transition: 0.3s opacity ease-in;
   position: absolute;
   z-index: 100;
+  pointer-events: none;
 }
 
 .LoadingAria--loading > .spinnerContainer {

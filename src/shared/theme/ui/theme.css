@@ -1,0 +1,39 @@
+.redBackground {
+  background-color: var(--red);
+}
+
+.blueBackground {
+  background-color: var(--blue);
+}
+
+.greenBackground {
+  background-color: var(--green);
+}
+
+.yellowBackground {
+  background-color: var(--yellow);
+}
+
+.violetBackground {
+  background-color: var(--violet);
+}
+
+.redBackground02 {
+  background-color: var(--red02);
+}
+
+.blueBackground02 {
+  background-color: var(--blue02);
+}
+
+.greenBackground02 {
+  background-color: var(--green02);
+}
+
+.yellowBackground02 {
+  background-color: var(--yellow02);
+}
+
+.violetBackground02 {
+  background-color: var(--violet02);
+}

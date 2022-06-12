@@ -1,13 +1,31 @@
 .CompPanel {
-  background-color: var(--white);
   box-sizing: border-box;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
 }
 
+.CompPanel .ms-TextField-fieldGroup,
+.CompPanel .ms-Dropdown-title {
+  background: transparent !important;
+}
+
+.CompPanel:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--white02);
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
+  border-left: 1px solid var(--alwaysWhite02);
+  outline: 1px solid var(--alwaysBlack02);
+}
+
 .CompPanel .compPanelScrollable {
-  padding: 15px 0 30vh;
+  padding: 24px 0 30vh;
   box-sizing: border-box;
   height: 100%;
   overflow: auto !important;
@@ -45,5 +63,6 @@ h2 {
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   overflow: hidden !important;
-  width: calc(100% - 40px) !important;
+  padding: 0 0 2px;
+  width: calc(100% - 30px) !important;
 }

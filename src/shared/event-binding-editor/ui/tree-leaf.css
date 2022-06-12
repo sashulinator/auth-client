@@ -1,0 +1,18 @@
+.BindingTreeLeaf:hover .ms-Dropdown-title,
+.BindingTreeLeaf:hover .ms-Dropdown-caretDown,
+.BindingTreeLeaf.isSelected .ms-Dropdown-title,
+.BindingTreeLeaf.isSelected .ms-Dropdown-caretDown {
+  color: var(--themePrimary);
+}
+
+.BindingSetter .NewTreeLeaf .label {
+  min-width: 24px;
+  min-height: 24px;
+  border-radius: 50%;
+  margin: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  line-height: 0.7em;
+}

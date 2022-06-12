@@ -39,7 +39,7 @@ export function buildTree(
   const items = { rootId: rootTreeItem, ...treeItems }
 
   return {
-    rootId: rootTreeItem.id,
+    rootId: ROOT_ID,
     items,
   }
 }

@@ -1,8 +1,17 @@
-import { IconButton, Stack, Text } from '@fluentui/react'
+import { IButtonStyles, IconButton, Stack, Text } from '@fluentui/react'
 
 import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
 import React from 'react'
+
+const buttonStyles: IButtonStyles = {
+  rootHovered: {
+    backgroundColor: 'transparent',
+  },
+  rootPressed: {
+    backgroundColor: 'transparent',
+  },
+}
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
   const isPicked = props.item.data?.pickedIds.includes(props.item.data?.comp.id)
@@ -18,7 +27,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
       data-comp-id={props.item.id}
       onMouseOver={() => props.item.data?.onMouseOver?.(props.item.id)}
       onMouseLeave={() => props.item.data?.onMouseLeave?.(props.item.id)}
-      className={clsx('TreeLeaf', isPicked && 'picked', isExpandButton && 'isExpandButton')}
+      className={clsx('NewTreeLeaf', isPicked && 'isSelected', isExpandButton && 'isExpandButton')}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
       onFocus={(e) => {
@@ -36,8 +45,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
       ref={props.provided.innerRef}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
-        <div className="treeLeafBackgroundColor" />
-        <div className="treeLeafBorderColor" />
+        <div className="treeLeafBorder" />
         {isExpandButton && <ExpandButton {...props} />}
         <Text
           as="div"
@@ -64,6 +72,7 @@ function ExpandButton(p: TreeLeafProps) {
 
   return (
     <IconButton
+      styles={buttonStyles}
       className={clsx('button', p.item.isExpanded && 'turnChildRight90', 'transitionChild01')}
       iconProps={{ iconName: 'ChevronRight' }}
       onClick={toggle}

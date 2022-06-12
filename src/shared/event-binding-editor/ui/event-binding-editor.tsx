@@ -1,15 +1,16 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, Label, Stack } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
+import { ActionButton, IButtonStyles, Label, Stack } from '@fluentui/react'
+import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
 
-import './binding-setter.css'
+import './event-binding-editor.css'
 
+import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
 import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
-import React, { useEffect, useState } from 'react'
+import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
@@ -18,6 +19,7 @@ import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Comp,
   EventUnit,
@@ -34,6 +36,18 @@ import SchemaDrawer, {
 } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
 
+const buttonStyles: IButtonStyles = {
+  rootHovered: {
+    backgroundColor: 'var(--themePrimaryTransparent01)',
+  },
+  root: {
+    height: '32px',
+  },
+  label: {
+    color: 'var(--themePrimary)',
+  },
+}
+
 export interface BindingSetterProps {
   comp: Comp
   comps: Norm<Comp>
@@ -42,10 +56,17 @@ export interface BindingSetterProps {
   value: Norm<EventUnit> | undefined
   name?: string
   label?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context?: any
+  validationError?: ValidationError
+  isFocused: boolean
+  ref: LegacyRef<HTMLDivElement | null>
 }
 
-export default function BindingSetter(props: BindingSetterProps): JSX.Element {
+const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(function BindingSetter(
+  props,
+  ref
+): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
@@ -64,6 +85,7 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
       remove,
       selectItemId,
       selectedItemId,
+      errorId: props.validationError?._inputName,
     })
   }
 
@@ -180,19 +202,19 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
   }
 
   return (
-    <div className={clsx('BindingSetter', bindingItems && 'notEmpty')}>
+    <div className={clsx('BindingSetter', bindingItems && 'notEmpty', props.isFocused && 'isFocused')} ref={ref}>
       {props.label && <Label>{props.label}</Label>}
       <Stack className="wrapper" verticalAlign="space-between">
         <div className="bindingSetterBackground" />
-        <Stack>
+        <Stack tokens={{ childrenGap: '16px' }}>
           <Stack horizontal horizontalAlign="space-between">
-            <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
+            <ActionButton iconProps={{ iconName: typeIcons.ASSERTION }} onClick={addAssertion} styles={buttonStyles}>
               assertion
             </ActionButton>
-            <Stack horizontal>
-              <ActionButton iconProps={{ iconName: 'TouchPointer' }} onClick={addEvent} />
-              <ActionButton iconProps={{ iconName: 'LightningBolt' }} onClick={addAction} />
-              <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
+            <Stack horizontal tokens={{ childrenGap: '12px' }}>
+              <ActionButton iconProps={{ iconName: typeIcons.EVENT }} onClick={addEvent} styles={buttonStyles} />
+              <ActionButton iconProps={{ iconName: typeIcons.ACTION }} onClick={addAction} styles={buttonStyles} />
+              <ActionButton iconProps={{ iconName: typeIcons.OPERATOR }} onClick={addOperator} styles={buttonStyles} />
             </Stack>
           </Stack>
           {tree && (
@@ -201,34 +223,39 @@ export default function BindingSetter(props: BindingSetterProps): JSX.Element {
               <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
             </Stack>
           )}
+          {hasSchema(assertionItem) && bindingItem && (
+            <Form
+              key={selectedItemId}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onSubmit={() => {}}
+              initialValues={bindingItem.props}
+              render={(formProps) => {
+                return (
+                  <>
+                    <Autosave
+                      save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)}
+                      debounce={500}
+                    />
+                    <SchemaDrawer
+                      componentList={componentList}
+                      schema={assertionItem.schema}
+                      schemas={basicComponentsSchemas}
+                      context={{
+                        previewSchema: props.context?.previewSchema,
+                        previewData: props.context?.previewData,
+                        formState: formProps.form.getState(),
+                        formProps,
+                      }}
+                    />
+                  </>
+                )
+              }}
+            />
+          )}
         </Stack>
-        {hasSchema(assertionItem) && bindingItem && (
-          <Form
-            key={selectedItemId}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onSubmit={() => {}}
-            initialValues={bindingItem.props}
-            render={(formProps) => {
-              return (
-                <>
-                  <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
-                  <SchemaDrawer
-                    componentList={componentList}
-                    schema={assertionItem.schema}
-                    schemas={basicComponentsSchemas}
-                    context={{
-                      previewSchema: props.context?.previewSchema,
-                      previewData: props.context?.previewData,
-                      formState: formProps.form.getState(),
-                      formProps,
-                    }}
-                  />
-                </>
-              )
-            }}
-          />
-        )}
       </Stack>
     </div>
   )
-}
+})
+
+export default FocusHOC(BindingSetter)

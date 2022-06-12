@@ -6,6 +6,7 @@ import {
   assertUndefined,
 } from '@savchenko91/schema-validator'
 
+import { assertEventBindings } from '../lib/assertions'
 import { AssertionListItem, Norm, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 import { MUTATE_ALL_FORM_VALUES_TO_STRING } from './constants'
@@ -13,6 +14,9 @@ import { MUTATE_ALL_FORM_VALUES_TO_STRING } from './constants'
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
 export const assertionList: Norm<AssertionListItem> = {
+  eventBindings: {
+    function: assertEventBindings,
+  },
   string: {
     function: assertString,
   },

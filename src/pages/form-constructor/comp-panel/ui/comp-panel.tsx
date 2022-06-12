@@ -1,5 +1,3 @@
-import { Stack } from '@fluentui/react'
-
 import './comp-panel.css'
 
 import CompForm from './comp-form'
@@ -30,7 +28,7 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
   }
 
   return (
-    <Stack className="CompPanel">
+    <div className="CompPanel">
       <ResizeTarget name="compPanelWidth" direction="right" />
       <PerfectScrollbar className="compPanelScrollable">
         <LoadingAria loading={props.isLoading}>
@@ -47,6 +45,6 @@ export default function CompPanel(props: CompPanelProps): JSX.Element | null {
           )}
         </LoadingAria>
       </PerfectScrollbar>
-    </Stack>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Label, Stack } from '@fluentui/react'
+import { Stack, Text } from '@fluentui/react'
 
 import React from 'react'
 
@@ -11,32 +11,24 @@ interface HorizontalLineProps {
 
 export default function HorizontalLine(props: HorizontalLineProps): JSX.Element {
   return (
-    <Stack horizontal verticalAlign="center">
+    <Stack verticalAlign="center" style={{ width: '100%' }}>
       <hr
         style={{
           boxSizing: 'border-box',
           border: '0',
           height: '1px',
-          opacity: '0.1',
-          background: 'var(--black)',
+          borderTop: '1px solid var(--alwaysBlack02)',
+          borderBottom: '1px solid var(--alwaysWhite02)',
           margin: '0',
-          width: props.leftWidth || '24px',
+          width: '100%',
           color: props.color,
         }}
       />
-      {props.label && <Label styles={{ root: { padding: '0 4px', margin: '0' } }}>{props.label}</Label>}
-      <hr
-        style={{
-          boxSizing: 'border-box',
-          border: '0',
-          height: '1px',
-          opacity: '0.1',
-          background: 'var(--black)',
-          margin: '0',
-          width: props.rightWidth || '100%',
-          color: props.color,
-        }}
-      />
+      {props.label && (
+        <Text variant="mediumPlus" styles={{ root: { padding: '24px 0 0 24px', margin: '0', color: 'var(--black)' } }}>
+          {props.label}
+        </Text>
+      )}
     </Stack>
   )
 }

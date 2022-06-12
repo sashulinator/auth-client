@@ -10,9 +10,10 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  padding: 16px;
 }
 
-.BindingSetter .wrapper .bindingSetterBackground {
+.BindingSetter .bindingSetterBackground {
   position: absolute;
   top: 0;
   left: 0;
@@ -25,15 +26,6 @@
   box-sizing: border-box;
 }
 
-.BindingSetter .type {
-  min-width: 25px;
-  min-height: 25px;
-  background-color: var(--black);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  opacity: 0.3;
-  line-height: 0.7em;
+.BindingSetter.isFocused .bindingSetterBackground {
+  border: 2px solid var(--themePrimary);
 }

@@ -22,12 +22,11 @@ export interface Comp {
   id: string
   compSchemaId: string
   name?: string
-  title: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  title: string // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
-  validators?: Norm<AssertionUnit>
+  validators?: AssertionSchema
   bindings?: Norm<EventUnit>
   injections?: Injection[]
 }
@@ -44,33 +43,52 @@ export enum SchemaType {
 }
 
 export interface ComponentItem {
-  type: 'checkbox' | 'input' | 'content'
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  type: 'checkbox' | 'input' | 'content' // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: any
 }
 
-// BINDINGS
+/**
+ * BINDINGS
+ */
+
+export interface BindingSchema<TUnit> {
+  units: Norm<TUnit>
+}
 
 export interface BindingUnit {
   id: string
   name: string
-  children?: string[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children?: string[] // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props?: any
+}
+
+/**
+ * ASSERTION BINDINGS
+ */
+
+export enum AssertionUnitType {
+  OPERATOR = 'OPERATOR',
+  ASSERTION = 'ASSERTION',
 }
 
 export interface AssertionUnit extends BindingUnit {
   type: AssertionUnitType
 }
 
-export interface EventUnit extends BindingUnit {
-  type: EventUnitType
+export enum EventToShowError {
+  onVisited = 'onVisited',
+  onInit = 'onInit',
+  onTouched = 'onTouched',
+  onSubmit = 'onSubmit',
 }
 
-export enum AssertionUnitType {
-  OPERATOR = 'OPERATOR',
-  ASSERTION = 'ASSERTION',
+export interface AssertionSchema extends BindingSchema<AssertionUnit> {
+  eventToShowError: EventToShowError
 }
+
+/**
+ * EVENT BINDINGS
+ */
 
 export enum EventUnitType {
   EVENT = 'EVENT',
@@ -79,6 +97,12 @@ export enum EventUnitType {
   ASSERTION = 'ASSERTION',
   ROOT = 'ROOT',
 }
+
+export interface EventUnit extends BindingUnit {
+  type: EventUnitType
+}
+
+// CONTEXT
 
 export type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

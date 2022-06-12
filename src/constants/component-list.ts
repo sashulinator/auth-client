@@ -1,10 +1,11 @@
 import { ActionButton, Checkbox, IconButton, Label, Link, PrimaryButton, SearchBox, Text } from '@fluentui/react'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
-import BindingPicker from '@/shared/binding-setter'
+import ValidatorPicker from '@/shared/assertion-binding-editor'
 import Collapse from '@/shared/collapse'
 import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
+import EventBindingEditor from '@/shared/event-binding-editor'
 import Fetcher from '@/shared/fetcher'
 import HorizontalLine from '@/shared/horizontal-line'
 import JSONEditor from '@/shared/json-editor'
@@ -15,7 +16,6 @@ import { BasicComponentsNames, ComponentItem } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
 import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
-import ValidatorPicker from '@/shared/validator-picker'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentList: Record<string, ComponentItem> = {
@@ -50,9 +50,9 @@ const componentList: Record<string, ComponentItem> = {
     component: CustomDatePicker,
   },
 
-  BindingPicker: {
+  EventBindingEditor: {
     type: 'input',
-    component: BindingPicker,
+    component: EventBindingEditor,
   },
 
   Fetcher: {

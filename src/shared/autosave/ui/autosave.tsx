@@ -85,7 +85,7 @@ function Autosave(props: AutosaveLogicProps): JSX.Element | null {
 
   if (isAutosaveWithForm(props.hocProps) && props.hocProps.children) {
     return (
-      <form name="allloooo" onSubmit={props.hocProps.onSubmit as any} ref={formRef}>
+      <form onSubmit={props.hocProps.onSubmit as any} ref={formRef}>
         {props.hocProps.children}
       </form>
     )

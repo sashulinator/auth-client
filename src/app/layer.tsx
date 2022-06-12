@@ -4,6 +4,7 @@ import './common.css'
 import './index.css'
 import './toast.css'
 import './utils.css'
+import '@/shared/theme/ui/theme.css'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 import DocumentTitle from './document-title'
