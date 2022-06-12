@@ -8,7 +8,8 @@ type PivotProps = IPivotProps & { label: string; children: React.ReactNode[] }
 
 export default function Pivot(props: PivotProps): JSX.Element {
   return (
-    <PivotUI {...props}>
+    // ставим paddingLeft хардкодом потому что так надо :)
+    <PivotUI {...props} styles={{ root: { paddingLeft: '16px' } }}>
       {props.children?.map((child) => {
         // @ts-expect-error because
         const { compId, comps } = child.props as { compId: string; comps: Norm<Comp> }
