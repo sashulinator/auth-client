@@ -20,11 +20,11 @@ export default function bindEvents(context: FieldComponentContext) {
 
   const unitsWithEventType = getEventUnits(eventBindingSchema)
 
-  unitsWithEventType.forEach((eventBindingSchemaItem) => {
-    const eventBindingsMeta = eventList[eventBindingSchemaItem.name]
-    assertNotUndefined(eventBindingsMeta)
+  unitsWithEventType.forEach((eventBindingItem) => {
+    const eventBindingMeta = eventList[eventBindingItem.name]
+    assertNotUndefined(eventBindingMeta)
 
-    const actionUnits = findEntities(eventBindingSchemaItem.children || [], eventBindingSchema)
+    const actionUnits = findEntities(eventBindingItem.children || [], eventBindingSchema)
 
     const actionItems = Object.values(actionUnits)?.map((actionUnit) => {
       const actionItem = actionList[actionUnit.name]
@@ -36,8 +36,8 @@ export default function bindEvents(context: FieldComponentContext) {
       context,
       actionUnits,
       actionItems,
-      eventBindingSchemaItem,
-      eventBindingsMeta,
+      eventBindingItem,
+      eventBindingMeta,
       eventBindingSchema,
       emitActions,
     }
@@ -57,9 +57,9 @@ export default function bindEvents(context: FieldComponentContext) {
 
     const eventProps = { ...basicProps, emitActions }
 
-    const createdEvent = eventBindingsMeta.function(eventProps)
+    const createdEvent = eventBindingMeta.function(eventProps)
 
-    context.observer.addEvent(eventBindingSchemaItem.name, createdEvent)
+    context.observer.addEvent(eventBindingItem.name, createdEvent)
   })
 }
 

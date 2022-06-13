@@ -119,14 +119,12 @@ export interface EventBindingItem extends BindingItem {
 }
 
 export interface EventProps {
-  context: FieldComponentContext | ContentComponentContext
+  eventBindingSchema: Catalog<EventBindingItem>
+  eventBindingItem: EventBindingItem
   actionUnits: Catalog<EventBindingItem>
   actionItems: ActionBindingMeta[]
-  eventBindingsMeta: EventBindingMeta
-  eventBindingSchemaItem: EventBindingItem
-  // TODO Catalog<EventSchemaItem> будет заменен на EventBindingSchema когда
-  // TODO у Comp будет переделан bindings параметр
-  eventBindingSchema: Catalog<EventBindingItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  eventBindingMeta: EventBindingMeta
+  context: FieldComponentContext | ContentComponentContext // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }
 
