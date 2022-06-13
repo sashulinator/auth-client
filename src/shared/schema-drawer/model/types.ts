@@ -6,16 +6,15 @@ import { FormRenderProps } from 'react-final-form'
 
 export type Catalog<T> = Record<string, T>
 
-export interface CompSchema {
-  id: string
-  title: string
-  type: SchemaType
-  comps: Catalog<Comp>
-  componentName: null | string
+interface Injection {
+  from: string
+  to: string
 }
 
-export type ComponentCompSchema = Omit<CompSchema, 'componentName'> & {
-  componentName: string
+export enum CompSchemaType {
+  FORM = 'FORM',
+  PRESET = 'PRESET',
+  COMP = 'COMP',
 }
 
 export interface Comp {
@@ -31,15 +30,16 @@ export interface Comp {
   injections?: Injection[]
 }
 
-interface Injection {
-  from: string
-  to: string
+export interface CompSchema {
+  id: string
+  title: string
+  type: CompSchemaType
+  comps: Catalog<Comp>
+  componentName: null | string
 }
 
-export enum SchemaType {
-  FORM = 'FORM',
-  PRESET = 'PRESET',
-  COMP = 'COMP',
+export type ComponentCompSchema = Omit<CompSchema, 'componentName'> & {
+  componentName: string
 }
 
 export interface ComponentItem {

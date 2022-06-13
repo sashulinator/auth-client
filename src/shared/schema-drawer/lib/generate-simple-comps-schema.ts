@@ -1,5 +1,5 @@
 import { BasicComponentsNames } from '../constants/basic-components-schemas'
-import { Catalog, Comp, CompSchema, SchemaType } from '../model/types'
+import { Catalog, Comp, CompSchema, CompSchemaType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 
@@ -32,7 +32,7 @@ export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): CompSchema
     id: 'hereCouldBeYourAd',
     title: 'hereCouldBeYourAd',
     componentName: null,
-    type: SchemaType.FORM,
+    type: CompSchemaType.FORM,
     comps: {
       [ROOT_ID]: {
         id: ROOT_ID,

@@ -1,6 +1,6 @@
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
-import { AssertionUnitType, Catalog, EventAssertionListItem, EventToShowError, SchemaType } from '../model/types'
+import { AssertionUnitType, Catalog, CompSchemaType, EventAssertionListItem, EventToShowError } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -51,7 +51,7 @@ export const eventAssertionList: Catalog<EventAssertionListItem> = {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',
@@ -99,7 +99,7 @@ export const eventAssertionList: Catalog<EventAssertionListItem> = {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',

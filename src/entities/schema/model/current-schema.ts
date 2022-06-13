@@ -2,7 +2,7 @@ import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
-import { Catalog, Comp, CompSchema, SchemaType } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CompSchemaType } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 // STATES
@@ -17,7 +17,7 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema>>({
       id: 'localSchema',
       componentName: null,
       title: 'Name',
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         [ROOT_ID]: {
           id: ROOT_ID,

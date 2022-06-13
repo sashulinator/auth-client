@@ -7,7 +7,7 @@ import {
 } from '@savchenko91/schema-validator'
 
 import { assertEventBindings } from '../lib/assertions'
-import { AssertionListItem, Catalog, SchemaType } from '../model/types'
+import { AssertionListItem, Catalog, CompSchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 import { MUTATE_ALL_FORM_VALUES_TO_STRING } from './constants'
 
@@ -35,7 +35,7 @@ export const assertionList: Catalog<AssertionListItem> = {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',

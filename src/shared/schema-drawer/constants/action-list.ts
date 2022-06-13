@@ -1,5 +1,12 @@
 import { setCompProp, setValue } from '../lib/actions'
-import { ActionListItem, AssertionUnitType, Catalog, EventToShowError, EventUnitType, SchemaType } from '../model/types'
+import {
+  ActionListItem,
+  AssertionUnitType,
+  Catalog,
+  CompSchemaType,
+  EventToShowError,
+  EventUnitType,
+} from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -11,7 +18,7 @@ export const actionList: Catalog<ActionListItem> = {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',
@@ -59,7 +66,7 @@ export const actionList: Catalog<ActionListItem> = {
       id: '7021a575-562a-42f8-a640-4292afb2977e',
       title: 'Training',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',
