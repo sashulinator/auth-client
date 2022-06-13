@@ -138,81 +138,83 @@ export const actionList: Catalog<ActionBindingMeta> = {
               },
             ],
           },
-          bindings: {
-            ROOT_ID: {
-              id: 'ROOT_ID',
-              name: 'root',
-              type: EventType.ROOT,
-              children: ['l459ocs7'],
-            },
-            l459ocs7: {
-              id: 'l459ocs7',
-              name: 'onFieldLife',
-              type: EventType.EVENT,
-              children: ['l45ikto6', 'l45im2fr', 'l45givi5', 'l459q4jl'],
-            },
-            l459q4jl: {
-              id: 'l459q4jl',
-              name: setCompProp.name,
-              type: EventType.ACTION,
-              props: {
-                prop: 'props.hidden',
-                compId: 'l458n3rr',
-                typeof: 'boolean',
-                booleanValue: false,
+          eventBindingSchema: {
+            catalog: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'root',
+                type: EventType.ROOT,
+                children: ['l459ocs7'],
               },
-              children: ['l45agej6'],
-            },
-            l45agej6: {
-              id: 'l45agej6',
-              name: 'matchPattern',
-              type: EventType.ASSERTION,
-              props: {
-                name: 'typeof',
-                pattern: 'boolean',
+              l459ocs7: {
+                id: 'l459ocs7',
+                name: 'onFieldLife',
+                type: EventType.EVENT,
+                children: ['l45ikto6', 'l45im2fr', 'l45givi5', 'l459q4jl'],
               },
-            },
-            l45givi5: {
-              id: 'l45givi5',
-              name: setCompProp.name,
-              type: EventType.ACTION,
-              props: {
-                prop: 'props.hidden',
-                compId: 'l45gg3ha',
-                typeof: 'boolean',
-                booleanValue: false,
+              l459q4jl: {
+                id: 'l459q4jl',
+                name: setCompProp.name,
+                type: EventType.ACTION,
+                props: {
+                  prop: 'props.hidden',
+                  compId: 'l458n3rr',
+                  typeof: 'boolean',
+                  booleanValue: false,
+                },
+                children: ['l45agej6'],
               },
-              children: ['l45glrdh'],
-            },
-            l45glrdh: {
-              id: 'l45glrdh',
-              name: 'matchPattern',
-              type: EventType.ASSERTION,
-              props: {
-                name: 'typeof',
-                pattern: 'string',
+              l45agej6: {
+                id: 'l45agej6',
+                name: 'matchPattern',
+                type: EventType.ASSERTION,
+                props: {
+                  name: 'typeof',
+                  pattern: 'boolean',
+                },
               },
-            },
-            l45ikto6: {
-              id: 'l45ikto6',
-              name: setCompProp.name,
-              type: EventType.ACTION,
-              props: {
-                prop: 'props.hidden',
-                compId: 'l45gg3ha',
-                typeof: 'boolean',
-                booleanValue: true,
+              l45givi5: {
+                id: 'l45givi5',
+                name: setCompProp.name,
+                type: EventType.ACTION,
+                props: {
+                  prop: 'props.hidden',
+                  compId: 'l45gg3ha',
+                  typeof: 'boolean',
+                  booleanValue: false,
+                },
+                children: ['l45glrdh'],
               },
-            },
-            l45im2fr: {
-              id: 'l45im2fr',
-              name: setCompProp.name,
-              type: EventType.ACTION,
-              props: {
-                prop: 'props.hidden',
-                compId: 'l458n3rr',
-                typeof: 'boolean',
-                booleanValue: true,
+              l45glrdh: {
+                id: 'l45glrdh',
+                name: 'matchPattern',
+                type: EventType.ASSERTION,
+                props: {
+                  name: 'typeof',
+                  pattern: 'string',
+                },
+              },
+              l45ikto6: {
+                id: 'l45ikto6',
+                name: setCompProp.name,
+                type: EventType.ACTION,
+                props: {
+                  prop: 'props.hidden',
+                  compId: 'l45gg3ha',
+                  typeof: 'boolean',
+                  booleanValue: true,
+                },
+              },
+              l45im2fr: {
+                id: 'l45im2fr',
+                name: setCompProp.name,
+                type: EventType.ACTION,
+                props: {
+                  prop: 'props.hidden',
+                  compId: 'l458n3rr',
+                  typeof: 'boolean',
+                  booleanValue: true,
+                },
               },
             },
           },

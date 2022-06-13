@@ -6,32 +6,37 @@ import { eventList } from '../constants/event-list'
 import { ActionProps, Catalog, EventBinding, EventType, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
+import { ROOT_ID } from '@/constants/common'
 import { insert, replace } from '@/lib/change-unmutable'
 import { findEntities, findEntity } from '@/lib/entity-actions'
 
 const operatorId = 'operatorId'
 
 export default function bindEvents(context: FieldComponentContext) {
-  const { bindings: eventBindingCatalog } = context.comp
+  const { eventBindingSchema } = context.comp
 
-  if (!eventBindingCatalog) {
+  if (!eventBindingSchema) {
     return
   }
 
-  const unitsWithEventType = getEventUnits(eventBindingCatalog)
+  const rootBinding = eventBindingSchema.catalog[ROOT_ID]
+  assertNotUndefined(rootBinding?.children)
 
-  unitsWithEventType.forEach((eventBinding) => {
+  const eventBindingCatalog = findEntities(rootBinding.children, eventBindingSchema.catalog)
+
+  Object.values(eventBindingCatalog).forEach((eventBinding) => {
     const eventBindingMeta = eventList[eventBinding.name]
     assertNotUndefined(eventBindingMeta)
 
-    const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingCatalog)
+    const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingSchema.catalog)
 
     const basicProps = {
-      context,
-      actionBindingCatalog,
+      eventBindingSchema,
+      eventBindingCatalog,
       eventBinding,
       eventBindingMeta,
-      eventBindingCatalog,
+      actionBindingCatalog,
+      context,
       emitActions,
     }
 
@@ -42,7 +47,7 @@ export default function bindEvents(context: FieldComponentContext) {
         assertNotUndefined(actionBindingMeta)
         const actionProps = { ...basicProps, actionBinding, actionBindingMeta }
 
-        if (isValid(actionProps, value)) {
+        if (isPassedAssertions(actionProps, value)) {
           actionBindingMeta?.function({ ...basicProps, actionBinding, actionBindingMeta }, value)
         }
       })
@@ -57,10 +62,6 @@ export default function bindEvents(context: FieldComponentContext) {
 }
 
 // Private
-
-function getEventUnits(units: Catalog<EventBinding>): EventBinding[] {
-  return Object.values(units).filter((binding) => binding.type === EventType.EVENT)
-}
 
 function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: string) {
   const actionUnit = findEntity(actionId, eventBindingCatalog)
@@ -77,7 +78,7 @@ function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: s
   return newBindings2
 }
 
-function isValid(actionProps: ActionProps, value: any) {
+function isPassedAssertions(actionProps: ActionProps, value: any) {
   const { actionBinding: actionUnit, eventBindingCatalog } = actionProps
   const newBindings = addRootOperator(eventBindingCatalog, actionUnit.id)
 

@@ -55,7 +55,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
             ...props.context,
             observer: new Observer(),
           }),
-          [props.comp.bindings]
+          [props.comp.eventBindingSchema?.catalog]
         )
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -72,7 +72,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
           setTimeout(() => context.observer.emitEvent(onInit.name)())
 
           return context.observer.emitEvent(onDestroy.name)
-        }, [props.comp.bindings])
+        }, [props.comp.eventBindingSchema?.catalog])
 
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
