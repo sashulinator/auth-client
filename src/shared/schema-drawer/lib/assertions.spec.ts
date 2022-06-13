@@ -1,6 +1,6 @@
 import { ValidationError } from '@savchenko91/schema-validator'
 
-import { EventItemType } from '../model/types'
+import { EventType } from '../model/types'
 import { assertEventBindings } from './assertions'
 import { onFieldChange } from './events'
 
@@ -10,7 +10,7 @@ describe(`${assertEventBindings.name}`, () => {
       testId: {
         id: 'testId',
         name: onFieldChange.name,
-        type: EventItemType.EVENT,
+        type: EventType.EVENT,
         children: [],
       },
     })
@@ -22,13 +22,13 @@ describe(`${assertEventBindings.name}`, () => {
         eventId1: {
           id: 'eventId',
           name: onFieldChange.name,
-          type: EventItemType.EVENT,
+          type: EventType.EVENT,
           children: ['eventId2'],
         },
         eventId2: {
           id: 'eventId2',
           name: onFieldChange.name,
-          type: EventItemType.EVENT,
+          type: EventType.EVENT,
           children: [],
         },
       })
@@ -51,7 +51,7 @@ describe(`${assertEventBindings.name}`, () => {
         eventId1: {
           id: 'eventId',
           name: onFieldChange.name,
-          type: EventItemType.ACTION,
+          type: EventType.ACTION,
           children: ['eventId2'],
         },
       })

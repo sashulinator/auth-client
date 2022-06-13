@@ -13,8 +13,8 @@ import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { isEnter } from '@/lib/key-events'
 import { Dropdown } from '@/shared/dropdown'
 import {
-  EventBindingItem,
-  EventItemType,
+  EventBinding,
+  EventType,
   actionNameOptions,
   eventAssertionNameOptions,
   eventNameOptions,
@@ -23,7 +23,7 @@ import {
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      binding: EventBindingItem
+      binding: EventBinding
     }
   }
 }
@@ -38,9 +38,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const isError = props.item.data.errorId === props.item.id
   const isSelected = props.item.data.selectedItemId === props.item.data.binding.id
 
-  const isOperator = binding.type === EventItemType.OPERATOR
-  const isAction = binding.type === EventItemType.ACTION
-  const isEvent = binding.type === EventItemType.EVENT
+  const isOperator = binding.type === EventType.OPERATOR
+  const isAction = binding.type === EventType.ACTION
+  const isEvent = binding.type === EventType.EVENT
   const options = isOperator
     ? generateOptionsFromStringArray(['or', 'and'])
     : isAction

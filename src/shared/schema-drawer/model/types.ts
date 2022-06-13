@@ -35,7 +35,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: AssertionBindingSchema
-  bindings?: Catalog<EventBindingItem>
+  bindings?: Catalog<EventBinding>
   injections?: Injection[]
 }
 
@@ -61,7 +61,7 @@ export interface CompMeta {
  * BINDINGS
  */
 
-export interface BindingItem {
+export interface Binding {
   type: string
   id: string
   name: string
@@ -76,19 +76,24 @@ export interface BindingMeta {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BindingSchema<TItem extends BindingItem> extends Schema<TItem> {}
+export interface BindingSchema<TItem extends Binding> extends Schema<TItem> {}
 
 /**
  * ASSERTION BINDINGS
  */
 
-export enum AssertionBindingItemType {
+export enum AssertionBindingType {
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
 }
 
-export interface AssertionBindingItem extends BindingItem {
-  type: AssertionBindingItemType
+export interface AssertionBinding extends Binding {
+  type: AssertionBindingType
+}
+
+export interface AssertionBindingMeta extends BindingMeta {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function: (input: any, input2: any, meta: Meta) => void
 }
 
 export enum EventToShowError {
@@ -98,7 +103,7 @@ export enum EventToShowError {
   onSubmit = 'onSubmit',
 }
 
-export interface AssertionBindingSchema extends BindingSchema<AssertionBindingItem> {
+export interface AssertionBindingSchema extends BindingSchema<AssertionBinding> {
   eventToShowError: EventToShowError
 }
 
@@ -106,7 +111,7 @@ export interface AssertionBindingSchema extends BindingSchema<AssertionBindingIt
  * EVENT BINDINGS
  */
 
-export enum EventItemType {
+export enum EventType {
   EVENT = 'EVENT',
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
@@ -114,14 +119,14 @@ export enum EventItemType {
   ROOT = 'ROOT',
 }
 
-export interface EventBindingItem extends BindingItem {
-  type: EventItemType
+export interface EventBinding extends Binding {
+  type: EventType
 }
 
 export interface EventProps {
-  eventBindingSchema: Catalog<EventBindingItem>
-  eventBindingItem: EventBindingItem
-  actionUnits: Catalog<EventBindingItem>
+  eventBindingCatalog: Catalog<EventBinding>
+  eventBindingItem: EventBinding
+  actionUnits: Catalog<EventBinding>
   actionItems: ActionBindingMeta[]
   eventBindingMeta: EventBindingMeta
   context: FieldComponentContext | ContentComponentContext // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,7 +135,7 @@ export interface EventProps {
 
 export interface ActionProps extends EventProps {
   actionItem: ActionBindingMeta
-  actionUnit: EventBindingItem
+  actionUnit: EventBinding
 }
 
 export interface EventBindingMeta extends BindingMeta {
@@ -141,11 +146,6 @@ export interface EventBindingMeta extends BindingMeta {
 export interface ActionBindingMeta extends BindingMeta {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (actionProps: ActionProps, value: any) => void
-}
-
-export interface AssertionBindingMeta extends BindingMeta {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function: (input: any, input2: any, meta: Meta) => void
 }
 
 export type EventAssertionMeta = Meta & { payload: ActionProps }

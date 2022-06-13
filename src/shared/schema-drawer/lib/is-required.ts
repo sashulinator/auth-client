@@ -1,6 +1,6 @@
-import { AssertionBindingItem, Catalog } from '@/shared/schema-drawer'
+import { AssertionBinding, Catalog } from '@/shared/schema-drawer'
 
-export default function isRequired(validators?: Catalog<AssertionBindingItem>) {
+export default function isRequired(validators?: Catalog<AssertionBinding>) {
   if (!validators) {
     return undefined
   }
