@@ -33,7 +33,7 @@ export interface Comp {
   defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
-  validators?: AssertionBindingSchema
+  assertionBindingSchema?: AssertionBindingSchema
   eventBindingSchema?: EventBindingSchema
   injections?: Injection[]
 }

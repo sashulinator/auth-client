@@ -5,6 +5,7 @@ import {
   assertNotUndefined,
   isObject,
   keyDoesNotExist,
+  only,
   or,
   string,
 } from '@savchenko91/schema-validator'
@@ -33,12 +34,15 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
   const validateBindingUnit = rootWrapArr(
     or(
       {
-        [ANY_KEY]: {
-          id: string,
-          name: string,
-          children: or([string], keyDoesNotExist),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          props: or(keyDoesNotExist, {}),
+        catalog: {
+          [ANY_KEY]: only({
+            id: string,
+            name: string,
+            type: string,
+            children: or([string], keyDoesNotExist),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            props: or(keyDoesNotExist, {}),
+          }),
         },
       },
       _undefined
@@ -46,6 +50,9 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
   )
 
   const errors = validateBindingUnit(input)
+
+  console.log('err', { ...errors?.[0] })
+  console.log('input', input)
 
   if (Array.isArray(errors)) {
     const error = Object.values(errors)[0] as ValidationError

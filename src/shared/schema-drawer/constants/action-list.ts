@@ -34,7 +34,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
           name: 'name',
           props: { label: 'name' },
           compSchemaId: BasicComponentsNames.Dropdown,
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {
@@ -89,7 +89,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
           },
           title: 'compId',
           compSchemaId: BasicComponentsNames.TextField,
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {
@@ -110,7 +110,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
           id: 'l458ijf3',
           name: 'typeof',
           title: 'typeof',
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {
@@ -252,7 +252,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
           },
           title: 'prop name',
           compSchemaId: BasicComponentsNames.TextField,
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {

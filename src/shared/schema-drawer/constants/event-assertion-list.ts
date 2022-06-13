@@ -26,7 +26,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
             to: 'props.options',
           },
         ],
-        validators: {
+        assertionBindingSchema: {
           eventToShowError: EventToShowError.onVisited,
           catalog: {
             ROOT_ID: {
@@ -79,7 +79,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
               to: 'props.options',
             },
           ],
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {
@@ -121,7 +121,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
           name: 'pattern',
           props: { label: 'pattern' },
           compSchemaId: BasicComponentsNames.TextField,
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {
@@ -150,7 +150,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
               to: 'props.options',
             },
           ],
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             catalog: {
               ROOT_ID: {

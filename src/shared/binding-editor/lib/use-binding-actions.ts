@@ -20,7 +20,9 @@ export function useBindingActions<TUnit extends Binding>(
       ...(newBindingItemProps ? { props: newBindingItemProps } : undefined),
     })
 
-    onChange(omitEmpty(newBindings))
+    const newCatalog: Catalog<TUnit> = omitEmpty(newBindings)
+
+    onChange({ catalog: newCatalog })
   }
 
   return {
