@@ -22,6 +22,7 @@ import SchemaDrawer, {
   Comp,
   CompSchema,
   EventBinding,
+  EventBindingSchema,
   EventType,
   actionList,
   basicComponentsSchemas,
@@ -36,9 +37,9 @@ import Tree from '@/shared/tree'
 export interface BindingSetterProps {
   comp: Comp
   comps: Catalog<Comp>
-  onChange: (value: Catalog<EventBinding> | undefined) => void
+  onChange: (value: EventBindingSchema | undefined) => void
   schemas: Catalog<CompSchema>
-  value: Catalog<EventBinding> | undefined
+  value: EventBindingSchema | undefined
   name?: string
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,7 +55,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const [selectedItemId, selectItemId] = useState('')
-  const bindingItems = props.value
+  const bindingItems = props.value?.catalog
   const bindingItem = bindingItems?.[selectedItemId]
   const { changeBinding } = useBindingActions(props.onChange, bindingItems)
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
@@ -66,7 +67,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(props.value || undefined, {
+    return buildTree(bindingItems || undefined, {
       changeBinding,
       remove,
       selectItemId,
@@ -88,7 +89,8 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     const binding = findEntity(bindingId, bindingItems)
 
     if (bindingItems) {
-      props.onChange(moveEntity(binding, to.parentId, to.index || 0, bindingItems))
+      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, bindingItems)
+      props.onChange({ catalog: newCatalog })
       setTree(moveItemOnTree(tree, from, to))
     }
   }
@@ -106,7 +108,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     const newBindings = addEntity(binding, ROOT_ID, 1, currentBindings)
 
     if (props.name) {
-      props.onChange(newBindings)
+      props.onChange({ catalog: newBindings })
     }
   }
 
@@ -123,7 +125,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
 
     if (bindingItems) {
-      props.onChange(newBindingItems)
+      props.onChange({ catalog: newBindingItems })
     }
   }
 
@@ -140,7 +142,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
 
     if (bindingItems) {
-      props.onChange(newBindingItems)
+      props.onChange({ catalog: newBindingItems })
     }
   }
 
@@ -157,7 +159,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
 
     if (bindingItems) {
-      props.onChange(newBindingItems)
+      props.onChange({ catalog: newBindingItems })
     }
   }
 
@@ -169,7 +171,9 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
       if (Object.keys(newBindings).length === 1) {
         props.onChange(undefined)
       } else {
-        props.onChange(removeEntity(id, bindingItems))
+        const newCatalog = removeEntity(id, bindingItems)
+        assertNotUndefined(newCatalog)
+        props.onChange({ catalog: newCatalog })
       }
     }
   }
