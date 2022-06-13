@@ -15,7 +15,7 @@ import componentList from '@/constants/component-list'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
-import { useBindingActions } from '@/shared/binding-editor/lib/use-binding-actions'
+import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Catalog,
@@ -39,7 +39,7 @@ export interface BindingSetterProps {
   comps: Catalog<Comp>
   onChange: (value: EventBindingSchema | undefined) => void
   schemas: Catalog<CompSchema>
-  value: EventBindingSchema | undefined
+  value: EventBindingSchema | undefined | string
   name?: string
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,20 +54,20 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   ref
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
-  const [selectedItemId, selectItemId] = useState('')
-  const bindingItems = props.value?.catalog
-  const bindingItem = bindingItems?.[selectedItemId]
-  const { changeBinding } = useBindingActions(props.onChange, bindingItems)
+  const { changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates(
+    props.onChange,
+    props.value
+  )
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
-    eventAssertionList[bindingItem?.name || ''] ||
-    actionList[bindingItem?.name || ''] ||
-    eventList[bindingItem?.name || '']
+    eventAssertionList[selectedBinding?.name || ''] ||
+    actionList[selectedBinding?.name || ''] ||
+    eventList[selectedBinding?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(bindingItems || undefined, {
+    return buildTree(catalog || undefined, {
       changeBinding,
       remove,
       selectItemId,
@@ -77,19 +77,19 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !bindingItems || to.parentId === 'rootId') {
+    if (!to || !tree || !catalog || to.parentId === 'rootId') {
       return
     }
 
-    const fromParentBinding = findEntity(from.parentId, bindingItems)
+    const fromParentBinding = findEntity(from.parentId, catalog)
     const bindingId = fromParentBinding?.children?.[from.index]
 
     assertNotUndefined(bindingId)
 
-    const binding = findEntity(bindingId, bindingItems)
+    const binding = findEntity(bindingId, catalog)
 
-    if (bindingItems) {
-      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, bindingItems)
+    if (catalog) {
+      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, catalog)
       props.onChange({ catalog: newCatalog })
       setTree(moveItemOnTree(tree, from, to))
     }
@@ -97,7 +97,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
   function addAssertion(): void {
     const id = uniqid()
-    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const currentBindings = catalog ? catalog : defaultCompBindings
     const binding: EventBinding = {
       id,
       type: EventType.ASSERTION,
@@ -114,7 +114,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
   function addOperator() {
     const id = uniqid()
-    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const currentBindings = catalog ? catalog : defaultCompBindings
     const bindingItem: EventBinding = {
       id,
       name: 'and',
@@ -124,14 +124,14 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
     const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
 
-    if (bindingItems) {
+    if (catalog) {
       props.onChange({ catalog: newBindingItems })
     }
   }
 
   function addAction() {
     const id = uniqid()
-    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const currentBindings = catalog ? catalog : defaultCompBindings
     const bindingItem: EventBinding = {
       id,
       name: setValue.name,
@@ -141,14 +141,14 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
     const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
 
-    if (bindingItems) {
+    if (catalog) {
       props.onChange({ catalog: newBindingItems })
     }
   }
 
   function addEvent() {
     const id = uniqid()
-    const currentBindings = bindingItems ? bindingItems : defaultCompBindings
+    const currentBindings = catalog ? catalog : defaultCompBindings
     const bindingItem: EventBinding = {
       id,
       name: onFieldChange.name,
@@ -158,20 +158,20 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
     const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
 
-    if (bindingItems) {
+    if (catalog) {
       props.onChange({ catalog: newBindingItems })
     }
   }
 
   function remove(id: string | number): void {
-    if (bindingItems) {
-      const newBindings = removeEntity(id, bindingItems)
+    if (catalog) {
+      const newBindings = removeEntity(id, catalog)
       assertNotUndefined(newBindings)
 
       if (Object.keys(newBindings).length === 1) {
         props.onChange(undefined)
       } else {
-        const newCatalog = removeEntity(id, bindingItems)
+        const newCatalog = removeEntity(id, catalog)
         assertNotUndefined(newCatalog)
         props.onChange({ catalog: newCatalog })
       }
@@ -180,7 +180,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
   return (
     <BindingEditor.Root ref={ref} label={props.label}>
-      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(bindingItems)}>
+      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
         <BindingEditor.ActionPanel
           mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
           buttons={[
@@ -195,16 +195,19 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
             <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
           </Stack>
         )}
-        {hasSchema(assertionItem) && bindingItem && (
+        {hasSchema(assertionItem) && selectedBinding && (
           <Form
             key={selectedItemId}
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
-            initialValues={bindingItem.props}
+            initialValues={selectedBinding.props}
             render={(formProps) => {
               return (
                 <>
-                  <Autosave save={(input2) => changeBinding(bindingItem.id, bindingItem.name, input2)} debounce={500} />
+                  <Autosave
+                    save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
+                    debounce={500}
+                  />
                   <SchemaDrawer
                     componentList={componentList}
                     schema={assertionItem.schema}
