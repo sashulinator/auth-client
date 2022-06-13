@@ -13,7 +13,7 @@ import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { isEnter } from '@/lib/key-events'
 import { Dropdown } from '@/shared/dropdown'
 import {
-  EventSchemaItem,
+  EventBindingSchemaItem,
   EventSchemaItemType,
   actionNameOptions,
   eventAssertionNameOptions,
@@ -23,7 +23,7 @@ import {
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      binding: EventSchemaItem
+      binding: EventBindingSchemaItem
     }
   }
 }

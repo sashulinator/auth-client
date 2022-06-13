@@ -1,11 +1,11 @@
 import uniqid from 'uniqid'
 
 import { ROOT_ID } from '@/constants/common'
-import { Catalog, EventSchemaItem, EventSchemaItemType, onFieldChange } from '@/shared/schema-drawer'
+import { Catalog, EventBindingSchemaItem, EventSchemaItemType, onFieldChange } from '@/shared/schema-drawer'
 
 const id = uniqid()
 
-export const defaultCompBindings: Catalog<EventSchemaItem> = {
+export const defaultCompBindings: Catalog<EventBindingSchemaItem> = {
   [ROOT_ID]: {
     id: ROOT_ID,
     name: 'root',

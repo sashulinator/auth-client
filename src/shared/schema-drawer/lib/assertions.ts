@@ -9,7 +9,13 @@ import {
   string,
 } from '@savchenko91/schema-validator'
 
-import { BindingSchemaItem, Catalog, ComponentCompSchema, EventSchemaItem, EventSchemaItemType } from '../model/types'
+import {
+  BindingSchemaItem,
+  Catalog,
+  ComponentCompSchema,
+  EventBindingSchemaItem,
+  EventSchemaItemType,
+} from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
@@ -59,7 +65,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
   }
 
   if (isObject(input)) {
-    const bindings = input as Catalog<EventSchemaItem>
+    const bindings = input as Catalog<EventBindingSchemaItem>
 
     const rootBinding = bindings[ROOT_ID]
     assertNotUndefined(rootBinding)

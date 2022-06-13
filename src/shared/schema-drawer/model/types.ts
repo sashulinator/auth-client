@@ -35,7 +35,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: AssertionSchema
-  bindings?: Catalog<EventSchemaItem>
+  bindings?: Catalog<EventBindingSchemaItem>
   injections?: Injection[]
 }
 
@@ -111,23 +111,25 @@ export enum EventSchemaItemType {
   ROOT = 'ROOT',
 }
 
-export interface EventSchemaItem extends BindingSchemaItem {
+export interface EventBindingSchemaItem extends BindingSchemaItem {
   type: EventSchemaItemType
 }
 
 export interface EventProps {
   context: FieldComponentContext | ContentComponentContext
-  actionUnits: Catalog<EventSchemaItem>
+  actionUnits: Catalog<EventBindingSchemaItem>
   actionItems: ActionBindingMeta[]
   eventItem: EventBindingMeta
-  eventUnit: EventSchemaItem
-  bindings: Catalog<EventSchemaItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  eventUnit: EventBindingSchemaItem
+  // TODO Catalog<EventSchemaItem> будет заменен на EventBindingSchema когда
+  // TODO у Comp будет переделан bindings параметр
+  eventBindingSchema: Catalog<EventBindingSchemaItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }
 
 export interface ActionProps extends EventProps {
   actionItem: ActionBindingMeta
-  actionUnit: EventSchemaItem
+  actionUnit: EventBindingSchemaItem
 }
 
 export interface EventBindingMeta extends BindingMeta {

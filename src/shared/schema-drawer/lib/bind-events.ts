@@ -3,7 +3,13 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { actionList } from '../constants/action-list'
 import { eventAssertionList } from '../constants/event-assertion-list'
 import { eventList } from '../constants/event-list'
-import { ActionProps, Catalog, EventSchemaItem, EventSchemaItemType, FieldComponentContext } from '../model/types'
+import {
+  ActionProps,
+  Catalog,
+  EventBindingSchemaItem,
+  EventSchemaItemType,
+  FieldComponentContext,
+} from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { insert, replace } from '@/lib/change-unmutable'
@@ -12,19 +18,19 @@ import { findEntities, findEntity } from '@/lib/entity-actions'
 const operatorId = 'operatorId'
 
 export default function bindEvents(context: FieldComponentContext) {
-  const { bindings } = context.comp
+  const { bindings: eventBindingSchema } = context.comp
 
-  if (!bindings) {
+  if (!eventBindingSchema) {
     return
   }
 
-  const unitsWithEventType = getEventUnits(bindings)
+  const unitsWithEventType = getEventUnits(eventBindingSchema)
 
   unitsWithEventType.forEach((eventUnit) => {
     const eventItem = eventList[eventUnit.name]
     assertNotUndefined(eventItem)
 
-    const actionUnits = findEntities(eventUnit.children || [], bindings)
+    const actionUnits = findEntities(eventUnit.children || [], eventBindingSchema)
 
     const actionItems = Object.values(actionUnits)?.map((actionUnit) => {
       const actionItem = actionList[actionUnit.name]
@@ -38,7 +44,7 @@ export default function bindEvents(context: FieldComponentContext) {
       actionItems,
       eventUnit,
       eventItem,
-      bindings,
+      eventBindingSchema,
       emitActions,
     }
 
@@ -65,15 +71,15 @@ export default function bindEvents(context: FieldComponentContext) {
 
 // Private
 
-function getEventUnits(units: Catalog<EventSchemaItem>): EventSchemaItem[] {
+function getEventUnits(units: Catalog<EventBindingSchemaItem>): EventBindingSchemaItem[] {
   return Object.values(units).filter((binding) => binding.type === EventSchemaItemType.EVENT)
 }
 
-function addRootOperator(bindings: Catalog<EventSchemaItem>, actionId: string) {
-  const actionUnit = findEntity(actionId, bindings)
+function addRootOperator(eventBindingSchema: Catalog<EventBindingSchemaItem>, actionId: string) {
+  const actionUnit = findEntity(actionId, eventBindingSchema)
   const newActionUnit = { ...actionUnit, children: [operatorId] }
-  const newBindings = replace(bindings, newActionUnit.id, newActionUnit)
-  const orOperator: EventSchemaItem = {
+  const newBindings = replace(eventBindingSchema, newActionUnit.id, newActionUnit)
+  const orOperator: EventBindingSchemaItem = {
     id: operatorId,
     name: 'and',
     type: EventSchemaItemType.OPERATOR,
@@ -85,8 +91,8 @@ function addRootOperator(bindings: Catalog<EventSchemaItem>, actionId: string) {
 }
 
 function isValid(actionProps: ActionProps, value: any) {
-  const { actionUnit, bindings } = actionProps
-  const newBindings = addRootOperator(bindings, actionUnit.id)
+  const { actionUnit, eventBindingSchema: eventBindingSchema } = actionProps
+  const newBindings = addRootOperator(eventBindingSchema, actionUnit.id)
 
   const validate = bindAssertions(eventAssertionList, newBindings, operatorId)
 

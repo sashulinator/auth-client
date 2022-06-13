@@ -21,7 +21,7 @@ import SchemaDrawer, {
   Catalog,
   Comp,
   CompSchema,
-  EventSchemaItem,
+  EventBindingSchemaItem,
   EventSchemaItemType,
   actionList,
   basicComponentsSchemas,
@@ -36,9 +36,9 @@ import Tree from '@/shared/tree'
 export interface BindingSetterProps {
   comp: Comp
   comps: Catalog<Comp>
-  onChange: (value: Catalog<EventSchemaItem> | undefined) => void
+  onChange: (value: Catalog<EventBindingSchemaItem> | undefined) => void
   schemas: Catalog<CompSchema>
-  value: Catalog<EventSchemaItem> | undefined
+  value: Catalog<EventBindingSchemaItem> | undefined
   name?: string
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -96,7 +96,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addAssertion(): void {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const binding: EventSchemaItem = {
+    const binding: EventBindingSchemaItem = {
       id,
       type: EventSchemaItemType.ASSERTION,
       name: 'undefined',
@@ -113,7 +113,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addOperator() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: EventSchemaItem = {
+    const bindingItem: EventBindingSchemaItem = {
       id,
       name: 'and',
       type: EventSchemaItemType.OPERATOR,
@@ -130,7 +130,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addAction() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: EventSchemaItem = {
+    const bindingItem: EventBindingSchemaItem = {
       id,
       name: setValue.name,
       type: EventSchemaItemType.ACTION,
@@ -147,7 +147,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addEvent() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: EventSchemaItem = {
+    const bindingItem: EventBindingSchemaItem = {
       id,
       name: onFieldChange.name,
       type: EventSchemaItemType.EVENT,
