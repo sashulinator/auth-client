@@ -12,10 +12,10 @@ import {
   Catalog,
   Comp,
   CompSchema,
+  ComponentCompSchema,
   ComponentContext,
   ComponentItem,
   FieldComponentContext,
-  Schema,
 } from '../model/types'
 import React, { memo, useEffect, useMemo } from 'react'
 import { Field } from 'react-final-form'
@@ -24,8 +24,8 @@ import FieldError from '@/shared/field-error'
 
 export interface FieldComponentProps {
   comp: Comp
-  schema: CompSchema
-  schemas: Catalog<Schema>
+  schema: ComponentCompSchema
+  schemas: Catalog<CompSchema>
   context: ComponentContext
   componentList: Record<string, ComponentItem>
 }

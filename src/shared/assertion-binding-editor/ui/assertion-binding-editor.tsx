@@ -25,8 +25,8 @@ import SchemaDrawer, {
   AssertionUnitType,
   Catalog,
   Comp,
+  CompSchema,
   EventToShowError,
-  Schema,
   assertionList,
   basicComponentsSchemas,
   hasSchema,
@@ -37,7 +37,7 @@ export interface ValidatorsTreeProps {
   comp: Comp
   comps: Catalog<Comp>
   onChange: (value: AssertionSchema | undefined) => void
-  schemas: Catalog<Schema>
+  schemas: Catalog<CompSchema>
   // string приходит от final-form при инициализации
   value: AssertionSchema | undefined | string
   name?: string

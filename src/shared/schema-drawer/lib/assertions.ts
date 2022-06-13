@@ -9,13 +9,13 @@ import {
   string,
 } from '@savchenko91/schema-validator'
 
-import { BindingUnit, Catalog, CompSchema, EventUnit, EventUnitType } from '../model/types'
+import { BindingUnit, Catalog, ComponentCompSchema, EventUnit, EventUnitType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
 import { rootWrapArr } from '@/lib/validators'
 
-export function assertCompSchema(input: unknown): asserts input is CompSchema {
+export function assertCompSchema(input: unknown): asserts input is ComponentCompSchema {
   if (isObject(input) && 'componenName' in input && input.componenName === null) {
     throw Error('is not a CompSchema type')
   }

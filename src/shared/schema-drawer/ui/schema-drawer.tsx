@@ -6,11 +6,11 @@ import {
   Catalog,
   Comp,
   CompSchema,
+  ComponentCompSchema,
   ComponentContext,
   ComponentItem,
   Context,
   DrawerContext,
-  Schema,
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -21,8 +21,8 @@ import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
-  schemas: Catalog<Schema>
-  schema: Schema
+  schemas: Catalog<CompSchema>
+  schema: CompSchema
   context: Context
   componentList: Record<string, ComponentItem>
 }
@@ -74,7 +74,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
  * 3. не генерирует ошибки
  */
 interface ComponentFactoryProps {
-  schemas: Catalog<Schema>
+  schemas: Catalog<CompSchema>
   comps: Catalog<Comp>
   compId: string
   context: DrawerContext
@@ -85,7 +85,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   const comp = props.comps[props.compId]
   assertNotUndefined(comp)
 
-  const schema = props.schemas[comp.compSchemaId] as CompSchema
+  const schema = props.schemas[comp.compSchemaId] as ComponentCompSchema
 
   const context: ComponentContext = {
     ...props.context,

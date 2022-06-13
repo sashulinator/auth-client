@@ -12,7 +12,7 @@ import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
-import { Catalog, Comp, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
   addNewComps: (comps: Catalog<Comp>) => void
@@ -24,13 +24,13 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
 
   const { data } = useQuery('schemas', getSchemaList)
 
-  function onAdd(schema: Schema) {
+  function onAdd(schema: CompSchema) {
     const createdNewComp = createNewComp(schema, componentList)
     props.addNewComps({ [createdNewComp.id]: createdNewComp })
     setOpen(false)
   }
 
-  function addPreset(schema: Schema) {
+  function addPreset(schema: CompSchema) {
     const comps = remove(schema.comps, ROOT_ID)
     props.addNewComps(comps)
     setOpen(false)

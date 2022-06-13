@@ -2,12 +2,12 @@ import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
-import { Catalog, Comp, Schema, SchemaType } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, SchemaType } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 // STATES
 
-export const currentSchemaHistoryState = atom<DoublyLinkedList<Schema>>({
+export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema>>({
   key: 'currentSchemaHistoryState',
   default: {
     prev: null,
@@ -32,8 +32,8 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<Schema>>({
 
 // SETTERS
 
-export function schemaSetter(schema: Schema) {
-  return (currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> => {
+export function schemaSetter(schema: CompSchema) {
+  return (currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> => {
     return {
       prev: currentSchemaHistory,
       next: null,
@@ -43,7 +43,7 @@ export function schemaSetter(schema: Schema) {
 }
 
 export function updateCompsSetter(comps: Catalog<Comp>) {
-  return (currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> => {
+  return (currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> => {
     return {
       prev: currentSchemaHistory,
       next: null,
@@ -53,7 +53,7 @@ export function updateCompsSetter(comps: Catalog<Comp>) {
 }
 
 export function updateCompSetter(comp: Comp) {
-  return (currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> => {
+  return (currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> => {
     const comps = replace(currentSchemaHistory.data.comps, comp.id, comp)
 
     return {
@@ -64,7 +64,7 @@ export function updateCompSetter(comp: Comp) {
   }
 }
 
-export function prevSetter(currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> {
+export function prevSetter(currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> {
   if (currentSchemaHistory.prev === null) {
     return currentSchemaHistory
   }
@@ -78,7 +78,7 @@ export function prevSetter(currentSchemaHistory: DoublyLinkedList<Schema>): Doub
   return newState
 }
 
-export function nextSetter(currentSchemaHistory: DoublyLinkedList<Schema>): DoublyLinkedList<Schema> {
+export function nextSetter(currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> {
   if (currentSchemaHistory.next === null) {
     return currentSchemaHistory
   }

@@ -6,7 +6,7 @@ import { FormRenderProps } from 'react-final-form'
 
 export type Catalog<T> = Record<string, T>
 
-export interface Schema {
+export interface CompSchema {
   id: string
   title: string
   type: SchemaType
@@ -14,7 +14,7 @@ export interface Schema {
   componentName: null | string
 }
 
-export type CompSchema = Omit<Schema, 'componentName'> & {
+export type ComponentCompSchema = Omit<CompSchema, 'componentName'> & {
   componentName: string
 }
 
@@ -119,7 +119,7 @@ export type DrawerContext = Context & {
   formStatePrev: FormState<any, any>
   comps: Catalog<Comp>
   compIds: string[]
-  schemas: Catalog<Schema>
+  schemas: Catalog<CompSchema>
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -129,7 +129,7 @@ export type DrawerContext = Context & {
 
 export type ComponentContext = DrawerContext & {
   comp: Comp
-  schema: Schema
+  schema: CompSchema
 }
 
 export type ContentComponentContext = ComponentContext & {
@@ -161,7 +161,7 @@ export interface ActionProps extends EventProps {
 export interface ListItem {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (...args: any[]) => any
-  schema?: Schema
+  schema?: CompSchema
 }
 
 export interface EventListItem extends ListItem {

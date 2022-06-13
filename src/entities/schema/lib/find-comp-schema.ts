@@ -1,6 +1,6 @@
-import { Catalog, Comp, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
-export function findCompSchema(comp: Comp | null, schemas: Catalog<Schema> | null): Schema | null {
+export function findCompSchema(comp: Comp | null, schemas: Catalog<CompSchema> | null): CompSchema | null {
   if (schemas === null || comp === null) {
     return null
   }

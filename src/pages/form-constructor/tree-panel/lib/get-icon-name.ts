@@ -1,8 +1,8 @@
 import { CustomComponentNames } from '../model/types'
 
-import { Catalog, Comp, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
-export default function getIconName(schemas?: Catalog<Schema> | null, comp?: Comp): string {
+export default function getIconName(schemas?: Catalog<CompSchema> | null, comp?: Comp): string {
   if (comp === undefined) {
     return 'Unknown'
   }

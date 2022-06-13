@@ -2,9 +2,9 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import uniqid from 'uniqid'
 
-import { Comp, ComponentItem, Schema } from '@/shared/schema-drawer'
+import { Comp, CompSchema, ComponentItem } from '@/shared/schema-drawer'
 
-export function createNewComp(schema: Schema, componentList: Record<string, ComponentItem>): Comp {
+export function createNewComp(schema: CompSchema, componentList: Record<string, ComponentItem>): Comp {
   const component = componentList[schema.componentName || '']
   assertNotUndefined(component)
 

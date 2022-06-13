@@ -1,5 +1,5 @@
 import { BasicComponentsNames } from '../constants/basic-components-schemas'
-import { Catalog, Comp, Schema, SchemaType } from '../model/types'
+import { Catalog, Comp, CompSchema, SchemaType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 
@@ -8,7 +8,7 @@ type SimpleComp = Omit<Comp, 'title' | 'compSchemaId' | 'children'> & {
   children?: SimpleComp[]
 }
 
-export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): Schema {
+export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): CompSchema {
   function simpleCompToComp(
     acc: Catalog<Comp> | undefined,
     simpleComp: SimpleComp | undefined
@@ -28,7 +28,7 @@ export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): Schema {
     }
   }
 
-  const schema: Schema = {
+  const schema: CompSchema = {
     id: 'hereCouldBeYourAd',
     title: 'hereCouldBeYourAd',
     componentName: null,

@@ -7,16 +7,16 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import LoadingAria from '@/shared/loading-aria'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
   isLoading: boolean
   context: Record<string, unknown>
-  schemas: Catalog<Schema> | null
-  schema: Schema | null
+  schemas: Catalog<CompSchema> | null
+  schema: CompSchema | null
   comp: Comp | null
-  previewSchema: Schema
+  previewSchema: CompSchema
   ContextualMenu: (props: { comp: Comp }) => JSX.Element
 }
 

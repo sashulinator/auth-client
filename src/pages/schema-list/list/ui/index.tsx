@@ -7,13 +7,13 @@ import { Link } from 'react-router-dom'
 
 import { getSchemaList } from '@/api/schema'
 import ROUTES from '@/constants/routes'
-import { Schema } from '@/shared/schema-drawer'
+import { CompSchema } from '@/shared/schema-drawer'
 
 function List(): JSX.Element {
   const { data } = useQuery('schemas', getSchemaList)
 
-  function renderItemColumn(item: Schema, index?: number, column?: IColumn): JSX.Element {
-    const fieldContent = item[column?.fieldName as keyof Schema] as string
+  function renderItemColumn(item: CompSchema, index?: number, column?: IColumn): JSX.Element {
+    const fieldContent = item[column?.fieldName as keyof CompSchema] as string
 
     if (column?.key === 'title') {
       return <Link to={ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', item.id)}>{item.title}</Link>

@@ -2,7 +2,7 @@
   По сути является мапингом на базовые компоненты для компсов
   Полезно когда нужно просто отрисовать простенькую форму
 */
-import { Catalog, Schema, SchemaType } from '../model/types'
+import { Catalog, CompSchema, SchemaType } from '../model/types'
 
 export enum BasicComponentsNames {
   TextField = 'TextField',
@@ -29,4 +29,4 @@ export const basicComponentsSchemas = ({
     componentName: BasicComponentsNames.Checkbox,
     type: SchemaType.COMP,
   },
-} as unknown) as Catalog<Schema>
+} as unknown) as Catalog<CompSchema>

@@ -20,9 +20,9 @@ import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Catalog,
   Comp,
+  CompSchema,
   EventUnit,
   EventUnitType,
-  Schema,
   actionList,
   basicComponentsSchemas,
   eventAssertionList,
@@ -37,7 +37,7 @@ export interface BindingSetterProps {
   comp: Comp
   comps: Catalog<Comp>
   onChange: (value: Catalog<EventUnit> | undefined) => void
-  schemas: Catalog<Schema>
+  schemas: Catalog<CompSchema>
   value: Catalog<EventUnit> | undefined
   name?: string
   label?: string
