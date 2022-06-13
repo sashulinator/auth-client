@@ -127,7 +127,7 @@ export interface EventBindingSchema extends BindingSchema<EventBinding> {}
 
 export interface EventProps {
   eventBindingCatalog: Catalog<EventBinding>
-  eventBindingItem: EventBinding
+  eventBinding: EventBinding
   actionUnits: Catalog<EventBinding>
   actionItems: ActionBindingMeta[]
   eventBindingMeta: EventBindingMeta
