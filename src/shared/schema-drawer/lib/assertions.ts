@@ -9,7 +9,7 @@ import {
   string,
 } from '@savchenko91/schema-validator'
 
-import { BindingUnit, Catalog, ComponentCompSchema, EventUnit, EventUnitType } from '../model/types'
+import { Binding, Catalog, ComponentCompSchema, EventUnit, EventUnitType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
@@ -21,7 +21,7 @@ export function assertCompSchema(input: unknown): asserts input is ComponentComp
   }
 }
 
-export function assertEventBindings(input: unknown): asserts input is Catalog<BindingUnit> {
+export function assertEventBindings(input: unknown): asserts input is Catalog<Binding> {
   const messages = {
     [EventUnitType.EVENT]: 'event cannot be a child',
     [EventUnitType.ACTION]: 'action must be a child of event',

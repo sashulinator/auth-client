@@ -6,6 +6,11 @@ import { FormRenderProps } from 'react-final-form'
 
 export type Catalog<T> = Record<string, T>
 
+export interface Schema<TItem> {
+  // TODO rename units to items
+  units: Catalog<TItem>
+}
+
 interface Injection {
   from: string
   to: string
@@ -55,11 +60,7 @@ export interface CompMeta {
  * BINDINGS
  */
 
-export interface BindingSchema<TUnit> {
-  units: Catalog<TUnit>
-}
-
-export interface BindingUnit {
+export interface Binding {
   type: string
   id: string
   name: string
@@ -76,7 +77,7 @@ export enum AssertionUnitType {
   ASSERTION = 'ASSERTION',
 }
 
-export interface AssertionUnit extends BindingUnit {
+export interface AssertionUnit extends Binding {
   type: AssertionUnitType
 }
 
@@ -87,7 +88,7 @@ export enum EventToShowError {
   onSubmit = 'onSubmit',
 }
 
-export interface AssertionSchema extends BindingSchema<AssertionUnit> {
+export interface AssertionSchema extends Schema<AssertionUnit> {
   eventToShowError: EventToShowError
 }
 
@@ -103,7 +104,7 @@ export enum EventUnitType {
   ROOT = 'ROOT',
 }
 
-export interface EventUnit extends BindingUnit {
+export interface EventUnit extends Binding {
   type: EventUnitType
 }
 
