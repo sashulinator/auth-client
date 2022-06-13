@@ -2,7 +2,16 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
 import isInputType from '../lib/is'
-import { Comp, CompSchema, ComponentContext, ComponentItem, Context, DrawerContext, Norm, Schema } from '../model/types'
+import {
+  Catalog,
+  Comp,
+  CompSchema,
+  ComponentContext,
+  ComponentItem,
+  Context,
+  DrawerContext,
+  Schema,
+} from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
 import { FormState } from 'final-form'
@@ -12,7 +21,7 @@ import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
-  schemas: Norm<Schema>
+  schemas: Catalog<Schema>
   schema: Schema
   context: Context
   componentList: Record<string, ComponentItem>
@@ -20,7 +29,7 @@ interface SchemaDrawerProps {
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
-  const [comps, setComps] = useState<Norm<Comp>>(props.schema.comps)
+  const [comps, setComps] = useState<Catalog<Comp>>(props.schema.comps)
 
   useEffect(() => setComps(props.schema.comps), [props.schema.comps])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,8 +74,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
  * 3. не генерирует ошибки
  */
 interface ComponentFactoryProps {
-  schemas: Norm<Schema>
-  comps: Norm<Comp>
+  schemas: Catalog<Schema>
+  comps: Catalog<Comp>
   compId: string
   context: DrawerContext
   componentList: Record<string, ComponentItem>

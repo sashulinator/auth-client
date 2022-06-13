@@ -8,12 +8,12 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import LoadingAria from '@/shared/loading-aria'
-import SchemaDrawer, { Norm, Schema } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, Schema } from '@/shared/schema-drawer'
 import { setCSSVar } from '@/shared/theme'
 
 interface PreviewProps {
   schema: Schema
-  schemas: Norm<Schema> | null
+  schemas: Catalog<Schema> | null
   selectedCompIds: string[]
   isLoading: boolean
 }

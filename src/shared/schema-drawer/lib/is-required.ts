@@ -1,6 +1,6 @@
-import { AssertionUnit, Norm } from '@/shared/schema-drawer'
+import { AssertionUnit, Catalog } from '@/shared/schema-drawer'
 
-export default function isRequired(validators?: Norm<AssertionUnit>) {
+export default function isRequired(validators?: Catalog<AssertionUnit>) {
   if (!validators) {
     return undefined
   }

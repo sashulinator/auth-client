@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { actionList } from '../constants/action-list'
 import { eventAssertionList } from '../constants/event-assertion-list'
 import { eventList } from '../constants/event-list'
-import { ActionProps, EventUnit, EventUnitType, FieldComponentContext, Norm } from '../model/types'
+import { ActionProps, Catalog, EventUnit, EventUnitType, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { insert, replace } from '@/lib/change-unmutable'
@@ -65,11 +65,11 @@ export default function bindEvents(context: FieldComponentContext) {
 
 // Private
 
-function getEventUnits(units: Norm<EventUnit>): EventUnit[] {
+function getEventUnits(units: Catalog<EventUnit>): EventUnit[] {
   return Object.values(units).filter((binding) => binding.type === EventUnitType.EVENT)
 }
 
-function addRootOperator(bindings: Norm<EventUnit>, actionId: string) {
+function addRootOperator(bindings: Catalog<EventUnit>, actionId: string) {
   const actionUnit = findEntity(actionId, bindings)
   const newActionUnit = { ...actionUnit, children: [operatorId] }
   const newBindings = replace(bindings, newActionUnit.id, newActionUnit)

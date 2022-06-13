@@ -4,11 +4,11 @@ import omitEmpty from 'omit-empty-es'
 
 import { replace } from '@/lib/change-unmutable'
 import { findEntity } from '@/lib/entity-actions'
-import { BindingUnit, Norm } from '@/shared/schema-drawer'
+import { BindingUnit, Catalog } from '@/shared/schema-drawer'
 
 export function useBindingActions<TUnit extends BindingUnit>(
-  onChange: (value: Norm<TUnit> | undefined) => void,
-  bindingItems?: Norm<TUnit> | undefined
+  onChange: (value: Catalog<TUnit> | undefined) => void,
+  bindingItems?: Catalog<TUnit> | undefined
 ) {
   function changeBinding(id: string | number, name: string, newBindingItemProps: unknown) {
     assertNotUndefined(bindingItems)

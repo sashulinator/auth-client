@@ -1,9 +1,9 @@
 import { onBlur, onChange, onDestroy, onFieldChange, onFieldLife, onFocus, onInit } from '../lib/events'
-import { EventListItem, Norm } from '../model/types'
+import { Catalog, EventListItem } from '../model/types'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const eventList: Norm<EventListItem> = {
+export const eventList: Catalog<EventListItem> = {
   [onFieldChange.name]: {
     function: onFieldChange,
   },

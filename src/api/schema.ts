@@ -7,7 +7,7 @@ import { UseQueryResult, useQuery } from 'react-query'
 import { assertsSchema } from '@/common/schemas'
 import { isNormSchemas } from '@/common/validators'
 import ErrorFromObject from '@/lib/error-from-object'
-import { Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, Schema } from '@/shared/schema-drawer'
 
 const headers = {
   'content-type': 'application/json',
@@ -119,7 +119,7 @@ type GetSchemasParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>> {
+export async function getSchemas(params: GetSchemasParams): Promise<Catalog<Schema>> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/schemas${stringify({ ids }, { addQueryPrefix: true })}`, {
@@ -138,14 +138,14 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
 
   assertNotNil(schemas)
 
-  return schemas as Norm<Schema>
+  return schemas as Catalog<Schema>
 }
 
 // TODO по сути должен принимать один id так как бэк сам найдет остальные зависимости
-export function useGetDependencySchemas(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
+export function useGetDependencySchemas(ids: string[]): UseQueryResult<Catalog<Schema> | undefined> {
   return useQuery(['schemasDependencies', ...ids], queryFn)
 
-  async function queryFn(): Promise<Norm<Schema> | undefined> {
+  async function queryFn(): Promise<Catalog<Schema> | undefined> {
     if (isEmpty(ids)) {
       return undefined
     }

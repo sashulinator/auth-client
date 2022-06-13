@@ -12,10 +12,10 @@ import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
-import { Comp, Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, Schema } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
-  addNewComps: (comps: Norm<Comp>) => void
+  addNewComps: (comps: Catalog<Comp>) => void
   selectAndUnselectComp: (compId: string | string[]) => void
 }
 

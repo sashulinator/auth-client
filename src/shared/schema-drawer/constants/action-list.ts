@@ -1,10 +1,10 @@
 import { setCompProp, setValue } from '../lib/actions'
-import { ActionListItem, AssertionUnitType, EventToShowError, EventUnitType, Norm, SchemaType } from '../model/types'
+import { ActionListItem, AssertionUnitType, Catalog, EventToShowError, EventUnitType, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const actionList: Norm<ActionListItem> = {
+export const actionList: Catalog<ActionListItem> = {
   [setValue.name]: {
     function: setValue,
     schema: {

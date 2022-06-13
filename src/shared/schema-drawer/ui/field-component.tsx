@@ -8,7 +8,15 @@ import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
 import { Observer } from '../lib/observer'
 import { registerFieldChangeEvent } from '../lib/register-field-change-event'
-import { Comp, CompSchema, ComponentContext, ComponentItem, FieldComponentContext, Norm, Schema } from '../model/types'
+import {
+  Catalog,
+  Comp,
+  CompSchema,
+  ComponentContext,
+  ComponentItem,
+  FieldComponentContext,
+  Schema,
+} from '../model/types'
 import React, { memo, useEffect, useMemo } from 'react'
 import { Field } from 'react-final-form'
 
@@ -17,7 +25,7 @@ import FieldError from '@/shared/field-error'
 export interface FieldComponentProps {
   comp: Comp
   schema: CompSchema
-  schemas: Norm<Schema>
+  schemas: Catalog<Schema>
   context: ComponentContext
   componentList: Record<string, ComponentItem>
 }

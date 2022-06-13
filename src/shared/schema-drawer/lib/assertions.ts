@@ -9,7 +9,7 @@ import {
   string,
 } from '@savchenko91/schema-validator'
 
-import { BindingUnit, CompSchema, EventUnit, EventUnitType, Norm } from '../model/types'
+import { BindingUnit, Catalog, CompSchema, EventUnit, EventUnitType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
@@ -21,7 +21,7 @@ export function assertCompSchema(input: unknown): asserts input is CompSchema {
   }
 }
 
-export function assertEventBindings(input: unknown): asserts input is Norm<BindingUnit> {
+export function assertEventBindings(input: unknown): asserts input is Catalog<BindingUnit> {
   const messages = {
     [EventUnitType.EVENT]: 'event cannot be a child',
     [EventUnitType.ACTION]: 'action must be a child of event',
@@ -59,7 +59,7 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
   }
 
   if (isObject(input)) {
-    const bindings = input as Norm<EventUnit>
+    const bindings = input as Catalog<EventUnit>
 
     const rootBinding = bindings[ROOT_ID]
     assertNotUndefined(rootBinding)

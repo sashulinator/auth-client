@@ -1,11 +1,11 @@
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
-import { AssertionUnitType, EventAssertionListItem, EventToShowError, Norm, SchemaType } from '../model/types'
+import { AssertionUnitType, Catalog, EventAssertionListItem, EventToShowError, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const eventAssertionList: Norm<EventAssertionListItem> = {
+export const eventAssertionList: Catalog<EventAssertionListItem> = {
   undefined: {
     function: assertUndefined,
     schema: generateSimpleCompsSchema([

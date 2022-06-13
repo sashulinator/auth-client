@@ -6,12 +6,12 @@ import { useRecoilState } from 'recoil'
 
 import { useGetDependencySchemas } from '@/api/schema'
 import { schemasState } from '@/entities/schema'
-import { Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, Schema } from '@/shared/schema-drawer'
 
 const IncidentId = 'e84eabbb-b048-4d39-ab10-673605c718e2'
 
 export default function Incident(): JSX.Element {
-  const [schemas, setSchemas] = useRecoilState<null | Norm<Schema>>(schemasState)
+  const [schemas, setSchemas] = useRecoilState<null | Catalog<Schema>>(schemasState)
 
   const { data: fetchedDependencySchemas } = useGetDependencySchemas([IncidentId])
 

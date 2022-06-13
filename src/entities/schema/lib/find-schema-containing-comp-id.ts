@@ -1,6 +1,6 @@
-import { Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, Schema } from '@/shared/schema-drawer'
 
-export function findSchemaContainingCompId(compId = '', schemas: Norm<Schema> | null): Schema | null {
+export function findSchemaContainingCompId(compId = '', schemas: Catalog<Schema> | null): Schema | null {
   if (schemas === null) {
     return null
   }

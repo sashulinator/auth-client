@@ -4,11 +4,11 @@ import { TreeItemAdditionalData } from '../types'
 
 import { ROOT_ID } from '@/constants/common'
 import { mutateObject } from '@/lib/mutate-object'
-import { Comp, Norm } from '@/shared/schema-drawer'
+import { Catalog, Comp } from '@/shared/schema-drawer'
 
 export function buildTree(
   currentTree: TreeData | undefined,
-  comps: Norm<Comp> | undefined,
+  comps: Catalog<Comp> | undefined,
   additionalData: TreeItemAdditionalData
 ): TreeData | undefined {
   if (comps === undefined) {

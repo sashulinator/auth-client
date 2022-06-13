@@ -4,13 +4,13 @@ import { Observer } from '../lib/observer'
 import { FormState } from 'final-form'
 import { FormRenderProps } from 'react-final-form'
 
-export type Norm<T> = Record<string, T>
+export type Catalog<T> = Record<string, T>
 
 export interface Schema {
   id: string
   title: string
   type: SchemaType
-  comps: Norm<Comp>
+  comps: Catalog<Comp>
   componentName: null | string
 }
 
@@ -27,7 +27,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: AssertionSchema
-  bindings?: Norm<EventUnit>
+  bindings?: Catalog<EventUnit>
   injections?: Injection[]
 }
 
@@ -52,7 +52,7 @@ export interface ComponentItem {
  */
 
 export interface BindingSchema<TUnit> {
-  units: Norm<TUnit>
+  units: Catalog<TUnit>
 }
 
 export interface BindingUnit {
@@ -117,9 +117,9 @@ export type Context = {
 export type DrawerContext = Context & {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
-  comps: Norm<Comp>
+  comps: Catalog<Comp>
   compIds: string[]
-  schemas: Norm<Schema>
+  schemas: Catalog<Schema>
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>>
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -144,11 +144,11 @@ export type FieldComponentContext = ContentComponentContext
 
 export interface EventProps {
   context: FieldComponentContext | ContentComponentContext
-  actionUnits: Norm<EventUnit>
+  actionUnits: Catalog<EventUnit>
   actionItems: ActionListItem[]
   eventItem: EventListItem
   eventUnit: EventUnit
-  bindings: Norm<EventUnit>
+  bindings: Catalog<EventUnit>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }

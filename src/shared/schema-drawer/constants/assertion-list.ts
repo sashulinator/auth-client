@@ -7,13 +7,13 @@ import {
 } from '@savchenko91/schema-validator'
 
 import { assertEventBindings } from '../lib/assertions'
-import { AssertionListItem, Norm, SchemaType } from '../model/types'
+import { AssertionListItem, Catalog, SchemaType } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 import { MUTATE_ALL_FORM_VALUES_TO_STRING } from './constants'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const assertionList: Norm<AssertionListItem> = {
+export const assertionList: Catalog<AssertionListItem> = {
   eventBindings: {
     function: assertEventBindings,
   },

@@ -44,7 +44,7 @@ import {
   removeEntity,
 } from '@/lib/entity-actions'
 import ResizeTarget from '@/shared/resize-target'
-import { Comp, Norm } from '@/shared/schema-drawer'
+import { Catalog, Comp } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
@@ -117,7 +117,7 @@ const FormConstructor: FC = (): JSX.Element => {
     setCurrentSchemaHistory(updateCompSetter(comp))
   }
 
-  function updateCompsInCurrentSchemaState(comps: Norm<Comp>) {
+  function updateCompsInCurrentSchemaState(comps: Catalog<Comp>) {
     setCurrentSchemaHistory(updateCompsSetter(comps))
   }
 
@@ -192,7 +192,7 @@ const FormConstructor: FC = (): JSX.Element => {
   function pasteFromClipboard() {
     const stringifiedComps = localStorage.getItem('copyClipboard') || ''
 
-    const comps = JSON.parse(stringifiedComps) as Norm<Comp>
+    const comps = JSON.parse(stringifiedComps) as Catalog<Comp>
 
     schemaValidator.comps(comps)
 
@@ -205,7 +205,7 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
-  function addNewComps(comps: Norm<Comp>) {
+  function addNewComps(comps: Catalog<Comp>) {
     const copiedComps = copyEntities(comps, ['name'])
 
     const rootCompIds = findRootParentIds(copiedComps)

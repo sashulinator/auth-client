@@ -18,10 +18,10 @@ import { BindingEditor } from '@/shared/binding-editor'
 import { useBindingActions } from '@/shared/binding-editor/lib/use-binding-actions'
 import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
+  Catalog,
   Comp,
   EventUnit,
   EventUnitType,
-  Norm,
   Schema,
   actionList,
   basicComponentsSchemas,
@@ -35,10 +35,10 @@ import Tree from '@/shared/tree'
 
 export interface BindingSetterProps {
   comp: Comp
-  comps: Norm<Comp>
-  onChange: (value: Norm<EventUnit> | undefined) => void
-  schemas: Norm<Schema>
-  value: Norm<EventUnit> | undefined
+  comps: Catalog<Comp>
+  onChange: (value: Catalog<EventUnit> | undefined) => void
+  schemas: Catalog<Schema>
+  value: Catalog<EventUnit> | undefined
   name?: string
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

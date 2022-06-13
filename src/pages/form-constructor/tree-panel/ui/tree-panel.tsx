@@ -14,16 +14,16 @@ import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
-import { Comp, Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, Schema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
 
 interface TreePanelProps {
   selectAndUnselectComp: (compId: string | string[]) => void
   schema: Schema
   selectedCompIds: string[]
-  upsertComps: (comps: Norm<Comp>) => void
+  upsertComps: (comps: Catalog<Comp>) => void
   isLoading: boolean
-  schemas: Norm<Schema> | null
+  schemas: Catalog<Schema> | null
 }
 
 function TreePanel(props: TreePanelProps): JSX.Element {
