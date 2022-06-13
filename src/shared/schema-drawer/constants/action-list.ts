@@ -1,6 +1,6 @@
 import { setCompProp, setValue } from '../lib/actions'
 import {
-  ActionListItem,
+  ActionBindingMeta,
   AssertionSchemaItemType,
   Catalog,
   CompSchemaType,
@@ -11,7 +11,7 @@ import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const actionList: Catalog<ActionListItem> = {
+export const actionList: Catalog<ActionBindingMeta> = {
   [setValue.name]: {
     function: setValue,
     schema: {

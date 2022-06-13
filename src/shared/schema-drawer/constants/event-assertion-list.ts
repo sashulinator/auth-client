@@ -4,14 +4,14 @@ import {
   AssertionSchemaItemType,
   Catalog,
   CompSchemaType,
-  EventAssertionListItem,
+  EventAssertionBindingMeta,
   EventToShowError,
 } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const eventAssertionList: Catalog<EventAssertionListItem> = {
+export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
   undefined: {
     function: assertUndefined,
     schema: generateSimpleCompsSchema([

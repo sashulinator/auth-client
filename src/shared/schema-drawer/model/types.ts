@@ -118,36 +118,36 @@ export interface EventSchemaItem extends BindingSchemaItem {
 export interface EventProps {
   context: FieldComponentContext | ContentComponentContext
   actionUnits: Catalog<EventSchemaItem>
-  actionItems: ActionListItem[]
-  eventItem: EventListItem
+  actionItems: ActionBindingMeta[]
+  eventItem: EventBindingMeta
   eventUnit: EventSchemaItem
   bindings: Catalog<EventSchemaItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }
 
 export interface ActionProps extends EventProps {
-  actionItem: ActionListItem
+  actionItem: ActionBindingMeta
   actionUnit: EventSchemaItem
 }
 
-export interface EventListItem extends BindingMeta {
+export interface EventBindingMeta extends BindingMeta {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (eventProps: EventProps) => (eventOrValue: any) => void
 }
 
-export interface ActionListItem extends BindingMeta {
+export interface ActionBindingMeta extends BindingMeta {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (actionProps: ActionProps, value: any) => void
 }
 
-export interface AssertionListItem extends BindingMeta {
+export interface AssertionBindingItem extends BindingMeta {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (input: any, input2: any, meta: Meta) => void
 }
 
 export type EventAssertionMeta = Meta & { payload: ActionProps }
 
-export interface EventAssertionListItem extends BindingMeta {
+export interface EventAssertionBindingMeta extends BindingMeta {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (input: any, input2: any, meta: EventAssertionMeta) => void
 }
