@@ -2,7 +2,6 @@ import {
   ANY_KEY,
   ValidationError,
   _undefined,
-  assertNotUndefined,
   isObject,
   keyDoesNotExist,
   only,
@@ -10,7 +9,7 @@ import {
   string,
 } from '@savchenko91/schema-validator'
 
-import { Binding, Catalog, ComponentCompSchema, EventBinding, EventType } from '../model/types'
+import { Binding, Catalog, ComponentCompSchema, EventBindingSchema, EventType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
@@ -51,9 +50,6 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
 
   const errors = validateBindingUnit(input)
 
-  console.log('err', { ...errors?.[0] })
-  console.log('input', input)
-
   if (Array.isArray(errors)) {
     const error = Object.values(errors)[0] as ValidationError
 
@@ -66,13 +62,19 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
   }
 
   if (isObject(input)) {
-    const bindings = input as Catalog<EventBinding>
+    const eventBindingSchema = (input as unknown) as EventBindingSchema
+    const { catalog } = eventBindingSchema
 
-    const rootBinding = bindings[ROOT_ID]
-    assertNotUndefined(rootBinding)
-    assertNotUndefined(rootBinding.children)
+    const rootBinding = catalog[ROOT_ID]
 
-    const eventUnits = findEntities(rootBinding.children, bindings)
+    if (rootBinding === undefined) {
+      throw new Error('Root cannot be undefined')
+    }
+    if (rootBinding.children === undefined) {
+      throw new Error('Root cannot must have children')
+    }
+
+    const eventUnits = findEntities(rootBinding.children, catalog)
 
     Object.values(eventUnits).forEach((eventUnit) => {
       if (eventUnit.type !== EventType.EVENT) {
@@ -84,7 +86,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
         })
       }
 
-      const actionUnits = findEntities(eventUnit.children || [], bindings)
+      const actionUnits = findEntities(eventUnit.children || [], catalog)
 
       Object.values(actionUnits).forEach((actionUnit) => {
         if (actionUnit.type !== EventType.ACTION) {
@@ -96,7 +98,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
           })
         }
 
-        const assertionUnits = findEntities(actionUnit.children || [], bindings)
+        const assertionUnits = findEntities(actionUnit.children || [], catalog)
 
         Object.values(assertionUnits).forEach((assertionUnit) => {
           if (assertionUnit.type !== EventType.ASSERTION && assertionUnit.type !== EventType.OPERATOR) {

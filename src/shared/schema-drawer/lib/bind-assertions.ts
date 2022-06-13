@@ -34,6 +34,9 @@ export default function bindAssertions(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function factory(assertionList: Catalog<BindingMeta>, units: Catalog<Binding>, unitId: string): Schema<any> {
   const compValidator = units[unitId]
+  if (compValidator === undefined) {
+    console.log('compValidator', compValidator)
+  }
   assertNotUndefined(compValidator)
 
   const isOr = compValidator.name === 'and'
@@ -45,6 +48,9 @@ function factory(assertionList: Catalog<BindingMeta>, units: Catalog<Binding>, u
   }
 
   const assertionItem = assertionList[compValidator.name]
+  if (compValidator === undefined) {
+    console.log('assertionItem', assertionItem)
+  }
   assertNotUndefined(assertionItem)
 
   const props = formToOneValueIfNeeded(compValidator.props)
