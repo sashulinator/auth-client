@@ -1,5 +1,5 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, Label, Stack } from '@fluentui/react'
+import { ActionButton, Stack } from '@fluentui/react'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './assertion-binding-editor.css'
@@ -7,9 +7,8 @@ import './assertion-binding-editor.css'
 import buildTree from '../lib/build-tree'
 import { defaultCompValidators } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
-import clsx from 'clsx'
 import omitEmpty from 'omit-empty-es'
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { Field, Form } from 'react-final-form'
 import uniqid from 'uniqid'
 
@@ -18,6 +17,7 @@ import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
+import { BindingEditor } from '@/shared/binding-editor'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
   AssertionBinding,
@@ -33,7 +33,7 @@ import SchemaDrawer, {
 } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree/ui/tree'
 
-export interface ValidatorsTreeProps {
+export interface AssertionBindingEditorProps {
   comp: Comp
   comps: Catalog<Comp>
   onChange: (value: AssertionBindingSchema | undefined) => void
@@ -42,17 +42,21 @@ export interface ValidatorsTreeProps {
   value: AssertionBindingSchema | undefined | string
   name?: string
   label?: string
+  isFocused: boolean
 }
 
-export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element {
+const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindingEditorProps>(function ValidatorPicker(
+  props,
+  ref
+): JSX.Element {
   // TODO сделать проверку на невалидное значение
   const assertionBindingSchema = isString(props.value) ? undefined : props.value
 
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
 
-  const validatorItems = assertionBindingSchema?.catalog
-  const validatorItem = validatorItems?.[selectedItemId]
+  const catalog = assertionBindingSchema?.catalog
+  const validatorItem = catalog?.[selectedItemId]
   const assertionItem = assertionList[validatorItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
@@ -67,9 +71,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   }
 
   function changeValidator(id: string | number, name: string, newValidatorItemProps: unknown) {
-    if (validatorItems && props.name) {
-      const validator = findEntity(id, validatorItems)
-      const newValidators = replace(validatorItems, id, {
+    if (catalog && props.name) {
+      const validator = findEntity(id, catalog)
+      const newValidators = replace(catalog, id, {
         ...validator,
         name,
         props: newValidatorItemProps,
@@ -83,17 +87,17 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   }
 
   function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !validatorItems || to.parentId === 'rootId') {
+    if (!to || !tree || !catalog || to.parentId === 'rootId') {
       return
     }
 
-    const toParentValidator = findEntity(to.parentId, validatorItems)
-    const fromParentValidator = findEntity(from.parentId, validatorItems)
+    const toParentValidator = findEntity(to.parentId, catalog)
+    const fromParentValidator = findEntity(from.parentId, catalog)
     const validatorId = fromParentValidator?.children?.[from.index]
 
     assertNotUndefined(validatorId)
 
-    const validator = findEntity(validatorId, validatorItems)
+    const validator = findEntity(validatorId, catalog)
 
     const isParentOperator = toParentValidator?.name === 'and' || toParentValidator?.name === 'or'
 
@@ -101,8 +105,8 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       return
     }
 
-    if (validatorItems) {
-      const units = moveEntity(validator, to.parentId, to.index || 0, validatorItems)
+    if (catalog) {
+      const units = moveEntity(validator, to.parentId, to.index || 0, catalog)
       const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
       props.onChange({ ...schema, catalog: units })
       setTree(moveItemOnTree(tree, from, to))
@@ -111,7 +115,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
   function addAssertion(): void {
     const id = uniqid()
-    const currentValidators = validatorItems ? validatorItems : defaultCompValidators
+    const currentValidators = catalog ? catalog : defaultCompValidators
     const validator: AssertionBinding = {
       id,
       type: AssertionBindingType.ASSERTION,
@@ -129,7 +133,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
 
   function addOperator() {
     const id = uniqid()
-    const currentValidators = validatorItems ? validatorItems : defaultCompValidators
+    const currentValidators = catalog ? catalog : defaultCompValidators
     const validatorItem: AssertionBinding = {
       id,
       name: 'and',
@@ -140,14 +144,14 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     const units = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
     const schema = assertionBindingSchema || { eventToShowError: EventToShowError.onTouched }
 
-    if (validatorItems) {
+    if (catalog) {
       props.onChange({ ...schema, catalog: units })
     }
   }
 
   function remove(id: string | number): void {
-    if (validatorItems) {
-      const units = removeEntity(id, validatorItems)
+    if (catalog) {
+      const units = removeEntity(id, catalog)
       assertNotUndefined(units)
 
       // isOnlyRoot?
@@ -161,10 +165,8 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   }
 
   return (
-    <div className={clsx('ValidatorPicker', validatorItems && 'notEmpty')}>
-      {props.label && <Label>{props.label}</Label>}
-      <Stack className="wrapper" verticalAlign="space-between">
-        <div className="validatorPickerBackground" />
+    <BindingEditor.Root ref={ref} label={props.label}>
+      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
         <Stack>
           <Stack horizontal horizontalAlign="space-between">
             <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
@@ -224,7 +226,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
             }}
           />
         )}
-      </Stack>
-    </div>
+      </BindingEditor>
+    </BindingEditor.Root>
   )
-}
+})
+
+export default AssertionBindingEditor
