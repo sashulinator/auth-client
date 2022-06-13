@@ -123,6 +123,14 @@ export function findEntities<T extends Entity>(ids: string[], entities: Catalog<
     return acc
   }, {})
 }
+export function filterEntities<T extends Entity>(entities: Catalog<T>, cb: (entity: T) => unknown): Catalog<T> {
+  return Object.values(entities)
+    .filter(cb)
+    .reduce<Catalog<T>>((acc, id) => {
+      acc[id.toString()] = findEntity(id.toString(), entities)
+      return acc
+    }, {})
+}
 
 // CHILD ID
 
