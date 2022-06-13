@@ -142,7 +142,7 @@ export interface ActionBindingMeta extends BindingMeta {
   function: (actionProps: ActionProps, value: any) => void
 }
 
-export interface AssertionBindingItem extends BindingMeta {
+export interface AssertionBindingMeta extends BindingMeta {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (input: any, input2: any, meta: Meta) => void
 }
