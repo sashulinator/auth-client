@@ -22,7 +22,7 @@ import SchemaDrawer, {
   EventType,
   actionList,
   basicComponentsSchemas,
-  eventAssertionList,
+  eventAssertionBindingMetaCatalog,
   eventList,
   hasSchema,
   onFieldChange,
@@ -56,7 +56,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   )
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
-    eventAssertionList[selectedBinding?.name || ''] ||
+    eventAssertionBindingMetaCatalog[selectedBinding?.name || ''] ||
     actionList[selectedBinding?.name || ''] ||
     eventList[selectedBinding?.name || '']
 

@@ -1,3 +1,4 @@
+import { createCatalog } from '../lib/create-catalog'
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
 import {
@@ -5,14 +6,14 @@ import {
   Catalog,
   CompSchemaType,
   EventAssertionBindingMeta,
+  EventAssertionBindingMetaName,
   EventToShowError,
 } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
-import { generateOptionsFromObject } from '@/lib/generate-options'
-
-export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
-  undefined: {
+const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
+  {
+    name: EventAssertionBindingMetaName.undefined,
     function: assertUndefined,
     schema: generateSimpleCompsSchema([
       {
@@ -51,7 +52,8 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
       },
     ]),
   },
-  visited: {
+  {
+    name: EventAssertionBindingMetaName.visited,
     function: assertVisited,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -99,7 +101,8 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
       },
     },
   },
-  matchPattern: {
+  {
+    name: EventAssertionBindingMetaName.matchPattern,
     function: assertMatchPattern,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -170,6 +173,11 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
       },
     },
   },
-}
+]
 
-export const eventAssertionNameOptions = generateOptionsFromObject(eventAssertionList)
+const eventAssertionBindingMetaCatalog: Catalog<EventAssertionBindingMeta> = createCatalog(
+  eventAssertionBindingMetaList,
+  'name'
+)
+
+export { eventAssertionBindingMetaCatalog }

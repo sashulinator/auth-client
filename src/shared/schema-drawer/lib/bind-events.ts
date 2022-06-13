@@ -1,9 +1,9 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { actionList } from '../constants/action-list'
-import { eventAssertionList } from '../constants/event-assertion-list'
+import { eventAssertionBindingMetaCatalog } from '../constants/event-assertion-list'
 import { eventList } from '../constants/event-list'
-import { ActionProps, Catalog, EventBinding, EventType, FieldComponentContext } from '../model/types'
+import { ActionProps, Catalog, EventBinding, EventProps, EventType, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { ROOT_ID } from '@/constants/common'
@@ -30,7 +30,7 @@ export default function bindEvents(context: FieldComponentContext) {
 
     const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingSchema.catalog)
 
-    const basicProps = {
+    const eventProps: EventProps = {
       eventBindingSchema,
       eventBindingCatalog,
       eventBinding,
@@ -45,15 +45,13 @@ export default function bindEvents(context: FieldComponentContext) {
       Object.values(actionBindingCatalog).forEach((actionBinding) => {
         const actionBindingMeta = actionList[actionBinding.name]
         assertNotUndefined(actionBindingMeta)
-        const actionProps = { ...basicProps, actionBinding, actionBindingMeta }
+        const actionProps = { ...eventProps, actionBinding, actionBindingMeta }
 
         if (isPassedAssertions(actionProps, value)) {
-          actionBindingMeta?.function({ ...basicProps, actionBinding, actionBindingMeta }, value)
+          actionBindingMeta?.function({ ...eventProps, actionBinding, actionBindingMeta }, value)
         }
       })
     }
-
-    const eventProps = { ...basicProps, emitActions }
 
     const createdEvent = eventBindingMeta.function(eventProps)
 
@@ -78,11 +76,12 @@ function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: s
   return newBindings2
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isPassedAssertions(actionProps: ActionProps, value: any) {
-  const { actionBinding: actionUnit, eventBindingCatalog } = actionProps
-  const newBindings = addRootOperator(eventBindingCatalog, actionUnit.id)
+  const { actionBinding, eventBindingSchema } = actionProps
+  const newBindings = addRootOperator(eventBindingSchema.catalog, actionBinding.id)
 
-  const validate = bindAssertions(eventAssertionList, newBindings, operatorId)
+  const validate = bindAssertions(eventAssertionBindingMetaCatalog, newBindings, operatorId)
 
   const errors = validate?.(value, { payload: actionProps, path: '' })
 

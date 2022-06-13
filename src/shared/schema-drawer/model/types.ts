@@ -130,6 +130,7 @@ export interface EventEventBinding extends Binding {
 export interface EventBindingSchema extends BindingSchema<EventBinding> {}
 
 export interface EventProps {
+  eventBindingSchema: EventBindingSchema
   eventBindingCatalog: Catalog<EventBinding>
   eventBinding: EventBinding
   eventBindingMeta: EventBindingMeta
@@ -156,7 +157,14 @@ export interface ActionBindingMeta extends BindingMeta {
 
 export type EventAssertionMeta = Meta & { payload: ActionProps }
 
+export enum EventAssertionBindingMetaName {
+  undefined = 'undefined',
+  visited = 'visited',
+  matchPattern = 'matchPattern',
+}
+
 export interface EventAssertionBindingMeta extends BindingMeta {
+  name: EventAssertionBindingMetaName
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (input: any, input2: any, meta: EventAssertionMeta) => void
 }

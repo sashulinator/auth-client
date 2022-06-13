@@ -13,10 +13,10 @@ import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { isEnter } from '@/lib/key-events'
 import { Dropdown } from '@/shared/dropdown'
 import {
+  EventAssertionBindingMetaName,
   EventBinding,
   EventType,
   actionNameOptions,
-  eventAssertionNameOptions,
   eventNameOptions,
 } from '@/shared/schema-drawer'
 
@@ -47,7 +47,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     ? actionNameOptions
     : isEvent
     ? eventNameOptions
-    : eventAssertionNameOptions
+    : EventAssertionBindingMetaName
 
   return (
     <div
