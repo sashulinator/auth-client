@@ -123,6 +123,9 @@ export interface EventBinding extends Binding {
   type: EventType
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface EventBindingSchema extends BindingSchema<EventBinding> {}
+
 export interface EventProps {
   eventBindingCatalog: Catalog<EventBinding>
   eventBindingItem: EventBinding
