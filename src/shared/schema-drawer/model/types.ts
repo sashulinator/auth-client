@@ -11,6 +11,10 @@ interface Injection {
   to: string
 }
 
+/**
+ * COMP
+ */
+
 export enum CompSchemaType {
   FORM = 'FORM',
   PRESET = 'PRESET',
@@ -42,7 +46,7 @@ export type ComponentCompSchema = Omit<CompSchema, 'componentName'> & {
   componentName: string
 }
 
-export interface ComponentItem {
+export interface CompMeta {
   type: 'checkbox' | 'input' | 'content' // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: any
 }

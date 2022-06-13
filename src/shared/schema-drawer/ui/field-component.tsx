@@ -11,10 +11,10 @@ import { registerFieldChangeEvent } from '../lib/register-field-change-event'
 import {
   Catalog,
   Comp,
+  CompMeta,
   CompSchema,
   ComponentCompSchema,
   ComponentContext,
-  ComponentItem,
   FieldComponentContext,
 } from '../model/types'
 import React, { memo, useEffect, useMemo } from 'react'
@@ -27,7 +27,7 @@ export interface FieldComponentProps {
   schema: ComponentCompSchema
   schemas: Catalog<CompSchema>
   context: ComponentContext
-  componentList: Record<string, ComponentItem>
+  componentList: Record<string, CompMeta>
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {

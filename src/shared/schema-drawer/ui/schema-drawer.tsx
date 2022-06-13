@@ -5,10 +5,10 @@ import isInputType from '../lib/is'
 import {
   Catalog,
   Comp,
+  CompMeta,
   CompSchema,
   ComponentCompSchema,
   ComponentContext,
-  ComponentItem,
   Context,
   DrawerContext,
 } from '../model/types'
@@ -24,7 +24,7 @@ interface SchemaDrawerProps {
   schemas: Catalog<CompSchema>
   schema: CompSchema
   context: Context
-  componentList: Record<string, ComponentItem>
+  componentList: Record<string, CompMeta>
 }
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
@@ -78,7 +78,7 @@ interface ComponentFactoryProps {
   comps: Catalog<Comp>
   compId: string
   context: DrawerContext
-  componentList: Record<string, ComponentItem>
+  componentList: Record<string, CompMeta>
 }
 
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
