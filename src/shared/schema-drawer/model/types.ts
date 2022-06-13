@@ -35,7 +35,7 @@ export interface Comp {
   props?: Record<string, unknown>
   children?: string[]
   validators?: AssertionSchema
-  bindings?: Catalog<EventBindingSchemaItem>
+  bindings?: Catalog<EventBindingItem>
   injections?: Injection[]
 }
 
@@ -61,7 +61,7 @@ export interface CompMeta {
  * BINDINGS
  */
 
-export interface BindingSchemaItem {
+export interface BindingItem {
   type: string
   id: string
   name: string
@@ -79,13 +79,13 @@ export interface BindingMeta {
  * ASSERTION BINDINGS
  */
 
-export enum AssertionSchemaItemType {
+export enum AssertionItemType {
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
 }
 
-export interface AssertionSchemaItem extends BindingSchemaItem {
-  type: AssertionSchemaItemType
+export interface AssertionItem extends BindingItem {
+  type: AssertionItemType
 }
 
 export enum EventToShowError {
@@ -95,7 +95,7 @@ export enum EventToShowError {
   onSubmit = 'onSubmit',
 }
 
-export interface AssertionSchema extends Schema<AssertionSchemaItem> {
+export interface AssertionSchema extends Schema<AssertionItem> {
   eventToShowError: EventToShowError
 }
 
@@ -103,7 +103,7 @@ export interface AssertionSchema extends Schema<AssertionSchemaItem> {
  * EVENT BINDINGS
  */
 
-export enum EventSchemaItemType {
+export enum EventItemType {
   EVENT = 'EVENT',
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
@@ -111,25 +111,25 @@ export enum EventSchemaItemType {
   ROOT = 'ROOT',
 }
 
-export interface EventBindingSchemaItem extends BindingSchemaItem {
-  type: EventSchemaItemType
+export interface EventBindingItem extends BindingItem {
+  type: EventItemType
 }
 
 export interface EventProps {
   context: FieldComponentContext | ContentComponentContext
-  actionUnits: Catalog<EventBindingSchemaItem>
+  actionUnits: Catalog<EventBindingItem>
   actionItems: ActionBindingMeta[]
   eventBindingsMeta: EventBindingMeta
-  eventBindingSchemaItem: EventBindingSchemaItem
+  eventBindingSchemaItem: EventBindingItem
   // TODO Catalog<EventSchemaItem> будет заменен на EventBindingSchema когда
   // TODO у Comp будет переделан bindings параметр
-  eventBindingSchema: Catalog<EventBindingSchemaItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  eventBindingSchema: Catalog<EventBindingItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }
 
 export interface ActionProps extends EventProps {
   actionItem: ActionBindingMeta
-  actionUnit: EventBindingSchemaItem
+  actionUnit: EventBindingItem
 }
 
 export interface EventBindingMeta extends BindingMeta {

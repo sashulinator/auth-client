@@ -1,9 +1,9 @@
-import { EventSchemaItemType } from '@/shared/schema-drawer'
+import { EventItemType } from '@/shared/schema-drawer'
 
 export const typeIcons = {
-  [EventSchemaItemType.ACTION]: 'LightningBolt',
-  [EventSchemaItemType.EVENT]: 'TouchPointer',
-  [EventSchemaItemType.OPERATOR]: 'DrillExpand',
-  [EventSchemaItemType.ASSERTION]: 'Robot',
-  [EventSchemaItemType.ROOT]: 'R',
+  [EventItemType.ACTION]: 'LightningBolt',
+  [EventItemType.EVENT]: 'TouchPointer',
+  [EventItemType.OPERATOR]: 'DrillExpand',
+  [EventItemType.ASSERTION]: 'Robot',
+  [EventItemType.ROOT]: 'R',
 }

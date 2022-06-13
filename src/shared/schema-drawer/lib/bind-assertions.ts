@@ -10,7 +10,7 @@ import {
   withValue,
 } from '@savchenko91/schema-validator'
 
-import { BindingMeta, BindingSchemaItem, Catalog } from '../model/types'
+import { BindingItem, BindingMeta, Catalog } from '../model/types'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
@@ -19,7 +19,7 @@ const rootOnly = only.bind({ handleError: buildErrorTree })
 
 export default function bindAssertions(
   assertionList: Catalog<BindingMeta>,
-  units: Catalog<BindingSchemaItem> | undefined,
+  units: Catalog<BindingItem> | undefined,
   rootId = ROOT_ID
 ): ErrorCollector<ErrorCollection> | undefined {
   if (units === undefined) {
@@ -32,7 +32,7 @@ export default function bindAssertions(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function factory(assertionList: Catalog<BindingMeta>, units: Catalog<BindingSchemaItem>, unitId: string): Schema<any> {
+function factory(assertionList: Catalog<BindingMeta>, units: Catalog<BindingItem>, unitId: string): Schema<any> {
   const compValidator = units[unitId]
   assertNotUndefined(compValidator)
 

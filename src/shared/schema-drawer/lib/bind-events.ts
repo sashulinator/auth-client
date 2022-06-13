@@ -3,13 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { actionList } from '../constants/action-list'
 import { eventAssertionList } from '../constants/event-assertion-list'
 import { eventList } from '../constants/event-list'
-import {
-  ActionProps,
-  Catalog,
-  EventBindingSchemaItem,
-  EventSchemaItemType,
-  FieldComponentContext,
-} from '../model/types'
+import { ActionProps, Catalog, EventBindingItem, EventItemType, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { insert, replace } from '@/lib/change-unmutable'
@@ -71,18 +65,18 @@ export default function bindEvents(context: FieldComponentContext) {
 
 // Private
 
-function getEventUnits(units: Catalog<EventBindingSchemaItem>): EventBindingSchemaItem[] {
-  return Object.values(units).filter((binding) => binding.type === EventSchemaItemType.EVENT)
+function getEventUnits(units: Catalog<EventBindingItem>): EventBindingItem[] {
+  return Object.values(units).filter((binding) => binding.type === EventItemType.EVENT)
 }
 
-function addRootOperator(eventBindingSchema: Catalog<EventBindingSchemaItem>, actionId: string) {
+function addRootOperator(eventBindingSchema: Catalog<EventBindingItem>, actionId: string) {
   const actionUnit = findEntity(actionId, eventBindingSchema)
   const newActionUnit = { ...actionUnit, children: [operatorId] }
   const newBindings = replace(eventBindingSchema, newActionUnit.id, newActionUnit)
-  const orOperator: EventBindingSchemaItem = {
+  const orOperator: EventBindingItem = {
     id: operatorId,
     name: 'and',
-    type: EventSchemaItemType.OPERATOR,
+    type: EventItemType.OPERATOR,
     children: actionUnit.children,
   }
   const newBindings2 = insert(newBindings, operatorId, orOperator)

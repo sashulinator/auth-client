@@ -20,9 +20,9 @@ import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-ac
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
+  AssertionItem,
+  AssertionItemType,
   AssertionSchema,
-  AssertionSchemaItem,
-  AssertionSchemaItemType,
   Catalog,
   Comp,
   CompSchema,
@@ -112,9 +112,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addAssertion(): void {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validator: AssertionSchemaItem = {
+    const validator: AssertionItem = {
       id,
-      type: AssertionSchemaItemType.ASSERTION,
+      type: AssertionItemType.ASSERTION,
       name: 'string',
       children: [],
     }
@@ -130,10 +130,10 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addOperator() {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validatorItem: AssertionSchemaItem = {
+    const validatorItem: AssertionItem = {
       id,
       name: 'and',
-      type: AssertionSchemaItemType.OPERATOR,
+      type: AssertionItemType.OPERATOR,
       children: [],
     }
 

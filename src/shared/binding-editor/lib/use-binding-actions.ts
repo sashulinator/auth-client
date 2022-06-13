@@ -4,9 +4,9 @@ import omitEmpty from 'omit-empty-es'
 
 import { replace } from '@/lib/change-unmutable'
 import { findEntity } from '@/lib/entity-actions'
-import { BindingSchemaItem, Catalog } from '@/shared/schema-drawer'
+import { BindingItem, Catalog } from '@/shared/schema-drawer'
 
-export function useBindingActions<TUnit extends BindingSchemaItem>(
+export function useBindingActions<TUnit extends BindingItem>(
   onChange: (value: Catalog<TUnit> | undefined) => void,
   bindingItems?: Catalog<TUnit> | undefined
 ) {

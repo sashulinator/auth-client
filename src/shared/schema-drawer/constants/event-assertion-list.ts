@@ -1,12 +1,6 @@
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
-import {
-  AssertionSchemaItemType,
-  Catalog,
-  CompSchemaType,
-  EventAssertionBindingMeta,
-  EventToShowError,
-} from '../model/types'
+import { AssertionItemType, Catalog, CompSchemaType, EventAssertionBindingMeta, EventToShowError } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
@@ -32,13 +26,13 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
             ROOT_ID: {
               id: 'ROOT_ID',
               name: 'and',
-              type: AssertionSchemaItemType.OPERATOR,
+              type: AssertionItemType.OPERATOR,
               children: ['l46vi95c'],
             },
             l46vi95c: {
               id: 'l46vi95c',
               name: 'string',
-              type: AssertionSchemaItemType.ASSERTION,
+              type: AssertionItemType.ASSERTION,
             },
           },
         },
@@ -85,13 +79,13 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionSchemaItemType.OPERATOR,
+                type: AssertionItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionSchemaItemType.ASSERTION,
+                type: AssertionItemType.ASSERTION,
               },
             },
           },
@@ -127,13 +121,13 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionSchemaItemType.OPERATOR,
+                type: AssertionItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionSchemaItemType.ASSERTION,
+                type: AssertionItemType.ASSERTION,
               },
             },
           },
@@ -156,13 +150,13 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionSchemaItemType.OPERATOR,
+                type: AssertionItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionSchemaItemType.ASSERTION,
+                type: AssertionItemType.ASSERTION,
               },
             },
           },
