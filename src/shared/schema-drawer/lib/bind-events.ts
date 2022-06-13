@@ -24,9 +24,9 @@ export default function bindEvents(context: FieldComponentContext) {
     const eventBindingMeta = eventList[eventBinding.name]
     assertNotUndefined(eventBindingMeta)
 
-    const actionUnits = findEntities(eventBinding.children || [], eventBindingCatalog)
+    const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingCatalog)
 
-    const actionItems = Object.values(actionUnits)?.map((actionUnit) => {
+    const actionItems = Object.values(actionBindingCatalog)?.map((actionUnit) => {
       const actionItem = actionList[actionUnit.name]
       assertNotUndefined(actionItem)
       return actionItem
@@ -34,7 +34,7 @@ export default function bindEvents(context: FieldComponentContext) {
 
     const basicProps = {
       context,
-      actionUnits,
+      actionBindingCatalog,
       actionItems,
       eventBinding,
       eventBindingMeta,
@@ -44,7 +44,7 @@ export default function bindEvents(context: FieldComponentContext) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function emitActions(value: any) {
-      Object.values(actionUnits).forEach((actionUnit) => {
+      Object.values(actionBindingCatalog).forEach((actionUnit) => {
         const actionItem = actionList[actionUnit.name]
         assertNotUndefined(actionItem)
         const actionProps = { ...basicProps, actionUnit, actionItem }

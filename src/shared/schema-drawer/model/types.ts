@@ -128,7 +128,7 @@ export interface EventBindingSchema extends BindingSchema<EventBinding> {}
 export interface EventProps {
   eventBindingCatalog: Catalog<EventBinding>
   eventBinding: EventBinding
-  actionUnits: Catalog<EventBinding>
+  actionBindingCatalog: Catalog<EventBinding>
   actionItems: ActionBindingMeta[]
   eventBindingMeta: EventBindingMeta
   context: FieldComponentContext | ContentComponentContext // eslint-disable-next-line @typescript-eslint/no-explicit-any
