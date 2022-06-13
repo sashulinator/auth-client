@@ -38,12 +38,12 @@ export default function bindEvents(context: FieldComponentContext) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function emitActions(value: any) {
       Object.values(actionBindingCatalog).forEach((actionUnit) => {
-        const actionItem = actionList[actionUnit.name]
-        assertNotUndefined(actionItem)
-        const actionProps = { ...basicProps, actionUnit, actionItem }
+        const actionBindingMeta = actionList[actionUnit.name]
+        assertNotUndefined(actionBindingMeta)
+        const actionProps = { ...basicProps, actionUnit, actionBindingMeta }
 
         if (isValid(actionProps, value)) {
-          actionItem?.function({ ...basicProps, actionUnit, actionItem }, value)
+          actionBindingMeta?.function({ ...basicProps, actionUnit, actionBindingMeta }, value)
         }
       })
     }

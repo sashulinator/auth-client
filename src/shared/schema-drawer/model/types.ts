@@ -135,7 +135,7 @@ export interface EventProps {
 }
 
 export interface ActionProps extends EventProps {
-  actionItem: ActionBindingMeta
+  actionBindingMeta: ActionBindingMeta
   actionUnit: EventBinding
 }
 
