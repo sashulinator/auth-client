@@ -26,16 +26,9 @@ export default function bindEvents(context: FieldComponentContext) {
 
     const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingCatalog)
 
-    const actionItems = Object.values(actionBindingCatalog)?.map((actionUnit) => {
-      const actionItem = actionList[actionUnit.name]
-      assertNotUndefined(actionItem)
-      return actionItem
-    })
-
     const basicProps = {
       context,
       actionBindingCatalog,
-      actionItems,
       eventBinding,
       eventBindingMeta,
       eventBindingCatalog,
