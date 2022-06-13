@@ -1,18 +1,15 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
-import { ValidationError, assertNotUndefined } from '@savchenko91/schema-validator'
+import { ValidationError, and, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
-import { defaultCompBindings } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
-import uniqid from 'uniqid'
 
-import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
-import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import { findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
@@ -21,7 +18,6 @@ import SchemaDrawer, {
   Catalog,
   Comp,
   CompSchema,
-  EventBinding,
   EventBindingSchema,
   EventType,
   actionList,
@@ -54,7 +50,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   ref
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
-  const { changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates(
+  const { addBinding, changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates(
     props.onChange,
     props.value
   )
@@ -96,71 +92,19 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   }
 
   function addAssertion(): void {
-    const id = uniqid()
-    const currentBindings = catalog ? catalog : defaultCompBindings
-    const binding: EventBinding = {
-      id,
-      type: EventType.ASSERTION,
-      name: 'undefined',
-      children: [],
-    }
-
-    const newBindings = addEntity(binding, ROOT_ID, 1, currentBindings)
-
-    if (props.name) {
-      props.onChange({ catalog: newBindings })
-    }
+    addBinding({ type: EventType.ASSERTION, name: 'undefined' })
   }
 
-  function addOperator() {
-    const id = uniqid()
-    const currentBindings = catalog ? catalog : defaultCompBindings
-    const bindingItem: EventBinding = {
-      id,
-      name: 'and',
-      type: EventType.OPERATOR,
-      children: [],
-    }
-
-    const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
-
-    if (catalog) {
-      props.onChange({ catalog: newBindingItems })
-    }
+  function addOperator(): void {
+    addBinding({ type: EventType.OPERATOR, name: and.name })
   }
 
-  function addAction() {
-    const id = uniqid()
-    const currentBindings = catalog ? catalog : defaultCompBindings
-    const bindingItem: EventBinding = {
-      id,
-      name: setValue.name,
-      type: EventType.ACTION,
-      children: [],
-    }
-
-    const newBindingItems = addEntity(bindingItem, ROOT_ID, 1, currentBindings)
-
-    if (catalog) {
-      props.onChange({ catalog: newBindingItems })
-    }
+  function addAction(): void {
+    addBinding({ type: EventType.ACTION, name: setValue.name })
   }
 
   function addEvent() {
-    const id = uniqid()
-    const currentBindings = catalog ? catalog : defaultCompBindings
-    const bindingItem: EventBinding = {
-      id,
-      name: onFieldChange.name,
-      type: EventType.EVENT,
-      children: [],
-    }
-
-    const newBindingItems = addEntity(bindingItem, ROOT_ID, 0, currentBindings)
-
-    if (catalog) {
-      props.onChange({ catalog: newBindingItems })
-    }
+    addBinding({ type: EventType.EVENT, name: onFieldChange.name })
   }
 
   function remove(id: string | number): void {
@@ -182,10 +126,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     <BindingEditor.Root ref={ref} label={props.label}>
       <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
         <BindingEditor.ActionPanel
-          mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
+          mainButton={{ iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' }}
           buttons={[
-            { iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' },
             { iconName: typeIcons.ACTION, onClick: addAction, name: 'Action' },
+            { iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' },
             { iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' },
           ]}
         />

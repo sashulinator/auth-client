@@ -2,15 +2,26 @@ import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import omitEmpty from 'omit-empty-es'
 import { useState } from 'react'
+import uniqid from 'uniqid'
 
+import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
-import { findEntity } from '@/lib/entity-actions'
-import { Binding, BindingSchema, Catalog, EventBindingSchema } from '@/shared/schema-drawer'
+import { addEntity, findEntity } from '@/lib/entity-actions'
+import { Binding, BindingSchema, Catalog } from '@/shared/schema-drawer'
+
+export const defaultCompBindings: Catalog<Binding> = {
+  [ROOT_ID]: {
+    id: ROOT_ID,
+    name: 'root',
+    type: 'ROOT',
+    children: [],
+  },
+}
 
 export function useBindingStates<TUnit extends Binding>(
   onChange: (value: BindingSchema<TUnit> | undefined) => void,
   // can receive string because of final-form
-  value?: EventBindingSchema | string
+  value?: BindingSchema<TUnit> | string
 ) {
   const [selectedItemId, selectItemId] = useState('')
 
@@ -33,6 +44,19 @@ export function useBindingStates<TUnit extends Binding>(
     onChange({ catalog: newCatalog })
   }
 
+  function addBinding(rawBinding: Omit<TUnit, 'id' | 'children'> & { children?: string[] }): void {
+    const id = uniqid()
+    const binding = { children: [], ...rawBinding, id }
+
+    let newCatalog = catalog ?? defaultCompBindings
+
+    console.log('binding, ROOT_ID, 1, newCatalog', binding, ROOT_ID, 1, newCatalog)
+
+    newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
+
+    onChange({ catalog: newCatalog as Catalog<TUnit> })
+  }
+
   return {
     changeBinding,
     schema,
@@ -40,5 +64,6 @@ export function useBindingStates<TUnit extends Binding>(
     selectedBinding,
     selectItemId,
     selectedItemId,
+    addBinding,
   }
 }
