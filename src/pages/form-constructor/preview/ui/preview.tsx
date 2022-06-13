@@ -7,13 +7,15 @@ import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import SchemaDrawer, { Norm, Schema } from '@/shared/schema-drawer'
+import LoadingAria from '@/shared/loading-aria'
+import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
 import { setCSSVar } from '@/shared/theme'
 
 interface PreviewProps {
-  schema: Schema
-  schemas: Norm<Schema> | null
+  schema: CompSchema
+  schemas: Catalog<CompSchema> | null
   selectedCompIds: string[]
+  isLoading: boolean
 }
 
 interface Positions {
@@ -171,30 +173,32 @@ export default function Preview(props: PreviewProps): JSX.Element {
 
   return (
     <div className="Preview" ref={ref}>
-      <div className="wrapper">
-        <div className="selectorArea" />
-        <div className="hoverArea" />
-        {schemas && schema && (
-          <Form
-            onSubmit={onSubmit}
-            render={(formProps) => {
-              return (
-                <form onSubmit={formProps.handleSubmit}>
-                  <SchemaDrawer
-                    componentList={componentList}
-                    schema={schema}
-                    schemas={schemas}
-                    context={{
-                      formState: formProps.form.getState(),
-                      formProps,
-                    }}
-                  />
-                </form>
-              )
-            }}
-          />
-        )}
-      </div>
+      <LoadingAria loading={props.isLoading} label="Components loading...">
+        <div className="wrapper">
+          <div className="selectorArea" />
+          <div className="hoverArea" />
+          {schemas && schema && (
+            <Form
+              onSubmit={onSubmit}
+              render={(formProps) => {
+                return (
+                  <form onSubmit={formProps.handleSubmit}>
+                    <SchemaDrawer
+                      componentList={componentList}
+                      schema={schema}
+                      schemas={schemas}
+                      context={{
+                        formState: formProps.form.getState(),
+                        formProps,
+                      }}
+                    />
+                  </form>
+                )
+              }}
+            />
+          )}
+        </div>
+      </LoadingAria>
     </div>
   )
 }

@@ -1,11 +1,11 @@
 import { ROOT_ID } from '@/constants/common'
-import { AssertionUnit, AssertionUnitType, Norm } from '@/shared/schema-drawer'
+import { AssertionBinding, AssertionBindingType, Catalog } from '@/shared/schema-drawer'
 
-export const defaultCompValidators: Norm<AssertionUnit> = {
+export const defaultCompValidators: Catalog<AssertionBinding> = {
   [ROOT_ID]: {
     id: ROOT_ID,
     name: 'and',
-    type: AssertionUnitType.OPERATOR,
+    type: AssertionBindingType.OPERATOR,
     children: [],
   },
 }

@@ -1,8 +1,8 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Schema } from '@/shared/schema-drawer'
+import { CompSchema } from '@/shared/schema-drawer'
 
-export function defineSelectedComp(currentSchema: Schema | null, selectedCompIds: string[]) {
+export function defineSelectedComp(currentSchema: CompSchema | null, selectedCompIds: string[]) {
   if (selectedCompIds.length > 1) {
     return null
   }

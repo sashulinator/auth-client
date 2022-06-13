@@ -5,7 +5,7 @@ import { stringify } from 'qs'
 import { assertsSchema } from '@/common/schemas'
 import { Incident } from '@/entities/incident/model/types'
 import ErrorFromObject from '@/lib/error-from-object'
-import { Schema } from '@/shared/schema-drawer'
+import { CompSchema } from '@/shared/schema-drawer'
 
 type GetSchemaParams = {
   queryKey: (string | undefined)[]
@@ -13,7 +13,7 @@ type GetSchemaParams = {
 
 // CREATE SCHEMA
 
-export async function createIncident(newFSchema: Incident): Promise<Schema> {
+export async function createIncident(newFSchema: Incident): Promise<CompSchema> {
   const response = await fetch('/api/v1/incidents', {
     method: 'POST',
     body: JSON.stringify(newFSchema),
@@ -34,7 +34,7 @@ export async function createIncident(newFSchema: Incident): Promise<Schema> {
 
 // UPDATE SCHEMA
 
-export async function updateIncident(newFSchema: Schema): Promise<Schema> {
+export async function updateIncident(newFSchema: CompSchema): Promise<CompSchema> {
   const response = await fetch('/api/v1/incidents', {
     method: 'PUT',
     body: JSON.stringify(newFSchema),
@@ -55,7 +55,7 @@ export async function updateIncident(newFSchema: Schema): Promise<Schema> {
   return data
 }
 
-export async function getIncident(params: GetSchemaParams): Promise<Schema | undefined> {
+export async function getIncident(params: GetSchemaParams): Promise<CompSchema | undefined> {
   const [, id] = params.queryKey
 
   if (id === undefined) {
@@ -78,14 +78,14 @@ export async function getIncident(params: GetSchemaParams): Promise<Schema | und
 
   assertNotNil(incident)
 
-  return incident as Schema
+  return incident as CompSchema
 }
 
 type GetSchemaListParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getIncidentList(params: GetSchemaListParams): Promise<Schema[]> {
+export async function getIncidentList(params: GetSchemaListParams): Promise<CompSchema[]> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/incidents/list${stringify(ids)}`, {
@@ -104,5 +104,5 @@ export async function getIncidentList(params: GetSchemaListParams): Promise<Sche
 
   assertNotNil(incidents)
 
-  return incidents as Schema[]
+  return incidents as CompSchema[]
 }

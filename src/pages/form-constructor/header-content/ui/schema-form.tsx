@@ -18,13 +18,13 @@ import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
-import { Schema, SchemaType } from '@/shared/schema-drawer'
+import { CompSchema, CompSchemaType } from '@/shared/schema-drawer'
 import CustomTextField from '@/shared/textfield'
 import { successMessage } from '@/shared/toast'
 
-const typeArray = [SchemaType.FORM, SchemaType.PRESET, SchemaType.COMP]
+const typeArray = [CompSchemaType.FORM, CompSchemaType.PRESET, CompSchemaType.COMP]
 
-type SchemaFormValues = Pick<Schema, 'title' | 'componentName' | 'type'>
+type SchemaFormValues = Pick<CompSchema, 'title' | 'componentName' | 'type'>
 
 export default function SchemaForm(): JSX.Element {
   const { t, i18n } = useTranslation()
@@ -50,10 +50,10 @@ export default function SchemaForm(): JSX.Element {
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
 
-    const newComponentName = type !== SchemaType.COMP ? null : submitSchemaData.componentName
+    const newComponentName = type !== CompSchemaType.COMP ? null : submitSchemaData.componentName
     const newId = id ? id : uuid()
 
-    const newSchema: Schema = {
+    const newSchema: CompSchema = {
       ...currentSchemaHistory.data,
       id: newId,
       componentName: newComponentName,

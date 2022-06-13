@@ -7,7 +7,7 @@ import { UseQueryResult, useQuery } from 'react-query'
 import { assertsSchema } from '@/common/schemas'
 import { isNormSchemas } from '@/common/validators'
 import ErrorFromObject from '@/lib/error-from-object'
-import { Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, CompSchema } from '@/shared/schema-drawer'
 
 const headers = {
   'content-type': 'application/json',
@@ -20,7 +20,7 @@ type GetSchemaParams = {
 
 // CREATE SCHEMA
 
-export async function createSchema(newFSchema: Schema): Promise<Schema> {
+export async function createSchema(newFSchema: CompSchema): Promise<CompSchema> {
   assertsSchema(newFSchema)
 
   const response = await apiFetch('/api/v1/schemas', {
@@ -40,7 +40,7 @@ export async function createSchema(newFSchema: Schema): Promise<Schema> {
 
 // UPDATE SCHEMA
 
-export async function updateSchema(newFSchema: Schema): Promise<Schema> {
+export async function updateSchema(newFSchema: CompSchema): Promise<CompSchema> {
   assertsSchema(newFSchema)
 
   const response = await fetch('/api/v1/schemas', {
@@ -63,7 +63,7 @@ export async function updateSchema(newFSchema: Schema): Promise<Schema> {
   return data
 }
 
-export async function getSchema(params: GetSchemaParams): Promise<Schema | undefined> {
+export async function getSchema(params: GetSchemaParams): Promise<CompSchema | undefined> {
   const [, id] = params.queryKey
 
   if (id === undefined) {
@@ -86,14 +86,14 @@ export async function getSchema(params: GetSchemaParams): Promise<Schema | undef
 
   assertNotNil(schema)
 
-  return schema as Schema
+  return schema as CompSchema
 }
 
 type GetSchemaListParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getSchemaList(params: GetSchemaListParams): Promise<Schema[]> {
+export async function getSchemaList(params: GetSchemaListParams): Promise<CompSchema[]> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/schemas/list${stringify(ids)}`, {
@@ -112,14 +112,14 @@ export async function getSchemaList(params: GetSchemaListParams): Promise<Schema
 
   assertNotNil(schemas)
 
-  return schemas as Schema[]
+  return schemas as CompSchema[]
 }
 
 type GetSchemasParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>> {
+export async function getSchemas(params: GetSchemasParams): Promise<Catalog<CompSchema>> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/schemas${stringify({ ids }, { addQueryPrefix: true })}`, {
@@ -138,14 +138,14 @@ export async function getSchemas(params: GetSchemasParams): Promise<Norm<Schema>
 
   assertNotNil(schemas)
 
-  return schemas as Norm<Schema>
+  return schemas as Catalog<CompSchema>
 }
 
 // TODO по сути должен принимать один id так как бэк сам найдет остальные зависимости
-export function useGetDependencySchemas(ids: string[]): UseQueryResult<Norm<Schema> | undefined> {
+export function useGetDependencySchemas(ids: string[]): UseQueryResult<Catalog<CompSchema> | undefined> {
   return useQuery(['schemasDependencies', ...ids], queryFn)
 
-  async function queryFn(): Promise<Norm<Schema> | undefined> {
+  async function queryFn(): Promise<Catalog<CompSchema> | undefined> {
     if (isEmpty(ids)) {
       return undefined
     }

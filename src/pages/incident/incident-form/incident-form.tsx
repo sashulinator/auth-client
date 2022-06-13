@@ -7,11 +7,11 @@ import uuid from 'uuid-random'
 import { createIncident, getIncident } from '@/api/incident'
 import componentList from '@/constants/component-list'
 import { Incident } from '@/entities/incident/model/types'
-import SchemaDrawer, { Norm, Schema } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
 
 interface IncidentFormProps {
-  schema: Schema
-  schemas: Norm<Schema>
+  schema: CompSchema
+  schemas: Catalog<CompSchema>
 }
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {

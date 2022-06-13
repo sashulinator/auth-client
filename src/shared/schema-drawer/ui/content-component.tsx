@@ -1,16 +1,16 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Comp, CompSchema, ComponentContext, ComponentItem, Norm, Schema } from '../model/types'
+import { Catalog, Comp, CompMeta, CompSchema, ComponentCompSchema, ComponentContext } from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 
 export interface ContentComponentProps {
-  schemas: Norm<Schema>
-  schema: CompSchema
-  comps: Norm<Comp>
+  schemas: Catalog<CompSchema>
+  schema: ComponentCompSchema
+  comps: Catalog<Comp>
   comp: Comp
   context: ComponentContext
-  componentList: Record<string, ComponentItem>
+  componentList: Record<string, CompMeta>
 }
 
 const ContentComponent = memo(function ContentComponent(props: ContentComponentProps): JSX.Element | null {

@@ -2,43 +2,46 @@ import {
   ANY_KEY,
   ValidationError,
   _undefined,
-  assertNotUndefined,
   isObject,
   keyDoesNotExist,
+  only,
   or,
   string,
 } from '@savchenko91/schema-validator'
 
-import { BindingUnit, CompSchema, EventUnit, EventUnitType, Norm } from '../model/types'
+import { Binding, Catalog, ComponentCompSchema, EventBindingSchema, EventType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
 import { rootWrapArr } from '@/lib/validators'
 
-export function assertCompSchema(input: unknown): asserts input is CompSchema {
+export function assertCompSchema(input: unknown): asserts input is ComponentCompSchema {
   if (isObject(input) && 'componenName' in input && input.componenName === null) {
     throw Error('is not a CompSchema type')
   }
 }
 
-export function assertEventBindings(input: unknown): asserts input is Norm<BindingUnit> {
+export function assertEventBindings(input: unknown): asserts input is Catalog<Binding> {
   const messages = {
-    [EventUnitType.EVENT]: 'event cannot be a child',
-    [EventUnitType.ACTION]: 'action must be a child of event',
-    [EventUnitType.ASSERTION]: 'assertion must be a child of action or operator',
-    [EventUnitType.OPERATOR]: 'operator must be a child of action or operator',
-    [EventUnitType.ROOT]: 'root must be root',
+    [EventType.EVENT]: 'event cannot be a child',
+    [EventType.ACTION]: 'action must be a child of event',
+    [EventType.ASSERTION]: 'assertion must be a child of action or operator',
+    [EventType.OPERATOR]: 'operator must be a child of action or operator',
+    [EventType.ROOT]: 'root must be root',
   }
 
   const validateBindingUnit = rootWrapArr(
     or(
       {
-        [ANY_KEY]: {
-          id: string,
-          name: string,
-          children: or([string], keyDoesNotExist),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          props: or(keyDoesNotExist, {}),
+        catalog: {
+          [ANY_KEY]: only({
+            id: string,
+            name: string,
+            type: string,
+            children: or([string], keyDoesNotExist),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            props: or(keyDoesNotExist, {}),
+          }),
         },
       },
       _undefined
@@ -59,16 +62,22 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
   }
 
   if (isObject(input)) {
-    const bindings = input as Norm<EventUnit>
+    const eventBindingSchema = (input as unknown) as EventBindingSchema
+    const { catalog } = eventBindingSchema
 
-    const rootBinding = bindings[ROOT_ID]
-    assertNotUndefined(rootBinding)
-    assertNotUndefined(rootBinding.children)
+    const rootBinding = catalog[ROOT_ID]
 
-    const eventUnits = findEntities(rootBinding.children, bindings)
+    if (rootBinding === undefined) {
+      throw new Error('Root cannot be undefined')
+    }
+    if (rootBinding.children === undefined) {
+      throw new Error('Root cannot must have children')
+    }
+
+    const eventUnits = findEntities(rootBinding.children, catalog)
 
     Object.values(eventUnits).forEach((eventUnit) => {
-      if (eventUnit.type !== EventUnitType.EVENT) {
+      if (eventUnit.type !== EventType.EVENT) {
         throw new ValidationError({
           inputName: eventUnit.id,
           code: assertEventBindings.name,
@@ -77,10 +86,10 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
         })
       }
 
-      const actionUnits = findEntities(eventUnit.children || [], bindings)
+      const actionUnits = findEntities(eventUnit.children || [], catalog)
 
       Object.values(actionUnits).forEach((actionUnit) => {
-        if (actionUnit.type !== EventUnitType.ACTION) {
+        if (actionUnit.type !== EventType.ACTION) {
           throw new ValidationError({
             inputName: actionUnit.id,
             code: assertEventBindings.name,
@@ -89,10 +98,10 @@ export function assertEventBindings(input: unknown): asserts input is Norm<Bindi
           })
         }
 
-        const assertionUnits = findEntities(actionUnit.children || [], bindings)
+        const assertionUnits = findEntities(actionUnit.children || [], catalog)
 
         Object.values(assertionUnits).forEach((assertionUnit) => {
-          if (assertionUnit.type !== EventUnitType.ASSERTION && assertionUnit.type !== EventUnitType.OPERATOR) {
+          if (assertionUnit.type !== EventType.ASSERTION && assertionUnit.type !== EventType.OPERATOR) {
             throw new ValidationError({
               inputName: assertionUnit.id,
               code: assertEventBindings.name,

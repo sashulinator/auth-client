@@ -2,7 +2,7 @@ import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
 import React from 'react'
 
-import { Comp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
@@ -18,6 +18,7 @@ export interface TreeItemAdditionalData {
   onFocus?: (itemId: string | number) => void
   onBlur?: (itemId: string | number) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
+  schemas: Catalog<CompSchema> | null
 }
 
 export interface TreeItemData extends TreeItemAdditionalData {

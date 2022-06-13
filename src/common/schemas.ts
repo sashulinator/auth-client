@@ -16,7 +16,7 @@ import { assertSchemaComponentNameIsValid } from './assertions'
 
 import ErrorFromObject from '@/lib/error-from-object'
 import { rootOnly } from '@/lib/validators'
-import { Schema } from '@/shared/schema-drawer'
+import { CompSchema } from '@/shared/schema-drawer'
 
 export const schemaValidator = rootOnly({
   componentName: or(_null, withRef('type', assertSchemaComponentNameIsValid)),
@@ -38,7 +38,7 @@ export const schemaValidator = rootOnly({
   }),
 })
 
-export function assertsSchema(input: unknown): asserts input is Schema {
+export function assertsSchema(input: unknown): asserts input is CompSchema {
   const errors = schemaValidator(input)
 
   // TODO фигня какая-то. Надо создать отдельную ошибку

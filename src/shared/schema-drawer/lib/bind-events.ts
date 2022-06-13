@@ -1,82 +1,74 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { actionList } from '../constants/action-list'
-import { eventAssertionList } from '../constants/event-assertion-list'
+import { eventAssertionBindingMetaCatalog } from '../constants/event-assertion-list'
 import { eventList } from '../constants/event-list'
-import { ActionProps, EventUnit, EventUnitType, FieldComponentContext, Norm } from '../model/types'
+import { ActionProps, Catalog, EventBinding, EventProps, EventType, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
+import { ROOT_ID } from '@/constants/common'
 import { insert, replace } from '@/lib/change-unmutable'
 import { findEntities, findEntity } from '@/lib/entity-actions'
 
 const operatorId = 'operatorId'
 
 export default function bindEvents(context: FieldComponentContext) {
-  const { bindings } = context.comp
+  const { eventBindingSchema } = context.comp
 
-  if (!bindings) {
+  if (!eventBindingSchema) {
     return
   }
 
-  const unitsWithEventType = getEventUnits(bindings)
+  const rootBinding = eventBindingSchema.catalog[ROOT_ID]
+  assertNotUndefined(rootBinding?.children)
 
-  unitsWithEventType.forEach((eventUnit) => {
-    const eventItem = eventList[eventUnit.name]
-    assertNotUndefined(eventItem)
+  const eventBindingCatalog = findEntities(rootBinding.children, eventBindingSchema.catalog)
 
-    const actionUnits = findEntities(eventUnit.children || [], bindings)
+  Object.values(eventBindingCatalog).forEach((eventBinding) => {
+    const eventBindingMeta = eventList[eventBinding.name]
+    assertNotUndefined(eventBindingMeta)
 
-    const actionItems = Object.values(actionUnits)?.map((actionUnit) => {
-      const actionItem = actionList[actionUnit.name]
-      assertNotUndefined(actionItem)
-      return actionItem
-    })
+    const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingSchema.catalog)
 
-    const basicProps = {
+    const eventProps: EventProps = {
+      eventBindingSchema,
+      eventBindingCatalog,
+      eventBinding,
+      eventBindingMeta,
+      actionBindingCatalog,
       context,
-      actionUnits,
-      actionItems,
-      eventUnit,
-      eventItem,
-      bindings,
       emitActions,
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function emitActions(value: any) {
-      Object.values(actionUnits).forEach((actionUnit) => {
-        const actionItem = actionList[actionUnit.name]
-        assertNotUndefined(actionItem)
-        const actionProps = { ...basicProps, actionUnit, actionItem }
+      Object.values(actionBindingCatalog).forEach((actionBinding) => {
+        const actionBindingMeta = actionList[actionBinding.name]
+        assertNotUndefined(actionBindingMeta)
+        const actionProps = { ...eventProps, actionBinding, actionBindingMeta }
 
-        if (isValid(actionProps, value)) {
-          actionItem?.function({ ...basicProps, actionUnit, actionItem }, value)
+        if (isPassedAssertions(actionProps, value)) {
+          actionBindingMeta?.function({ ...eventProps, actionBinding, actionBindingMeta }, value)
         }
       })
     }
 
-    const eventProps = { ...basicProps, emitActions }
+    const createdEvent = eventBindingMeta.function(eventProps)
 
-    const createdEvent = eventItem.function(eventProps)
-
-    context.observer.addEvent(eventUnit.name, createdEvent)
+    context.observer.addEvent(eventBinding.name, createdEvent)
   })
 }
 
 // Private
 
-function getEventUnits(units: Norm<EventUnit>): EventUnit[] {
-  return Object.values(units).filter((binding) => binding.type === EventUnitType.EVENT)
-}
-
-function addRootOperator(bindings: Norm<EventUnit>, actionId: string) {
-  const actionUnit = findEntity(actionId, bindings)
+function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: string) {
+  const actionUnit = findEntity(actionId, eventBindingCatalog)
   const newActionUnit = { ...actionUnit, children: [operatorId] }
-  const newBindings = replace(bindings, newActionUnit.id, newActionUnit)
-  const orOperator: EventUnit = {
+  const newBindings = replace(eventBindingCatalog, newActionUnit.id, newActionUnit)
+  const orOperator: EventBinding = {
     id: operatorId,
     name: 'and',
-    type: EventUnitType.OPERATOR,
+    type: EventType.OPERATOR,
     children: actionUnit.children,
   }
   const newBindings2 = insert(newBindings, operatorId, orOperator)
@@ -84,11 +76,12 @@ function addRootOperator(bindings: Norm<EventUnit>, actionId: string) {
   return newBindings2
 }
 
-function isValid(actionProps: ActionProps, value: any) {
-  const { actionUnit, bindings } = actionProps
-  const newBindings = addRootOperator(bindings, actionUnit.id)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isPassedAssertions(actionProps: ActionProps, value: any) {
+  const { actionBinding, eventBindingSchema } = actionProps
+  const newBindings = addRootOperator(eventBindingSchema.catalog, actionBinding.id)
 
-  const validate = bindAssertions(eventAssertionList, newBindings, operatorId)
+  const validate = bindAssertions(eventAssertionBindingMetaCatalog, newBindings, operatorId)
 
   const errors = validate?.(value, { payload: actionProps, path: '' })
 

@@ -12,13 +12,13 @@ import JSONEditor from '@/shared/json-editor'
 import MultiCheckbox from '@/shared/multicheckbox'
 import CustomNumberField from '@/shared/numberfield'
 import { Pivot, PivotItem } from '@/shared/pivot'
-import { BasicComponentsNames, ComponentItem } from '@/shared/schema-drawer'
+import { BasicComponentsNames, CompMeta } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
 import Table from '@/shared/table'
 import CustomTextField from '@/shared/textfield'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const componentList: Record<string, ComponentItem> = {
+const componentList: Record<string, CompMeta> = {
   // Utils
 
   ValidatorPicker: {

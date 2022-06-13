@@ -10,7 +10,7 @@ import {
   withValue,
 } from '@savchenko91/schema-validator'
 
-import { BindingUnit, ListItem, Norm } from '../model/types'
+import { Binding, BindingMeta, Catalog } from '../model/types'
 import { formToOneValueIfNeeded } from './form-to-one-value'
 
 import { ROOT_ID } from '@/constants/common'
@@ -18,8 +18,8 @@ import { ROOT_ID } from '@/constants/common'
 const rootOnly = only.bind({ handleError: buildErrorTree })
 
 export default function bindAssertions(
-  assertionList: Norm<ListItem>,
-  units: Norm<BindingUnit> | undefined,
+  assertionList: Catalog<BindingMeta>,
+  units: Catalog<Binding> | undefined,
   rootId = ROOT_ID
 ): ErrorCollector<ErrorCollection> | undefined {
   if (units === undefined) {
@@ -32,8 +32,11 @@ export default function bindAssertions(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function factory(assertionList: Norm<ListItem>, units: Norm<BindingUnit>, unitId: string): Schema<any> {
+function factory(assertionList: Catalog<BindingMeta>, units: Catalog<Binding>, unitId: string): Schema<any> {
   const compValidator = units[unitId]
+  if (compValidator === undefined) {
+    console.log('compValidator', compValidator)
+  }
   assertNotUndefined(compValidator)
 
   const isOr = compValidator.name === 'and'
@@ -45,6 +48,9 @@ function factory(assertionList: Norm<ListItem>, units: Norm<BindingUnit>, unitId
   }
 
   const assertionItem = assertionList[compValidator.name]
+  if (compValidator === undefined) {
+    console.log('assertionItem', assertionItem)
+  }
   assertNotUndefined(assertionItem)
 
   const props = formToOneValueIfNeeded(compValidator.props)

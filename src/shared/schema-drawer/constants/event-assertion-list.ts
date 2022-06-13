@@ -1,12 +1,19 @@
+import { createCatalog } from '../lib/create-catalog'
 import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event-assertions'
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
-import { AssertionUnitType, EventAssertionListItem, EventToShowError, Norm, SchemaType } from '../model/types'
+import {
+  AssertionBindingType,
+  Catalog,
+  CompSchemaType,
+  EventAssertionBindingMeta,
+  EventAssertionBindingMetaName,
+  EventToShowError,
+} from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
-import { generateOptionsFromObject } from '@/lib/generate-options'
-
-export const eventAssertionList: Norm<EventAssertionListItem> = {
-  undefined: {
+const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
+  {
+    name: EventAssertionBindingMetaName.undefined,
     function: assertUndefined,
     schema: generateSimpleCompsSchema([
       {
@@ -20,19 +27,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
             to: 'props.options',
           },
         ],
-        validators: {
+        assertionBindingSchema: {
           eventToShowError: EventToShowError.onVisited,
-          units: {
+          catalog: {
             ROOT_ID: {
               id: 'ROOT_ID',
               name: 'and',
-              type: AssertionUnitType.OPERATOR,
+              type: AssertionBindingType.OPERATOR,
               children: ['l46vi95c'],
             },
             l46vi95c: {
               id: 'l46vi95c',
               name: 'string',
-              type: AssertionUnitType.ASSERTION,
+              type: AssertionBindingType.ASSERTION,
             },
           },
         },
@@ -45,13 +52,14 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
       },
     ]),
   },
-  visited: {
+  {
+    name: EventAssertionBindingMetaName.visited,
     function: assertVisited,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',
@@ -73,19 +81,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
               to: 'props.options',
             },
           ],
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            units: {
+            catalog: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionBindingType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionBindingType.ASSERTION,
               },
             },
           },
@@ -93,13 +101,14 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
       },
     },
   },
-  matchPattern: {
+  {
+    name: EventAssertionBindingMetaName.matchPattern,
     function: assertMatchPattern,
     schema: {
       id: 'hereCouldBeYourAd',
       title: 'hereCouldBeYourAd',
       componentName: null,
-      type: SchemaType.FORM,
+      type: CompSchemaType.FORM,
       comps: {
         ROOT_ID: {
           id: 'ROOT_ID',
@@ -115,19 +124,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
           name: 'pattern',
           props: { label: 'pattern' },
           compSchemaId: BasicComponentsNames.TextField,
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            units: {
+            catalog: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionBindingType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionBindingType.ASSERTION,
               },
             },
           },
@@ -144,19 +153,19 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
               to: 'props.options',
             },
           ],
-          validators: {
+          assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            units: {
+            catalog: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionBindingType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionBindingType.ASSERTION,
               },
             },
           },
@@ -164,6 +173,11 @@ export const eventAssertionList: Norm<EventAssertionListItem> = {
       },
     },
   },
-}
+]
 
-export const eventAssertionNameOptions = generateOptionsFromObject(eventAssertionList)
+const eventAssertionBindingMetaCatalog: Catalog<EventAssertionBindingMeta> = createCatalog(
+  eventAssertionBindingMetaList,
+  'name'
+)
+
+export { eventAssertionBindingMetaCatalog }

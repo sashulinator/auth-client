@@ -2,7 +2,7 @@
   По сути является мапингом на базовые компоненты для компсов
   Полезно когда нужно просто отрисовать простенькую форму
 */
-import { Norm, Schema, SchemaType } from '../model/types'
+import { Catalog, CompSchema, CompSchemaType } from '../model/types'
 
 export enum BasicComponentsNames {
   TextField = 'TextField',
@@ -15,18 +15,18 @@ export enum BasicComponentsNames {
 export const basicComponentsSchemas = ({
   [BasicComponentsNames.TextField]: {
     componentName: BasicComponentsNames.TextField,
-    type: SchemaType.COMP,
+    type: CompSchemaType.COMP,
   },
   [BasicComponentsNames.Stack]: {
     componentName: BasicComponentsNames.Stack,
-    type: SchemaType.COMP,
+    type: CompSchemaType.COMP,
   },
   [BasicComponentsNames.Dropdown]: {
     componentName: BasicComponentsNames.Dropdown,
-    type: SchemaType.COMP,
+    type: CompSchemaType.COMP,
   },
   [BasicComponentsNames.Checkbox]: {
     componentName: BasicComponentsNames.Checkbox,
-    type: SchemaType.COMP,
+    type: CompSchemaType.COMP,
   },
-} as unknown) as Norm<Schema>
+} as unknown) as Catalog<CompSchema>

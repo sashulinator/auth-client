@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next'
 
 import { ROOT_ID } from '@/constants/common'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
-import { Comp, Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
 interface CompContextualMenuProps {
   remove: (compId: string) => void
   openSchemaInNewTab: (schemaId: string) => void
-  schemas: Norm<Schema> | null
+  schemas: Catalog<CompSchema> | null
   comp: Comp
 }
 

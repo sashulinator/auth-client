@@ -1,13 +1,13 @@
 import { atom } from 'recoil'
 
-import { Norm, Schema } from '@/shared/schema-drawer'
+import { Catalog, CompSchema } from '@/shared/schema-drawer'
 
-export const schemasState = atom<null | Norm<Schema>>({
+export const schemasState = atom<null | Catalog<CompSchema>>({
   key: 'schemasState',
   default: null,
 })
 
-export const selectedCompSchemaState = atom<null | Schema>({
+export const selectedCompSchemaState = atom<null | CompSchema>({
   key: 'selectedCompSchema',
   default: null,
 })

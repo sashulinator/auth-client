@@ -1,4 +1,4 @@
-.BindingSetter {
+.BindingEditorRoot {
   box-sizing: border-box;
   display: grid;
   grid-template-rows: 1fr;
@@ -6,14 +6,14 @@
   width: 100%;
 }
 
-.BindingSetter .wrapper {
+.BindingEditor {
   position: relative;
   width: 100%;
   box-sizing: border-box;
   padding: 16px;
 }
 
-.BindingSetter .bindingSetterBackground {
+.BindingEditor .fakeBorder {
   position: absolute;
   top: 0;
   left: 0;
@@ -26,6 +26,6 @@
   box-sizing: border-box;
 }
 
-.BindingSetter.isFocused .bindingSetterBackground {
+.BindingEditor.isFocused .fakeBorder {
   border: 2px solid var(--themePrimary);
 }

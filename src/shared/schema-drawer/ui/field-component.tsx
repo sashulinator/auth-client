@@ -8,7 +8,15 @@ import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
 import { Observer } from '../lib/observer'
 import { registerFieldChangeEvent } from '../lib/register-field-change-event'
-import { Comp, CompSchema, ComponentContext, ComponentItem, FieldComponentContext, Norm, Schema } from '../model/types'
+import {
+  Catalog,
+  Comp,
+  CompMeta,
+  CompSchema,
+  ComponentCompSchema,
+  ComponentContext,
+  FieldComponentContext,
+} from '../model/types'
 import React, { memo, useEffect, useMemo } from 'react'
 import { Field } from 'react-final-form'
 
@@ -16,17 +24,17 @@ import FieldError from '@/shared/field-error'
 
 export interface FieldComponentProps {
   comp: Comp
-  schema: CompSchema
-  schemas: Norm<Schema>
+  schema: ComponentCompSchema
+  schemas: Catalog<CompSchema>
   context: ComponentContext
-  componentList: Record<string, ComponentItem>
+  componentList: Record<string, CompMeta>
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {
   const сomponentItem = props.componentList[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
-  const validate = bindAssertions(assertionList, props.comp.validators?.units)
+  const validate = bindAssertions(assertionList, props.comp.assertionBindingSchema?.catalog)
 
   // TODO move to ComponentFactory
   const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
@@ -47,7 +55,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
             ...props.context,
             observer: new Observer(),
           }),
-          [props.comp.bindings]
+          [props.comp.eventBindingSchema?.catalog]
         )
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -64,7 +72,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
           setTimeout(() => context.observer.emitEvent(onInit.name)())
 
           return context.observer.emitEvent(onDestroy.name)
-        }, [props.comp.bindings])
+        }, [props.comp.eventBindingSchema?.catalog])
 
         return (
           <div data-comp-id={injectedComp.id} className="FieldErrorPositionRelative">
@@ -72,14 +80,14 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               {...input}
               {...injectedComp.props}
               context={props.context}
-              required={isRequired(props.comp.validators?.units)}
+              required={isRequired(props.comp.assertionBindingSchema?.catalog)}
               onBlur={context.observer.emitEvent('onBlur')}
               onFocus={context.observer.emitEvent('onFocus')}
               onClick={context.observer.emitEvent('onClick')}
               onChange={context.observer.emitEvent('onChange')}
               validationError={meta.error}
             />
-            <FieldError meta={meta} eventToShowError={injectedComp?.validators?.eventToShowError} />
+            <FieldError meta={meta} eventToShowError={injectedComp?.assertionBindingSchema?.eventToShowError} />
           </div>
         )
       }}

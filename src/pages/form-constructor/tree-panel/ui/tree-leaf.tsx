@@ -1,5 +1,6 @@
-import { IButtonStyles, IconButton, Stack, Text } from '@fluentui/react'
+import { IButtonStyles, Icon, IconButton, Stack, Text } from '@fluentui/react'
 
+import getIconName from '../lib/get-icon-name'
 import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
 import React from 'react'
@@ -46,7 +47,8 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBorder" />
-        {isExpandButton && <ExpandButton {...props} />}
+        {isExpandButton ? <ExpandButton {...props} /> : <div style={{ width: '44px', height: '32px' }} />}
+
         <Text
           as="div"
           onClick={(e) => {
@@ -54,8 +56,12 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ;(document as any)?.activeElement?.blur()
           }}
-          className={clsx('treeLeafText', !isExpandButton && 'addOneButtonSpace')}
+          className={clsx('treeLeafText')}
         >
+          <Icon
+            iconName={getIconName(props.item.data?.schemas, props.item.data?.comp)}
+            style={{ marginRight: '8px' }}
+          />
           {isOneOfMultipleDragging
             ? `multiple ${props.item.data?.pickedIds.length || ''}`
             : props.item.data?.comp.title || ''}
