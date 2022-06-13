@@ -1,11 +1,11 @@
 import { setCompProp, setValue } from '../lib/actions'
 import {
   ActionListItem,
-  AssertionUnitType,
+  AssertionSchemaItemType,
   Catalog,
   CompSchemaType,
+  EventSchemaItemType,
   EventToShowError,
-  EventUnitType,
 } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
@@ -40,13 +40,13 @@ export const actionList: Catalog<ActionListItem> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionSchemaItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionSchemaItemType.ASSERTION,
               },
             },
           },
@@ -95,13 +95,13 @@ export const actionList: Catalog<ActionListItem> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionSchemaItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionSchemaItemType.ASSERTION,
               },
             },
           },
@@ -116,13 +116,13 @@ export const actionList: Catalog<ActionListItem> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionSchemaItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionSchemaItemType.ASSERTION,
               },
             },
           },
@@ -142,19 +142,19 @@ export const actionList: Catalog<ActionListItem> = {
             ROOT_ID: {
               id: 'ROOT_ID',
               name: 'root',
-              type: EventUnitType.ROOT,
+              type: EventSchemaItemType.ROOT,
               children: ['l459ocs7'],
             },
             l459ocs7: {
               id: 'l459ocs7',
               name: 'onFieldLife',
-              type: EventUnitType.EVENT,
+              type: EventSchemaItemType.EVENT,
               children: ['l45ikto6', 'l45im2fr', 'l45givi5', 'l459q4jl'],
             },
             l459q4jl: {
               id: 'l459q4jl',
               name: setCompProp.name,
-              type: EventUnitType.ACTION,
+              type: EventSchemaItemType.ACTION,
               props: {
                 prop: 'props.hidden',
                 compId: 'l458n3rr',
@@ -166,7 +166,7 @@ export const actionList: Catalog<ActionListItem> = {
             l45agej6: {
               id: 'l45agej6',
               name: 'matchPattern',
-              type: EventUnitType.ASSERTION,
+              type: EventSchemaItemType.ASSERTION,
               props: {
                 name: 'typeof',
                 pattern: 'boolean',
@@ -175,7 +175,7 @@ export const actionList: Catalog<ActionListItem> = {
             l45givi5: {
               id: 'l45givi5',
               name: setCompProp.name,
-              type: EventUnitType.ACTION,
+              type: EventSchemaItemType.ACTION,
               props: {
                 prop: 'props.hidden',
                 compId: 'l45gg3ha',
@@ -187,7 +187,7 @@ export const actionList: Catalog<ActionListItem> = {
             l45glrdh: {
               id: 'l45glrdh',
               name: 'matchPattern',
-              type: EventUnitType.ASSERTION,
+              type: EventSchemaItemType.ASSERTION,
               props: {
                 name: 'typeof',
                 pattern: 'string',
@@ -196,7 +196,7 @@ export const actionList: Catalog<ActionListItem> = {
             l45ikto6: {
               id: 'l45ikto6',
               name: setCompProp.name,
-              type: EventUnitType.ACTION,
+              type: EventSchemaItemType.ACTION,
               props: {
                 prop: 'props.hidden',
                 compId: 'l45gg3ha',
@@ -207,7 +207,7 @@ export const actionList: Catalog<ActionListItem> = {
             l45im2fr: {
               id: 'l45im2fr',
               name: setCompProp.name,
-              type: EventUnitType.ACTION,
+              type: EventSchemaItemType.ACTION,
               props: {
                 prop: 'props.hidden',
                 compId: 'l458n3rr',
@@ -256,13 +256,13 @@ export const actionList: Catalog<ActionListItem> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionUnitType.OPERATOR,
+                type: AssertionSchemaItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionUnitType.ASSERTION,
+                type: AssertionSchemaItemType.ASSERTION,
               },
             },
           },

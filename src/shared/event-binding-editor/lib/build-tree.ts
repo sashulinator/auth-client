@@ -2,7 +2,7 @@ import { TreeItem } from '@atlaskit/tree'
 
 import { ROOT_ID } from '@/constants/common'
 import { mutateObject } from '@/lib/mutate-object'
-import { Catalog, EventUnit } from '@/shared/schema-drawer'
+import { Catalog, EventSchemaItem } from '@/shared/schema-drawer'
 
 export interface AdditionalData {
   remove: (id: string | number) => void
@@ -12,12 +12,12 @@ export interface AdditionalData {
   errorId?: string
 }
 
-export default function buildTree(bindings: Catalog<EventUnit> | undefined, additionalData: AdditionalData) {
+export default function buildTree(bindings: Catalog<EventSchemaItem> | undefined, additionalData: AdditionalData) {
   if (bindings === undefined) {
     return undefined
   }
 
-  const items = mutateObject<TreeItem, Catalog<EventUnit>>(bindings)((binding) => {
+  const items = mutateObject<TreeItem, Catalog<EventSchemaItem>>(bindings)((binding) => {
     return {
       ...binding,
       id: binding.id,

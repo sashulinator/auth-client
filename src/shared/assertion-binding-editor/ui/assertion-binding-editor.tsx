@@ -21,8 +21,8 @@ import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
   AssertionSchema,
-  AssertionUnit,
-  AssertionUnitType,
+  AssertionSchemaItem,
+  AssertionSchemaItemType,
   Catalog,
   Comp,
   CompSchema,
@@ -112,9 +112,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addAssertion(): void {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validator: AssertionUnit = {
+    const validator: AssertionSchemaItem = {
       id,
-      type: AssertionUnitType.ASSERTION,
+      type: AssertionSchemaItemType.ASSERTION,
       name: 'string',
       children: [],
     }
@@ -130,10 +130,10 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addOperator() {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validatorItem: AssertionUnit = {
+    const validatorItem: AssertionSchemaItem = {
       id,
       name: 'and',
-      type: AssertionUnitType.OPERATOR,
+      type: AssertionSchemaItemType.OPERATOR,
       children: [],
     }
 

@@ -1,9 +1,9 @@
-import { EventUnitType } from '@/shared/schema-drawer'
+import { EventSchemaItemType } from '@/shared/schema-drawer'
 
 export const labelColors = {
-  [EventUnitType.ROOT]: 'hereCouldBeYourAd',
-  [EventUnitType.ACTION]: 'blueBackground',
-  [EventUnitType.EVENT]: 'greenBackground',
-  [EventUnitType.OPERATOR]: 'yellowBackground',
-  [EventUnitType.ASSERTION]: 'redBackground',
+  [EventSchemaItemType.ROOT]: 'hereCouldBeYourAd',
+  [EventSchemaItemType.ACTION]: 'blueBackground',
+  [EventSchemaItemType.EVENT]: 'greenBackground',
+  [EventSchemaItemType.OPERATOR]: 'yellowBackground',
+  [EventSchemaItemType.ASSERTION]: 'redBackground',
 }

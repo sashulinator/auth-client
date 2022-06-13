@@ -21,8 +21,8 @@ import SchemaDrawer, {
   Catalog,
   Comp,
   CompSchema,
-  EventUnit,
-  EventUnitType,
+  EventSchemaItem,
+  EventSchemaItemType,
   actionList,
   basicComponentsSchemas,
   eventAssertionList,
@@ -36,9 +36,9 @@ import Tree from '@/shared/tree'
 export interface BindingSetterProps {
   comp: Comp
   comps: Catalog<Comp>
-  onChange: (value: Catalog<EventUnit> | undefined) => void
+  onChange: (value: Catalog<EventSchemaItem> | undefined) => void
   schemas: Catalog<CompSchema>
-  value: Catalog<EventUnit> | undefined
+  value: Catalog<EventSchemaItem> | undefined
   name?: string
   label?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -96,9 +96,9 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addAssertion(): void {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const binding: EventUnit = {
+    const binding: EventSchemaItem = {
       id,
-      type: EventUnitType.ASSERTION,
+      type: EventSchemaItemType.ASSERTION,
       name: 'undefined',
       children: [],
     }
@@ -113,10 +113,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addOperator() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: EventUnit = {
+    const bindingItem: EventSchemaItem = {
       id,
       name: 'and',
-      type: EventUnitType.OPERATOR,
+      type: EventSchemaItemType.OPERATOR,
       children: [],
     }
 
@@ -130,10 +130,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addAction() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: EventUnit = {
+    const bindingItem: EventSchemaItem = {
       id,
       name: setValue.name,
-      type: EventUnitType.ACTION,
+      type: EventSchemaItemType.ACTION,
       children: [],
     }
 
@@ -147,10 +147,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   function addEvent() {
     const id = uniqid()
     const currentBindings = bindingItems ? bindingItems : defaultCompBindings
-    const bindingItem: EventUnit = {
+    const bindingItem: EventSchemaItem = {
       id,
       name: onFieldChange.name,
-      type: EventUnitType.EVENT,
+      type: EventSchemaItemType.EVENT,
       children: [],
     }
 
