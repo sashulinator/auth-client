@@ -1,9 +1,10 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, Stack } from '@fluentui/react'
+import { Stack } from '@fluentui/react'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './assertion-binding-editor.css'
 
+import { typeIcons } from '../constatnts/type-icons'
 import buildTree from '../lib/build-tree'
 import { defaultCompValidators } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
@@ -168,12 +169,10 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
     <BindingEditor.Root ref={ref} label={props.label}>
       <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
         <Stack>
-          <Stack horizontal horizontalAlign="space-between">
-            <ActionButton iconProps={{ iconName: 'Add' }} onClick={addAssertion}>
-              assertion
-            </ActionButton>
-            <ActionButton iconProps={{ iconName: 'DrillExpand' }} onClick={addOperator} />
-          </Stack>
+          <BindingEditor.ActionPanel
+            mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
+            buttons={[{ iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' }]}
+          />
           {tree && (
             <Stack tokens={{ padding: '2px 0' }}>
               {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
