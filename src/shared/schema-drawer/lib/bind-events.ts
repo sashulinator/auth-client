@@ -37,13 +37,13 @@ export default function bindEvents(context: FieldComponentContext) {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function emitActions(value: any) {
-      Object.values(actionBindingCatalog).forEach((actionUnit) => {
-        const actionBindingMeta = actionList[actionUnit.name]
+      Object.values(actionBindingCatalog).forEach((actionBinding) => {
+        const actionBindingMeta = actionList[actionBinding.name]
         assertNotUndefined(actionBindingMeta)
-        const actionProps = { ...basicProps, actionUnit, actionBindingMeta }
+        const actionProps = { ...basicProps, actionBinding, actionBindingMeta }
 
         if (isValid(actionProps, value)) {
-          actionBindingMeta?.function({ ...basicProps, actionUnit, actionBindingMeta }, value)
+          actionBindingMeta?.function({ ...basicProps, actionBinding, actionBindingMeta }, value)
         }
       })
     }
@@ -78,7 +78,7 @@ function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: s
 }
 
 function isValid(actionProps: ActionProps, value: any) {
-  const { actionUnit, eventBindingCatalog } = actionProps
+  const { actionBinding: actionUnit, eventBindingCatalog } = actionProps
   const newBindings = addRootOperator(eventBindingCatalog, actionUnit.id)
 
   const validate = bindAssertions(eventAssertionList, newBindings, operatorId)

@@ -6,7 +6,7 @@ import buildObject from '@/lib/build-object'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function setValue(actionProps: ActionProps, eventFieldValue: any) {
-  const { actionUnit, context } = actionProps
+  const { actionBinding: actionUnit, context } = actionProps
   const eventFieldName = actionUnit.props.name
 
   try {
@@ -21,7 +21,7 @@ export function setValue(actionProps: ActionProps, eventFieldValue: any) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function setCompProp(actionProps: ActionProps, eventFieldValue: any) {
-  const { actionUnit, context } = actionProps
+  const { actionBinding: actionUnit, context } = actionProps
   const comp = context.comps[actionUnit?.props?.compId]
 
   try {
