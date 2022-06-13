@@ -2,7 +2,7 @@ import { TreeItem } from '@atlaskit/tree'
 
 import { ROOT_ID } from '@/constants/common'
 import { mutateObject } from '@/lib/mutate-object'
-import { AssertionItem, Catalog } from '@/shared/schema-drawer'
+import { AssertionBindingItem, Catalog } from '@/shared/schema-drawer'
 
 export interface AdditionalData {
   remove: (id: string | number) => void
@@ -11,12 +11,15 @@ export interface AdditionalData {
   selectedItemId: string
 }
 
-export default function buildTree(validators: Catalog<AssertionItem> | undefined, additionalData: AdditionalData) {
+export default function buildTree(
+  validators: Catalog<AssertionBindingItem> | undefined,
+  additionalData: AdditionalData
+) {
   if (validators === undefined) {
     return undefined
   }
 
-  const items = mutateObject<TreeItem, Catalog<AssertionItem>>(validators)((validator) => {
+  const items = mutateObject<TreeItem, Catalog<AssertionBindingItem>>(validators)((validator) => {
     return {
       ...validator,
       id: validator.id,

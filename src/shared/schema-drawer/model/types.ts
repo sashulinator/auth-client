@@ -34,7 +34,7 @@ export interface Comp {
   defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
-  validators?: AssertionSchema
+  validators?: AssertionBindingSchema
   bindings?: Catalog<EventBindingItem>
   injections?: Injection[]
 }
@@ -75,17 +75,20 @@ export interface BindingMeta {
   schema?: CompSchema
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface BindingSchema<TItem extends BindingItem> extends Schema<TItem> {}
+
 /**
  * ASSERTION BINDINGS
  */
 
-export enum AssertionItemType {
+export enum AssertionBindingItemType {
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
 }
 
-export interface AssertionItem extends BindingItem {
-  type: AssertionItemType
+export interface AssertionBindingItem extends BindingItem {
+  type: AssertionBindingItemType
 }
 
 export enum EventToShowError {
@@ -95,7 +98,7 @@ export enum EventToShowError {
   onSubmit = 'onSubmit',
 }
 
-export interface AssertionSchema extends Schema<AssertionItem> {
+export interface AssertionBindingSchema extends BindingSchema<AssertionBindingItem> {
   eventToShowError: EventToShowError
 }
 

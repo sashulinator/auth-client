@@ -20,9 +20,9 @@ import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-ac
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
-  AssertionItem,
-  AssertionItemType,
-  AssertionSchema,
+  AssertionBindingItem,
+  AssertionBindingItemType,
+  AssertionBindingSchema,
   Catalog,
   Comp,
   CompSchema,
@@ -36,10 +36,10 @@ import Tree from '@/shared/tree/ui/tree'
 export interface ValidatorsTreeProps {
   comp: Comp
   comps: Catalog<Comp>
-  onChange: (value: AssertionSchema | undefined) => void
+  onChange: (value: AssertionBindingSchema | undefined) => void
   schemas: Catalog<CompSchema>
   // string приходит от final-form при инициализации
-  value: AssertionSchema | undefined | string
+  value: AssertionBindingSchema | undefined | string
   name?: string
   label?: string
 }
@@ -112,9 +112,9 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addAssertion(): void {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validator: AssertionItem = {
+    const validator: AssertionBindingItem = {
       id,
-      type: AssertionItemType.ASSERTION,
+      type: AssertionBindingItemType.ASSERTION,
       name: 'string',
       children: [],
     }
@@ -130,10 +130,10 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   function addOperator() {
     const id = uniqid()
     const currentValidators = validatorItems ? validatorItems : defaultCompValidators
-    const validatorItem: AssertionItem = {
+    const validatorItem: AssertionBindingItem = {
       id,
       name: 'and',
-      type: AssertionItemType.OPERATOR,
+      type: AssertionBindingItemType.OPERATOR,
       children: [],
     }
 

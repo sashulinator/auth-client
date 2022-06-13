@@ -1,7 +1,7 @@
 import { setCompProp, setValue } from '../lib/actions'
 import {
   ActionBindingMeta,
-  AssertionItemType,
+  AssertionBindingItemType,
   Catalog,
   CompSchemaType,
   EventItemType,
@@ -40,13 +40,13 @@ export const actionList: Catalog<ActionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionItemType.OPERATOR,
+                type: AssertionBindingItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionItemType.ASSERTION,
+                type: AssertionBindingItemType.ASSERTION,
               },
             },
           },
@@ -95,13 +95,13 @@ export const actionList: Catalog<ActionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionItemType.OPERATOR,
+                type: AssertionBindingItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionItemType.ASSERTION,
+                type: AssertionBindingItemType.ASSERTION,
               },
             },
           },
@@ -116,13 +116,13 @@ export const actionList: Catalog<ActionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionItemType.OPERATOR,
+                type: AssertionBindingItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionItemType.ASSERTION,
+                type: AssertionBindingItemType.ASSERTION,
               },
             },
           },
@@ -256,13 +256,13 @@ export const actionList: Catalog<ActionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
-                type: AssertionItemType.OPERATOR,
+                type: AssertionBindingItemType.OPERATOR,
                 children: ['l46vi95c'],
               },
               l46vi95c: {
                 id: 'l46vi95c',
                 name: 'string',
-                type: AssertionItemType.ASSERTION,
+                type: AssertionBindingItemType.ASSERTION,
               },
             },
           },
