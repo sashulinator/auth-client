@@ -7,8 +7,7 @@ import { FormRenderProps } from 'react-final-form'
 export type Catalog<T> = Record<string, T>
 
 export interface Schema<TItem> {
-  // TODO rename units to items
-  units: Catalog<TItem>
+  catalog: Catalog<TItem>
 }
 
 interface Injection {

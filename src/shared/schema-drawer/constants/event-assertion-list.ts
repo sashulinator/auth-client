@@ -28,7 +28,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
         ],
         validators: {
           eventToShowError: EventToShowError.onVisited,
-          units: {
+          catalog: {
             ROOT_ID: {
               id: 'ROOT_ID',
               name: 'and',
@@ -81,7 +81,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
           ],
           validators: {
             eventToShowError: EventToShowError.onVisited,
-            units: {
+            catalog: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -123,7 +123,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
           compSchemaId: BasicComponentsNames.TextField,
           validators: {
             eventToShowError: EventToShowError.onVisited,
-            units: {
+            catalog: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -152,7 +152,7 @@ export const eventAssertionList: Catalog<EventAssertionBindingMeta> = {
           ],
           validators: {
             eventToShowError: EventToShowError.onVisited,
-            units: {
+            catalog: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',

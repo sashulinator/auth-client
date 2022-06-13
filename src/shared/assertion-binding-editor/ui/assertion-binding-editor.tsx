@@ -51,14 +51,14 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
   const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
 
-  const validatorItems = assertionBindingSchema?.units
+  const validatorItems = assertionBindingSchema?.catalog
   const validatorItem = validatorItems?.[selectedItemId]
   const assertionItem = assertionList[validatorItem?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(assertionBindingSchema?.units || undefined, {
+    return buildTree(assertionBindingSchema?.catalog || undefined, {
       changeValidator,
       remove,
       selectItemId,
@@ -78,7 +78,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
       const units: any = omitEmpty(newValidators)
       assertNotUndefined(assertionBindingSchema)
 
-      props.onChange({ ...assertionBindingSchema, units })
+      props.onChange({ ...assertionBindingSchema, catalog: units })
     }
   }
 
@@ -104,7 +104,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     if (validatorItems) {
       const units = moveEntity(validator, to.parentId, to.index || 0, validatorItems)
       const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
-      props.onChange({ ...schema, units })
+      props.onChange({ ...schema, catalog: units })
       setTree(moveItemOnTree(tree, from, to))
     }
   }
@@ -123,7 +123,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
 
     if (props.name) {
-      props.onChange({ ...schema, units })
+      props.onChange({ ...schema, catalog: units })
     }
   }
 
@@ -141,7 +141,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
     const schema = assertionBindingSchema || { eventToShowError: EventToShowError.onTouched }
 
     if (validatorItems) {
-      props.onChange({ ...schema, units })
+      props.onChange({ ...schema, catalog: units })
     }
   }
 
@@ -155,7 +155,7 @@ export default function ValidatorPicker(props: ValidatorsTreeProps): JSX.Element
         props.onChange(undefined)
       } else {
         const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onVisited }
-        props.onChange({ ...schema, units })
+        props.onChange({ ...schema, catalog: units })
       }
     }
   }
