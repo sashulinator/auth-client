@@ -119,8 +119,8 @@ export interface EventProps {
   context: FieldComponentContext | ContentComponentContext
   actionUnits: Catalog<EventBindingSchemaItem>
   actionItems: ActionBindingMeta[]
-  eventItem: EventBindingMeta
-  eventUnit: EventBindingSchemaItem
+  eventBindingsMeta: EventBindingMeta
+  eventBindingSchemaItem: EventBindingSchemaItem
   // TODO Catalog<EventSchemaItem> будет заменен на EventBindingSchema когда
   // TODO у Comp будет переделан bindings параметр
   eventBindingSchema: Catalog<EventBindingSchemaItem> // eslint-disable-next-line @typescript-eslint/no-explicit-any
