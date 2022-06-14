@@ -16,13 +16,7 @@ export default function HeaderContent(): JSX.Element | null {
   }
 
   return createPortal(
-    <PrimaryButton
-      onClick={() => {
-        navigate(ROUTES.INCIDENT.PATH)
-      }}
-    >
-      Create new
-    </PrimaryButton>,
+    <PrimaryButton onClick={() => navigate(ROUTES.CREATE_INCIDENT.PATH)}>Create new</PrimaryButton>,
     el
   )
 }
