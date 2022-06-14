@@ -4,12 +4,15 @@ import React from 'react'
 
 import { Catalog, Comp } from '@/shared/schema-drawer'
 
-type PivotProps = IPivotProps & { label: string; children: React.ReactNode[] }
+type PivotProps = IPivotProps & {
+  label: string
+  children: React.ReactNode[]
+  paddingLeft: string
+}
 
 export default function Pivot(props: PivotProps): JSX.Element {
   return (
-    // ставим paddingLeft хардкодом потому что так надо :)
-    <PivotUI {...props} styles={{ root: { paddingLeft: '16px' } }}>
+    <PivotUI {...props} styles={{ root: { paddingLeft: `${props.paddingLeft}px` } }}>
       {props.children?.map((child) => {
         // @ts-expect-error because
         const { compId, comps } = child.props as { compId: string; comps: Catalog<Comp> }
@@ -23,4 +26,8 @@ export default function Pivot(props: PivotProps): JSX.Element {
       })}
     </PivotUI>
   )
+}
+
+Pivot.defaultProps = {
+  paddingLeft: 0,
 }
