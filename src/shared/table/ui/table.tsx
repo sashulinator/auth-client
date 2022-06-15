@@ -22,10 +22,12 @@ export default function Table(props: TableProps): JSX.Element {
   const columnReorderOptions = props.columnReorderOptions ?? null
 
   return (
-    <Stack data-comp-id={props['data-comp-id']}>
-      <Stack horizontal horizontalAlign="space-between">
+    <Stack data-comp-id={props['data-comp-id']} className="Table">
+      <Stack horizontal horizontalAlign="space-between" verticalAlign="end">
         <Stack>{props.label && <Label>{props.label}</Label>}</Stack>
-        <Stack horizontal>{props.children}</Stack>
+        <Stack horizontal className="buttons">
+          {props.children}
+        </Stack>
       </Stack>
       <DetailsList
         {...props}
