@@ -19,6 +19,7 @@ export interface TreeItemAdditionalData {
   onBlur?: (itemId: string | number) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
   schemas: Catalog<CompSchema> | null
+  searchQuery?: string
 }
 
 export interface TreeItemData extends TreeItemAdditionalData {
