@@ -182,7 +182,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
               onSubmit={onSubmit}
               render={(formProps) => {
                 return (
-                  <form onSubmit={formProps.handleSubmit}>
+                  <form id="main" onSubmit={formProps.handleSubmit}>
                     <SchemaDrawer
                       componentList={componentList}
                       schema={schema}

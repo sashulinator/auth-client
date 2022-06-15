@@ -7,6 +7,7 @@ import CustomDatePicker from '@/shared/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import EventBindingEditor from '@/shared/event-binding-editor'
 import Fetcher from '@/shared/fetcher'
+import Portal from '@/shared/header-portal'
 import HorizontalLine from '@/shared/horizontal-line'
 import JSONEditor from '@/shared/json-editor'
 import MultiCheckbox from '@/shared/multicheckbox'
@@ -81,6 +82,11 @@ const componentList: Record<string, CompMeta> = {
   },
 
   // Contents
+
+  Portal: {
+    type: 'content',
+    component: Portal,
+  },
 
   [BasicComponentsNames.Stack]: {
     type: 'content',

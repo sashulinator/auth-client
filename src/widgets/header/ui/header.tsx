@@ -7,7 +7,9 @@ import LogoutButton from '@/entities/user/ui/logout-button'
 import LanguageDropdown from '@/shared/language-dropdown'
 import ThemeDropdown from '@/shared/theme'
 
-export const HEADER_PORTAL_CLASSNAME = '.headerPortal'
+export const HEADER_PORTAL_LEFT_CLASSNAME = '.headerPortalLeft'
+export const HEADER_PORTAL_CENTER_CLASSNAME = '.headerPortalCenter'
+export const HEADER_PORTAL_RIGHT_CLASSNAME = '.headerPortalRight'
 
 export default function Header(): JSX.Element | null {
   if (ROUTES.LOGIN.isCurrent) {
@@ -21,14 +23,28 @@ export default function Header(): JSX.Element | null {
       horizontalAlign="end"
       verticalAlign="center"
       className="Header"
-      tokens={{ childrenGap: 32, padding: '16px 16px' }}
+      tokens={{ padding: '16px 16px' }}
     >
       <Stack
         horizontal
-        className={HEADER_PORTAL_CLASSNAME.replace('.', '')}
-        horizontalAlign="end"
+        className={HEADER_PORTAL_LEFT_CLASSNAME.replace('.', '')}
+        horizontalAlign="start"
         verticalAlign="center"
         style={{ width: '100%' }}
+      />
+      <Stack
+        horizontal
+        className={HEADER_PORTAL_CENTER_CLASSNAME.replace('.', '')}
+        horizontalAlign="start"
+        verticalAlign="center"
+        style={{ width: '100%' }}
+      />
+      <Stack
+        horizontal
+        className={HEADER_PORTAL_RIGHT_CLASSNAME.replace('.', '')}
+        horizontalAlign="end"
+        verticalAlign="center"
+        style={{ width: 'fit-content' }}
       />
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
         <li>
