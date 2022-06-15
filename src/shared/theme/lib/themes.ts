@@ -26,7 +26,7 @@ const alwaysBlack = 'rgba(0, 0, 0, alpha)'
 
 const red = 'rgba(231, 77, 60, alpha)'
 const blue = 'rgba(52, 152, 219, alpha)'
-const green = 'rgba(137, 184, 47, alpha)'
+const green = 'rgba(153, 229, 133, alpha)'
 const yellow = 'rgba(241, 196, 15, alpha)'
 const violet = 'rgba(187, 134, 252, alpha)'
 
