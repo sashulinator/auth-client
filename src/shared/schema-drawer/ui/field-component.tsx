@@ -43,6 +43,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
 
   return (
     <Field
+      destroyOnUnregister
       validate={(v) => validate?.(v)}
       type={сomponentItem.type}
       name={injectedComp.name}
