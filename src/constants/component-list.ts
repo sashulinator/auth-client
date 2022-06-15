@@ -113,7 +113,7 @@ const componentList: Record<string, CompMeta> = {
   },
 
   Table: {
-    type: 'input',
+    type: 'content',
     component: Table,
   },
 

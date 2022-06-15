@@ -8,6 +8,7 @@ type CollapseProps = {
   labelExpanded: string
   labelCollapsed: string
   isExpanded: boolean
+  'data-comp-id': string
 }
 
 export const Collapse = (props: CollapseProps) => {
@@ -16,9 +17,20 @@ export const Collapse = (props: CollapseProps) => {
   })
 
   return (
-    <div>
+    <div data-comp-id={props['data-comp-id']}>
       <ActionButton
         {...getToggleProps()}
+        styles={{
+          root: {
+            paddingLeft: '0',
+          },
+          icon: {
+            marginLeft: '0',
+          },
+          label: {
+            color: 'var(--themePrimary)',
+          },
+        }}
         iconProps={{ iconName: isExpanded ? 'ChevronDown' : 'ChevronRight' }}
         onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
       >
