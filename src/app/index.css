@@ -8,10 +8,6 @@ body,
   grid-template-columns: 1fr;
 }
 
-body {
-  zoom: 90%;
-}
-
 .headerOnlyLayout {
   display: grid;
   grid-template-areas:

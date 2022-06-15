@@ -240,6 +240,8 @@ export const actionList: Catalog<ActionBindingMeta> = {
           defaultValue: false,
           props: {
             label: 'value',
+            defaultValue: false,
+            dontConverFalseToUndefined: true,
           },
           title: 'value',
           compSchemaId: BasicComponentsNames.Checkbox,
