@@ -15,25 +15,27 @@ export function buildTree(
     return undefined
   }
 
+  const { searchQuery } = additionalData
+
   const rootTreeItem = {
     id: 'rootId',
     isExpanded: true,
     children: [ROOT_ID],
   }
 
-  const treeItems = buildBranchesFromComps({}, ROOT_ID)
+  let allBranches: Record<string, TreeItem & { parentId?: string }> = {}
+  let queriedBranches: Record<string, TreeItem> = {}
+  const parentIds: string[] = []
 
-  function buildBranchesFromComps(
-    acc: Record<string, TreeItem> | undefined,
-    id: string
-  ): Record<string, TreeItem> | undefined {
+  buildBranchesFromComps(ROOT_ID)
+
+  function buildBranchesFromComps(id: string, parentId?: string) {
     const comp = comps?.[id]
     assertNotUndefined(comp)
 
-    const childrenTreeItems = comp?.children?.reduce(buildBranchesFromComps, acc)
     const currentTreeItem = currentTree?.items[id]
 
-    const treeItem = {
+    const treeItem: TreeItem = {
       ...comp,
       id: comp.id,
       isExpanded: currentTreeItem?.isExpanded ?? true,
@@ -42,10 +44,45 @@ export function buildTree(
       hasChildren: comp.children !== undefined,
     }
 
-    return { ...childrenTreeItems, ...acc, [id]: treeItem }
+    if (!searchQuery) {
+      queriedBranches = { ...queriedBranches, [id]: { ...treeItem } }
+    } else {
+      allBranches = { ...allBranches, [id]: { ...treeItem, parentId } }
+
+      if (comp.title.match(searchQuery)) {
+        queriedBranches = { ...queriedBranches, [id]: { ...treeItem } }
+        addParentsToQueriedBranches(parentId)
+      }
+    }
+
+    if (comp.children) {
+      for (let index = 0; index < comp.children.length; index++) {
+        buildBranchesFromComps(comp.children[index] as string, comp.id)
+      }
+    }
+
+    if (searchQuery && comp.title.match(searchQuery)) {
+      queriedBranches = { ...queriedBranches, [id]: { ...treeItem, children: [] } }
+      parentId && parentIds.push(parentId)
+    }
   }
 
-  const items = { rootId: rootTreeItem, ...treeItems }
+  function addParentsToQueriedBranches(id?: string | number) {
+    if (id === undefined) {
+      return
+    }
+    const treeItem = allBranches[id]
+    assertNotUndefined(treeItem)
+    queriedBranches = {
+      ...queriedBranches,
+      [id]: { ...treeItem, children: treeItem.children.filter((id) => queriedBranches[id]) },
+    }
+    addParentsToQueriedBranches(treeItem.parentId)
+  }
+
+  parentIds.forEach(addParentsToQueriedBranches)
+
+  const items = { rootId: rootTreeItem, ...queriedBranches }
 
   return {
     rootId: ROOT_ID,

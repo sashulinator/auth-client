@@ -6,7 +6,7 @@ import './tree-panel.css'
 
 import { buildTree } from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { ROOT_ID } from '@/constants/common'
@@ -27,7 +27,7 @@ interface TreePanelProps {
   schemas: Catalog<CompSchema> | null
 }
 
-function TreePanel(props: TreePanelProps): JSX.Element {
+export default memo(function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
   const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 500)
 
@@ -147,6 +147,4 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       </LoadingAria>
     </PerfectScrollbar>
   )
-}
-
-export default TreePanel
+})
