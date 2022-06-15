@@ -39,7 +39,9 @@ export function assertMatchPattern(v: unknown, assertionProps: AssertMatchPatter
   const { context } = meta?.payload
   const targetValue = context.formProps.form.getFieldState(assertionProps.name)?.value
 
-  const isMatch = new RegExp(assertionProps.pattern).test(targetValue?.toString())
+  const value = Array.isArray(targetValue) ? targetValue.join(' ') : targetValue
+
+  const isMatch = new RegExp(assertionProps.pattern).test(value?.toString())
 
   if (!isMatch) {
     throw new Error('Does not match the pattern')
