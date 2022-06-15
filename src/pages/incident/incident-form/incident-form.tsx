@@ -1,10 +1,10 @@
+import './incident-form.css'
+
 import React from 'react'
 import { Form } from 'react-final-form'
-import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
 import uuid from 'uuid-random'
 
-import { createIncident, getIncident } from '@/api/incident'
+import { createIncident } from '@/api/incident'
 import componentList from '@/constants/component-list'
 import { Incident } from '@/entities/incident/model/types'
 import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
@@ -12,13 +12,11 @@ import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
 interface IncidentFormProps {
   schema: CompSchema
   schemas: Catalog<CompSchema>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  incident: any
 }
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
-  const { id } = useParams()
-
-  const { data } = useQuery(['schema', id], getIncident)
-
   async function onSubmit(data: Incident) {
     const resData = await createIncident({
       id: uuid(),
@@ -35,26 +33,24 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
   }
 
   return (
-    <div className="IncidentForm">
-      <Form
-        initialValues={data}
-        onSubmit={onSubmit}
-        render={(formProps) => {
-          return (
-            <form onSubmit={formProps.handleSubmit}>
-              <SchemaDrawer
-                componentList={componentList}
-                schema={props.schema}
-                schemas={props.schemas}
-                context={{
-                  formState: formProps.form.getState(),
-                  formProps,
-                }}
-              />
-            </form>
-          )
-        }}
-      />
-    </div>
+    <Form
+      initialValues={props.incident}
+      onSubmit={onSubmit}
+      render={(formProps) => {
+        return (
+          <form onSubmit={formProps.handleSubmit}>
+            <SchemaDrawer
+              componentList={componentList}
+              schema={props.schema}
+              schemas={props.schemas}
+              context={{
+                formState: formProps.form.getState(),
+                formProps,
+              }}
+            />
+          </form>
+        )
+      }}
+    />
   )
 }

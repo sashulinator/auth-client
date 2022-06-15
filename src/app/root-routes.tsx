@@ -5,8 +5,8 @@ import React, { FC } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import FormConstructor from '@/pages/form-constructor/form-constructor'
-import IncidentPage from '@/pages/incident'
 import IncidentListPage from '@/pages/incident-list'
+import IncidentFormPage from '@/pages/incident/incident-form'
 import LoginPage from '@/pages/login'
 import SchemaListPage from '@/pages/schema-list'
 import Nav from '@/shared/nav'
@@ -32,8 +32,8 @@ const RootRoutes: FC = () => {
         <Route path={ROUTES.FORM_CONSTRUCTOR.PATH} element={<FormConstructor />}>
           <Route path=":id" element={<FormConstructor />} />
         </Route>
-        <Route path={ROUTES.INCIDENT.PATH} element={<IncidentPage />}>
-          <Route path=":id" element={<IncidentPage />} />
+        <Route path={ROUTES.CREATE_INCIDENT.PATH} element={<IncidentFormPage />}>
+          <Route path=":id" element={<IncidentFormPage />} />
         </Route>
         <Route path={ROUTES.INCIDENT_LIST.PATH} element={<IncidentListPage />} />
         <Route path={ROUTES.SCHEMA_LIST.PATH} element={<SchemaListPage />} />

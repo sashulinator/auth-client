@@ -12,7 +12,9 @@ const ROUTES = {
 
   INCIDENT_LIST: new Route({ name: 'Incidents', path: '/incident-list' }),
 
-  INCIDENT: new Route({ name: 'Incident', path: '/incident' }),
+  CREATE_INCIDENT: new Route({ name: 'Incident', path: '/incident' }),
+
+  INCIDENT: new Route({ name: 'Incident', path: '/incident/:id' }),
 
   // return id ? `${this.PATH}/${id}` : this.PATH
 }
