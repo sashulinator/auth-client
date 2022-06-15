@@ -1,3 +1,17 @@
 .ms-DetailsList-headerWrapper > div {
   padding: 0;
 }
+
+div.ms-DetailsHeader-cellName *,
+div.ms-DetailsHeader-cellTitle * {
+  background-color: var(--neutralLighter);
+}
+
+.ms-DetailsList .ms-DetailsHeader {
+  background-color: var(--neutralLighterAlt);
+}
+
+.ms-DetailsList {
+  border: 1px solid var(--black02);
+  border-radius: 2px;
+}
