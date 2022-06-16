@@ -25,6 +25,7 @@ const componentList: Record<string, CompMeta> = {
   ValidatorPicker: {
     type: 'input',
     component: ValidatorPicker,
+    iconName: 'Robot',
   },
 
   // Checkboxes
@@ -32,6 +33,7 @@ const componentList: Record<string, CompMeta> = {
   [BasicComponentsNames.Checkbox]: {
     type: 'checkbox',
     component: Checkbox,
+    iconName: 'CheckboxComposite',
   },
 
   // Inputs
@@ -39,46 +41,55 @@ const componentList: Record<string, CompMeta> = {
   [BasicComponentsNames.TextField]: {
     type: 'input',
     component: CustomTextField,
+    iconName: 'TextField',
   },
 
   [BasicComponentsNames.NumberField]: {
     type: 'input',
     component: CustomNumberField,
+    iconName: 'NumberField',
   },
 
   DatePicker: {
     type: 'input',
     component: CustomDatePicker,
+    iconName: 'DateTime',
   },
 
   EventBindingEditor: {
     type: 'input',
     component: EventBindingEditor,
+    iconName: 'TouchPointer',
   },
 
   Fetcher: {
     type: 'input',
     component: Fetcher,
+    iconName: 'OpenFile',
   },
 
   JSONEditor: {
     type: 'input',
     component: JSONEditor,
+    iconName: 'FileCode',
   },
 
   [BasicComponentsNames.Dropdown]: {
     type: 'input',
     component: Dropdown,
+    iconName: 'Dropdown',
   },
 
   DropdownMultipleSelect: {
     type: 'input',
     component: DropdownMultipleSelect,
+    iconName: 'Dropdown',
   },
 
   MultiCheckbox: {
     type: 'input',
     component: MultiCheckbox,
+    iconName: 'MultiSelect',
   },
 
   // Contents
@@ -86,71 +97,85 @@ const componentList: Record<string, CompMeta> = {
   Portal: {
     type: 'content',
     component: Portal,
+    iconName: 'Sprint',
   },
 
   [BasicComponentsNames.Stack]: {
     type: 'content',
     component: Stack,
+    iconName: 'Stack',
   },
 
   Collapse: {
     type: 'content',
     component: Collapse,
+    iconName: 'NavigationFlipper',
   },
 
   HorizontalLine: {
     type: 'content',
     component: HorizontalLine,
+    iconName: 'Remove',
   },
 
   PrimaryButton: {
     type: 'content',
     component: PrimaryButton,
+    iconName: 'ButtonControl',
   },
 
   Text: {
     type: 'content',
     component: Text,
+    iconName: 'TextOverflow',
   },
 
   Link: {
     type: 'content',
     component: Link,
+    iconName: 'Link',
   },
 
   Table: {
     type: 'content',
     component: Table,
+    iconName: 'Table',
   },
 
   Label: {
     type: 'content',
     component: Label,
+    iconName: 'Label',
   },
 
   Pivot: {
     type: 'content',
     component: Pivot,
+    iconName: 'BrowserTab',
   },
 
   PivotItem: {
     type: 'content',
     component: PivotItem,
+    iconName: 'TabOneColumn',
   },
 
   IconButton: {
     type: 'content',
     component: IconButton,
+    iconName: 'ButtonControl',
   },
 
   ActionButton: {
     type: 'content',
     component: ActionButton,
+    iconName: 'ButtonControl',
   },
 
   SearchBox: {
     type: 'content',
     component: SearchBox,
+    iconName: 'Search',
   },
 }
 

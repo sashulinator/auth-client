@@ -1,9 +1,10 @@
 import { IButtonStyles, Icon, IconButton, Stack, Text } from '@fluentui/react'
 
-import getIconName from '../lib/get-icon-name'
 import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
 import React from 'react'
+
+import componentList from '@/constants/component-list'
 
 const buttonStyles: IButtonStyles = {
   rootHovered: {
@@ -21,6 +22,8 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
   const isOneOfMultipleDragging =
     props.snapshot.isDragging && isPicked && props.item.data && props.item.data.pickedIds.length > 1
 
+  const schema = props.item.data?.schemas?.[props.item.data?.comp.compSchemaId]
+  const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
   return (
     <div
       role="button"
@@ -58,10 +61,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
           }}
           className={clsx('treeLeafText')}
         >
-          <Icon
-            iconName={getIconName(props.item.data?.schemas, props.item.data?.comp)}
-            style={{ marginRight: '8px' }}
-          />
+          <Icon iconName={iconName} style={{ marginRight: '8px' }} />
           {isOneOfMultipleDragging
             ? `multiple ${props.item.data?.pickedIds.length || ''}`
             : props.item.data?.comp.title || ''}

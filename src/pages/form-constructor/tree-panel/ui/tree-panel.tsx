@@ -29,7 +29,7 @@ interface TreePanelProps {
 function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.selectedCompIds])
+  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.selectedCompIds])
 
   function rebuildTree(): TreeData | undefined {
     return buildTree(tree, props.schema.comps, {

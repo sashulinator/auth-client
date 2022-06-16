@@ -54,6 +54,7 @@ export type ComponentCompSchema = Omit<CompSchema, 'componentName'> & {
 export interface CompMeta {
   type: 'checkbox' | 'input' | 'content' // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: any
+  iconName: string
 }
 
 /**
