@@ -3,7 +3,11 @@ import { findSchemaDependencies } from './find-schema-dependencies'
 import { Catalog, CompSchema } from '@/shared/schema-drawer'
 
 export function findMissingSchemaIds(schema: CompSchema, schemas: Catalog<CompSchema> | null) {
-  if (!schemas) {
+  if (schemas === null) {
+    return []
+  }
+
+  if (schemas && Object.keys(schemas).length === 1) {
     return findSchemaDependencies(schema.comps)
   }
 

@@ -6,7 +6,8 @@ import { ROOT_ID } from '@/constants/common'
 import { insert, remove, replace, replaceById } from '@/lib/change-unmutable'
 import { Catalog } from '@/shared/schema-drawer'
 
-export interface Entity {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface Entity extends Record<string, any> {
   id: string
   children?: string[]
 }
@@ -126,7 +127,7 @@ export function findEntities<T extends Entity>(ids: string[], entities: Catalog<
 export function filterEntities<T extends Entity>(entities: Catalog<T>, cb: (entity: T) => unknown): Catalog<T> {
   return Object.values(entities)
     .filter(cb)
-    .reduce<Catalog<T>>((acc, id) => {
+    .reduce<Catalog<T>>((acc, { id }) => {
       acc[id.toString()] = findEntity(id.toString(), entities)
       return acc
     }, {})

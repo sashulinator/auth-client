@@ -4,7 +4,7 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
 
-import { buildTree } from '../lib/build-tree'
+import { TreeAdditionalData } from '../types'
 import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -16,6 +16,7 @@ import { highlightHover, removeAllHoverHighlights } from '@/pages/form-construct
 import LoadingAria from '@/shared/loading-aria'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
+import { buildTree } from '@/shared/tree/lib/build-tree'
 
 interface TreePanelProps {
   selectAndUnselectComp: (compId: string | string[]) => void
@@ -24,15 +25,18 @@ interface TreePanelProps {
   upsertComps: (comps: Catalog<Comp>) => void
   isLoading: boolean
   schemas: Catalog<CompSchema> | null
+  searchQuery?: string
 }
 
-function TreePanel(props: TreePanelProps): JSX.Element {
+export default function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.selectedCompIds])
+  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds])
 
   function rebuildTree(): TreeData | undefined {
-    return buildTree(tree, props.schema.comps, {
+    return buildTree<TreeAdditionalData>(tree, props.schema.comps, {
+      searchQuery: props.searchQuery,
+      schemas: props.schemas,
       pickedIds: props.selectedCompIds,
       onItemClick,
       onMouseOver: highlightHover,
@@ -40,7 +44,6 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       onBlur: removeAllHoverHighlights,
       onMouseLeave: removeAllHoverHighlights,
       onKeyDown: selectOnEnterKey,
-      schemas: props.schemas,
     })
   }
 
@@ -138,5 +141,3 @@ function TreePanel(props: TreePanelProps): JSX.Element {
     </PerfectScrollbar>
   )
 }
-
-export default TreePanel

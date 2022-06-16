@@ -5,10 +5,10 @@ import React, { FC } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import FormConstructor from '@/pages/form-constructor/form-constructor'
-import IncidentListPage from '@/pages/incident-list'
+import IncidentListPage from '@/pages/incident-list/incident-list'
 import IncidentFormPage from '@/pages/incident/incident-form'
 import LoginPage from '@/pages/login'
-import SchemaListPage from '@/pages/schema-list'
+import SchemaListPage from '@/pages/schema-list/schema-list'
 import Nav from '@/shared/nav'
 import Header from '@/widgets/header'
 
