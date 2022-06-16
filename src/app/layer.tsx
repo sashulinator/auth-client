@@ -10,15 +10,16 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import DocumentTitle from './document-title'
 import RootRoutes from './root-routes'
 import React, { FC } from 'react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import { ToastContainer } from 'react-toastify'
 
 const RootLayer: FC = () => {
   return (
-    <>
+    <PerfectScrollbar className="RootScrollbar" style={{ zIndex: 300 }}>
       <DocumentTitle />
       <RootRoutes />
       <ToastContainer />
-    </>
+    </PerfectScrollbar>
   )
 }
 
