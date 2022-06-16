@@ -5,6 +5,9 @@ import clsx from 'clsx'
 import React from 'react'
 
 import componentList from '@/constants/component-list'
+import { isEnter } from '@/lib/key-events'
+import { Comp } from '@/shared/schema-drawer'
+import TextField from '@/shared/textfield'
 
 const buttonStyles: IButtonStyles = {
   rootHovered: {
@@ -16,13 +19,15 @@ const buttonStyles: IButtonStyles = {
 }
 
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
+  const comp = props.item.data?.comp as Comp
+
   const isPicked = props.item.data?.pickedIds.includes(props.item.data?.comp.id)
   const isExpandButton = props.item.hasChildren
   const searchQuery = props.item.data?.searchQuery || ''
+  const isEdited = props.item.data?.editId === props.item.data?.comp.id
 
   const isOneOfMultipleDragging =
     props.snapshot.isDragging && isPicked && props.item.data && props.item.data.pickedIds.length > 1
-
 
   const schema = props.item.data?.schemas?.[props.item.data?.comp.compSchemaId]
   const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
@@ -60,21 +65,38 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         <Text
           as="div"
           onClick={(e) => {
+            if (isEdited) {
+              return
+            }
             props.item.data?.onItemClick(e, props.item.data.comp.id)
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ;(document as any)?.activeElement?.blur()
           }}
+          onDoubleClick={() => props.item.data?.onDoubleClick(comp.id)}
           className={clsx('treeLeafText')}
         >
-          <Icon
-            iconName={iconName}
-            style={{ marginRight: '8px' }}
-          />
-          <div
-            dangerouslySetInnerHTML={{
-              __html: isOneOfMultipleDragging ? `multiple ${props.item.data?.pickedIds.length || ''}` : title,
-            }}
-          ></div>
+          <Icon iconName={iconName} style={{ marginRight: '8px' }} />
+          {isEdited ? (
+            <TextField
+              defaultValue={props.item.data?.comp.title}
+              onKeyDown={(e) => {
+                // TODO написать функцию создать файл event-action
+                // TODO добавить в него функцию getValue
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const value = (e.target as any).value
+                if (isEnter(e) && value) {
+                  props.item.data?.updateComp({ ...comp, title: value })
+                  props.item.data?.onDoubleClick(undefined)
+                }
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: isOneOfMultipleDragging ? `multiple ${props.item.data?.pickedIds.length || ''}` : title,
+              }}
+            ></div>
+          )}
         </Text>
       </Stack>
     </div>

@@ -117,6 +117,7 @@ const FormConstructor: FC = (): JSX.Element => {
     setSchemas({ [currentSchemaHistory.data.id]: currentSchemaHistory.data, ...schemas })
   }
 
+  // TODO rename to updateComp
   function updateCompInCurrentSchemaState(comp: Comp) {
     setCurrentSchemaHistory(updateCompSetter(comp))
   }
@@ -308,6 +309,7 @@ const FormConstructor: FC = (): JSX.Element => {
             selectedCompIds={selectedCompIds}
             isLoading={isCurrentSchemaLoading}
             searchQuery={searchQuery}
+            updateComp={updateCompInCurrentSchemaState}
           />
         </div>
         <div className="PreviewPanel">
