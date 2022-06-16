@@ -2,6 +2,7 @@ import { setPreviousRoute } from '@savchenko91/rc-route-constant'
 
 import ROUTES from '../constants/routes'
 import React, { FC } from 'react'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import FormConstructor from '@/pages/form-constructor/form-constructor'
@@ -25,7 +26,7 @@ const RootRoutes: FC = () => {
   }
 
   return (
-    <>
+    <PerfectScrollbar className="RootScrollbar">
       <Nav />
       <Header />
       <Routes>
@@ -39,7 +40,7 @@ const RootRoutes: FC = () => {
         <Route path={ROUTES.SCHEMA_LIST.PATH} element={<SchemaListPage />} />
         <Route path={ROUTES.LOGIN.PATH} element={<LoginPage />} />
       </Routes>
-    </>
+    </PerfectScrollbar>
   )
 }
 
