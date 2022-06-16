@@ -22,7 +22,7 @@ export function CompContextualMenu(props: CompContextualMenuProps): JSX.Element 
   if (props.comp.id !== ROOT_ID) {
     items.push({
       key: 'remove',
-      text: t('buttons.remove'),
+      text: t('t.buttons.remove'),
       onClick: () => props.remove(props.comp.id),
     })
   }
@@ -30,7 +30,7 @@ export function CompContextualMenu(props: CompContextualMenuProps): JSX.Element 
   if (props.schemas?.[props.comp.compSchemaId]) {
     items.push({
       key: 'editThisForm',
-      text: t('formConstructorPage.editThisForm'),
+      text: t('t.formConstructorPage.editThisForm'),
       onClick: () => props.openSchemaInNewTab(props.comp.compSchemaId),
     })
   }

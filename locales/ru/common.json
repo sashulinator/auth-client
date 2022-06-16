@@ -1,141 +1,149 @@
 {
-  "locale": "ru-RU",
-  "messages": {
-    "saved": "Сохранено"
-  },
-  "fieldNames": {
-    "name": "имя",
-    "title": "заголовок"
-  },
-  "pagesNames": {
-    "createUser": "Создать пользователя",
-    "userList": "Пользователи",
-    "login": "Логин",
-    "formConstructor": "Конструктор форм"
-  },
-  "userPage": {
-    "searchByNameEmail": "Искать по имени и email",
-    "createUser": "Создать пользователя",
-    "editUser": "Редактировать пользователя",
-    "users": "пользователей",
-    "pages": "страниц"
-  },
-  "formConstructorPage": {
-    "bindings": "Связывание",
-    "addBindings": "Добавить связывание",
-    "editThisForm": "Редактировать эту форму"
-  },
-  "buttons": {
-    "add": "Добавить",
-    "ok": "Ок",
-    "cancel": "Отмена",
-    "edit": "Редактировать",
-    "create": "Создать",
-    "save": "Сохранить",
-    "saving": "Сохраняется...",
-    "toggleSelection": "Переключить выделение",
-    "toggleSelectionForAll": "Переключить выделение для всего списка",
-    "filter": "Фильтр",
-    "close": "Закрыть",
-    "remove": "Удалить",
-    "logout": "Выйти",
-    "login": "Войти"
-  },
-  "pagination": {
-    "firstPage": "Перейти на первую страницу",
-    "previousPage": "Перейти на предыдущую страницу",
-    "currentPage": "Текущая страница",
-    "nextPage": "Перейти на следующую страницу",
-    "lastPage": "Перейти на последнюю страницу"
-  },
-  "entities": {
-    "user": {
-      "fullname": "имя",
-      "username": "имя пользователя",
-      "password": "пароль",
-      "email": "email",
-      "createdAt": "создан",
-      "updatedAt": "обновлен",
-      "id": "id"
+  "t": {
+    "locale": "ru-RU",
+    "messages": {
+      "saved": "Сохранено"
+    },
+    "labels": {
+      "field": "Поле",
+      "main": "основное",
+      "name": "имя",
+      "styles": "стиль",
+      "style": "стили",
+      "props": "параметры",
+      "layout": "расположение",
+      "title": "заголовок"
+    },
+    "pagesNames": {
+      "createUser": "Создать пользователя",
+      "userList": "Пользователи",
+      "login": "Логин",
+      "formConstructor": "Конструктор форм"
+    },
+    "userPage": {
+      "searchByNameEmail": "Искать по имени и email",
+      "createUser": "Создать пользователя",
+      "editUser": "Редактировать пользователя",
+      "users": "пользователей",
+      "pages": "страниц"
+    },
+    "formConstructorPage": {
+      "bindings": "Связывание",
+      "addBindings": "Добавить связывание",
+      "editThisForm": "Редактировать эту форму"
+    },
+    "buttons": {
+      "add": "Добавить",
+      "ok": "Ок",
+      "cancel": "Отмена",
+      "edit": "Редактировать",
+      "create": "Создать",
+      "save": "Сохранить",
+      "saving": "Сохраняется...",
+      "toggleSelection": "Переключить выделение",
+      "toggleSelectionForAll": "Переключить выделение для всего списка",
+      "filter": "Фильтр",
+      "close": "Закрыть",
+      "remove": "Удалить",
+      "logout": "Выйти",
+      "login": "Войти"
+    },
+    "pagination": {
+      "firstPage": "Перейти на первую страницу",
+      "previousPage": "Перейти на предыдущую страницу",
+      "currentPage": "Текущая страница",
+      "nextPage": "Перейти на следующую страницу",
+      "lastPage": "Перейти на последнюю страницу"
+    },
+    "entities": {
+      "user": {
+        "fullname": "имя",
+        "username": "имя пользователя",
+        "password": "пароль",
+        "email": "email",
+        "createdAt": "создан",
+        "updatedAt": "обновлен",
+        "id": "id"
+      }
+    },
+    "unknownError": "неизвестная ошибка",
+    "serverInvalidData": "Полученны невалидные данные от сервера",
+    "P2002": "уже существует",
+    "searchByNameEmail": "Поиск по имени и email",
+    "assertString": "обязательно",
+    "assertNotMoreThan": "больше чем {{- _input2}}",
+    "assertNotUndefined": "обязательно",
+
+    "FORM": "форма",
+    "PRESET": "пресет",
+    "COMP": "компонент",
+
+    "assertMatchPattern": "не следует паттерну: {{- _input2}}",
+    "assertMatchPattern/@.*\\.*./": "введенный текст не является email",
+    "assertMatchPattern/[A-Z]/": "должен содержать символ в верхнем регистре",
+    "assertMatchPattern/[a-z]/": "должен содержать символ в нижнем регистре",
+    "assertMatchPattern/[0-9]/": "должен содержать цифру",
+    "assertMatchPattern@.*\\.*.": "введенный текст не является email",
+    "assertMatchPattern[A-Z]": "должен содержать символ в верхнем регистре",
+    "assertMatchPattern[a-z]": "должен содержать символ в нижнем регистре",
+    "assertMatchPattern[0-9]": "должен содержать цифру",
+
+    "assertIgnorePattern/\\W+/": "может содержать только буквы и <nobr>символы\"_\"</nobr>",
+
+    "calendar": {
+      "firstDayOfTheWeek": 1,
+
+      "months": {
+        "January": "Январь",
+        "February": "Февраль",
+        "March": "Март",
+        "April": "Апрель",
+        "May": "Май",
+        "June": "Июнь",
+        "July": "Июль",
+        "August": "Август",
+        "September": "Сентябрь",
+        "October": "Октябрь",
+        "November": "Ноябрь",
+        "December": "Декабрь"
+      },
+      "shortMonths": {
+        "Jan": "Янв",
+        "Feb": "Фев",
+        "Mar": "Мар",
+        "Apr": "Апр",
+        "May": "Май",
+        "Jun": "Июн",
+        "Jul": "Июл",
+        "Aug": "Авг",
+        "Sep": "Сен",
+        "Oct": "Окт",
+        "Nov": "Ноя",
+        "Dec": "Дек"
+      },
+      "days": {
+        "Sunday": "Воскресение",
+        "Monday": "Понедельник",
+        "Tuesday": "Вторник",
+        "Wednesday": "Среда",
+        "Thursday": "Четверг",
+        "Friday": "Пятница",
+        "Saturday": "Суббота"
+      },
+      "shortDays": {
+        "Sunday": "В",
+        "Monday": "П",
+        "Tuesday": "В",
+        "Wednesday": "С",
+        "Thursday": "Ч",
+        "Friday": "П",
+        "Saturday": "С"
+      },
+      "goToToday": "К сегодняшнему дню",
+      "prevMonthAriaLabel": "К предыдущему месяцу",
+      "nextMonthAriaLabel": "К следующему месяцу",
+      "prevYearAriaLabel": "К предыдущему году",
+      "nextYearAriaLabel": "К следующему году"
     }
-  },
-  "unknownError": "неизвестная ошибка",
-  "serverInvalidData": "Полученны невалидные данные от сервера",
-  "P2002": "уже существует",
-  "searchByNameEmail": "Поиск по имени и email",
-  "assertString": "обязательно",
-  "assertNotMoreThan": "больше чем {{- _input2}}",
-  "assertNotUndefined": "обязательно",
-
-  "FORM": "форма",
-  "PRESET": "пресет",
-  "COMP": "компонент",
-
-  "assertMatchPattern": "не следует паттерну: {{- _input2}}",
-  "assertMatchPattern/@.*\\.*./": "введенный текст не является email",
-  "assertMatchPattern/[A-Z]/": "должен содержать символ в верхнем регистре",
-  "assertMatchPattern/[a-z]/": "должен содержать символ в нижнем регистре",
-  "assertMatchPattern/[0-9]/": "должен содержать цифру",
-  "assertMatchPattern@.*\\.*.": "введенный текст не является email",
-  "assertMatchPattern[A-Z]": "должен содержать символ в верхнем регистре",
-  "assertMatchPattern[a-z]": "должен содержать символ в нижнем регистре",
-  "assertMatchPattern[0-9]": "должен содержать цифру",
-
-  "assertIgnorePattern/\\W+/": "может содержать только буквы и <nobr>символы\"_\"</nobr>",
-
-  "calendar": {
-    "firstDayOfTheWeek": 1,
-
-    "months": {
-      "January": "Январь",
-      "February": "Февраль",
-      "March": "Март",
-      "April": "Апрель",
-      "May": "Май",
-      "June": "Июнь",
-      "July": "Июль",
-      "August": "Август",
-      "September": "Сентябрь",
-      "October": "Октябрь",
-      "November": "Ноябрь",
-      "December": "Декабрь"
-    },
-    "shortMonths": {
-      "Jan": "Янв",
-      "Feb": "Фев",
-      "Mar": "Мар",
-      "Apr": "Апр",
-      "May": "Май",
-      "Jun": "Июн",
-      "Jul": "Июл",
-      "Aug": "Авг",
-      "Sep": "Сен",
-      "Oct": "Окт",
-      "Nov": "Ноя",
-      "Dec": "Дек"
-    },
-    "days": {
-      "Sunday": "Воскресение",
-      "Monday": "Понедельник",
-      "Tuesday": "Вторник",
-      "Wednesday": "Среда",
-      "Thursday": "Четверг",
-      "Friday": "Пятница",
-      "Saturday": "Суббота"
-    },
-    "shortDays": {
-      "Sunday": "В",
-      "Monday": "П",
-      "Tuesday": "В",
-      "Wednesday": "С",
-      "Thursday": "Ч",
-      "Friday": "П",
-      "Saturday": "С"
-    },
-    "goToToday": "К сегодняшнему дню",
-    "prevMonthAriaLabel": "К предыдущему месяцу",
-    "nextMonthAriaLabel": "К следующему месяцу",
-    "prevYearAriaLabel": "К предыдущему году",
-    "nextYearAriaLabel": "К следующему году"
   }
 }

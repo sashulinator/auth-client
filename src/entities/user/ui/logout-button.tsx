@@ -9,5 +9,5 @@ export default function LogoutButton(): JSX.Element {
   const { t } = useTranslation()
   const logout = useLogout()
 
-  return <PrimaryButton onClick={logout}>{t('buttons.logout').toString()}</PrimaryButton>
+  return <PrimaryButton onClick={logout}>{t('t.buttons.logout').toString()}</PrimaryButton>
 }

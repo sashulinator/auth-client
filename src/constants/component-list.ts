@@ -2,6 +2,7 @@ import { ActionButton, IconButton, Label, Link, PrimaryButton, SearchBox, Text }
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 import ValidatorPicker from '@/shared/assertion-binding-editor'
+import { Button } from '@/shared/button'
 import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
 import DatePicker from '@/shared/date-picker/date-picker'
@@ -93,6 +94,12 @@ const componentList: Record<string, CompMeta> = {
   },
 
   // Contents
+
+  Button: {
+    type: 'content',
+    component: Button,
+    iconName: 'ButtonControl',
+  },
 
   Portal: {
     type: 'content',
