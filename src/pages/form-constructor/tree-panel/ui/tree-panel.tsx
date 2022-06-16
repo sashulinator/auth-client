@@ -24,12 +24,13 @@ interface TreePanelProps {
   upsertComps: (comps: Catalog<Comp>) => void
   isLoading: boolean
   schemas: Catalog<CompSchema> | null
+  searchQuery?: string
 }
 
-function TreePanel(props: TreePanelProps): JSX.Element {
+export default function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.selectedCompIds])
+  useEffect(() => setTree(rebuildTree), [props.schema, props.selectedCompIds, props.searchQuery])
 
   function rebuildTree(): TreeData | undefined {
     return buildTree(tree, props.schema.comps, {
@@ -41,6 +42,7 @@ function TreePanel(props: TreePanelProps): JSX.Element {
       onMouseLeave: removeAllHoverHighlights,
       onKeyDown: selectOnEnterKey,
       schemas: props.schemas,
+      searchQuery: props.searchQuery,
     })
   }
 
@@ -138,5 +140,3 @@ function TreePanel(props: TreePanelProps): JSX.Element {
     </PerfectScrollbar>
   )
 }
-
-export default TreePanel

@@ -17,9 +17,12 @@ const buttonStyles: IButtonStyles = {
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
   const isPicked = props.item.data?.pickedIds.includes(props.item.data?.comp.id)
   const isExpandButton = props.item.hasChildren
+  const searchQuery = props.item.data?.searchQuery || ''
 
   const isOneOfMultipleDragging =
     props.snapshot.isDragging && isPicked && props.item.data && props.item.data.pickedIds.length > 1
+
+  const title = (props.item.data?.comp.title || '').replace(searchQuery, `<span class="query">${searchQuery}</span>`)
 
   return (
     <div
@@ -62,9 +65,11 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
             iconName={getIconName(props.item.data?.schemas, props.item.data?.comp)}
             style={{ marginRight: '8px' }}
           />
-          {isOneOfMultipleDragging
-            ? `multiple ${props.item.data?.pickedIds.length || ''}`
-            : props.item.data?.comp.title || ''}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: isOneOfMultipleDragging ? `multiple ${props.item.data?.pickedIds.length || ''}` : title,
+            }}
+          ></div>
         </Text>
       </Stack>
     </div>

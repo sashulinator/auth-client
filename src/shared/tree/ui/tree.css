@@ -133,3 +133,8 @@ div.NewTreeLeaf.isSelected .treeLeafContent {
 .NewTreeLeaf .button {
   margin: 2px;
 }
+
+.NewTreeLeaf .query {
+  background-color: var(--black);
+  color: var(--white);
+}
