@@ -1,21 +1,29 @@
 import { TreeData, TreeItem } from '@atlaskit/tree'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { TreeItemAdditionalData } from '../types'
-
 import { ROOT_ID } from '@/constants/common'
-import { Catalog, Comp } from '@/shared/schema-drawer'
+import { Entity } from '@/lib/entity-actions'
+import { Catalog } from '@/shared/schema-drawer'
 
-export function buildTree(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface AddiotioanlData extends Record<string, any> {
+  search?: {
+    query: string
+    keys: string[]
+  }
+}
+
+export function buildTree<TAdditionalData extends AddiotioanlData>(
   currentTree: TreeData | undefined,
-  comps: Catalog<Comp> | undefined,
-  additionalData: TreeItemAdditionalData
+  entities: Catalog<Entity> | undefined,
+  additionalData: TAdditionalData
 ): TreeData | undefined {
-  if (comps === undefined) {
+  if (entities === undefined) {
     return undefined
   }
 
-  const { searchQuery } = additionalData
+  const searchQuery = additionalData.search?.query
+  const searchKeys = additionalData.search?.keys
 
   const rootTreeItem = {
     id: 'rootId',
@@ -30,18 +38,18 @@ export function buildTree(
   buildBranchesFromComps(ROOT_ID)
 
   function buildBranchesFromComps(id: string, parentId?: string) {
-    const comp = comps?.[id]
-    assertNotUndefined(comp)
+    const entity = entities?.[id]
+    assertNotUndefined(entity)
 
     const currentTreeItem = currentTree?.items[id]
 
     const treeItem: TreeItem = {
-      ...comp,
-      id: comp.id,
+      ...entity,
+      id: entity.id,
       isExpanded: currentTreeItem?.isExpanded ?? true,
-      data: { comp, ...additionalData },
-      children: comp.children || [],
-      hasChildren: comp.children !== undefined,
+      data: { comp: entity, ...additionalData },
+      children: entity.children || [],
+      hasChildren: entity.children !== undefined,
     }
 
     if (!searchQuery) {
@@ -49,19 +57,27 @@ export function buildTree(
     } else {
       allBranches = { ...allBranches, [id]: { ...treeItem, parentId } }
 
-      if (comp.title.match(searchQuery)) {
-        queriedBranches = { ...queriedBranches, [id]: { ...treeItem } }
-        addParentsToQueriedBranches(parentId)
+      if (!searchKeys?.length) {
+        throw new Error('Search query was provided but not keys to search by')
+      }
+
+      for (let index = 0; index < searchKeys.length; index++) {
+        const key = searchKeys[index] as string
+
+        if (entity[key]?.match(searchQuery)) {
+          queriedBranches = { ...queriedBranches, [id]: { ...treeItem } }
+          addParentsToQueriedBranches(parentId)
+        }
       }
     }
 
-    if (comp.children) {
-      for (let index = 0; index < comp.children.length; index++) {
-        buildBranchesFromComps(comp.children[index] as string, comp.id)
+    if (entity.children) {
+      for (let index = 0; index < entity.children.length; index++) {
+        buildBranchesFromComps(entity.children[index] as string, entity.id)
       }
     }
 
-    if (searchQuery && comp.title.match(searchQuery)) {
+    if (searchQuery && entity.title.match(searchQuery)) {
       queriedBranches = { ...queriedBranches, [id]: { ...treeItem, children: [] } }
       parentId && parentIds.push(parentId)
     }

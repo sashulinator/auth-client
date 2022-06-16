@@ -4,7 +4,7 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
 
-import { buildTree } from '../lib/build-tree'
+import { TreeAdditionalData } from '../types'
 import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -16,6 +16,7 @@ import { highlightHover, removeAllHoverHighlights } from '@/pages/form-construct
 import LoadingAria from '@/shared/loading-aria'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
+import { buildTree } from '@/shared/tree/lib/build-tree'
 
 interface TreePanelProps {
   selectAndUnselectComp: (compId: string | string[]) => void
@@ -33,7 +34,9 @@ export default function TreePanel(props: TreePanelProps): JSX.Element {
   useEffect(() => setTree(rebuildTree), [props.schema, props.selectedCompIds, props.searchQuery])
 
   function rebuildTree(): TreeData | undefined {
-    return buildTree(tree, props.schema.comps, {
+    return buildTree<TreeAdditionalData>(tree, props.schema.comps, {
+      searchQuery: props.searchQuery,
+      schemas: props.schemas,
       pickedIds: props.selectedCompIds,
       onItemClick,
       onMouseOver: highlightHover,
@@ -41,8 +44,6 @@ export default function TreePanel(props: TreePanelProps): JSX.Element {
       onBlur: removeAllHoverHighlights,
       onMouseLeave: removeAllHoverHighlights,
       onKeyDown: selectOnEnterKey,
-      schemas: props.schemas,
-      searchQuery: props.searchQuery,
     })
   }
 

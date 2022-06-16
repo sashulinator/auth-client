@@ -6,7 +6,8 @@ import { ROOT_ID } from '@/constants/common'
 import { insert, remove, replace, replaceById } from '@/lib/change-unmutable'
 import { Catalog } from '@/shared/schema-drawer'
 
-export interface Entity {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface Entity extends Record<string, any> {
   id: string
   children?: string[]
 }
