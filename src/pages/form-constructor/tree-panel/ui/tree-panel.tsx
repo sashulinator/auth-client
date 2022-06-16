@@ -1,18 +1,17 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton, SearchBox } from '@fluentui/react'
+import { ActionButton } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
 
 import { buildTree } from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'
-import React, { memo, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
-import { useDebounce } from '@/lib/use-debaunce'
 import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
@@ -25,13 +24,13 @@ interface TreePanelProps {
   upsertComps: (comps: Catalog<Comp>) => void
   isLoading: boolean
   schemas: Catalog<CompSchema> | null
+  searchQuery?: string
 }
 
-export default memo(function TreePanel(props: TreePanelProps): JSX.Element {
+export default function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
-  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 500)
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.selectedCompIds, searchQuery])
+  useEffect(() => setTree(rebuildTree), [props.schema, props.selectedCompIds, props.searchQuery])
 
   function rebuildTree(): TreeData | undefined {
     return buildTree(tree, props.schema.comps, {
@@ -43,7 +42,7 @@ export default memo(function TreePanel(props: TreePanelProps): JSX.Element {
       onMouseLeave: removeAllHoverHighlights,
       onKeyDown: selectOnEnterKey,
       schemas: props.schemas,
-      searchQuery,
+      searchQuery: props.searchQuery,
     })
   }
 
@@ -108,32 +107,25 @@ export default memo(function TreePanel(props: TreePanelProps): JSX.Element {
     <PerfectScrollbar className="treePanelScrollable">
       <LoadingAria loading={props.isLoading} label="Schema loading...">
         {!props.isLoading && (
-          <>
-            <SearchBox
-              onChange={(ev, value) => {
-                setFilterString(value)
-              }}
-            />
-            <ActionButton
-              styles={{
-                root: {
-                  borderRadius: '0',
-                  width: '100%',
-                  backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                    ? 'var(--themePrimaryTransparent03)'
-                    : 'transparent',
-                },
-                rootHovered: {
-                  backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                    ? 'var(--themePrimaryTransparent03)'
-                    : 'var(--themePrimaryTransparent01)',
-                },
-              }}
-              onClick={() => props.selectAndUnselectComp([ROOT_ID])}
-            >
-              ROOT
-            </ActionButton>
-          </>
+          <ActionButton
+            styles={{
+              root: {
+                borderRadius: '0',
+                width: '100%',
+                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
+                  ? 'var(--themePrimaryTransparent03)'
+                  : 'transparent',
+              },
+              rootHovered: {
+                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
+                  ? 'var(--themePrimaryTransparent03)'
+                  : 'var(--themePrimaryTransparent01)',
+              },
+            }}
+            onClick={() => props.selectAndUnselectComp([ROOT_ID])}
+          >
+            ROOT
+          </ActionButton>
         )}
         {tree && (
           <Tree
@@ -147,4 +139,4 @@ export default memo(function TreePanel(props: TreePanelProps): JSX.Element {
       </LoadingAria>
     </PerfectScrollbar>
   )
-})
+}

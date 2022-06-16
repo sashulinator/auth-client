@@ -1,4 +1,4 @@
-import { FontIcon, PrimaryButton, Stack } from '@fluentui/react'
+import { FontIcon, PrimaryButton, SearchBox, Stack } from '@fluentui/react'
 import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './form-constructor.css'
@@ -9,7 +9,7 @@ import KeyListener from './key-listener'
 import PaletteModal, { paletteModalState } from './palette-modal'
 import Preview from './preview'
 import TreePanel from './tree-panel'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useMemo } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState } from 'recoil'
@@ -43,6 +43,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
+import { useDebounce } from '@/lib/use-debaunce'
 import ResizeTarget from '@/shared/resize-target'
 import { Catalog, Comp } from '@/shared/schema-drawer'
 
@@ -50,6 +51,7 @@ const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
   const navigate = useNavigate()
 
+  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 0)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
   const [schemas, setSchemas] = useRecoilState(schemasState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
@@ -58,7 +60,9 @@ const FormConstructor: FC = (): JSX.Element => {
   const resetSchemas = useResetRecoilState(schemasState)
   const resetCurrentSchemaHistory = useResetRecoilState(currentSchemaHistoryState)
   const resetSelectedCompIds = useResetRecoilState(selectedCompIdsState)
-  const missingSchemaIds = findMissingSchemaIds(currentSchemaHistory.data, schemas)
+  const missingSchemaIds = useMemo(() => findMissingSchemaIds(currentSchemaHistory.data, schemas), [
+    currentSchemaHistory.data,
+  ])
   const propertyPanelComp = definePropertyPanelComp(currentSchemaHistory.data, selectedCompIds)
   const propertyPanelSchema = findCompSchema(propertyPanelComp, schemas)
   const context = {
@@ -284,7 +288,14 @@ const FormConstructor: FC = (): JSX.Element => {
       <Stack as="main" className="FormConstructor">
         <div className="TreePanel">
           <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
-          {!isDependencySchemasLoading && !isCurrentSchemaLoading && (
+          {!isCurrentSchemaLoading && (
+            <SearchBox
+              autoComplete="off"
+              className="treeSearchBox"
+              onChange={(ev: unknown, value?: string) => setFilterString(value)}
+            />
+          )}
+          {!isCurrentSchemaLoading && !isDependencySchemasLoading && (
             <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
               <FontIcon aria-label="Add Comp" iconName="Add" />
             </PrimaryButton>
@@ -296,6 +307,7 @@ const FormConstructor: FC = (): JSX.Element => {
             upsertComps={updateCompsInCurrentSchemaState}
             selectedCompIds={selectedCompIds}
             isLoading={isCurrentSchemaLoading}
+            searchQuery={searchQuery}
           />
         </div>
         <div className="PreviewPanel">
