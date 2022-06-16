@@ -17,7 +17,7 @@ import { Pivot, PivotItem } from '@/shared/pivot'
 import { BasicComponentsNames, CompMeta } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
 import Table from '@/shared/table'
-import CustomTextField from '@/shared/textfield'
+import TextField from '@/shared/textfield'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentList: Record<string, CompMeta> = {
@@ -41,7 +41,7 @@ const componentList: Record<string, CompMeta> = {
 
   [BasicComponentsNames.TextField]: {
     type: 'input',
-    component: CustomTextField,
+    component: TextField,
     iconName: 'TextField',
   },
 
