@@ -1,11 +1,20 @@
 import { DatePicker as FluentDatePicker, IDatePickerProps } from '@fluentui/react'
-import { isObject } from '@savchenko91/schema-validator'
+import { isStringifiedNumber } from '@savchenko91/schema-validator'
 
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-export default function DatePicker(props: IDatePickerProps): JSX.Element {
-  const isIcorrectData = isObject(props.value) && !(props.value instanceof Date)
+interface DatePickerProps extends Omit<IDatePickerProps, 'value' | 'onChange'> {
+  value?: string
+  onChange: (value: string) => void
+}
+
+export default function DatePicker(props: DatePickerProps): JSX.Element {
+  const { onChange, ...restProps } = props
+
+  const numberValue = isStringifiedNumber(props.value?.toString()) ? parseInt(props.value || '', 10) : undefined
+  const value = numberValue ? new Date(numberValue * 1000) : undefined
+
   const { t } = useTranslation()
 
   const strings = {
@@ -64,12 +73,16 @@ export default function DatePicker(props: IDatePickerProps): JSX.Element {
 
   return (
     <FluentDatePicker
-      {...props}
+      {...restProps}
       strings={strings}
-      value={isIcorrectData ? undefined : props.value}
+      value={value}
       onSelectDate={(e) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        props?.onChange?.(e as any)
+        if (!e) {
+          return
+        }
+
+        const unixTimestamp = e.getTime() / 1000
+        onChange(unixTimestamp.toString())
       }}
       formatDate={(date) => date?.toLocaleDateString(t('locale')) || ''}
       firstDayOfWeek={parseInt(t('calendar.firstDayOfTheWeek'), 10) ?? 1}

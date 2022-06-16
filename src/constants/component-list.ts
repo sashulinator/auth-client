@@ -4,7 +4,7 @@ import { generateOptionsFromObject } from '@/lib/generate-options'
 import ValidatorPicker from '@/shared/assertion-binding-editor'
 import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
-import CustomDatePicker from '@/shared/date-picker'
+import DatePicker from '@/shared/date-picker/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import EventBindingEditor from '@/shared/event-binding-editor'
 import Fetcher from '@/shared/fetcher'
@@ -48,7 +48,7 @@ const componentList: Record<string, CompMeta> = {
 
   DatePicker: {
     type: 'input',
-    component: CustomDatePicker,
+    component: DatePicker,
   },
 
   EventBindingEditor: {
