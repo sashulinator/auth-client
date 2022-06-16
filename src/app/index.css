@@ -9,6 +9,12 @@ body,
   grid-template-columns: 1fr;
 }
 
+.RootScrollbar {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+}
+
 .RootScrollbar > .ps__rail-y {
   z-index: 301;
 }
