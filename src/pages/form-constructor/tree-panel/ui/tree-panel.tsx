@@ -26,29 +26,42 @@ interface TreePanelProps {
   isLoading: boolean
   schemas: Catalog<CompSchema> | null
   searchQuery?: string
+  updateComp: (comp: Comp) => void
 }
 
 export default function TreePanel(props: TreePanelProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
+  const [editId, setEditId] = useState<string | undefined>()
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds])
+  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds, editId])
 
   function rebuildTree(): TreeData | undefined {
     return buildTree<TreeAdditionalData>(tree, props.schema.comps, {
       searchQuery: props.searchQuery,
       schemas: props.schemas,
       pickedIds: props.selectedCompIds,
+      editId,
       onItemClick,
+      onDoubleClick,
       onMouseOver: highlightHover,
       onFocus: highlightHover,
       onBlur: removeAllHoverHighlights,
       onMouseLeave: removeAllHoverHighlights,
       onKeyDown: selectOnEnterKey,
+      updateComp: props.updateComp,
     })
+  }
+
+  function onDoubleClick(compId?: string) {
+    setEditId(compId)
   }
 
   function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string) {
     assertString(compId)
+
+    if (props.selectedCompIds.includes(compId)) {
+      return
+    }
 
     if (isCtrl(e)) {
       props.selectAndUnselectComp(compId)
@@ -96,6 +109,7 @@ export default function TreePanel(props: TreePanelProps): JSX.Element {
    */
   function PreventMovingUnpickedItems(compId: string | number) {
     assertString(compId)
+    setEditId(undefined)
 
     if (props.selectedCompIds.includes(compId)) {
       return

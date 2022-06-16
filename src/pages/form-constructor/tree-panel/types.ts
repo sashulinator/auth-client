@@ -20,6 +20,9 @@ export interface TreeAdditionalData {
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
   schemas: Catalog<CompSchema> | null
   searchQuery?: string
+  editId?: string
+  onDoubleClick: (compId?: string) => void
+  updateComp: (comp: Comp) => void
 }
 
 export interface TreeItemData extends TreeAdditionalData {
