@@ -10,7 +10,7 @@ export interface TreeLeafProps extends RenderItemParams {
   }
 }
 
-export interface TreeItemAdditionalData {
+export interface TreeAdditionalData {
   onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
   pickedIds: string[]
   onMouseOver?: (itemId: string | number) => void
@@ -22,6 +22,6 @@ export interface TreeItemAdditionalData {
   searchQuery?: string
 }
 
-export interface TreeItemData extends TreeItemAdditionalData {
+export interface TreeItemData extends TreeAdditionalData {
   comp: Comp
 }
