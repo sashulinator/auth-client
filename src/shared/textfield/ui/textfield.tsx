@@ -1,13 +1,23 @@
-import { ITextFieldProps, TextField } from '@fluentui/react'
+import { ITextFieldProps, Icon, Label, TextField } from '@fluentui/react'
 
 import React, { forwardRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useAutoFocus } from '@/lib/use-autofocus'
+import Stack from '@/shared/stack'
+import { Tooltip } from '@/shared/tooltip'
 
-const CustomTextField = forwardRef<HTMLInputElement | null, ITextFieldProps & { autoFocusDelay?: number }>(
+interface TextFieldProps extends ITextFieldProps {
+  autoFocusDelay?: number
+  info?: string
+}
+
+const CustomTextField = forwardRef<HTMLInputElement | null, TextFieldProps>(
   (props, ref): JSX.Element => {
+    const { t } = useTranslation()
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { autoFocus, ...restProps } = props
+    const { autoFocus, label, info, required, ...restProps } = props
     const setRef = useAutoFocus({
       isAutoFocus: autoFocus,
       ref,
@@ -15,13 +25,29 @@ const CustomTextField = forwardRef<HTMLInputElement | null, ITextFieldProps & { 
     })
 
     return (
-      <TextField
-        autoComplete="off"
-        {...restProps}
-        onRenderInput={(inputProps) => {
-          return <input {...inputProps} ref={setRef} />
-        }}
-      />
+      <span className="f">
+        {label && !props.underlined && (
+          <Stack horizontal horizontalAlign="space-between" verticalAlign="end">
+            <Label required={required}>{t(label).toString()}</Label>
+            {info && (
+              <Stack style={{ marginBottom: '2px' }}>
+                <Tooltip text={info}>
+                  <Icon iconName="Info" style={{ fontWeight: 'bolder', opacity: '0.6' }} />
+                </Tooltip>
+              </Stack>
+            )}
+          </Stack>
+        )}
+        <TextField
+          autoComplete="off"
+          {...restProps}
+          label={props.underlined ? label : undefined}
+          required={props.underlined ? required : undefined}
+          onRenderInput={(inputProps) => {
+            return <input {...inputProps} ref={setRef} />
+          }}
+        />
+      </span>
     )
   }
 )

@@ -1,6 +1,9 @@
 import { Stack, Text } from '@fluentui/react'
 
 import React from 'react'
+import { useTranslation } from 'react-i18next'
+
+import capitalize from '@/lib/capitalize'
 
 interface HorizontalLineProps {
   color: string
@@ -9,6 +12,9 @@ interface HorizontalLineProps {
 
 export default function HorizontalLine(props: HorizontalLineProps): JSX.Element {
   const { color, label, ...restProps } = props
+
+  const { t } = useTranslation()
+
   return (
     <Stack verticalAlign="center" style={{ width: '100%' }} {...restProps}>
       <hr
@@ -25,7 +31,7 @@ export default function HorizontalLine(props: HorizontalLineProps): JSX.Element 
       />
       {props.label && (
         <Text variant="mediumPlus" styles={{ root: { padding: '24px 0 0 24px', margin: '0', color: 'var(--black)' } }}>
-          {label}
+          {capitalize(t(label).toString())}
         </Text>
       )}
     </Stack>

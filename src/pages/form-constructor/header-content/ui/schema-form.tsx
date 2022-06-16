@@ -102,7 +102,7 @@ export default function SchemaForm(): JSX.Element {
               {({ input, meta }) => {
                 return (
                   <div className="FieldErrorPositionRelative">
-                    <CustomTextField key="1" label={t(`fieldNames.title`)} underlined {...input} />
+                    <CustomTextField key="1" label={t(`t.labels.title`)} underlined {...input} />
                     <FieldError key="2" meta={meta} />
                   </div>
                 )
@@ -119,7 +119,7 @@ export default function SchemaForm(): JSX.Element {
               </Field>
             )}
             <PrimaryButton type="submit">
-              {id ? t('buttons.save').toString() : t('buttons.create').toString()}
+              {id ? t('t.buttons.save').toString() : t('t.buttons.create').toString()}
             </PrimaryButton>
           </Stack>
         )

@@ -2,6 +2,7 @@ import { ActionButton, IconButton, Label, Link, PrimaryButton, SearchBox, Text }
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 import ValidatorPicker from '@/shared/assertion-binding-editor'
+import { Button } from '@/shared/button'
 import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
 import DatePicker from '@/shared/date-picker/date-picker'
@@ -16,7 +17,7 @@ import { Pivot, PivotItem } from '@/shared/pivot'
 import { BasicComponentsNames, CompMeta } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
 import Table from '@/shared/table'
-import CustomTextField from '@/shared/textfield'
+import TextField from '@/shared/textfield'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentList: Record<string, CompMeta> = {
@@ -40,7 +41,7 @@ const componentList: Record<string, CompMeta> = {
 
   [BasicComponentsNames.TextField]: {
     type: 'input',
-    component: CustomTextField,
+    component: TextField,
     iconName: 'TextField',
   },
 
@@ -93,6 +94,12 @@ const componentList: Record<string, CompMeta> = {
   },
 
   // Contents
+
+  Button: {
+    type: 'content',
+    component: Button,
+    iconName: 'ButtonControl',
+  },
 
   Portal: {
     type: 'content',
