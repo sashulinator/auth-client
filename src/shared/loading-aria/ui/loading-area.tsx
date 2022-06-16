@@ -8,7 +8,7 @@ import React, { FC } from 'react'
 type LoadingAriaProps = {
   loading?: boolean
   top?: string
-  children: React.ReactNode
+  children?: React.ReactNode
   label?: string
 }
 

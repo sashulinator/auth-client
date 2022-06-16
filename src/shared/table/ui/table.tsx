@@ -29,13 +29,15 @@ export default function Table(props: TableProps): JSX.Element {
           {props.children}
         </Stack>
       </Stack>
-      <DetailsList
-        {...props}
-        items={items}
-        columns={columns}
-        columnReorderOptions={columnReorderOptions}
-        selectionMode={SelectionMode.single}
-      />
+      <div className="wrapper">
+        <DetailsList
+          {...props}
+          items={items}
+          columns={columns}
+          columnReorderOptions={columnReorderOptions}
+          selectionMode={SelectionMode.single}
+        />
+      </div>
     </Stack>
   )
 }

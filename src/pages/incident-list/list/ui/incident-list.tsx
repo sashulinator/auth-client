@@ -8,9 +8,10 @@ import { Link } from 'react-router-dom'
 import { getIncidentList } from '@/api/incident'
 import ROUTES from '@/constants/routes'
 import { Incident } from '@/entities/incident/model/types'
+import LoadingAria from '@/shared/loading-aria'
 
 function List(): JSX.Element {
-  const { data } = useQuery('incidents', getIncidentList)
+  const { data, isLoading } = useQuery('incidents', getIncidentList)
 
   function renderItemColumn(item: Incident, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof Incident] as string
@@ -21,10 +22,24 @@ function List(): JSX.Element {
     return <span>{fieldContent}</span>
   }
 
+  if (isLoading) {
+    return <LoadingAria loading={isLoading} label="Schema loading..." />
+  }
+
+  if (data === undefined || data.length === 0) {
+    return (
+      <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
+        Nothing found
+      </Stack>
+    )
+  }
+
+  console.log('data', data)
+
   return (
     <Stack className="IncidentList" style={{ maxWidth: '900px' }} tokens={{ padding: '32px 32px 50vh 0' }}>
       <DetailsList
-        items={data || []}
+        items={data}
         columns={[
           { key: 'name', name: 'Name', fieldName: 'name', minWidth: 100, maxWidth: 200, isResizable: true },
           { key: 'description', name: 'Description', fieldName: 'description', minWidth: 100 },
