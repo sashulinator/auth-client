@@ -1,4 +1,6 @@
-import { ArrayCatalogProps, Catalog, Entity, RecordCatalogProps } from './catalog'
+import { insert, replace } from '../change-unmutable'
+import { ArrayCatalogProps, CatalogBase, Entity, RecordCatalogProps } from './catalog-abstract'
+import uniqid from 'uniqid'
 
 const ROOT_ID = 'ROOT_ID'
 
@@ -6,7 +8,7 @@ type TreeEntity = Entity & { children?: [] }
 
 type TreeCatalogProps<TEntity extends TreeEntity> = ArrayCatalogProps<TEntity> | RecordCatalogProps<TEntity>
 
-export class TreeCatalog<TEntity extends TreeEntity> extends Catalog<TEntity> {
+export class TreeCatalog<TEntity extends TreeEntity> extends CatalogBase<TEntity> {
   constructor(...args: TreeCatalogProps<TEntity>) {
     super(...args)
     // seems like it does nothing but it checks whether the root entity exists
@@ -55,5 +57,52 @@ export class TreeCatalog<TEntity extends TreeEntity> extends Catalog<TEntity> {
 
       throw new Error(`Entities with ids ${orphantsIds.join(', ')} have no parents`)
     }
+  }
+
+  add(entity: TEntity, parentId: string, index = 0) {
+    const newParent = this.addChildIdToParent(parentId, entity.id, index)
+
+    const newCatalog = { ...this.catalog, [newParent.id]: newParent, [entity.id]: entity }
+
+    this.catalog = newCatalog
+  }
+
+  // TODO should we empty children array or leave as it is?
+  copy(id: string, uniqKeys: string[] = []): TEntity {
+    const newUniqKeys = ['id', ...uniqKeys]
+    const entity = this.catalog[id]
+
+    if (entity === undefined) {
+      throw new Error('Entity does not exists')
+    }
+
+    return newUniqKeys.reduce((acc, keyName) => {
+      return {
+        ...acc,
+        [keyName]: uniqid(),
+      }
+    }, entity)
+  }
+
+  // !Without saving to catalog because it can be dangerous!
+  private addChildIdToParent(parentId: string, id: string, index: number): TEntity {
+    const parent = this.get(parentId)
+
+    if (index < 0) {
+      throw new Error('Index cannot be less than 0')
+    }
+
+    const childLength = parent?.children?.length ?? 0
+
+    if (index > childLength) {
+      throw new Error(`Index cannot be more than ${childLength}`)
+    }
+
+    const parentClone = { ...parent, children: parent?.children ?? [] }
+
+    const newChildren = insert(parentClone.children, index, id)
+    const newParententity = replace(parentClone, 'children', newChildren)
+
+    return newParententity
   }
 }
