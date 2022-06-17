@@ -4,6 +4,7 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
 
+import { AreaClassNames } from '../../preview/constants/area-classnames'
 import { TreeAdditionalData } from '../types'
 import TreeLeaf from './tree-leaf'
 import React, { useEffect, useState } from 'react'
@@ -12,7 +13,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import { ROOT_ID } from '@/constants/common'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
-import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
+import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
@@ -43,10 +44,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       editId,
       onItemClick,
       onDoubleClick,
-      onMouseOver: highlightHover,
-      onFocus: highlightHover,
-      onBlur: removeAllHoverHighlights,
-      onMouseLeave: removeAllHoverHighlights,
+      onMouseOver: highlightHovered,
       onKeyDown: selectOnEnterKey,
       updateComp: props.updateComp,
     })
@@ -147,6 +145,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
             onDragStart={PreventMovingUnpickedItems}
             onDragEnd={onDragEnd}
             setTree={setTree}
+            onMouseLeave={() => removeAllHighlights(AreaClassNames.hover)}
           />
         )}
       </LoadingAria>

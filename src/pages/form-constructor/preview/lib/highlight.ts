@@ -1,3 +1,7 @@
+import { assertString } from '@savchenko91/schema-validator'
+
+import { AreaClassNames } from '../constants/area-classnames'
+
 export function removeAllHighlights(areaName: string) {
   const el = document.querySelector(`.${areaName}`)
 
@@ -6,58 +10,82 @@ export function removeAllHighlights(areaName: string) {
   }
 }
 
-interface Styles {
-  border: string
-  opacity: string
+export function highlightSelected(ids: (string | number)[], ms = 200) {
+  highlightFactory(ids, AreaClassNames.selector, ms)
 }
 
-export function highlightComponent(itemId: string | number, areaName: string, { border, opacity }: Styles) {
-  const element = document.querySelector(`.Preview [data-comp-id="${itemId}"]`)
-  const previewEl = document.querySelector(`.${areaName}`)
+export function highlightHovered(id: string | number, ms = 200) {
+  console.log('hover')
 
-  if (element === null || previewEl === null) {
+  highlightFactory([id], AreaClassNames.hover, ms)
+}
+
+function highlightFactory(ids: (string | number)[], areaName: string, ms: number) {
+  if (ids.length === 0) {
     return
   }
 
+  if (ids.length === 1) {
+    assertString(ids[0]?.toString())
+    highlightOne(ids[0]?.toString(), areaName, ms)
+    return
+  }
+
+  removeAllHighlights(areaName)
+  highlightMany(ids, areaName)
+}
+
+function highlightMany(ids: (string | number)[], areaName: string) {
+  const areaEl = document.querySelector<HTMLDivElement>(`.${areaName}`)
+
+  ids.forEach((id) => {
+    const hightlightingEl = document.createElement('div')
+    highlight(id.toString(), hightlightingEl, 0)
+    areaEl?.appendChild(hightlightingEl)
+  })
+}
+
+function highlightOne(id: string, areaName: string, ms: number) {
+  const areaEl = document.querySelector<HTMLDivElement>(`.${areaName}`)
+  const highlightingNodeList = document.querySelectorAll<HTMLDivElement>(`.${areaName} *`)
+
+  if (highlightingNodeList.length > 1) {
+    removeAllHighlights(areaName)
+  }
+
+  const possibleHighlightingEl = document.querySelector<HTMLDivElement>(`.${areaName} *`)
+
+  const isAlreadyExist = !!possibleHighlightingEl
+  const hightlightingEl = possibleHighlightingEl ? possibleHighlightingEl : document.createElement('div')
+
+  highlight(id, hightlightingEl, ms)
+
+  if (isAlreadyExist) {
+    return
+  }
+
+  areaEl?.appendChild(hightlightingEl)
+}
+
+function highlight(id: string, hightlightingEl: HTMLDivElement, ms: number) {
+  // TODO substitute Preview to highlightable and add it to Header also
+  const componentEl = document.querySelector<HTMLDivElement>(`.Preview [data-comp-id="${id}"]`)
+
+  if (componentEl === null) {
+    return
+  }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const el = element as any
+  const { offsetTop, offsetLeft } = componentEl
+  const { width, height } = getComputedStyle(componentEl)
 
-  const { offsetTop, offsetLeft } = el
-  const { width, height } = getComputedStyle(element)
+  hightlightingEl.style.position = 'absolute'
+  hightlightingEl.style.width = width
+  hightlightingEl.style.height = height
+  hightlightingEl.style.left = `${offsetLeft}px`
+  hightlightingEl.style.top = `${offsetTop}px`
 
-  const elementSelector = document.createElement('div')
-
-  elementSelector.style.width = width
-  elementSelector.style.height = height
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  elementSelector.style.left = `${offsetLeft - 2}px`
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  elementSelector.style.top = `${offsetTop - 2}px`
-  elementSelector.style.position = 'absolute'
-  elementSelector.style.border = border
-  elementSelector.style.opacity = opacity
-
-  previewEl.appendChild(elementSelector)
-}
-
-export function removeAllHoverHighlights() {
-  removeAllHighlights('hoverArea')
-}
-
-export function removeAllSelectionHighlights() {
-  removeAllHighlights('selectorArea')
-}
-
-export function highlightHover(itemId: string | number) {
-  highlightComponent(itemId, 'hoverArea', {
-    border: '2px dashed var(--themePrimary)',
-    opacity: '1',
-  })
-}
-
-export function highlightSelection(itemId: string | number) {
-  highlightComponent(itemId, 'selectorArea', {
-    border: '2px solid var(--themePrimary)',
-    opacity: '0.7',
-  })
+  if (ms !== 0) {
+    hightlightingEl.style.transition = `${ms}ms`
+    setTimeout(() => (hightlightingEl.style.transition = `0`), ms)
+  }
 }

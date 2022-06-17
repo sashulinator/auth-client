@@ -2,7 +2,7 @@ import { assertNotNull } from '@savchenko91/schema-validator'
 
 import './preview.css'
 
-import { highlightSelection, removeAllSelectionHighlights } from '../lib/highlight'
+import { highlightSelected } from '../lib/highlight'
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
@@ -28,19 +28,20 @@ export default function Preview(props: PreviewProps): JSX.Element {
   const ref = useRef<null | HTMLDivElement>(null)
 
   useEffect(() => {
+    const timeoutIds: number[] = []
     function updateHighlights() {
-      setTimeout(() => {
-        removeAllSelectionHighlights()
-        props.selectedCompIds.forEach((compId) => {
-          highlightSelection(compId)
-        })
+      ;[100, 200, 300, 500, 1000, 2000, 5000, 10000].forEach((ms) => {
+        const timeoutId = window.setTimeout(() => highlightSelected(props.selectedCompIds), ms)
+        timeoutIds.push(timeoutId)
       })
     }
 
     document.addEventListener('click', updateHighlights)
+    document.addEventListener('keydown', updateHighlights)
 
     return () => {
       document.removeEventListener('click', updateHighlights)
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId))
     }
   }, [props.selectedCompIds, props.schema])
 
