@@ -6,6 +6,7 @@ import { CompSchema } from '@/shared/schema-drawer'
 interface KeyListenerProps {
   schema: CompSchema
   selectedCompIds: string[]
+  // TODO rename to toggleSelectedComp?
   selectAndUnselectComp: (compId: string | string[]) => void
   removeSelectedComps: () => void
   pasteFromClipboard: () => void
@@ -22,13 +23,12 @@ export default function KeyListener(props: KeyListenerProps): null {
     function action(event: KeyboardEvent): void {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-      if (!props.isFocused) {
-        return
-      }
-
       if (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (document?.activeElement as any)?.type === 'text' ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (document?.activeElement as any)?.type === 'number' ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (document?.activeElement as any)?.type === 'textarea'
       ) {
         return
@@ -36,7 +36,13 @@ export default function KeyListener(props: KeyListenerProps): null {
 
       if (isEscape(event)) {
         props.selectAndUnselectComp([])
-      } else if (isBackspace(event)) {
+      }
+
+      if (!props.isFocused) {
+        return
+      }
+
+      if (isBackspace(event)) {
         props.removeSelectedComps()
       } else if (isCtrl(event) && isZ(event) && !isShift(event)) {
         props.undo()

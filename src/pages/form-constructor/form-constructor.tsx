@@ -46,7 +46,6 @@ import { Catalog, Comp } from '@/shared/schema-drawer'
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
   const navigate = useNavigate()
-
   const [schemas, setSchemas] = useRecoilState(schemasState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
