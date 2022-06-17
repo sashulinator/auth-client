@@ -193,7 +193,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
     const comps = JSON.parse(stringifiedComps) as Catalog<Comp>
 
-    schemaValidator.comps(comps)
+    schemaValidator.catalog(comps)
 
     if (comps) {
       addNewComps(comps)
