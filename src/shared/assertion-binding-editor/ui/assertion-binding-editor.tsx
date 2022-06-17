@@ -1,24 +1,22 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
-import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './assertion-binding-editor.css'
 
 import { typeIcons } from '../constatnts/type-icons'
 import buildTree from '../lib/build-tree'
-import { defaultCompValidators } from '../lib/constants'
 import TreeLeaf from './tree-leaf'
 import omitEmpty from 'omit-empty-es'
 import React, { forwardRef, useEffect, useState } from 'react'
 import { Field, Form } from 'react-final-form'
-import uniqid from 'uniqid'
 
-import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { replace } from '@/lib/change-unmutable'
-import { addEntity, findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import { findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
+import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
   AssertionBinding,
@@ -35,35 +33,39 @@ import SchemaDrawer, {
 import Tree from '@/shared/tree/ui/tree'
 
 export interface AssertionBindingEditorProps {
-  comp: Comp
-  comps: Catalog<Comp>
-  onChange: (value: AssertionBindingSchema | undefined) => void
-  schemas: Catalog<CompSchema>
   // string приходит от final-form при инициализации
   value: AssertionBindingSchema | undefined | string
+  comp: Comp
+  comps: Catalog<Comp>
+  schemas: Catalog<CompSchema>
   name?: string
   label?: string
   isFocused: boolean
+  onChange: (value: AssertionBindingSchema | undefined) => void
 }
 
 const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindingEditorProps>(function ValidatorPicker(
   props,
   ref
 ): JSX.Element {
-  // TODO сделать проверку на невалидное значение
-  const assertionBindingSchema = isString(props.value) ? undefined : props.value
+  const {
+    schema,
+    catalog,
+    selectedItemId,
+    selectedBinding,
+    addBinding,
+    changeBinding,
+    selectItemId,
+  } = useBindingStates<AssertionBinding, AssertionBindingSchema>(props.onChange, props.value)
 
-  const [selectedItemId, selectItemId] = useState('')
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
 
-  const catalog = assertionBindingSchema?.catalog
-  const validatorItem = catalog?.[selectedItemId]
-  const assertionItem = assertionList[validatorItem?.name || '']
+  const assertionItem = assertionList[selectedBinding?.name || '']
 
   useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(assertionBindingSchema?.catalog || undefined, {
+    return buildTree(schema?.catalog || undefined, {
       changeValidator,
       remove,
       selectItemId,
@@ -81,9 +83,9 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const units: any = omitEmpty(newValidators)
-      assertNotUndefined(assertionBindingSchema)
+      assertNotUndefined(schema)
 
-      props.onChange({ ...assertionBindingSchema, catalog: units })
+      props.onChange({ ...schema, catalog: units })
     }
   }
 
@@ -92,62 +94,26 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
       return
     }
 
-    const toParentValidator = findEntity(to.parentId, catalog)
-    const fromParentValidator = findEntity(from.parentId, catalog)
-    const validatorId = fromParentValidator?.children?.[from.index]
+    const fromParentBinding = findEntity(from.parentId, catalog)
+    const bindingId = fromParentBinding?.children?.[from.index]
 
-    assertNotUndefined(validatorId)
+    assertNotUndefined(bindingId)
 
-    const validator = findEntity(validatorId, catalog)
-
-    const isParentOperator = toParentValidator?.name === 'and' || toParentValidator?.name === 'or'
-
-    if (!isParentOperator) {
-      return
-    }
+    const binding = findEntity(bindingId, catalog)
 
     if (catalog) {
-      const units = moveEntity(validator, to.parentId, to.index || 0, catalog)
-      const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
-      props.onChange({ ...schema, catalog: units })
+      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, catalog)
+      props.onChange({ catalog: newCatalog, eventToShowError: EventToShowError.onTouched })
       setTree(moveItemOnTree(tree, from, to))
     }
   }
 
-  function addAssertion(): void {
-    const id = uniqid()
-    const currentValidators = catalog ? catalog : defaultCompValidators
-    const validator: AssertionBinding = {
-      id,
-      type: AssertionBindingType.ASSERTION,
-      name: 'string',
-      children: [],
-    }
-
-    const units = addEntity(validator, ROOT_ID, 0, currentValidators)
-    const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onTouched }
-
-    if (props.name) {
-      props.onChange({ ...schema, catalog: units })
-    }
+  function addAssertion() {
+    addBinding({ type: AssertionBindingType.ASSERTION, name: 'string' })
   }
 
   function addOperator() {
-    const id = uniqid()
-    const currentValidators = catalog ? catalog : defaultCompValidators
-    const validatorItem: AssertionBinding = {
-      id,
-      name: 'and',
-      type: AssertionBindingType.OPERATOR,
-      children: [],
-    }
-
-    const units = addEntity(validatorItem, ROOT_ID, 0, currentValidators)
-    const schema = assertionBindingSchema || { eventToShowError: EventToShowError.onTouched }
-
-    if (catalog) {
-      props.onChange({ ...schema, catalog: units })
-    }
+    addBinding({ type: AssertionBindingType.OPERATOR, name: 'and' })
   }
 
   function remove(id: string | number): void {
@@ -159,8 +125,8 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
       if (Object.keys(units).length === 1) {
         props.onChange(undefined)
       } else {
-        const schema = assertionBindingSchema ?? { eventToShowError: EventToShowError.onVisited }
-        props.onChange({ ...schema, catalog: units })
+        const newSchema = schema ?? { eventToShowError: EventToShowError.onVisited }
+        props.onChange({ ...newSchema, catalog: units })
       }
     }
   }
@@ -199,16 +165,16 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
           />
         )}
 
-        {hasSchema(assertionItem) && validatorItem && (
+        {hasSchema(assertionItem) && selectedBinding && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             onSubmit={() => {}}
-            initialValues={validatorItem.props}
+            initialValues={selectedBinding.props}
             render={(formProps) => {
               return (
                 <>
                   <Autosave
-                    save={(input2) => changeValidator(validatorItem.id, validatorItem.name, input2)}
+                    save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
                     debounce={500}
                   />
                   <SchemaDrawer

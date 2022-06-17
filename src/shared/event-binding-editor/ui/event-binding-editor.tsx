@@ -55,6 +55,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     EventBinding,
     EventBindingSchema
   >(props.onChange, props.value)
+
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
     eventAssertionBindingMetaCatalog[selectedBinding?.name || ''] ||
