@@ -38,12 +38,10 @@ export interface Comp {
   injections?: Injection[]
 }
 
-export interface CompSchema {
+export interface CompSchema extends Schema<Comp> {
   id: string
   title: string
   type: CompSchemaType
-  // TODO rename comps to items
-  catalog: Catalog<Comp>
   componentName: null | string
 }
 
