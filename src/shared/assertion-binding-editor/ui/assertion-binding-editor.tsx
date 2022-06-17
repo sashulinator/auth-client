@@ -1,6 +1,5 @@
 import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
-import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './assertion-binding-editor.css'
 
@@ -11,10 +10,9 @@ import React, { forwardRef, useEffect, useState } from 'react'
 import { Field, Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
-import { BindingEditor } from '@/shared/binding-editor'
-import { createDragEndHandler } from '@/shared/binding-editor/lib/handle-drag-end'
+import { BindingEditor, createRemoveHandler } from '@/shared/binding-editor'
+import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
@@ -57,6 +55,8 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
     selectItemId,
   } = useBindingStates<AssertionBinding, AssertionBindingSchema>(props.onChange, props.value)
 
+  const remove = createRemoveHandler(schema, { eventToShowError: EventToShowError.onVisited }, props.onChange)
+
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
 
   const assertionItem = assertionList[selectedBinding?.name || '']
@@ -81,21 +81,6 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
   }
 
   const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
-
-  function remove(id: string | number): void {
-    if (catalog) {
-      const units = removeEntity(id, catalog)
-      assertNotUndefined(units)
-
-      // isOnlyRoot?
-      if (Object.keys(units).length === 1) {
-        props.onChange(undefined)
-      } else {
-        const newSchema = schema ?? { eventToShowError: EventToShowError.onVisited }
-        props.onChange({ ...newSchema, catalog: units })
-      }
-    }
-  }
 
   return (
     <BindingEditor.Root ref={ref} label={props.label}>

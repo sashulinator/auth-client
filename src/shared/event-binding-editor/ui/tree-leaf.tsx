@@ -55,16 +55,27 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
       role="button"
       tabIndex={0}
       className={clsx('BindingTreeLeaf NewTreeLeaf', isSelected && 'isSelected', isError && 'isError')}
-      onClick={() => props.item.data?.selectItemId(props.item.id.toString())}
+      onClick={() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        props.item.data?.selectItemId(props.item.id.toString())
+      }}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
       onKeyDown={(e) => {
         props.provided.dragHandleProps.onKeyDown(e)
-        props.item.data?.selectItemId(props.item.id.toString())
+        // props.item.data?.selectItemId(props.item.id.toString())
       }}
     >
       <Stack
-        onFocus={() => props.item.data?.selectItemId(props.item.id.toString())}
+        onFocus={(e) => {
+          // Почему-то по нажатию на кнопку удаления срабатывает фокус
+          // данный иф предостваращает срабатывание оного
+          if (e.target.localName === 'button') {
+            return
+          }
+
+          props.item.data?.selectItemId(props.item.id.toString())
+        }}
         className="treeLeafContent"
         horizontal
         verticalAlign="center"
@@ -79,7 +90,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
               setTimeout(() => el?.focus())
             }
           }}
-          className={clsx('label', labelColors[binding.type])}
+          className={clsx('label', labelColors[binding.type], 'deleteBindingButton')}
           iconName={typeIcons[binding.type]}
         />
         <Dropdown
@@ -96,7 +107,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
             },
           }}
           iconProps={{ iconName: 'Cancel' }}
-          onClick={() => props.item.data?.remove(props.item.id)}
+          onClick={() => {
+            props.item.data?.remove(props.item.id)
+          }}
         />
       </Stack>
     </div>

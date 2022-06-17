@@ -1,6 +1,6 @@
 import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
-import { ValidationError, and, assertNotUndefined } from '@savchenko91/schema-validator'
+import { ValidationError, and } from '@savchenko91/schema-validator'
 
 import { typeIcons } from '../constants/type-icons'
 import buildTree from '../lib/build-tree'
@@ -9,11 +9,10 @@ import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { removeEntity } from '@/lib/entity-actions'
 import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
-import { BindingEditor } from '@/shared/binding-editor'
-import { createDragEndHandler } from '@/shared/binding-editor/lib/handle-drag-end'
+import { BindingEditor, createRemoveHandler } from '@/shared/binding-editor'
+import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import SchemaDrawer, {
   Catalog,
@@ -52,6 +51,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   ref
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
+
   const {
     addBinding,
     changeBinding,
@@ -61,6 +61,8 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     selectItemId,
     selectedItemId,
   } = useBindingStates<EventBinding, EventBindingSchema>(props.onChange, props.value)
+
+  const remove = createRemoveHandler(schema, {}, props.onChange)
 
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
@@ -96,21 +98,6 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
   function addEvent() {
     addBinding({ type: EventType.EVENT, name: onFieldChange.name })
-  }
-
-  function remove(id: string | number): void {
-    if (catalog) {
-      const newBindings = removeEntity(id, catalog)
-      assertNotUndefined(newBindings)
-
-      if (Object.keys(newBindings).length === 1) {
-        props.onChange(undefined)
-      } else {
-        const newCatalog = removeEntity(id, catalog)
-        assertNotUndefined(newCatalog)
-        props.onChange({ catalog: newCatalog })
-      }
-    }
   }
 
   return (
