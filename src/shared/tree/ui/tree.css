@@ -87,12 +87,12 @@
 }
 
 div.NewTreeLeaf.isSelected .treeLeafContent {
-  background-color: var(--themePrimaryTransparent03);
+  background-color: var(--themePrimary03);
   z-index: 0;
 }
 
 .NewTreeLeaf:hover .treeLeafContent {
-  background-color: var(--themePrimaryTransparent01);
+  background-color: var(--themePrimary01);
 }
 
 .NewTreeLeaf:focus .treeLeafBorder {

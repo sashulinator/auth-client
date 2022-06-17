@@ -92,7 +92,7 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
           className="button"
           styles={{
             rootHovered: {
-              backgroundColor: 'var(--themePrimaryTransparent01)',
+              backgroundColor: 'var(--themePrimary01)',
             },
           }}
           iconProps={{ iconName: 'Cancel' }}

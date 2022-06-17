@@ -47,7 +47,7 @@ BindingEditor.ActionPanel = ActionPanel
 
 const buttonStyles: IButtonStyles = {
   rootHovered: {
-    backgroundColor: 'var(--themePrimaryTransparent01)',
+    backgroundColor: 'var(--themePrimary01)',
   },
   root: {
     height: '32px',
