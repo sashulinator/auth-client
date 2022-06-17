@@ -16,11 +16,15 @@ interface KeyListenerProps {
 }
 
 export default function KeyListener(props: KeyListenerProps): null {
-  useEffect(main, [props.selectedCompIds, props.schema])
+  useEffect(main, [props.selectedCompIds, props.schema, props.isFocused])
 
   function main() {
     function action(event: KeyboardEvent): void {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      if (!props.isFocused) {
+        return
+      }
 
       if (
         (document?.activeElement as any)?.type === 'text' ||
