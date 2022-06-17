@@ -18,6 +18,7 @@ import SchemaDrawer, {
   Catalog,
   Comp,
   CompSchema,
+  EventBinding,
   EventBindingSchema,
   EventType,
   actionList,
@@ -50,10 +51,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   ref
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
-  const { addBinding, changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates(
-    props.onChange,
-    props.value
-  )
+  const { addBinding, changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates<
+    EventBinding,
+    EventBindingSchema
+  >(props.onChange, props.value)
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
     eventAssertionBindingMetaCatalog[selectedBinding?.name || ''] ||

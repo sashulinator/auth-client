@@ -7,7 +7,7 @@ import uniqid from 'uniqid'
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity } from '@/lib/entity-actions'
-import { Binding, BindingSchema, Catalog } from '@/shared/schema-drawer'
+import { Binding, Catalog, Schema } from '@/shared/schema-drawer'
 
 export const defaultCompBindings: Catalog<Binding> = {
   [ROOT_ID]: {
@@ -18,10 +18,10 @@ export const defaultCompBindings: Catalog<Binding> = {
   },
 }
 
-export function useBindingStates<TUnit extends Binding>(
-  onChange: (value: BindingSchema<TUnit> | undefined) => void,
+export function useBindingStates<TUnit extends Binding, TSchema extends Schema<TUnit>>(
+  onChange: (value: TSchema | undefined) => void,
   // can receive string because of final-form
-  value?: BindingSchema<TUnit> | string
+  value?: TSchema | string
 ) {
   const [selectedItemId, selectItemId] = useState('')
 
@@ -39,9 +39,9 @@ export function useBindingStates<TUnit extends Binding>(
       ...(newBindingItemProps ? { props: newBindingItemProps } : undefined),
     })
 
-    const newCatalog: Catalog<TUnit> = omitEmpty(newBindings)
+    const newCatalog: TSchema['catalog'] = omitEmpty(newBindings)
 
-    onChange({ catalog: newCatalog })
+    onChange({ catalog: newCatalog } as TSchema)
   }
 
   function addBinding(rawBinding: Omit<TUnit, 'id' | 'children'> & { children?: string[] }): void {
@@ -52,7 +52,7 @@ export function useBindingStates<TUnit extends Binding>(
 
     newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
 
-    onChange({ catalog: newCatalog as Catalog<TUnit> })
+    onChange({ catalog: newCatalog } as TSchema)
   }
 
   return {
