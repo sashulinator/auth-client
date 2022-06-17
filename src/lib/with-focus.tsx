@@ -2,32 +2,31 @@ import React, { LegacyRef, useEffect, useRef, useState } from 'react'
 
 interface FocusProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onFocus: (...args: any[]) => void
+  onFocus?: (...args: any[]) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onBlur: (...args: any[]) => void
+  onBlur?: (...args: any[]) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ref: LegacyRef<Element | null>
-  isFocused: boolean
+  ref?: LegacyRef<Element | null>
+  isFocused?: boolean
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function withFocus<P extends Record<string, any>>(
-  WrappedComponent: React.ComponentType<P & FocusProps>
-) {
-  const ComponentWithInterceptedFocus = (props: P & FocusProps) => {
+export default function withFocus<P extends FocusProps>(WrappedComponent: React.ComponentType<P>) {
+  const ComponentWithInterceptedFocus = (props: Omit<P, 'isFocused'>) => {
     const ref = useRef<null | Element>(null)
 
     const [isFocused, setIsFocused] = useState(false)
 
     useEffect(() => {
       function handleFocus() {
-        props.onFocus()
+        props.onFocus?.()
         setIsFocused(true)
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       function handleOutsideClick(event: any) {
         if (!ref.current?.contains(event?.target)) {
-          props.onBlur()
+          props.onBlur?.()
           setIsFocused(false)
         }
       }
@@ -47,7 +46,13 @@ export default function withFocus<P extends Record<string, any>>(
       }
     }, [])
 
-    return <WrappedComponent {...props} ref={ref} isFocused={isFocused} />
+    const newProps = {
+      ...props,
+      isFocused,
+      ref,
+    } as P
+
+    return <WrappedComponent {...newProps} />
   }
   return ComponentWithInterceptedFocus
 }
