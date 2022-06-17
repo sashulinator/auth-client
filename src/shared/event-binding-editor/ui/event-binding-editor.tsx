@@ -1,5 +1,6 @@
 import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
+import { useId } from '@fluentui/react-hooks'
 import { ValidationError, and } from '@savchenko91/schema-validator'
 
 import { typeIcons } from '../constants/type-icons'
@@ -50,7 +51,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   props,
   ref
 ): JSX.Element {
-  // TODO сделать проверку на невалидное значение
+  const bindingEditorId = `binding-${useId()}`
 
   const {
     addBinding,
@@ -79,6 +80,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
       selectItemId,
       selectedItemId,
       errorId: props.validationError?._inputName,
+      bindingEditorId,
     })
   }
 
@@ -101,7 +103,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   }
 
   return (
-    <BindingEditor.Root ref={ref} label={props.label}>
+    <BindingEditor.Root ref={ref} label={props.label} className={bindingEditorId}>
       <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
         <BindingEditor.ActionPanel
           mainButton={{ iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' }}
@@ -118,33 +120,35 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
           </Stack>
         )}
         {hasSchema(assertionItem) && selectedBinding && (
-          <Form
-            key={selectedItemId}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onSubmit={() => {}}
-            initialValues={selectedBinding.props}
-            render={(formProps) => {
-              return (
-                <>
-                  <Autosave
-                    save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
-                    debounce={500}
-                  />
-                  <SchemaDrawer
-                    componentList={componentList}
-                    schema={assertionItem.schema}
-                    schemas={basicComponentsSchemas}
-                    context={{
-                      previewSchema: props.context?.previewSchema,
-                      previewData: props.context?.previewData,
-                      formState: formProps.form.getState(),
-                      formProps,
-                    }}
-                  />
-                </>
-              )
-            }}
-          />
+          <div className="bindinForm">
+            <Form
+              key={selectedItemId}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onSubmit={() => {}}
+              initialValues={selectedBinding.props}
+              render={(formProps) => {
+                return (
+                  <>
+                    <Autosave
+                      save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
+                      debounce={500}
+                    />
+                    <SchemaDrawer
+                      componentList={componentList}
+                      schema={assertionItem.schema}
+                      schemas={basicComponentsSchemas}
+                      context={{
+                        previewSchema: props.context?.previewSchema,
+                        previewData: props.context?.previewData,
+                        formState: formProps.form.getState(),
+                        formProps,
+                      }}
+                    />
+                  </>
+                )
+              }}
+            />
+          </div>
         )}
       </BindingEditor>
     </BindingEditor.Root>

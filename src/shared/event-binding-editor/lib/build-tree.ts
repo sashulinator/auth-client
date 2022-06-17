@@ -10,6 +10,7 @@ export interface AdditionalData {
   selectItemId: React.Dispatch<React.SetStateAction<string>>
   selectedItemId: string
   errorId?: string
+  bindingEditorId: string
 }
 
 export default function buildTree(bindings: Catalog<EventBinding> | undefined, additionalData: AdditionalData) {

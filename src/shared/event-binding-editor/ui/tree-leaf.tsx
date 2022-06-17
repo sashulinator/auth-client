@@ -11,6 +11,7 @@ import React from 'react'
 
 import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { isEnter } from '@/lib/key-events'
+import { ClassNames, createPressEnterOnLabelHandler } from '@/shared/binding-editor'
 import { Dropdown } from '@/shared/dropdown'
 import {
   EventAssertionBindingMetaName,
@@ -28,19 +29,23 @@ export interface TreeLeafProps extends RenderItemParams {
   }
 }
 
+const iconButtonStyles = { rootHovered: { backgroundColor: 'var(--themePrimary01)' } }
+
+const dropdownStyles = { title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }
+
 export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   if (props.item.data === undefined) {
     return null
   }
 
-  const { binding } = props.item.data
+  const data = props.item.data
 
-  const isError = props.item.data.errorId === props.item.id
+  const isError = data.errorId === props.item.id
   const isSelected = props.item.data.selectedItemId === props.item.data.binding.id
 
-  const isOperator = binding.type === EventType.OPERATOR
-  const isAction = binding.type === EventType.ACTION
-  const isEvent = binding.type === EventType.EVENT
+  const isOperator = data.binding.type === EventType.OPERATOR
+  const isAction = data.binding.type === EventType.ACTION
+  const isEvent = data.binding.type === EventType.EVENT
   const options = isOperator
     ? generateOptionsFromStringArray(['or', 'and'])
     : isAction
@@ -49,67 +54,53 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
     ? eventNameOptions
     : EventAssertionBindingMetaName
 
+  const currentBindingSelector = `.${ClassNames.BindingEditorRoot}.${data.bindingEditorId}`
+  const currentBindingFormSelector = `.${currentBindingSelector}.${ClassNames.bindingForm}`
+
+  const handlePressEnterOnLabel = createPressEnterOnLabelHandler(
+    data.binding.id,
+    currentBindingFormSelector,
+    data.selectItemId
+  )
+
+  function handlePressEnterOnTreeLeaf(e: React.KeyboardEvent) {
+    props.provided.dragHandleProps.onKeyDown(e)
+
+    if (isEnter(e)) {
+      props.item.data?.selectItemId(props.item.id.toString())
+    }
+  }
+
   return (
     <div
-      ref={props.provided.innerRef}
+      className={clsx('BindingTreeLeaf NewTreeLeaf', isSelected && 'isSelected', isError && 'isError')}
       role="button"
       tabIndex={0}
-      className={clsx('BindingTreeLeaf NewTreeLeaf', isSelected && 'isSelected', isError && 'isError')}
-      onClick={() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        props.item.data?.selectItemId(props.item.id.toString())
-      }}
+      onClick={() => props.item.data?.selectItemId(props.item.id.toString())}
       {...props.provided.draggableProps}
       {...props.provided.dragHandleProps}
-      onKeyDown={(e) => {
-        props.provided.dragHandleProps.onKeyDown(e)
-        // props.item.data?.selectItemId(props.item.id.toString())
-      }}
+      onKeyDown={handlePressEnterOnTreeLeaf}
+      ref={props.provided.innerRef}
     >
-      <Stack
-        onFocus={(e) => {
-          // Почему-то по нажатию на кнопку удаления срабатывает фокус
-          // данный иф предостваращает срабатывание оного
-          if (e.target.localName === 'button') {
-            return
-          }
-
-          props.item.data?.selectItemId(props.item.id.toString())
-        }}
-        className="treeLeafContent"
-        horizontal
-        verticalAlign="center"
-      >
+      <Stack className="treeLeafContent" verticalAlign="center" horizontal={true}>
         <div className="treeLeafBorder" />
         <Icon
           tabIndex={0}
-          onKeyDown={(e) => {
-            if (isEnter(e)) {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const el: any = document.querySelector('.BindingSetter input')
-              setTimeout(() => el?.focus())
-            }
-          }}
-          className={clsx('label', labelColors[binding.type], 'deleteBindingButton')}
-          iconName={typeIcons[binding.type]}
+          onKeyDown={handlePressEnterOnLabel}
+          className={clsx('label', 'deleteBindingButton', labelColors[data.binding.type])}
+          iconName={typeIcons[data.binding.type]}
         />
         <Dropdown
-          value={binding.name}
+          value={data.binding.name}
           options={options}
           onChange={(name) => props.item.data?.changeBinding?.(props.item.id, name)}
-          styles={{ title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }}
+          styles={dropdownStyles}
         />
         <IconButton
           className="button"
-          styles={{
-            rootHovered: {
-              backgroundColor: 'var(--themePrimary01)',
-            },
-          }}
+          styles={iconButtonStyles}
           iconProps={{ iconName: 'Cancel' }}
-          onClick={() => {
-            props.item.data?.remove(props.item.id)
-          }}
+          onClick={() => props.item.data?.remove(props.item.id)}
         />
       </Stack>
     </div>
