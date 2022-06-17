@@ -127,14 +127,12 @@ export default function PanelTree(props: TreeProps): JSX.Element {
               root: {
                 borderRadius: '0',
                 width: '100%',
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                  ? 'var(--themePrimaryTransparent03)'
-                  : 'transparent',
+                backgroundColor: props.selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'transparent',
               },
               rootHovered: {
                 backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                  ? 'var(--themePrimaryTransparent03)'
-                  : 'var(--themePrimaryTransparent01)',
+                  ? 'var(--themePrimary03)'
+                  : 'var(--themePrimary01)',
               },
             }}
             onClick={() => props.selectAndUnselectComp([ROOT_ID])}

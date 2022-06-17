@@ -50,9 +50,10 @@ export const themes: AdditionalCSS & PartialTheme = {
       alwaysBlack02: alwaysBlack.replace('alpha', '0.2'),
       alwaysBlack01: alwaysBlack.replace('alpha', '0.05'),
 
-      themePrimaryTransparent05: darkPrimary.replace('alpha', '0.5'),
-      themePrimaryTransparent03: darkPrimary.replace('alpha', '0.3'),
-      themePrimaryTransparent01: darkPrimary.replace('alpha', '0.1'),
+      themePrimary05: darkPrimary.replace('alpha', '0.5'),
+      themePrimary03: darkPrimary.replace('alpha', '0.3'),
+      themePrimary02: darkPrimary.replace('alpha', '0.2'),
+      themePrimary01: darkPrimary.replace('alpha', '0.1'),
 
       themePrimary: darkPrimary.replace('alpha', '1'),
       themeLighterAlt: '#0a0804',
@@ -96,9 +97,10 @@ export const themes: AdditionalCSS & PartialTheme = {
       alwaysBlack02: alwaysBlack.replace('alpha', '0.2'),
       alwaysBlack01: alwaysBlack.replace('alpha', '0.05'),
 
-      themePrimaryTransparent05: defaultPrimary.replace('alpha', '0.5'),
-      themePrimaryTransparent03: defaultPrimary.replace('alpha', '0.3'),
-      themePrimaryTransparent01: defaultPrimary.replace('alpha', '0.1'),
+      themePrimary05: defaultPrimary.replace('alpha', '0.5'),
+      themePrimary03: defaultPrimary.replace('alpha', '0.3'),
+      themePrimary02: defaultPrimary.replace('alpha', '0.2'),
+      themePrimary01: defaultPrimary.replace('alpha', '0.1'),
 
       themePrimary: defaultPrimary.replace('alpha', '1'),
       themeLighterAlt: '#eff6fc',

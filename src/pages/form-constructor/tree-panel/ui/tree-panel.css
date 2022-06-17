@@ -7,7 +7,7 @@
 }
 
 .TreePanel.isFocused:before {
-  border-right: 1px solid var(--themePrimaryTransparent03);
+  border-right: 1px solid var(--themePrimary05);
 }
 
 .TreePanel:before {

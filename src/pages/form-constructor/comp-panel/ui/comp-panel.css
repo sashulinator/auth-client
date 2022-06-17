@@ -5,9 +5,8 @@
   grid-template-columns: 1fr;
 }
 
-.CompPanel .ms-TextField-fieldGroup,
-.CompPanel .ms-Dropdown-title {
-  background: transparent !important;
+.isFocused .CompPanel:before {
+  border-left: 1px solid var(--themePrimary05);
 }
 
 .CompPanel:before {
@@ -22,6 +21,11 @@
   -webkit-backdrop-filter: blur(11px);
   border-left: 1px solid var(--alwaysWhite02);
   outline: 1px solid var(--alwaysBlack02);
+}
+
+.CompPanel .ms-TextField-fieldGroup,
+.CompPanel .ms-Dropdown-title {
+  background: transparent !important;
 }
 
 .CompPanel .compPanelScrollable {
