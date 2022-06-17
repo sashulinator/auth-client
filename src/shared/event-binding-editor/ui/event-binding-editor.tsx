@@ -1,4 +1,4 @@
-import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
 import { ValidationError, and, assertNotUndefined } from '@savchenko91/schema-validator'
 
@@ -9,10 +9,11 @@ import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import { removeEntity } from '@/lib/entity-actions'
 import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
+import { createDragEndHandler } from '@/shared/binding-editor/lib/handle-drag-end'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import SchemaDrawer, {
   Catalog,
@@ -51,10 +52,15 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   ref
 ): JSX.Element {
   // TODO сделать проверку на невалидное значение
-  const { addBinding, changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates<
-    EventBinding,
-    EventBindingSchema
-  >(props.onChange, props.value)
+  const {
+    addBinding,
+    changeBinding,
+    catalog,
+    schema,
+    selectedBinding,
+    selectItemId,
+    selectedItemId,
+  } = useBindingStates<EventBinding, EventBindingSchema>(props.onChange, props.value)
 
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
@@ -74,24 +80,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     })
   }
 
-  function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !catalog || to.parentId === 'rootId') {
-      return
-    }
-
-    const fromParentBinding = findEntity(from.parentId, catalog)
-    const bindingId = fromParentBinding?.children?.[from.index]
-
-    assertNotUndefined(bindingId)
-
-    const binding = findEntity(bindingId, catalog)
-
-    if (catalog) {
-      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, catalog)
-      props.onChange({ catalog: newCatalog })
-      setTree(moveItemOnTree(tree, from, to))
-    }
-  }
+  const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
 
   function addAssertion(): void {
     addBinding({ type: EventType.ASSERTION, name: 'undefined' })

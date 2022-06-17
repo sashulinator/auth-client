@@ -1,4 +1,4 @@
-import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
@@ -7,15 +7,14 @@ import './assertion-binding-editor.css'
 import { typeIcons } from '../constatnts/type-icons'
 import buildTree from '../lib/build-tree'
 import TreeLeaf from './tree-leaf'
-import omitEmpty from 'omit-empty-es'
 import React, { forwardRef, useEffect, useState } from 'react'
 import { Field, Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { replace } from '@/lib/change-unmutable'
-import { findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import { removeEntity } from '@/lib/entity-actions'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
+import { createDragEndHandler } from '@/shared/binding-editor/lib/handle-drag-end'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import { Dropdown } from '@/shared/dropdown'
 import SchemaDrawer, {
@@ -66,46 +65,11 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
 
   function rebuildTree() {
     return buildTree(schema?.catalog || undefined, {
-      changeValidator,
+      changeValidator: changeBinding,
       remove,
       selectItemId,
       selectedItemId,
     })
-  }
-
-  function changeValidator(id: string | number, name: string, newValidatorItemProps: unknown) {
-    if (catalog && props.name) {
-      const validator = findEntity(id, catalog)
-      const newValidators = replace(catalog, id, {
-        ...validator,
-        name,
-        props: newValidatorItemProps,
-      })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const units: any = omitEmpty(newValidators)
-      assertNotUndefined(schema)
-
-      props.onChange({ ...schema, catalog: units })
-    }
-  }
-
-  function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !catalog || to.parentId === 'rootId') {
-      return
-    }
-
-    const fromParentBinding = findEntity(from.parentId, catalog)
-    const bindingId = fromParentBinding?.children?.[from.index]
-
-    assertNotUndefined(bindingId)
-
-    const binding = findEntity(bindingId, catalog)
-
-    if (catalog) {
-      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, catalog)
-      props.onChange({ catalog: newCatalog, eventToShowError: EventToShowError.onTouched })
-      setTree(moveItemOnTree(tree, from, to))
-    }
   }
 
   function addAssertion() {
@@ -115,6 +79,8 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
   function addOperator() {
     addBinding({ type: AssertionBindingType.OPERATOR, name: 'and' })
   }
+
+  const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
 
   function remove(id: string | number): void {
     if (catalog) {

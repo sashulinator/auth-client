@@ -7,7 +7,7 @@ import uniqid from 'uniqid'
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity } from '@/lib/entity-actions'
-import { Binding, Catalog, Schema } from '@/shared/schema-drawer'
+import { Binding, BindingSchema, Catalog } from '@/shared/schema-drawer'
 
 export const defaultCompBindings: Catalog<Binding> = {
   [ROOT_ID]: {
@@ -18,7 +18,7 @@ export const defaultCompBindings: Catalog<Binding> = {
   },
 }
 
-export function useBindingStates<TUnit extends Binding, TSchema extends Schema<TUnit>>(
+export function useBindingStates<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
   onChange: (value: TSchema | undefined) => void,
   // can receive string because of final-form
   value?: TSchema | string
