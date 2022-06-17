@@ -8,7 +8,7 @@ export function defineSelectedComp(currentSchema: CompSchema | null, selectedCom
   }
 
   if (selectedCompIds.length !== 0 && currentSchema) {
-    const selectedComp = currentSchema.comps[selectedCompIds[0] || '']
+    const selectedComp = currentSchema.catalog[selectedCompIds[0] || '']
 
     assertNotUndefined(selectedComp)
 

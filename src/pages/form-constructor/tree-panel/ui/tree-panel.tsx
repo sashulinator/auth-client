@@ -36,7 +36,7 @@ export default function TreePanel(props: TreePanelProps): JSX.Element {
   useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds, editId])
 
   function rebuildTree(): TreeData | undefined {
-    return buildTree<TreeAdditionalData>(tree, props.schema.comps, {
+    return buildTree<TreeAdditionalData>(tree, props.schema.catalog, {
       searchQuery: props.searchQuery,
       schemas: props.schemas,
       pickedIds: props.selectedCompIds,
@@ -87,7 +87,7 @@ export default function TreePanel(props: TreePanelProps): JSX.Element {
 
     assertNotUndefined(tree)
 
-    let tempComps = props.schema.comps
+    let tempComps = props.schema.catalog
     let tempTree = tree
 
     props.selectedCompIds.forEach((compId) => {

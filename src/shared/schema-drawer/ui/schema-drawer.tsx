@@ -29,9 +29,9 @@ interface SchemaDrawerProps {
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
-  const [comps, setComps] = useState<Catalog<Comp>>(props.schema.comps)
+  const [comps, setComps] = useState<Catalog<Comp>>(props.schema.catalog)
 
-  useEffect(() => setComps(props.schema.comps), [props.schema.comps])
+  useEffect(() => setComps(props.schema.catalog), [props.schema.catalog])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 

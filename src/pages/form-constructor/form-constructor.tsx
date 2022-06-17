@@ -129,13 +129,13 @@ const FormConstructor: FC = (): JSX.Element => {
   function removeCompFromState(compId: string): void {
     assertNotNull(currentSchemaHistory)
 
-    const comps = removeEntity(compId, currentSchemaHistory.data.comps)
+    const comps = removeEntity(compId, currentSchemaHistory.data.catalog)
     assertNotUndefined(comps)
 
     setCurrentSchemaHistory(updateCompsSetter(comps))
 
     if (compId === propertyPanelComp?.id) {
-      const compLocation = findEntityPosition(compId, currentSchemaHistory.data.comps)
+      const compLocation = findEntityPosition(compId, currentSchemaHistory.data.catalog)
       const parentComp = findEntity(compLocation?.parentId || '', comps)
       const siblingId = parentComp.children?.[compLocation?.index || 0]
       siblingId ? setSelectedCompIds([siblingId]) : setSelectedCompIds([])
@@ -175,7 +175,7 @@ const FormConstructor: FC = (): JSX.Element => {
   function undo() {
     if (currentSchemaHistory.prev) {
       // TODO проверяет только в корне а надо везде!!
-      keepCompsSelected(currentSchemaHistory.prev.data.comps[ROOT_ID]?.children)
+      keepCompsSelected(currentSchemaHistory.prev.data.catalog[ROOT_ID]?.children)
     }
     setCurrentSchemaHistory(prevSetter)
   }
@@ -183,14 +183,14 @@ const FormConstructor: FC = (): JSX.Element => {
   function redo() {
     if (currentSchemaHistory.next) {
       // TODO проверяет только в корне а надо везде!!
-      keepCompsSelected(currentSchemaHistory.next.data.comps[ROOT_ID]?.children)
+      keepCompsSelected(currentSchemaHistory.next.data.catalog[ROOT_ID]?.children)
     }
     setCurrentSchemaHistory(nextSetter)
   }
 
   function copyToClipboard() {
-    const dependencyIds = findDependencyIds(selectedCompIds, currentSchemaHistory.data.comps)
-    const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.comps)
+    const dependencyIds = findDependencyIds(selectedCompIds, currentSchemaHistory.data.catalog)
+    const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.catalog)
     localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
   }
 
@@ -216,7 +216,7 @@ const FormConstructor: FC = (): JSX.Element => {
     const rootCompIds = findRootParentIds(copiedComps)
     const rootComps = findEntities(rootCompIds, copiedComps)
 
-    const mergedComps = { ...currentSchemaHistory.data.comps, ...copiedComps }
+    const mergedComps = { ...currentSchemaHistory.data.catalog, ...copiedComps }
 
     const isRoot = selectedCompIds.includes(ROOT_ID)
     const isToRoot = selectedCompIds.length === 0 || isRoot

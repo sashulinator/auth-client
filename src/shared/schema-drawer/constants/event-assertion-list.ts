@@ -60,7 +60,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      comps: {
+      catalog: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',
@@ -109,7 +109,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      comps: {
+      catalog: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',

@@ -43,7 +43,7 @@ export interface CompSchema {
   title: string
   type: CompSchemaType
   // TODO rename comps to items
-  comps: Catalog<Comp>
+  catalog: Catalog<Comp>
   componentName: null | string
 }
 

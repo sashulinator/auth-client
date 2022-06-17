@@ -25,7 +25,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
   }, [props.comp.id])
 
   const names = useMemo(() => {
-    return Object.values(props.previewSchema.comps)
+    return Object.values(props.previewSchema.catalog)
       .filter((comp) => comp.name)
       .map((comp) => comp.name)
       .sort()
@@ -60,7 +60,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                     previewSchema: props.previewSchema,
                     previewData: {
                       schema: props.previewSchema,
-                      compIds: Object.keys(props.previewSchema.comps),
+                      compIds: Object.keys(props.previewSchema.catalog),
                       names,
                     },
                     ...props.context,
