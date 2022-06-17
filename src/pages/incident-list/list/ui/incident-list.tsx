@@ -34,8 +34,6 @@ function List(): JSX.Element {
     )
   }
 
-  console.log('data', data)
-
   return (
     <Stack className="IncidentList" style={{ maxWidth: '900px' }} tokens={{ padding: '32px 32px 50vh 0' }}>
       <DetailsList

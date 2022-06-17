@@ -50,8 +50,6 @@ export function useBindingStates<TUnit extends Binding>(
 
     let newCatalog = catalog ?? defaultCompBindings
 
-    console.log('binding, ROOT_ID, 1, newCatalog', binding, ROOT_ID, 1, newCatalog)
-
     newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
 
     onChange({ catalog: newCatalog as Catalog<TUnit> })
