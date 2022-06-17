@@ -12,6 +12,7 @@ interface KeyListenerProps {
   copyToClipboard: () => void
   undo: () => void
   redo: () => void
+  isFocused: boolean
 }
 
 export default function KeyListener(props: KeyListenerProps): null {

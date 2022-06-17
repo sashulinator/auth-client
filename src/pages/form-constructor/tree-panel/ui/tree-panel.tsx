@@ -1,6 +1,7 @@
 import { FontIcon, PrimaryButton, SearchBox } from '@fluentui/react'
 
 import PaletteModal, { paletteModalState } from '../../palette-modal'
+import KeyListener from './key-listener'
 import PanelTree from './tree'
 import clsx from 'clsx'
 import React, { LegacyRef, forwardRef } from 'react'
@@ -25,6 +26,11 @@ interface TreePanelProps {
   addNewComps: (comps: Catalog<Comp>) => void
   isFocused: boolean
   ref: LegacyRef<HTMLDivElement | null>
+  removeSelectedComps: () => void
+  pasteFromClipboard: () => void
+  copyToClipboard: () => void
+  undo: () => void
+  redo: () => void
 }
 
 const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function TreePanel(props, ref): JSX.Element {
@@ -34,6 +40,17 @@ const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function Tre
   return (
     <div className={clsx('TreePanel', props.isFocused && 'isFocused')} ref={ref}>
       <PaletteModal addNewComps={props.addNewComps} selectAndUnselectComp={props.selectAndUnselectComp} />
+      <KeyListener
+        selectedCompIds={props.selectedCompIds}
+        schema={props.schema}
+        selectAndUnselectComp={props.selectAndUnselectComp}
+        removeSelectedComps={props.removeSelectedComps}
+        pasteFromClipboard={props.pasteFromClipboard}
+        copyToClipboard={props.copyToClipboard}
+        undo={props.undo}
+        redo={props.redo}
+        isFocused={props.isFocused}
+      />
       <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
       {!props.isCurrentSchemaLoading && (
         <SearchBox

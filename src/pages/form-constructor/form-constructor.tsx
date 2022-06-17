@@ -5,7 +5,6 @@ import './form-constructor.css'
 
 import CompPanel from './comp-panel'
 import HeaderContent from './header-content'
-import KeyListener from './key-listener'
 import Preview from './preview'
 import TreePanel from './tree-panel'
 import React, { FC, useEffect, useMemo } from 'react'
@@ -271,16 +270,6 @@ const FormConstructor: FC = (): JSX.Element => {
   return (
     <Stack className="headerOnlyLayout">
       <HeaderContent deleteSchema={deleteSchema} copySchema={copySchema} />
-      <KeyListener
-        selectedCompIds={selectedCompIds}
-        schema={currentSchemaHistory.data}
-        selectAndUnselectComp={selectAndUnselectComp}
-        removeSelectedComps={removeSelectedComps}
-        pasteFromClipboard={pasteFromClipboard}
-        copyToClipboard={copyToClipboard}
-        undo={undo}
-        redo={redo}
-      />
       <Stack as="main" className="FormConstructor">
         <TreePanel
           schema={currentSchemaHistory.data}
@@ -293,6 +282,11 @@ const FormConstructor: FC = (): JSX.Element => {
           isCurrentSchemaLoading={isCurrentSchemaLoading}
           isDependencySchemasLoading={isDependencySchemasLoading}
           addNewComps={addNewComps}
+          removeSelectedComps={removeSelectedComps}
+          pasteFromClipboard={pasteFromClipboard}
+          copyToClipboard={copyToClipboard}
+          undo={undo}
+          redo={redo}
         />
         <div className="PreviewPanel">
           <Preview
