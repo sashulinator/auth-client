@@ -6,6 +6,10 @@
   overflow: visible;
 }
 
+.TreePanel.isFocused:before {
+  border-right: 1px solid var(--themePrimaryTransparent03);
+}
+
 .TreePanel:before {
   content: '';
   position: absolute;

@@ -1,22 +1,16 @@
-import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton } from '@fluentui/react'
-import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
+import { FontIcon, PrimaryButton, SearchBox } from '@fluentui/react'
 
-import './tree-panel.css'
+import PaletteModal, { paletteModalState } from '../../palette-modal'
+import KeyListener from './key-listener'
+import PanelTree from './tree'
+import clsx from 'clsx'
+import React, { LegacyRef, forwardRef } from 'react'
+import { useRecoilState } from 'recoil'
 
-import { TreeAdditionalData } from '../types'
-import TreeLeaf from './tree-leaf'
-import React, { useEffect, useState } from 'react'
-import PerfectScrollbar from 'react-perfect-scrollbar'
-
-import { ROOT_ID } from '@/constants/common'
-import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
-import { isCtrl, isEnter } from '@/lib/key-events'
-import { highlightHover, removeAllHoverHighlights } from '@/pages/form-constructor/preview'
-import LoadingAria from '@/shared/loading-aria'
+import { useDebounce } from '@/lib/use-debaunce'
+import withFocus from '@/lib/with-focus'
+import ResizeTarget from '@/shared/resize-target'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
-import Tree from '@/shared/tree'
-import { buildTree } from '@/shared/tree/lib/build-tree'
 
 interface TreePanelProps {
   selectAndUnselectComp: (compId: string | string[]) => void
@@ -27,131 +21,61 @@ interface TreePanelProps {
   schemas: Catalog<CompSchema> | null
   searchQuery?: string
   updateComp: (comp: Comp) => void
+  isCurrentSchemaLoading: boolean
+  isDependencySchemasLoading: boolean
+  addNewComps: (comps: Catalog<Comp>) => void
+  isFocused: boolean
+  ref: LegacyRef<HTMLDivElement | null>
+  removeSelectedComps: () => void
+  pasteFromClipboard: () => void
+  copyToClipboard: () => void
+  undo: () => void
+  redo: () => void
 }
 
-export default function TreePanel(props: TreePanelProps): JSX.Element {
-  const [tree, setTree] = useState<TreeData | undefined>()
-  const [editId, setEditId] = useState<string | undefined>()
-
-  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds, editId])
-
-  function rebuildTree(): TreeData | undefined {
-    return buildTree<TreeAdditionalData>(tree, props.schema.catalog, {
-      searchQuery: props.searchQuery,
-      schemas: props.schemas,
-      pickedIds: props.selectedCompIds,
-      editId,
-      onItemClick,
-      onDoubleClick,
-      onMouseOver: highlightHover,
-      onFocus: highlightHover,
-      onBlur: removeAllHoverHighlights,
-      onMouseLeave: removeAllHoverHighlights,
-      onKeyDown: selectOnEnterKey,
-      updateComp: props.updateComp,
-    })
-  }
-
-  function onDoubleClick(compId?: string) {
-    setEditId(compId)
-  }
-
-  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string) {
-    assertString(compId)
-
-    if (props.selectedCompIds.includes(compId)) {
-      return
-    }
-
-    if (isCtrl(e)) {
-      props.selectAndUnselectComp(compId)
-    } else {
-      props.selectAndUnselectComp([compId])
-    }
-  }
-
-  function selectOnEnterKey(e: React.KeyboardEvent<HTMLDivElement>, compId: string | number) {
-    assertString(compId)
-
-    if (isEnter(e) && isCtrl(e)) {
-      props.selectAndUnselectComp(compId)
-    } else if (isEnter(e)) {
-      props.selectAndUnselectComp([compId])
-    }
-  }
-
-  function onDragEnd(f: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || to.parentId === 'rootId') {
-      return
-    }
-
-    assertNotUndefined(tree)
-
-    let tempComps = props.schema.catalog
-    let tempTree = tree
-
-    props.selectedCompIds.forEach((compId) => {
-      const from = findEntityPosition(compId, tempComps)
-      assertNotUndefined(from)
-      tempTree = moveItemOnTree(tempTree, from, to)
-      const comp = findEntity(compId, tempComps)
-      tempComps = moveEntity(comp, to.parentId as string, to.index || 0, tempComps)
-    })
-
-    // Запускаем с таймаутом чтобы не моргал item
-    setTree(tempTree)
-    setTimeout(() => props.upsertComps(tempComps), 0)
-  }
-
-  /**
-    @description Пользователь может начать перетаскивать компонент, который не был выделен
-    в результате перетащятся выделенные, а не перетаскиваемые
-   */
-  function PreventMovingUnpickedItems(compId: string | number) {
-    assertString(compId)
-    setEditId(undefined)
-
-    if (props.selectedCompIds.includes(compId)) {
-      return
-    }
-
-    props.selectAndUnselectComp([compId])
-  }
+const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function TreePanel(props, ref): JSX.Element {
+  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 0)
+  const [, setPaletteOpen] = useRecoilState(paletteModalState)
 
   return (
-    <PerfectScrollbar className="treePanelScrollable">
-      <LoadingAria loading={props.isLoading} label="Schema loading...">
-        {!props.isLoading && (
-          <ActionButton
-            styles={{
-              root: {
-                borderRadius: '0',
-                width: '100%',
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                  ? 'var(--themePrimaryTransparent03)'
-                  : 'transparent',
-              },
-              rootHovered: {
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                  ? 'var(--themePrimaryTransparent03)'
-                  : 'var(--themePrimaryTransparent01)',
-              },
-            }}
-            onClick={() => props.selectAndUnselectComp([ROOT_ID])}
-          >
-            ROOT
-          </ActionButton>
-        )}
-        {tree && (
-          <Tree
-            renderItem={TreeLeaf}
-            tree={tree}
-            onDragStart={PreventMovingUnpickedItems}
-            onDragEnd={onDragEnd}
-            setTree={setTree}
-          />
-        )}
-      </LoadingAria>
-    </PerfectScrollbar>
+    <div className={clsx('TreePanel', props.isFocused && 'isFocused')} ref={ref}>
+      <PaletteModal addNewComps={props.addNewComps} selectAndUnselectComp={props.selectAndUnselectComp} />
+      <KeyListener
+        selectedCompIds={props.selectedCompIds}
+        schema={props.schema}
+        selectAndUnselectComp={props.selectAndUnselectComp}
+        removeSelectedComps={props.removeSelectedComps}
+        pasteFromClipboard={props.pasteFromClipboard}
+        copyToClipboard={props.copyToClipboard}
+        undo={props.undo}
+        redo={props.redo}
+        isFocused={props.isFocused}
+      />
+      <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
+      {!props.isCurrentSchemaLoading && (
+        <SearchBox
+          autoComplete="off"
+          className="treeSearchBox"
+          onChange={(ev: unknown, value?: string) => setFilterString(value)}
+        />
+      )}
+      {!props.isCurrentSchemaLoading && !props.isDependencySchemasLoading && (
+        <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
+          <FontIcon aria-label="Add Comp" iconName="Add" />
+        </PrimaryButton>
+      )}
+      <PanelTree
+        schema={props.schema}
+        schemas={props.schemas}
+        selectAndUnselectComp={props.selectAndUnselectComp}
+        upsertComps={props.upsertComps}
+        selectedCompIds={props.selectedCompIds}
+        isLoading={props.isCurrentSchemaLoading}
+        searchQuery={searchQuery}
+        updateComp={props.updateComp}
+      />
+    </div>
   )
-}
+})
+
+export default withFocus(TreePanel)
