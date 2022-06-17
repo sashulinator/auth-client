@@ -31,7 +31,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   }
 
   function addPreset(schema: CompSchema) {
-    const comps = remove(schema.comps, ROOT_ID)
+    const comps = remove(schema.catalog, ROOT_ID)
     props.addNewComps(comps)
     setOpen(false)
   }

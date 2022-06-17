@@ -19,7 +19,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      comps: {
+      catalog: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',
@@ -67,7 +67,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
       title: 'Training',
       componentName: null,
       type: CompSchemaType.FORM,
-      comps: {
+      catalog: {
         ROOT_ID: {
           id: 'ROOT_ID',
           name: 'noname',
