@@ -1,27 +1,27 @@
 import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 import { Icon, IconButton, Stack } from '@fluentui/react'
 
-import './tree-leaf.css'
+import './tree-node.css'
 
 import { labelColors } from '../constants/label-colors'
-import { typeIcons } from '../constants/type-icons'
 import { AdditionalData } from '../lib/build-tree'
 import clsx from 'clsx'
 import React from 'react'
 
 import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import { isEnter } from '@/lib/key-events'
-import { ClassNames, createPressEnterOnLabelHandler } from '@/shared/binding-editor'
+import { ClassNames, createPressEnterOnLabelHandler, typeIcons } from '@/shared/binding-editor'
 import { Dropdown } from '@/shared/dropdown'
 import {
   EventAssertionBindingMetaName,
   EventBinding,
-  EventType,
+  EventBindingType,
   actionNameOptions,
+  assertionNameOptions,
   eventNameOptions,
 } from '@/shared/schema-drawer'
 
-export interface TreeLeafProps extends RenderItemParams {
+export interface TreeNodeProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
       binding: EventBinding
@@ -33,7 +33,7 @@ const iconButtonStyles = { rootHovered: { backgroundColor: 'var(--themePrimary01
 
 const dropdownStyles = { title: { border: '0px', background: 'transparent' }, root: { width: '100%' } }
 
-export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
+export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
   if (props.item.data === undefined) {
     return null
   }
@@ -43,16 +43,19 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element | null {
   const isError = data.errorId === props.item.id
   const isSelected = props.item.data.selectedItemId === props.item.data.binding.id
 
-  const isOperator = data.binding.type === EventType.OPERATOR
-  const isAction = data.binding.type === EventType.ACTION
-  const isEvent = data.binding.type === EventType.EVENT
+  const isOperator = data.binding.type === EventBindingType.OPERATOR
+  const isAction = data.binding.type === EventBindingType.ACTION
+  const isEvent = data.binding.type === EventBindingType.EVENT
+  const isEventAssertion = data.binding.type === EventBindingType.EVENT_ASSERTION
   const options = isOperator
     ? generateOptionsFromStringArray(['or', 'and'])
     : isAction
     ? actionNameOptions
     : isEvent
     ? eventNameOptions
-    : EventAssertionBindingMetaName
+    : isEventAssertion
+    ? EventAssertionBindingMetaName
+    : assertionNameOptions
 
   const currentBindingSelector = `.${ClassNames.BindingEditorRoot}.${data.bindingEditorId}`
   const currentBindingFormSelector = `.${currentBindingSelector}.${ClassNames.bindingForm}`

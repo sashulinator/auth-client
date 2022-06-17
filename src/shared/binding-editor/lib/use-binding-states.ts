@@ -21,7 +21,8 @@ export const defaultCompBindings: Catalog<Binding> = {
 export function useBindingStates<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
   onChange: (value: TSchema | undefined) => void,
   // can receive string because of final-form
-  value?: TSchema | string
+  value: TSchema | string | undefined,
+  initialSchema?: TSchema
 ) {
   const [selectedItemId, selectItemId] = useState('')
 
@@ -52,7 +53,7 @@ export function useBindingStates<TUnit extends Binding, TSchema extends BindingS
 
     newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
 
-    onChange({ catalog: newCatalog } as TSchema)
+    onChange({ ...initialSchema, catalog: newCatalog } as TSchema)
   }
 
   return {

@@ -3,25 +3,23 @@ import { Stack } from '@fluentui/react'
 import { useId } from '@fluentui/react-hooks'
 import { ValidationError, and } from '@savchenko91/schema-validator'
 
-import { typeIcons } from '../constants/type-icons'
-import buildTree from '../lib/build-tree'
-import TreeLeaf from './tree-leaf'
 import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
-import { BindingEditor, createRemoveHandler } from '@/shared/binding-editor'
+import { BindingEditor, TreeNode, buildTree, createRemoveHandler, typeIcons } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import SchemaDrawer, {
   Catalog,
   Comp,
   CompSchema,
+  EventAssertionBindingMetaName,
   EventBinding,
   EventBindingSchema,
-  EventType,
+  EventBindingType,
   actionList,
   basicComponentsSchemas,
   eventAssertionBindingMetaCatalog,
@@ -81,25 +79,26 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
       selectedItemId,
       errorId: props.validationError?._inputName,
       bindingEditorId,
+      assertionNames: Object.keys(EventAssertionBindingMetaName),
     })
   }
 
   const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
 
   function addAssertion(): void {
-    addBinding({ type: EventType.ASSERTION, name: 'undefined' })
+    addBinding({ type: EventBindingType.EVENT_ASSERTION, name: 'undefined' })
   }
 
   function addOperator(): void {
-    addBinding({ type: EventType.OPERATOR, name: and.name })
+    addBinding({ type: EventBindingType.OPERATOR, name: and.name })
   }
 
   function addAction(): void {
-    addBinding({ type: EventType.ACTION, name: setValue.name })
+    addBinding({ type: EventBindingType.ACTION, name: setValue.name })
   }
 
   function addEvent() {
-    addBinding({ type: EventType.EVENT, name: onFieldChange.name })
+    addBinding({ type: EventBindingType.EVENT, name: onFieldChange.name })
   }
 
   return (
@@ -109,14 +108,14 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
           mainButton={{ iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' }}
           buttons={[
             { iconName: typeIcons.ACTION, onClick: addAction, name: 'Action' },
-            { iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' },
+            { iconName: typeIcons.EVENT_ASSERTION, onClick: addAssertion, name: 'Assertion' },
             { iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' },
           ]}
         />
         {tree && (
           <Stack tokens={{ padding: '2px 0' }}>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
+            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeNode} onDragEnd={onDragEnd} />
           </Stack>
         )}
         {hasSchema(assertionItem) && selectedBinding && (

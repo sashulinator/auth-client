@@ -83,6 +83,7 @@ export interface BindingSchema<TItem extends Binding> extends Schema<TItem> {}
  */
 
 export enum AssertionBindingType {
+  ROOT = 'ROOT',
   OPERATOR = 'OPERATOR',
   ASSERTION = 'ASSERTION',
 }
@@ -111,20 +112,20 @@ export interface AssertionBindingSchema extends BindingSchema<AssertionBinding> 
  * EVENT BINDINGS
  */
 
-export enum EventType {
+export enum EventBindingType {
   EVENT = 'EVENT',
   ACTION = 'ACTION',
   OPERATOR = 'OPERATOR',
-  ASSERTION = 'ASSERTION',
+  EVENT_ASSERTION = 'EVENT_ASSERTION',
   ROOT = 'ROOT',
 }
 
 export interface EventBinding extends Binding {
-  type: EventType
+  type: EventBindingType
 }
 
 export interface EventEventBinding extends Binding {
-  type: EventType.EVENT
+  type: EventBindingType.EVENT
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

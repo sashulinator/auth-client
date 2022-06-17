@@ -9,7 +9,7 @@ import {
   string,
 } from '@savchenko91/schema-validator'
 
-import { Binding, Catalog, ComponentCompSchema, EventBindingSchema, EventType } from '../model/types'
+import { Binding, Catalog, ComponentCompSchema, EventBindingSchema, EventBindingType } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
@@ -23,11 +23,11 @@ export function assertCompSchema(input: unknown): asserts input is ComponentComp
 
 export function assertEventBindings(input: unknown): asserts input is Catalog<Binding> {
   const messages = {
-    [EventType.EVENT]: 'event cannot be a child',
-    [EventType.ACTION]: 'action must be a child of event',
-    [EventType.ASSERTION]: 'assertion must be a child of action or operator',
-    [EventType.OPERATOR]: 'operator must be a child of action or operator',
-    [EventType.ROOT]: 'root must be root',
+    [EventBindingType.EVENT]: 'event cannot be a child',
+    [EventBindingType.ACTION]: 'action must be a child of event',
+    [EventBindingType.EVENT_ASSERTION]: 'assertion must be a child of action or operator',
+    [EventBindingType.OPERATOR]: 'operator must be a child of action or operator',
+    [EventBindingType.ROOT]: 'root must be root',
   }
 
   const validateBindingUnit = rootWrapArr(
@@ -77,7 +77,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
     const eventUnits = findEntities(rootBinding.children, catalog)
 
     Object.values(eventUnits).forEach((eventUnit) => {
-      if (eventUnit.type !== EventType.EVENT) {
+      if (eventUnit.type !== EventBindingType.EVENT) {
         throw new ValidationError({
           inputName: eventUnit.id,
           code: assertEventBindings.name,
@@ -89,7 +89,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
       const actionUnits = findEntities(eventUnit.children || [], catalog)
 
       Object.values(actionUnits).forEach((actionUnit) => {
-        if (actionUnit.type !== EventType.ACTION) {
+        if (actionUnit.type !== EventBindingType.ACTION) {
           throw new ValidationError({
             inputName: actionUnit.id,
             code: assertEventBindings.name,
@@ -101,7 +101,10 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
         const assertionUnits = findEntities(actionUnit.children || [], catalog)
 
         Object.values(assertionUnits).forEach((assertionUnit) => {
-          if (assertionUnit.type !== EventType.ASSERTION && assertionUnit.type !== EventType.OPERATOR) {
+          if (
+            assertionUnit.type !== EventBindingType.EVENT_ASSERTION &&
+            assertionUnit.type !== EventBindingType.OPERATOR
+          ) {
             throw new ValidationError({
               inputName: assertionUnit.id,
               code: assertEventBindings.name,

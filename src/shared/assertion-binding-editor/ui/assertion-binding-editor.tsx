@@ -1,17 +1,18 @@
 import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
+import { useId } from '@fluentui/react-hooks'
+import { ValidationError } from '@savchenko91/schema-validator'
 
 import './assertion-binding-editor.css'
 
 import { typeIcons } from '../constatnts/type-icons'
-import buildTree from '../lib/build-tree'
-import TreeLeaf from './tree-leaf'
+import { initialSchema } from '../lib/constants'
 import React, { forwardRef, useEffect, useState } from 'react'
 import { Field, Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave'
-import { BindingEditor, createRemoveHandler } from '@/shared/binding-editor'
+import { BindingEditor, TreeNode, buildTree, createRemoveHandler } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import { Dropdown } from '@/shared/dropdown'
@@ -38,6 +39,7 @@ export interface AssertionBindingEditorProps {
   name?: string
   label?: string
   isFocused: boolean
+  validationError?: ValidationError
   onChange: (value: AssertionBindingSchema | undefined) => void
 }
 
@@ -45,6 +47,8 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
   props,
   ref
 ): JSX.Element {
+  const bindingEditorId = `binding-${useId()}`
+
   const {
     schema,
     catalog,
@@ -53,7 +57,7 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
     addBinding,
     changeBinding,
     selectItemId,
-  } = useBindingStates<AssertionBinding, AssertionBindingSchema>(props.onChange, props.value)
+  } = useBindingStates<AssertionBinding, AssertionBindingSchema>(props.onChange, props.value, initialSchema)
 
   const remove = createRemoveHandler(schema, { eventToShowError: EventToShowError.onVisited }, props.onChange)
 
@@ -65,10 +69,13 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
 
   function rebuildTree() {
     return buildTree(schema?.catalog || undefined, {
-      changeValidator: changeBinding,
+      changeBinding,
       remove,
       selectItemId,
       selectedItemId,
+      bindingEditorId,
+      errorId: props.validationError?._inputName,
+      assertionNames: Object.keys(assertionList),
     })
   }
 
@@ -85,19 +92,16 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
   return (
     <BindingEditor.Root ref={ref} label={props.label}>
       <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
-        <Stack>
-          <BindingEditor.ActionPanel
-            mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
-            buttons={[{ iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' }]}
-          />
-          {tree && (
-            <Stack tokens={{ padding: '2px 0' }}>
-              {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-              <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
-            </Stack>
-          )}
-        </Stack>
-
+        <BindingEditor.ActionPanel
+          mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
+          buttons={[{ iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' }]}
+        />
+        {tree && (
+          <Stack tokens={{ padding: '2px 0' }}>
+            {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
+            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeNode} onDragEnd={onDragEnd} />
+          </Stack>
+        )}
         {props.value && (
           <Form
             // eslint-disable-next-line @typescript-eslint/no-empty-function

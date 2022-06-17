@@ -36,8 +36,8 @@ function factory(assertionList: Catalog<BindingMeta>, units: Catalog<Binding>, u
   const compValidator = units[unitId]
   assertNotUndefined(compValidator)
 
-  const isOr = compValidator.name === 'and'
-  const isAnd = compValidator.name === 'or'
+  const isOr = compValidator.name === 'or' || compValidator.id === ROOT_ID
+  const isAnd = compValidator.name === 'and'
 
   if (isAnd || isOr) {
     const validators = compValidator?.children?.map((id) => factory(assertionList, units, id)) ?? []
@@ -45,6 +45,9 @@ function factory(assertionList: Catalog<BindingMeta>, units: Catalog<Binding>, u
   }
 
   const assertionItem = assertionList[compValidator.name]
+  if (assertionItem === undefined) {
+    console.log(compValidator)
+  }
   assertNotUndefined(assertionItem)
 
   const props = formToOneValueIfNeeded(compValidator.props)
