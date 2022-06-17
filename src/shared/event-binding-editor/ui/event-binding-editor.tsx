@@ -10,10 +10,10 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import { findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
+import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
 import { BindingEditor } from '@/shared/binding-editor'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
-import { FocusHOC } from '@/shared/focus-hoc'
 import SchemaDrawer, {
   Catalog,
   Comp,
@@ -173,4 +173,4 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   )
 })
 
-export default FocusHOC(BindingSetter)
+export default withFocus(BindingSetter)

@@ -9,8 +9,10 @@ interface FocusProps {
   ref: LegacyRef<Element | null>
   isFocused: boolean
 }
-
-export function FocusHOC<P>(WrappedComponent: React.ComponentType<P & FocusProps>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function withFocus<P extends Record<string, any>>(
+  WrappedComponent: React.ComponentType<P & FocusProps>
+) {
   const ComponentWithInterceptedFocus = (props: P & FocusProps) => {
     const ref = useRef<null | Element>(null)
 
