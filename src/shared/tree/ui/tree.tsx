@@ -10,6 +10,7 @@ const PADDING_PER_LEVEL = 18
 
 interface TreeProps extends Pick<Props, 'tree' | 'onDragEnd' | 'onDragStart' | 'renderItem'> {
   setTree: React.Dispatch<React.SetStateAction<TreeData | undefined>>
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>
 }
 
 function Tree(props: TreeProps): JSX.Element {
@@ -45,7 +46,7 @@ function Tree(props: TreeProps): JSX.Element {
   }
 
   return (
-    <div style={{ height }} ref={ref}>
+    <div style={{ height }} ref={ref} onMouseLeave={props.onMouseLeave}>
       <AtlasianTree
         tree={props.tree}
         renderItem={props.renderItem}

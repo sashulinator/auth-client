@@ -14,9 +14,9 @@ export interface TreeAdditionalData {
   onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
   pickedIds: string[]
   onMouseOver?: (itemId: string | number) => void
-  onMouseLeave?: (itemId: string | number) => void
-  onFocus?: (itemId: string | number) => void
-  onBlur?: (itemId: string | number) => void
+  // onMouseLeave?: (itemId: string | number) => void
+  // onFocus?: (itemId: string | number) => void
+  // onBlur?: (itemId: string | number) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
   schemas: Catalog<CompSchema> | null
   searchQuery?: string

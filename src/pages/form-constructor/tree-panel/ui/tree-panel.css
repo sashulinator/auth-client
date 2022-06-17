@@ -21,7 +21,6 @@
   backdrop-filter: blur(11px);
   -webkit-backdrop-filter: blur(11px);
   border-right: 1px solid var(--alwaysWhite02);
-  outline: 1px solid var(--alwaysBlack02);
 }
 
 .TreePanel .treePanelScrollable {

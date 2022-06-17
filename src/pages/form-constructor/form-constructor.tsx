@@ -245,7 +245,6 @@ const FormConstructor: FC = (): JSX.Element => {
     })
 
     const data = await response.json()
-    console.log('data', data)
 
     if (response.ok) {
       navigate(ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', data.id))
