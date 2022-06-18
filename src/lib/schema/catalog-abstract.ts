@@ -62,11 +62,11 @@ export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TE
     return entity
   }
 
-  public walk(cb: (entity: TEntity) => void) {
-    for (let index = 0; index < this.values.length; index++) {
-      const entity = this.values[index] as TEntity
+  public forEach(cb: (entity: TEntity, key: string, entities: Record<string, TEntity>) => void) {
+    for (let index = 0; index < this.entries.length; index++) {
+      const [key, entity] = this.entries[index] as [string, TEntity]
 
-      cb(entity)
+      cb(entity, key, this.catalog)
     }
   }
 }
