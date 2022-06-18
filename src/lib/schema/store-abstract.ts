@@ -1,6 +1,6 @@
 export type Key = string | number
 
-export type Item<TKey extends string | number> = {
+export type Item<TKey extends Key = Key> = {
   [tkey in TKey]: string | number // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } & { [key: Key]: any }
 
@@ -39,7 +39,7 @@ export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> 
     this.data = { ...this.data, [this.idKeyValue(item)]: item }
   }
 
-  idKeyValue(id: string | number | Item<TKey>): string | number {
+  idKeyValue(id: string | number | Item<Key>): string | number {
     if (typeof id === 'string' || typeof id === 'number') {
       return (this._data[id] as unknown) as string | number
     } else {

@@ -1,38 +1,23 @@
 import { insert } from '../change-unmutable'
-import { Key, StoreAbstract, StoreData } from './store-abstract'
-import uniqid from 'uniqid'
+import { Item, Key, StoreAbstract, StoreData } from './store-abstract'
+
+// import uniqid from 'uniqid'
 
 const ROOT_ID = 'ROOT_ID'
 
-export interface TreeItem {
+export interface TreeItem extends Item {
   children?: string[] | null | undefined // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string | number]: any
 }
 
-export interface TreeNormItem {
-  children?: TreeNormItem[]
-  parent?: TreeNormItem
+export interface TreeNormItem extends TreeItem {
+  parentId?: Key
 }
 
-export type TreeData<TKey extends Key, TItem extends TreeItem = TreeItem> = StoreData<TKey, TItem & TreeItem>
+export type TreeData<TKey extends Key, TItem extends TreeItem = TreeItem> = StoreData<TKey, TItem>
 
-export type TreeNormData<
-  TKey extends Key,
-  TItem extends TreeItem,
-  TNormItem extends TItem & {
-    children?: TNormItem[]
-    parent?: TNormItem
-  }
-> = StoreData<TKey, TNormItem>
+export type TreeNormData<TKey extends Key, TItem extends TreeItem> = StoreData<TKey, TreeNormItem & TItem>
 
-export class TreeStore<
-  TKey extends Key,
-  TItem extends TreeItem,
-  TNormItem extends TItem & {
-    children?: TNormItem[]
-    parent?: TNormItem
-  }
-> extends StoreAbstract<TKey, TNormItem> {
+export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAbstract<TKey, TItem & TreeNormItem> {
   rootId: Key
 
   constructor(data: StoreData<TKey, TItem>, rootId: Key, idKey: TKey) {
@@ -55,19 +40,12 @@ export class TreeStore<
     walk(this.root, this.data, this.idKey, cb)
   }
 
-  static normalize<
-    TKey extends Key,
-    TItem extends TreeItem,
-    TNormItem extends TItem & {
-      children?: TNormItem[]
-      parent?: TNormItem
-    }
-  >(
+  static normalize<TKey extends Key, TItem extends TreeItem>(
     data: TreeData<TKey, TItem>,
     rootId: string | number,
     idKey: string | number
-  ): TreeNormData<TKey, TItem, TNormItem> {
-    const result: TreeNormData<TKey, TItem, TNormItem> = {}
+  ): TreeNormData<TKey, TItem> {
+    const result: TreeNormData<TKey, TItem> = {}
     const root = data[rootId]
     const parents: Record<string, string | number> = {}
 
@@ -75,17 +53,9 @@ export class TreeStore<
       throw new Error('TreeCatalog must contain root component')
     }
 
-    walk(root, data, idKey, (item, idKeyValue) => {
-      const children = item.children?.map((childIdKeyValue) => {
+    walk(root, data, idKey, (item: TItem, idKeyValue) => {
+      const children = item.children?.forEach((childIdKeyValue) => {
         parents[childIdKeyValue] = idKeyValue
-
-        const child = data[childIdKeyValue]
-
-        if (child === undefined) {
-          throw new Error(`Some items are missing: ${childIdKeyValue}`)
-        }
-
-        return child
       })
 
       const parent = data[parents[idKeyValue] as string]
@@ -94,7 +64,7 @@ export class TreeStore<
         throw new Error(`Some items are missing: ${idKeyValue}`)
       }
 
-      result[idKeyValue] = { ...item, parent, children } as TNormItem
+      result[idKeyValue] = { ...item, parent, children }
     })
 
     return result
@@ -118,56 +88,51 @@ export class TreeStore<
     const newParentChildren = insert(parentClone.children, index, item)
     const newParent = { ...parentClone, children: newParentChildren }
 
-    const newItem = ({ ...item, parent: newParent } as unknown) as TNormItem
+    const newItem = { ...item, parentId: newParent.parentId }
 
-    this.data = { ...this.data, [this.idKeyValue(newParent)]: newParent, [this.idKeyValue(newItem)]: newItem }
+    this.changeItem(newParent)
+    this.changeItem(newItem)
   }
 
-  // TODO should we empty children array or leave as it is?
-  copy(id: string, uniqKeys: string[] = []): TItem {
-    const newUniqKeys = [this.idKey, ...uniqKeys]
-    const entity = this.data[id]
+  copy(id: Key): TItem {
+    return { ...this.get(id) }
+  }
 
-    if (entity === undefined) {
-      throw new Error('Entity does not exists')
+  remove(id: Key) {
+    const removeChildrenDeep = (childId: Key) => {
+      this.get(childId).children?.forEach(removeChildrenDeep)
+      this.removeFromData(childId)
     }
 
-    return newUniqKeys.reduce((acc, keyName) => {
-      return {
-        ...acc,
-        [keyName]: uniqid(),
-      }
-    }, entity)
+    removeChildrenDeep(id)
+
+    this.removeFromParent(id)
   }
 
-  remove(id: string | number) {
+  private removeFromData(id: Key) {
+    const dataClone = { ...this.data }
+    delete dataClone[id]
+    this.data = dataClone
+  }
+
+  private removeFromParent(id: Key) {
     const item = this.get(id)
-
-    const removeChildrenDeep = (itemToRemove: TNormItem) => {
-      itemToRemove.children?.forEach(removeChildrenDeep)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { [this.idKeyValue(itemToRemove)]: childToRemove, ...newData } = this.data
-      this.data = newData
-    }
-
-    removeChildrenDeep(item)
-
-    const parent = item?.parent
-
     // undefined if we remove root
-    if (parent === undefined) {
+    if (item.parentId === undefined) {
       return
     }
 
-    parent.children?.filter((childItem) => this.idKeyValue(childItem) === id)
+    const parent = this.get(item.parentId)
+    const newParentChildren = parent.children?.filter((childId) => childId === id)
 
-    if (parent.children?.length === 0) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { children, ...newParent } = parent
-      this.changeItem(newParent as TNormItem)
+    if (newParentChildren?.length !== 0) {
+      this.changeItem(parent)
+      return
     }
 
-    this.changeItem(parent)
+    const newParent = { ...parent }
+    delete newParent.children
+    this.changeItem(newParent)
   }
 }
 
