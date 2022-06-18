@@ -11,6 +11,9 @@ export interface ICatalog<TEntity extends Entity> {
   keys: string[]
   entries: [string, TEntity][]
   get: (id: string) => TEntity
+  filter: (
+    cb: (entity: TEntity, key: string, catalog: Record<string, TEntity>) => unknown
+  ) => Record<string, TEntity> | undefined
 }
 
 export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TEntity> {
@@ -52,6 +55,9 @@ export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TE
     return Object.entries(this._catalog)
   }
 
+  /**
+   * If you want to get entity whithout error use "this.catalog[id]"
+   */
   get(id: string): TEntity {
     const entity = this.catalog[id]
 
@@ -62,12 +68,32 @@ export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TE
     return entity
   }
 
-  public forEach(cb: (entity: TEntity, key: string, entities: Record<string, TEntity>) => void) {
-    for (let index = 0; index < this.entries.length; index++) {
-      const [key, entity] = this.entries[index] as [string, TEntity]
+  getMany(ids: string[]): Record<string, TEntity> {
+    return ids.reduce<Record<string, TEntity>>((acc, id) => {
+      acc[id] = this.get(id)
 
-      cb(entity, key, this.catalog)
+      return acc
+    }, {})
+  }
+
+  filter(
+    cb: (entity: TEntity, key: string, catalog: Record<string, TEntity>) => unknown
+  ): Record<string, TEntity> | undefined {
+    const result = Object.entries(this.catalog).reduce<Record<string, TEntity>>((acc, [key, entity]) => {
+      if (!cb(entity, key, this.catalog)) {
+        return acc
+      }
+
+      acc[entity.id.toString()] = this.get(entity.id.toString())
+
+      return acc
+    }, {})
+
+    if (Object.keys(result).length === 0) {
+      return undefined
     }
+
+    return result
   }
 }
 

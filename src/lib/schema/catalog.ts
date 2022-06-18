@@ -23,4 +23,12 @@ export class Catalog<TEntity extends Entity> extends CatalogBase<TEntity> implem
       }
     }, entity)
   }
+
+  public forEach(cb: (entity: TEntity, key: string, entities: Record<string, TEntity>) => void) {
+    for (let index = 0; index < this.entries.length; index++) {
+      const [key, entity] = this.entries[index] as [string, TEntity]
+
+      cb(entity, key, this.catalog)
+    }
+  }
 }
