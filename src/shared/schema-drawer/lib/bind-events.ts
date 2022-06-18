@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { actionList } from '../constants/action-list'
 import { eventAssertionBindingMetaCatalog } from '../constants/event-assertion-list'
 import { eventList } from '../constants/event-list'
-import { ActionProps, Catalog, EventBinding, EventProps, EventType, FieldComponentContext } from '../model/types'
+import { ActionProps, Catalog, EventBinding, EventBindingType, EventProps, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { ROOT_ID } from '@/constants/common'
@@ -68,7 +68,7 @@ function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: s
   const orOperator: EventBinding = {
     id: operatorId,
     name: 'and',
-    type: EventType.OPERATOR,
+    type: EventBindingType.OPERATOR,
     children: actionUnit.children,
   }
   const newBindings2 = insert(newBindings, operatorId, orOperator)

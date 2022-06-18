@@ -4,8 +4,8 @@ import {
   AssertionBindingType,
   Catalog,
   CompSchemaType,
+  EventBindingType,
   EventToShowError,
-  EventType,
 } from '../model/types'
 import { BasicComponentsNames } from './basic-components-schemas'
 
@@ -143,19 +143,19 @@ export const actionList: Catalog<ActionBindingMeta> = {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'root',
-                type: EventType.ROOT,
+                type: EventBindingType.ROOT,
                 children: ['l459ocs7'],
               },
               l459ocs7: {
                 id: 'l459ocs7',
                 name: 'onFieldLife',
-                type: EventType.EVENT,
+                type: EventBindingType.EVENT,
                 children: ['l45ikto6', 'l45im2fr', 'l45givi5', 'l459q4jl'],
               },
               l459q4jl: {
                 id: 'l459q4jl',
                 name: setCompProp.name,
-                type: EventType.ACTION,
+                type: EventBindingType.ACTION,
                 props: {
                   prop: 'props.hidden',
                   compId: 'l458n3rr',
@@ -167,7 +167,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
               l45agej6: {
                 id: 'l45agej6',
                 name: 'matchPattern',
-                type: EventType.ASSERTION,
+                type: EventBindingType.EVENT_ASSERTION,
                 props: {
                   name: 'typeof',
                   pattern: 'boolean',
@@ -176,7 +176,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
               l45givi5: {
                 id: 'l45givi5',
                 name: setCompProp.name,
-                type: EventType.ACTION,
+                type: EventBindingType.ACTION,
                 props: {
                   prop: 'props.hidden',
                   compId: 'l45gg3ha',
@@ -188,7 +188,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
               l45glrdh: {
                 id: 'l45glrdh',
                 name: 'matchPattern',
-                type: EventType.ASSERTION,
+                type: EventBindingType.EVENT_ASSERTION,
                 props: {
                   name: 'typeof',
                   pattern: 'string',
@@ -197,7 +197,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
               l45ikto6: {
                 id: 'l45ikto6',
                 name: setCompProp.name,
-                type: EventType.ACTION,
+                type: EventBindingType.ACTION,
                 props: {
                   prop: 'props.hidden',
                   compId: 'l45gg3ha',
@@ -208,7 +208,7 @@ export const actionList: Catalog<ActionBindingMeta> = {
               l45im2fr: {
                 id: 'l45im2fr',
                 name: setCompProp.name,
-                type: EventType.ACTION,
+                type: EventBindingType.ACTION,
                 props: {
                   prop: 'props.hidden',
                   compId: 'l458n3rr',

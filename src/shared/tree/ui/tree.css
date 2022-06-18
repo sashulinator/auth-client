@@ -100,11 +100,11 @@ div.NewTreeLeaf.isSelected .treeLeafContent {
 }
 
 .NewTreeLeaf.isError .treeLeafContent {
-  background-color: var(--red02);
+  background-color: var(--red03);
 }
 
 .NewTreeLeaf.isError.isSelected .treeLeafContent {
-  background-color: var(--red02);
+  background-color: var(--red05);
 }
 
 .NewTreeLeaf .treeLeafText {

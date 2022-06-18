@@ -2,6 +2,7 @@ import { ActionButton, IButtonStyles, Label, Stack } from '@fluentui/react'
 
 import './binding-editor.css'
 
+import { ClassNames } from '../constants/classNames'
 import clsx from 'clsx'
 import React, { LegacyRef, forwardRef } from 'react'
 
@@ -9,11 +10,12 @@ export interface RootProps {
   ref: LegacyRef<HTMLDivElement | null>
   label?: string
   children: React.ReactNode
+  className?: string
 }
 
 const Root = forwardRef<HTMLDivElement | null, RootProps>(function BindingEditor(props, ref) {
   return (
-    <div className="BindingEditorRoot" ref={ref}>
+    <div className={clsx(ClassNames.BindingEditorRoot, props.className)} ref={ref}>
       {props.label && <Label>{props.label}</Label>}
       {props.children}
     </div>
@@ -29,7 +31,7 @@ interface BindingEditorProps {
 export default function BindingEditor(props: BindingEditorProps) {
   return (
     <Stack
-      className={clsx('BindingEditor', props.isNotEmpty && 'notEmpty', props.isFocused && 'isFocused')}
+      className={clsx(ClassNames.BindingEditor, props.isNotEmpty && 'notEmpty', props.isFocused && 'isFocused')}
       verticalAlign="space-between"
     >
       <div className="fakeBorder" />

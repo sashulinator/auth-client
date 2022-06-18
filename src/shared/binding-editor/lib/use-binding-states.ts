@@ -18,10 +18,11 @@ export const defaultCompBindings: Catalog<Binding> = {
   },
 }
 
-export function useBindingStates<TUnit extends Binding>(
-  onChange: (value: BindingSchema<TUnit> | undefined) => void,
+export function useBindingStates<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
+  onChange: (value: TSchema | undefined) => void,
   // can receive string because of final-form
-  value?: BindingSchema<TUnit> | string
+  value: TSchema | string | undefined,
+  initialSchema?: TSchema
 ) {
   const [selectedItemId, selectItemId] = useState('')
 
@@ -39,9 +40,9 @@ export function useBindingStates<TUnit extends Binding>(
       ...(newBindingItemProps ? { props: newBindingItemProps } : undefined),
     })
 
-    const newCatalog: Catalog<TUnit> = omitEmpty(newBindings)
+    const newCatalog: TSchema['catalog'] = omitEmpty(newBindings)
 
-    onChange({ catalog: newCatalog })
+    onChange({ catalog: newCatalog } as TSchema)
   }
 
   function addBinding(rawBinding: Omit<TUnit, 'id' | 'children'> & { children?: string[] }): void {
@@ -52,7 +53,7 @@ export function useBindingStates<TUnit extends Binding>(
 
     newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
 
-    onChange({ catalog: newCatalog as Catalog<TUnit> })
+    onChange({ ...initialSchema, catalog: newCatalog } as TSchema)
   }
 
   return {

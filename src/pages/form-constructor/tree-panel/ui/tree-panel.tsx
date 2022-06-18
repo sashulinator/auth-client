@@ -38,43 +38,45 @@ const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function Tre
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
 
   return (
-    <div className={clsx('TreePanel', props.isFocused && 'isFocused')} ref={ref}>
+    <>
       <PaletteModal addNewComps={props.addNewComps} selectAndUnselectComp={props.selectAndUnselectComp} />
-      <KeyListener
-        selectedCompIds={props.selectedCompIds}
-        schema={props.schema}
-        selectAndUnselectComp={props.selectAndUnselectComp}
-        removeSelectedComps={props.removeSelectedComps}
-        pasteFromClipboard={props.pasteFromClipboard}
-        copyToClipboard={props.copyToClipboard}
-        undo={props.undo}
-        redo={props.redo}
-        isFocused={props.isFocused}
-      />
-      <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
-      {!props.isCurrentSchemaLoading && (
-        <SearchBox
-          autoComplete="off"
-          className="treeSearchBox"
-          onChange={(ev: unknown, value?: string) => setFilterString(value)}
+      <div className={clsx('TreePanel', props.isFocused && 'isFocused')} ref={ref}>
+        <KeyListener
+          selectedCompIds={props.selectedCompIds}
+          schema={props.schema}
+          selectAndUnselectComp={props.selectAndUnselectComp}
+          removeSelectedComps={props.removeSelectedComps}
+          pasteFromClipboard={props.pasteFromClipboard}
+          copyToClipboard={props.copyToClipboard}
+          undo={props.undo}
+          redo={props.redo}
+          isFocused={props.isFocused}
         />
-      )}
-      {!props.isCurrentSchemaLoading && !props.isDependencySchemasLoading && (
-        <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
-          <FontIcon aria-label="Add Comp" iconName="Add" />
-        </PrimaryButton>
-      )}
-      <PanelTree
-        schema={props.schema}
-        schemas={props.schemas}
-        selectAndUnselectComp={props.selectAndUnselectComp}
-        upsertComps={props.upsertComps}
-        selectedCompIds={props.selectedCompIds}
-        isLoading={props.isCurrentSchemaLoading}
-        searchQuery={searchQuery}
-        updateComp={props.updateComp}
-      />
-    </div>
+        <ResizeTarget name="treePanelWidth" direction="left" callapsible={true} />
+        {!props.isCurrentSchemaLoading && (
+          <SearchBox
+            autoComplete="off"
+            className="treeSearchBox"
+            onChange={(ev: unknown, value?: string) => setFilterString(value)}
+          />
+        )}
+        {!props.isCurrentSchemaLoading && !props.isDependencySchemasLoading && (
+          <PrimaryButton className="addCompButton" onClick={() => setPaletteOpen(true)}>
+            <FontIcon aria-label="Add Comp" iconName="Add" />
+          </PrimaryButton>
+        )}
+        <PanelTree
+          schema={props.schema}
+          schemas={props.schemas}
+          selectAndUnselectComp={props.selectAndUnselectComp}
+          upsertComps={props.upsertComps}
+          selectedCompIds={props.selectedCompIds}
+          isLoading={props.isCurrentSchemaLoading}
+          searchQuery={searchQuery}
+          updateComp={props.updateComp}
+        />
+      </div>
+    </>
   )
 })
 

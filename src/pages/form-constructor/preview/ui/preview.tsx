@@ -28,12 +28,8 @@ export default function Preview(props: PreviewProps): JSX.Element {
   const ref = useRef<null | HTMLDivElement>(null)
 
   useEffect(() => {
-    const timeoutIds: number[] = []
     function updateHighlights() {
-      ;[100, 200, 300, 500, 1000, 2000, 5000, 10000].forEach((ms) => {
-        const timeoutId = window.setTimeout(() => highlightSelected(props.selectedCompIds), ms)
-        timeoutIds.push(timeoutId)
-      })
+      window.setTimeout(() => highlightSelected(props.selectedCompIds))
     }
 
     document.addEventListener('click', updateHighlights)
@@ -41,7 +37,7 @@ export default function Preview(props: PreviewProps): JSX.Element {
 
     return () => {
       document.removeEventListener('click', updateHighlights)
-      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId))
+      document.addEventListener('keydown', updateHighlights)
     }
   }, [props.selectedCompIds, props.schema])
 

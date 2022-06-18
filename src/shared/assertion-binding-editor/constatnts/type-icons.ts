@@ -1,7 +1,7 @@
-import { EventType } from '@/shared/schema-drawer'
+import { AssertionBindingType } from '@/shared/schema-drawer'
 
 export const typeIcons = {
-  [EventType.OPERATOR]: 'DrillExpand',
-  [EventType.ASSERTION]: 'Robot',
-  [EventType.ROOT]: 'R',
+  [AssertionBindingType.OPERATOR]: 'DrillExpand',
+  [AssertionBindingType.ASSERTION]: 'Robot',
+  [AssertionBindingType.ROOT]: 'R',
 }

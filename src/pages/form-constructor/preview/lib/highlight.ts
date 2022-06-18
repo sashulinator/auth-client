@@ -15,8 +15,6 @@ export function highlightSelected(ids: (string | number)[], ms = 200) {
 }
 
 export function highlightHovered(id: string | number, ms = 200) {
-  console.log('hover')
-
   highlightFactory([id], AreaClassNames.hover, ms)
 }
 

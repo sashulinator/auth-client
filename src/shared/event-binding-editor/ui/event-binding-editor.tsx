@@ -1,25 +1,25 @@
-import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
+import { TreeData } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
-import { ValidationError, and, assertNotUndefined } from '@savchenko91/schema-validator'
+import { useId } from '@fluentui/react-hooks'
+import { ValidationError, and } from '@savchenko91/schema-validator'
 
-import { typeIcons } from '../constants/type-icons'
-import buildTree from '../lib/build-tree'
-import TreeLeaf from './tree-leaf'
 import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
-import { findEntity, moveEntity, removeEntity } from '@/lib/entity-actions'
 import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
-import { BindingEditor } from '@/shared/binding-editor'
+import { BindingEditor, TreeNode, buildTree, createRemoveHandler, typeIcons } from '@/shared/binding-editor'
+import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import SchemaDrawer, {
   Catalog,
   Comp,
   CompSchema,
+  EventAssertionBindingMetaName,
+  EventBinding,
   EventBindingSchema,
-  EventType,
+  EventBindingType,
   actionList,
   basicComponentsSchemas,
   eventAssertionBindingMetaCatalog,
@@ -49,11 +49,20 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   props,
   ref
 ): JSX.Element {
-  // TODO сделать проверку на невалидное значение
-  const { addBinding, changeBinding, catalog, selectedBinding, selectItemId, selectedItemId } = useBindingStates(
-    props.onChange,
-    props.value
-  )
+  const bindingEditorId = `binding-${useId()}`
+
+  const {
+    addBinding,
+    changeBinding,
+    catalog,
+    schema,
+    selectedBinding,
+    selectItemId,
+    selectedItemId,
+  } = useBindingStates<EventBinding, EventBindingSchema>(props.onChange, props.value)
+
+  const remove = createRemoveHandler(schema, {}, props.onChange)
+
   const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
   const assertionItem =
     eventAssertionBindingMetaCatalog[selectedBinding?.name || ''] ||
@@ -69,104 +78,76 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
       selectItemId,
       selectedItemId,
       errorId: props.validationError?._inputName,
+      bindingEditorId,
+      assertionNames: Object.keys(EventAssertionBindingMetaName),
     })
   }
 
-  function onDragEnd(from: TreeSourcePosition, to?: TreeDestinationPosition) {
-    if (!to || !tree || !catalog || to.parentId === 'rootId') {
-      return
-    }
-
-    const fromParentBinding = findEntity(from.parentId, catalog)
-    const bindingId = fromParentBinding?.children?.[from.index]
-
-    assertNotUndefined(bindingId)
-
-    const binding = findEntity(bindingId, catalog)
-
-    if (catalog) {
-      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, catalog)
-      props.onChange({ catalog: newCatalog })
-      setTree(moveItemOnTree(tree, from, to))
-    }
-  }
+  const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
 
   function addAssertion(): void {
-    addBinding({ type: EventType.ASSERTION, name: 'undefined' })
+    addBinding({ type: EventBindingType.EVENT_ASSERTION, name: 'undefined' })
   }
 
   function addOperator(): void {
-    addBinding({ type: EventType.OPERATOR, name: and.name })
+    addBinding({ type: EventBindingType.OPERATOR, name: and.name })
   }
 
   function addAction(): void {
-    addBinding({ type: EventType.ACTION, name: setValue.name })
+    addBinding({ type: EventBindingType.ACTION, name: setValue.name })
   }
 
   function addEvent() {
-    addBinding({ type: EventType.EVENT, name: onFieldChange.name })
-  }
-
-  function remove(id: string | number): void {
-    if (catalog) {
-      const newBindings = removeEntity(id, catalog)
-      assertNotUndefined(newBindings)
-
-      if (Object.keys(newBindings).length === 1) {
-        props.onChange(undefined)
-      } else {
-        const newCatalog = removeEntity(id, catalog)
-        assertNotUndefined(newCatalog)
-        props.onChange({ catalog: newCatalog })
-      }
-    }
+    addBinding({ type: EventBindingType.EVENT, name: onFieldChange.name })
   }
 
   return (
-    <BindingEditor.Root ref={ref} label={props.label}>
+    <BindingEditor.Root ref={ref} label={props.label} className={bindingEditorId}>
       <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
         <BindingEditor.ActionPanel
           mainButton={{ iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' }}
           buttons={[
             { iconName: typeIcons.ACTION, onClick: addAction, name: 'Action' },
-            { iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' },
+            { iconName: typeIcons.EVENT_ASSERTION, onClick: addAssertion, name: 'Assertion' },
             { iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' },
           ]}
         />
         {tree && (
           <Stack tokens={{ padding: '2px 0' }}>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function*/}
-            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeLeaf} onDragEnd={onDragEnd} />
+            <Tree tree={tree} setTree={setTree} onDragStart={() => {}} renderItem={TreeNode} onDragEnd={onDragEnd} />
           </Stack>
         )}
         {hasSchema(assertionItem) && selectedBinding && (
-          <Form
-            key={selectedItemId}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onSubmit={() => {}}
-            initialValues={selectedBinding.props}
-            render={(formProps) => {
-              return (
-                <>
-                  <Autosave
-                    save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
-                    debounce={500}
-                  />
-                  <SchemaDrawer
-                    componentList={componentList}
-                    schema={assertionItem.schema}
-                    schemas={basicComponentsSchemas}
-                    context={{
-                      previewSchema: props.context?.previewSchema,
-                      previewData: props.context?.previewData,
-                      formState: formProps.form.getState(),
-                      formProps,
-                    }}
-                  />
-                </>
-              )
-            }}
-          />
+          <div className="bindinForm">
+            <Form
+              key={selectedItemId}
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              onSubmit={() => {}}
+              initialValues={selectedBinding.props}
+              render={(formProps) => {
+                return (
+                  <>
+                    <Autosave
+                      save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
+                      debounce={500}
+                    />
+                    <SchemaDrawer
+                      componentList={componentList}
+                      schema={assertionItem.schema}
+                      schemas={basicComponentsSchemas}
+                      context={{
+                        previewSchema: props.context?.previewSchema,
+                        previewData: props.context?.previewData,
+                        formState: formProps.form.getState(),
+                        formProps,
+                      }}
+                    />
+                  </>
+                )
+              }}
+            />
+          </div>
         )}
       </BindingEditor>
     </BindingEditor.Root>
