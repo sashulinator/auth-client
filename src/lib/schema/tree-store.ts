@@ -70,7 +70,8 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
     return result
   }
 
-  add(item: TItem, parentId: string | number, index = 0) {
+  add(itemId: Key, parentId: Key, index = 0) {
+    const item = this.get(itemId)
     const parent = this.get(parentId)
 
     if (index < 0) {
@@ -96,6 +97,11 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
 
   copy(id: Key): TItem {
     return { ...this.get(id) }
+  }
+
+  move(itemId: Key, newParentId: Key, index = 0) {
+    this.removeFromParent(itemId)
+    this.add(itemId, newParentId, index)
   }
 
   remove(id: Key) {
