@@ -1,5 +1,5 @@
 import { insert, replace } from '../change-unmutable'
-import { Item, StoreAbstract, StoreData } from './store-abstract'
+import { StoreAbstract, StoreData } from './store-abstract'
 import uniqid from 'uniqid'
 
 const ROOT_ID = 'ROOT_ID'
@@ -10,12 +10,12 @@ export interface TreeItem {
 }
 
 export interface TreeNormItem {
-  children?: string[] | null | undefined
+  children?: TreeNormItem[]
   parent?: TreeNormItem
 }
 
-export type TreeData<TItem extends Item = TreeItem> = StoreData<TItem & TreeItem>
-export type TreeNormData<TItem extends Item = TreeItem> = StoreData<TItem & TreeNormItem>
+export type TreeData<TItem extends TreeItem = TreeItem> = StoreData<TItem & TreeItem>
+export type TreeNormData<TItem extends TreeItem = TreeItem> = StoreData<TItem & TreeNormItem>
 
 export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
   rootId: string | number
@@ -46,16 +46,22 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
     const root = data[rootId]
     const parents: Record<string, string | number> = {}
 
-    console.log('idKey', idKey)
-
     if (root === undefined) {
       throw new Error('TreeCatalog must contain root component')
     }
 
     walk(root, data, idKey, (item, idKeyValue) => {
-      item.children?.forEach((childIdKeyValue) => (parents[childIdKeyValue] = idKeyValue))
+      const children = item.children?.map((childIdKeyValue) => {
+        parents[childIdKeyValue] = idKeyValue
 
-      // console.log('id', idKeyValue, idKey)
+        const child = data[childIdKeyValue]
+
+        if (child === undefined) {
+          throw new Error(`Some items are missing: ${childIdKeyValue}`)
+        }
+
+        return child
+      })
 
       const parent = data[parents[idKeyValue] as string]
 
@@ -63,7 +69,7 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
         throw new Error(`Some items are missing: ${idKeyValue}`)
       }
 
-      result[idKeyValue] = { ...item, parent }
+      result[idKeyValue] = { ...item, parent, children }
     })
 
     return result
