@@ -1,30 +1,20 @@
-export type Entity = Record<'id', string> & Record<string, any>
+export type Entity = Record<'id', string> & Record<string, unknown>
+
+export type EntityCatalog<TEntity extends Entity> = Record<string, TEntity>
 
 export type ArrayCatalogProps<TEntity extends Entity> = [TEntity[], keyof TEntity]
-export type RecordCatalogProps<TEntity extends Entity> = [Record<string, TEntity>]
+export type RecordCatalogProps<TEntity extends Entity> = [EntityCatalog<TEntity>]
 export type CatalogProps<TEntity extends Entity> = ArrayCatalogProps<TEntity> | RecordCatalogProps<TEntity>
 
-export interface ICatalog<TEntity extends Entity> {
-  _catalog: Record<string, TEntity>
-  catalog: Record<string, TEntity>
-  values: TEntity[]
-  keys: string[]
-  entries: [string, TEntity][]
-  get: (id: string) => TEntity
-  filter: (
-    cb: (entity: TEntity, key: string, catalog: Record<string, TEntity>) => unknown
-  ) => Record<string, TEntity> | undefined
-}
-
-export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TEntity> {
-  _catalog: Record<string, TEntity>
+export abstract class CatalogAbstract<TEntity extends Entity> {
+  _catalog: EntityCatalog<TEntity>
 
   constructor(...args: CatalogProps<TEntity>) {
     if (isArrayCatalogProps<TEntity>(args)) {
       const entities = args[0]
       const key = args[1]
 
-      this._catalog = entities.reduce<Record<string, TEntity>>((acc, entity) => {
+      this._catalog = entities.reduce<EntityCatalog<TEntity>>((acc, entity) => {
         const keyValue = entity[key] as string
         acc[keyValue] = entity
         return acc
@@ -35,11 +25,11 @@ export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TE
     }
   }
 
-  get catalog(): Record<string, TEntity> {
+  get catalog(): EntityCatalog<TEntity> {
     return this._catalog
   }
 
-  set catalog(newCatalog: Record<string, TEntity>) {
+  set catalog(newCatalog: EntityCatalog<TEntity>) {
     this._catalog = newCatalog
   }
 
@@ -68,8 +58,8 @@ export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TE
     return entity
   }
 
-  getMany(ids: string[]): Record<string, TEntity> {
-    return ids.reduce<Record<string, TEntity>>((acc, id) => {
+  getMany(ids: string[]): EntityCatalog<TEntity> {
+    return ids.reduce<EntityCatalog<TEntity>>((acc, id) => {
       acc[id] = this.get(id)
 
       return acc
@@ -77,9 +67,9 @@ export abstract class CatalogBase<TEntity extends Entity> implements ICatalog<TE
   }
 
   filter(
-    cb: (entity: TEntity, key: string, catalog: Record<string, TEntity>) => unknown
-  ): Record<string, TEntity> | undefined {
-    const result = Object.entries(this.catalog).reduce<Record<string, TEntity>>((acc, [key, entity]) => {
+    cb: (entity: TEntity, key: string, catalog: EntityCatalog<TEntity>) => unknown
+  ): EntityCatalog<TEntity> | undefined {
+    const result = Object.entries(this.catalog).reduce<EntityCatalog<TEntity>>((acc, [key, entity]) => {
       if (!cb(entity, key, this.catalog)) {
         return acc
       }

@@ -1,7 +1,7 @@
-import { CatalogBase, Entity, ICatalog } from './catalog-abstract'
+import { CatalogAbstract, Entity, EntityCatalog } from './catalog-abstract'
 import uniqid from 'uniqid'
 
-export class Catalog<TEntity extends Entity> extends CatalogBase<TEntity> implements ICatalog<TEntity> {
+export class Catalog<TEntity extends Entity> extends CatalogAbstract<TEntity> {
   add(entity: TEntity) {
     const newCatalog = { ...this.catalog, [entity.id]: entity }
 
@@ -24,7 +24,7 @@ export class Catalog<TEntity extends Entity> extends CatalogBase<TEntity> implem
     }, entity)
   }
 
-  public forEach(cb: (entity: TEntity, key: string, entities: Record<string, TEntity>) => void) {
+  public forEach(cb: (entity: TEntity, key: string, entities: EntityCatalog<TEntity>) => void) {
     for (let index = 0; index < this.entries.length; index++) {
       const [key, entity] = this.entries[index] as [string, TEntity]
 

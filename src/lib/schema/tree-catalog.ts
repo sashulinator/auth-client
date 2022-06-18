@@ -1,5 +1,5 @@
 import { insert, replace } from '../change-unmutable'
-import { ArrayCatalogProps, CatalogBase, Entity, RecordCatalogProps } from './catalog-abstract'
+import { ArrayCatalogProps, CatalogAbstract, Entity, RecordCatalogProps } from './catalog-abstract'
 import uniqid from 'uniqid'
 
 const ROOT_ID = 'ROOT_ID'
@@ -8,7 +8,7 @@ type TreeEntity = Entity & { children?: [] }
 
 type TreeCatalogProps<TEntity extends TreeEntity> = ArrayCatalogProps<TEntity> | RecordCatalogProps<TEntity>
 
-export class TreeCatalog<TEntity extends TreeEntity> extends CatalogBase<TEntity> {
+export class TreeCatalog<TEntity extends TreeEntity> extends CatalogAbstract<TEntity> {
   constructor(...args: TreeCatalogProps<TEntity>) {
     super(...args)
     // seems like it does nothing but it checks whether the root entity exists
