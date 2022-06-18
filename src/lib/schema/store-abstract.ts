@@ -4,7 +4,7 @@ export type Item = { [key: string | number]: any }
 export type StoreData<TItem extends Item> = { [key: string | number]: TItem }
 
 export abstract class StoreAbstract<TItem extends Item> {
-  _data: StoreData<TItem>
+  private _data: StoreData<TItem>
   idKey: number | string
 
   constructor() {

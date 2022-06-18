@@ -41,6 +41,6 @@ export class Store<TItem extends Item> extends StoreAbstract<TItem> {
   remove(itemId: string) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { [itemId]: removedProperty, ...newData } = this.data
-    this._data = newData
+    this.data = newData
   }
 }

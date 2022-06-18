@@ -19,11 +19,10 @@ export type TreeNormData<TItem extends Item = TreeItem> = StoreData<TItem & Tree
 
 export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
   rootId: string | number
-  _data: TreeNormData<TItem>
 
   constructor(data: StoreData<TItem>, rootId: string, idKey: string | number = 'id') {
     super()
-    this._data = TreeStore.normalize(data, rootId, idKey)
+    this.data = TreeStore.normalize(data, rootId, idKey)
     this.rootId = rootId
     this.idKey = idKey
   }
