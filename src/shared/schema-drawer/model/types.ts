@@ -4,7 +4,7 @@ import { Observer } from '../lib/observer'
 import { FormState } from 'final-form'
 import { FormRenderProps } from 'react-final-form'
 
-export type Catalog<T> = Record<string, T>
+export type Catalog<T> = { [key: string | number]: T }
 
 export interface Schema<TItem> {
   catalog: Catalog<TItem>
