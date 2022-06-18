@@ -6,6 +6,7 @@ const ROOT_ID = 'ROOT_ID'
 
 export interface TreeItem {
   children?: string[] | null | undefined
+  [key: string | number]: any
 }
 
 export interface TreeNormItem {
@@ -22,7 +23,7 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
 
   constructor(data: StoreData<TItem>, rootId: string, idKey: string | number = 'id') {
     super()
-    this._data = TreeStore.normalize(data, rootId)
+    this._data = TreeStore.normalize(data, rootId, idKey)
     this.rootId = rootId
     this.idKey = idKey
   }
@@ -37,29 +38,33 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
     return root
   }
 
-  public forEach(cb: (entity: TItem, id: string | number, data: StoreData<TItem>) => void): void {
-    walk(this.root, this.data, cb)
+  public forEach(cb: (entity: TItem, idKeyValue: string | number, data: StoreData<TItem>) => void): void {
+    walk(this.root, this.data, this.idKey, cb)
   }
 
-  static normalize<TItem>(data: TreeData<TItem>, rootId: string | number): TreeNormData<TItem> {
+  static normalize<TItem>(data: TreeData<TItem>, rootId: string | number, idKey: string | number): TreeNormData<TItem> {
     const result: TreeNormData<TItem> = {}
     const root = data[rootId]
     const parents: Record<string, string | number> = {}
+
+    console.log('idKey', idKey)
 
     if (root === undefined) {
       throw new Error('TreeCatalog must contain root component')
     }
 
-    walk(root, data, (item, id) => {
-      item.children?.forEach((childId) => (parents[childId] = id))
+    walk(root, data, idKey, (item, idKeyValue) => {
+      item.children?.forEach((childIdKeyValue) => (parents[childIdKeyValue] = idKeyValue))
 
-      const parent = data[parents[id] as string]
+      // console.log('id', idKeyValue, idKey)
 
-      if (parent === undefined && id !== rootId) {
-        throw new Error(`Some items are missing: ${id}`)
+      const parent = data[parents[idKeyValue] as string]
+
+      if (parent === undefined && idKeyValue !== rootId) {
+        throw new Error(`Some items are missing: ${idKeyValue}`)
       }
 
-      result[id] = { ...item, parent }
+      result[idKeyValue] = { ...item, parent }
     })
 
     return result
@@ -116,25 +121,26 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
 // Private
 
 function walk<TItem extends TreeItem>(
-  walkEntity: TItem,
+  item: TItem,
   data: StoreData<TItem>,
-  cb: (entity: TItem, idKey: string | number, data: StoreData<TItem>) => void
+  idKey: string | number,
+  cb: (item: TItem, idKeyValue: string | number, data: StoreData<TItem>) => void
 ) {
-  if (walkEntity.children === undefined || walkEntity.children === null) {
+  cb(item, item[idKey], data)
+
+  if (item.children === undefined || item.children === null) {
     return
   }
 
-  for (let index = 0; index < walkEntity.children.length; index++) {
-    const idKey = (walkEntity.children?.[index] as unknown) as string
+  for (let index = 0; index < item.children.length; index++) {
+    const childIdKeyValue = (item.children?.[index] as unknown) as string
 
-    const childItem = data[idKey]
+    const childItem = data[childIdKeyValue]
 
     if (childItem === undefined) {
       throw new Error('Entity does not exists')
     }
 
-    walk(childItem, data, cb)
-
-    cb(childItem, idKey, data)
+    walk(childItem, data, idKey, cb)
   }
 }
