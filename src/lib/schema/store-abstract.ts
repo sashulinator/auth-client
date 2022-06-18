@@ -1,22 +1,25 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Item = { [key: string | number]: any }
+export type Key = string | number
 
-export type StoreData<TItem extends Item> = { [key: string | number]: TItem }
+export type Item<TKey extends string | number> = {
+  [tkey in TKey]: string | number // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} & { [key: Key]: any }
 
-export abstract class StoreAbstract<TItem extends Item> {
-  private _data: StoreData<TItem>
-  idKey: number | string
+export type StoreData<TKey extends Key, TItem extends Item<TKey>> = { [key: Key]: TItem }
 
-  constructor() {
+export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> {
+  private _data: StoreData<TKey, TItem>
+  idKey: TKey
+
+  constructor(idKey: TKey) {
     this._data = {}
-    this.idKey = 'id'
+    this.idKey = idKey
   }
 
-  get data(): StoreData<TItem> {
+  get data(): StoreData<TKey, TItem> {
     return this._data
   }
 
-  set data(newCatalog: StoreData<TItem>) {
+  set data(newCatalog: StoreData<TKey, TItem>) {
     this._data = newCatalog
   }
 
@@ -32,11 +35,15 @@ export abstract class StoreAbstract<TItem extends Item> {
     return Object.entries(this._data)
   }
 
-  idKeyValue(id: string | number | TItem): string | number {
+  changeItem(item: TItem) {
+    this.data = { ...this.data, [this.idKeyValue(item)]: item }
+  }
+
+  idKeyValue(id: string | number | Item<TKey>): string | number {
     if (typeof id === 'string' || typeof id === 'number') {
       return (this._data[id] as unknown) as string | number
     } else {
-      return (id[this.idKey as keyof TItem] as unknown) as string | number
+      return id[this.idKey]
     }
   }
 
@@ -53,16 +60,18 @@ export abstract class StoreAbstract<TItem extends Item> {
     return entity
   }
 
-  getMany(ids: string[]): StoreData<TItem> {
-    return ids.reduce<StoreData<TItem>>((acc, id) => {
+  getMany(ids: string[]): StoreData<TKey, TItem> {
+    return ids.reduce<StoreData<TKey, TItem>>((acc, id) => {
       acc[id] = this.get(id)
 
       return acc
     }, {})
   }
 
-  filter(cb: (entity: TItem, key: string, catalog: StoreData<TItem>) => unknown): StoreData<TItem> | undefined {
-    const result = Object.entries(this.data).reduce<StoreData<TItem>>((acc, [id, entity]) => {
+  filter(
+    cb: (entity: TItem, key: string, catalog: StoreData<TKey, TItem>) => unknown
+  ): StoreData<TKey, TItem> | undefined {
+    const result = Object.entries(this.data).reduce<StoreData<TKey, TItem>>((acc, [id, entity]) => {
       if (!cb(entity, id, this.data)) {
         return acc
       }

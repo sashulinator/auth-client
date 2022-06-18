@@ -1,16 +1,16 @@
-import { Item, StoreAbstract, StoreData } from './store-abstract'
-import uniqid from 'uniqid'
+import { Item, Key, StoreAbstract, StoreData } from './store-abstract'
 
-export class Store<TItem extends Item> extends StoreAbstract<TItem> {
-  constructor(data: { [key: string | number]: TItem }, idKey: string | number = 'id') {
-    super()
+// import uniqid from 'uniqid'
+
+export class Store<TKey extends Key, TItem extends Item<TKey>> extends StoreAbstract<TKey, TItem> {
+  constructor(data: { [key: Key]: TItem }, idKey: TKey) {
+    super(idKey)
     this.data = data
-    this.idKey = idKey
   }
 
-  forEach(cb: (item: TItem, key: string, entities: StoreData<TItem>) => void) {
+  forEach(cb: (item: TItem, key: Key, entities: StoreData<TKey, TItem>) => void) {
     for (let index = 0; index < this.entries.length; index++) {
-      const [key, item] = this.entries[index] as [string, TItem]
+      const [key, item] = this.entries[index] as [Key, TItem]
 
       cb(item, key, this.data)
     }
@@ -22,25 +22,14 @@ export class Store<TItem extends Item> extends StoreAbstract<TItem> {
     this.data = newCatalog
   }
 
-  copy(id: string, uniqKeys: string[] = []): TItem {
-    const newUniqKeys = ['id', ...uniqKeys]
-    const item = this.data[id]
-
-    if (item === undefined) {
-      throw new Error('Entity does not exists')
-    }
-
-    return newUniqKeys.reduce((acc, keyName) => {
-      return {
-        ...acc,
-        [keyName]: uniqid(),
-      }
-    }, item)
+  copy(id: Key): TItem {
+    const item = this.get(id)
+    return { ...item }
   }
 
-  remove(itemId: string) {
+  remove(id: Key) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [itemId]: removedProperty, ...newData } = this.data
+    const { [id]: removedProperty, ...newData } = this.data
     this.data = newData
   }
 }

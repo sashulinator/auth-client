@@ -1,7 +1,8 @@
-import { TreeData, TreeStore } from './tree-store'
+import { StoreData } from './store-abstract'
+import { TreeStore } from './tree-store'
 
 describe(`${TreeStore.name}`, () => {
-  const data: TreeData<{ id: string }> = {
+  const data: StoreData<'id', { id: string; children: string[] }> = {
     rootId: {
       id: 'rootId',
       children: ['childId1'],
@@ -16,9 +17,11 @@ describe(`${TreeStore.name}`, () => {
     },
   }
 
-  it('valid', () => {
-    const treeStore = new TreeStore(data, 'rootId')
+  it('remove', () => {
+    const treeStore = new TreeStore(data, 'rootId', 'id')
 
-    console.log('treeStore', treeStore.data)
+    treeStore.remove('childId2')
+
+    console.log(treeStore.data)
   })
 })

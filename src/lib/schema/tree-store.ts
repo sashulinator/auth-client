@@ -1,11 +1,11 @@
-import { insert, replace } from '../change-unmutable'
-import { StoreAbstract, StoreData } from './store-abstract'
+import { insert } from '../change-unmutable'
+import { Key, StoreAbstract, StoreData } from './store-abstract'
 import uniqid from 'uniqid'
 
 const ROOT_ID = 'ROOT_ID'
 
 export interface TreeItem {
-  children?: string[] | null | undefined
+  children?: string[] | null | undefined // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string | number]: any
 }
 
@@ -14,17 +14,31 @@ export interface TreeNormItem {
   parent?: TreeNormItem
 }
 
-export type TreeData<TItem extends TreeItem = TreeItem> = StoreData<TItem & TreeItem>
-export type TreeNormData<TItem extends TreeItem = TreeItem> = StoreData<TItem & TreeNormItem>
+export type TreeData<TKey extends Key, TItem extends TreeItem = TreeItem> = StoreData<TKey, TItem & TreeItem>
 
-export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
-  rootId: string | number
+export type TreeNormData<
+  TKey extends Key,
+  TItem extends TreeItem,
+  TNormItem extends TItem & {
+    children?: TNormItem[]
+    parent?: TNormItem
+  }
+> = StoreData<TKey, TNormItem>
 
-  constructor(data: StoreData<TItem>, rootId: string, idKey: string | number = 'id') {
-    super()
+export class TreeStore<
+  TKey extends Key,
+  TItem extends TreeItem,
+  TNormItem extends TItem & {
+    children?: TNormItem[]
+    parent?: TNormItem
+  }
+> extends StoreAbstract<TKey, TNormItem> {
+  rootId: Key
+
+  constructor(data: StoreData<TKey, TItem>, rootId: Key, idKey: TKey) {
+    super(idKey)
     this.data = TreeStore.normalize(data, rootId, idKey)
     this.rootId = rootId
-    this.idKey = idKey
   }
 
   get root(): TItem {
@@ -37,12 +51,23 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
     return root
   }
 
-  public forEach(cb: (entity: TItem, idKeyValue: string | number, data: StoreData<TItem>) => void): void {
+  public forEach(cb: (entity: TItem, idKeyValue: Key, data: StoreData<TKey, TItem>) => void): void {
     walk(this.root, this.data, this.idKey, cb)
   }
 
-  static normalize<TItem>(data: TreeData<TItem>, rootId: string | number, idKey: string | number): TreeNormData<TItem> {
-    const result: TreeNormData<TItem> = {}
+  static normalize<
+    TKey extends Key,
+    TItem extends TreeItem,
+    TNormItem extends TItem & {
+      children?: TNormItem[]
+      parent?: TNormItem
+    }
+  >(
+    data: TreeData<TKey, TItem>,
+    rootId: string | number,
+    idKey: string | number
+  ): TreeNormData<TKey, TItem, TNormItem> {
+    const result: TreeNormData<TKey, TItem, TNormItem> = {}
     const root = data[rootId]
     const parents: Record<string, string | number> = {}
 
@@ -69,18 +94,33 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
         throw new Error(`Some items are missing: ${idKeyValue}`)
       }
 
-      result[idKeyValue] = { ...item, parent, children }
+      result[idKeyValue] = { ...item, parent, children } as TNormItem
     })
 
     return result
   }
 
-  add(entity: TItem, parentId: string | number, index = 0) {
-    const newParent = this.addChildIdToParent(parentId, this.idKeyValue(entity), index)
+  add(item: TItem, parentId: string | number, index = 0) {
+    const parent = this.get(parentId)
 
-    const newCatalog = { ...this.data, [this.idKeyValue(newParent)]: newParent, [this.idKeyValue(entity)]: entity }
+    if (index < 0) {
+      throw new Error('Index cannot be less than 0')
+    }
 
-    this.data = newCatalog
+    const childLength = parent?.children?.length ?? 0
+
+    if (index > childLength) {
+      throw new Error(`Index cannot be more than ${childLength}`)
+    }
+
+    const parentClone = { ...parent, children: parent?.children ?? [] }
+
+    const newParentChildren = insert(parentClone.children, index, item)
+    const newParent = { ...parentClone, children: newParentChildren }
+
+    const newItem = ({ ...item, parent: newParent } as unknown) as TNormItem
+
+    this.data = { ...this.data, [this.idKeyValue(newParent)]: newParent, [this.idKeyValue(newItem)]: newItem }
   }
 
   // TODO should we empty children array or leave as it is?
@@ -100,36 +140,44 @@ export class TreeStore<TItem extends TreeItem> extends StoreAbstract<TItem> {
     }, entity)
   }
 
-  // !Without saving to data because it can be dangerous!
-  private addChildIdToParent(parentId: string | number, id: string | number, index: number): TItem {
-    const parent = this.get(parentId)
+  remove(id: string | number) {
+    const item = this.get(id)
 
-    if (index < 0) {
-      throw new Error('Index cannot be less than 0')
+    const removeChildrenDeep = (itemToRemove: TNormItem) => {
+      itemToRemove.children?.forEach(removeChildrenDeep)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { [this.idKeyValue(itemToRemove)]: childToRemove, ...newData } = this.data
+      this.data = newData
     }
 
-    const childLength = parent?.children?.length ?? 0
+    removeChildrenDeep(item)
 
-    if (index > childLength) {
-      throw new Error(`Index cannot be more than ${childLength}`)
+    const parent = item?.parent
+
+    // undefined if we remove root
+    if (parent === undefined) {
+      return
     }
 
-    const parentClone = { ...parent, children: parent?.children ?? [] }
+    parent.children?.filter((childItem) => this.idKeyValue(childItem) === id)
 
-    const newChildren = insert(parentClone.children, index, id)
-    const newParententity = replace(parentClone, 'children', newChildren)
+    if (parent.children?.length === 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { children, ...newParent } = parent
+      this.changeItem(newParent as TNormItem)
+    }
 
-    return newParententity
+    this.changeItem(parent)
   }
 }
 
 // Private
 
-function walk<TItem extends TreeItem>(
+function walk<TKey extends string | number, TItem extends TreeItem>(
   item: TItem,
-  data: StoreData<TItem>,
+  data: StoreData<TKey, TItem>,
   idKey: string | number,
-  cb: (item: TItem, idKeyValue: string | number, data: StoreData<TItem>) => void
+  cb: (item: TItem, idKeyValue: string | number, data: StoreData<TKey, TItem>) => void
 ) {
   cb(item, item[idKey], data)
 
