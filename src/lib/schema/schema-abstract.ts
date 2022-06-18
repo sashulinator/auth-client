@@ -13,7 +13,7 @@ export default class SchemaAbstract<TEntity extends Entity> {
   constructor(schema: SchemaData<TEntity>) {
     this.data = {
       ...schema,
-      catalog: new Catalog(schema.catalog),
+      catalog: new Catalog(schema.catalog, 'id'),
     }
   }
 }

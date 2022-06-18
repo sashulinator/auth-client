@@ -4,13 +4,26 @@ import uniqid from 'uniqid'
 
 const ROOT_ID = 'ROOT_ID'
 
-type TreeEntity = Entity & { children?: [] }
+export type TreeEntityRaw = Entity & { children?: [] }
+export type TreeEntity = Entity & { children?: []; parentId: string | number }
 
-type TreeCatalogProps<TEntity extends TreeEntity> = ArrayCatalogProps<TEntity> | RecordCatalogProps<TEntity>
+export type TreeEntityCatalog<T extends TreeEntityRaw = TreeEntityRaw> = { [key: string | number]: T }
 
-export class TreeCatalog<TEntity extends TreeEntity> extends CatalogAbstract<TEntity> {
+export type TreeCatalogProps<TEntity extends TreeEntityRaw> = ArrayCatalogProps<TEntity> | RecordCatalogProps<TEntity>
+
+export class TreeCatalog<TEntity extends TreeEntityRaw> extends CatalogAbstract<TEntity> {
   constructor(...args: TreeCatalogProps<TEntity>) {
-    super(...args)
+    super()
+
+    if (CatalogAbstract.isArrayCatalogProps(args)) {
+      const entities = args[0]
+      const key = (args[1] || 'id') as string
+      this.idKey = key
+      this._catalog = CatalogAbstract.arrayToCatalog(entities, key)
+    } else {
+      const arg1 = args[0]
+      this._catalog = arg1
+    }
     // seems like it does nothing but it checks whether the root entity exists
     this.root
   }
@@ -25,51 +38,21 @@ export class TreeCatalog<TEntity extends TreeEntity> extends CatalogAbstract<TEn
     return root
   }
 
-  public walk(cb: (entity: TEntity) => void): void {
-    const ids: string[] = []
-
-    const walk = (walkEntity: TEntity) => {
-      if (walkEntity.children === undefined) {
-        return
-      }
-
-      for (let index = 0; index < walkEntity.children.length; index++) {
-        const id = (walkEntity.children?.[index] as unknown) as string
-
-        const childEntity = this.catalog[id]
-
-        if (childEntity === undefined) {
-          throw new Error('Entity does not exists')
-        }
-
-        walk(childEntity)
-
-        cb(childEntity)
-
-        ids.push(id)
-      }
-    }
-
-    walk(this.root)
-
-    if (ids.length !== this.keys.length) {
-      const orphantsIds = this.keys.filter((id) => !id.includes(id))
-
-      throw new Error(`Entities with ids ${orphantsIds.join(', ')} have no parents`)
-    }
+  public forEach(cb: (entity: TEntity, id: string | number, entities: TreeEntityCatalog<TEntity>) => void): void {
+    walk(this.root, this.catalog, cb)
   }
 
-  add(entity: TEntity, parentId: string, index = 0) {
-    const newParent = this.addChildIdToParent(parentId, entity.id, index)
+  add(entity: TEntity, parentId: string | number, index = 0) {
+    const newParent = this.addChildIdToParent(parentId, this.idKeyValue(entity), index)
 
-    const newCatalog = { ...this.catalog, [newParent.id]: newParent, [entity.id]: entity }
+    const newCatalog = { ...this.catalog, [this.idKeyValue(newParent)]: newParent, [this.idKeyValue(entity)]: entity }
 
     this.catalog = newCatalog
   }
 
   // TODO should we empty children array or leave as it is?
   copy(id: string, uniqKeys: string[] = []): TEntity {
-    const newUniqKeys = ['id', ...uniqKeys]
+    const newUniqKeys = [this.idKey, ...uniqKeys]
     const entity = this.catalog[id]
 
     if (entity === undefined) {
@@ -85,7 +68,7 @@ export class TreeCatalog<TEntity extends TreeEntity> extends CatalogAbstract<TEn
   }
 
   // !Without saving to catalog because it can be dangerous!
-  private addChildIdToParent(parentId: string, id: string, index: number): TEntity {
+  private addChildIdToParent(parentId: string | number, id: string | number, index: number): TEntity {
     const parent = this.get(parentId)
 
     if (index < 0) {
@@ -104,5 +87,31 @@ export class TreeCatalog<TEntity extends TreeEntity> extends CatalogAbstract<TEn
     const newParententity = replace(parentClone, 'children', newChildren)
 
     return newParententity
+  }
+}
+
+// Private
+
+function walk<TEntity extends TreeEntityRaw>(
+  walkEntity: TEntity,
+  catalog: TreeEntityCatalog<TEntity>,
+  cb: (entity: TEntity, id: string | number, entities: TreeEntityCatalog<TEntity>) => void
+) {
+  if (walkEntity.children === undefined) {
+    return
+  }
+
+  for (let index = 0; index < walkEntity.children.length; index++) {
+    const id = (walkEntity.children?.[index] as unknown) as string
+
+    const childEntity = catalog[id]
+
+    if (childEntity === undefined) {
+      throw new Error('Entity does not exists')
+    }
+
+    walk(childEntity, catalog, cb)
+
+    cb(childEntity, id, catalog)
   }
 }

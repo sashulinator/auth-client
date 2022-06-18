@@ -75,6 +75,7 @@ export function copyEntities<T extends Entity>(entities: Catalog<T>, uniqKeys: s
 
 /*
   Полезна когда копируем несколько сущностей с вложенностью и надо найти какие из них родители
+  TODO сделать findRootParents а уж id потом можно мапой достать
 */
 export function findRootParentIds<T extends Entity>(entities: Catalog<T>): string[] {
   return Object.values(entities).reduce<string[]>((acc, entity) => {

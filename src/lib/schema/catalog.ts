@@ -1,9 +1,23 @@
-import { CatalogAbstract, Entity, EntityCatalog } from './catalog-abstract'
+import { CatalogAbstract, CatalogProps, Entity, EntityCatalog } from './catalog-abstract'
 import uniqid from 'uniqid'
 
 export class Catalog<TEntity extends Entity> extends CatalogAbstract<TEntity> {
+  constructor(...args: CatalogProps<TEntity>) {
+    super()
+
+    if (CatalogAbstract.isArrayCatalogProps(args)) {
+      const entities = args[0]
+      const key = (args[1] || 'id') as string
+      this.idKey = key
+      this._catalog = CatalogAbstract.arrayToCatalog(entities, key)
+    } else {
+      const arg1 = args[0]
+      this._catalog = arg1
+    }
+  }
+
   add(entity: TEntity) {
-    const newCatalog = { ...this.catalog, [entity.id]: entity }
+    const newCatalog = { ...this.catalog, [this.idKeyValue(entity)]: entity }
 
     this.catalog = newCatalog
   }
