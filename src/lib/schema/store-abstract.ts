@@ -48,8 +48,12 @@ export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> 
     }
   }
 
+  find(id?: string | number): TItem | undefined {
+    return this.data[id || '']
+  }
+
   /**
-   * If you want to get entity whithout error use "this.catalog[id]"
+   * If you want to get entity whithout error use "find"
    */
   get(id: string | number): TItem {
     const entity = this.data[id]

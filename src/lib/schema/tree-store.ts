@@ -105,7 +105,6 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
   }
 
   remove(id: Key) {
-    console.log('this.data', this.data)
     this.removeFromParent(id)
 
     const removeChildrenDeep = (childId: Key) => {
@@ -116,6 +115,11 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
     removeChildrenDeep(id)
 
     return this
+  }
+
+  findChild(id?: Key, index = 0) {
+    const parent = this.find(id)
+    return parent?.children?.[index]
   }
 
   getPosition(id: Key): { index: number; parentId: Key } | undefined {

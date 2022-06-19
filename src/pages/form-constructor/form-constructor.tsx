@@ -38,7 +38,7 @@ import {
   findEntityPosition,
   findRootParentIds,
 } from '@/lib/entity-actions'
-import { TreeStore } from '@/lib/schema/tree-store'
+import { TreeStoreSelectable } from '@/lib/schema/tree-store-selectable'
 import { Catalog, Comp } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
@@ -75,7 +75,8 @@ const FormConstructor: FC = (): JSX.Element => {
     missingSchemaIds
   )
 
-  const treeStore = new TreeStore(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
+  const treeStore = new TreeStoreSelectable(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
+  treeStore.selectedKeys = [...selectedCompIds]
 
   useEffect(() => {
     resetSchemas()
@@ -122,24 +123,9 @@ const FormConstructor: FC = (): JSX.Element => {
   function removeCompFromState(compId: string): void {
     assertNotNull(currentSchemaHistory)
 
-    const compLocation = treeStore.getPosition(compId)
+    setCurrentSchemaHistory(updateCompsSetter(treeStore.remove(compId).data))
 
-    const data = treeStore.remove(compId).data
-
-    setCurrentSchemaHistory(updateCompsSetter(data))
-
-    if (compId === propertyPanelComp?.id) {
-      const parent = treeStore.data[compLocation?.parentId || '']
-      const siblingId = parent?.children?.[compLocation?.index || 0]
-      const siblingAheadId = parent?.children?.[(compLocation?.index || 0) - 1 || 0]
-      if (siblingId) {
-        setSelectedCompIds([siblingId])
-      } else if (siblingAheadId) {
-        setSelectedCompIds([siblingAheadId])
-      } else {
-        setSelectedCompIds([])
-      }
-    }
+    setSelectedCompIds(treeStore.selectedKeys)
   }
 
   function openSchemaInNewTab(schemaId: string): void {
