@@ -2,13 +2,13 @@ import { CatalogAbstract, CatalogData, Item, Key } from './catalog-abstract'
 
 // import uniqid from 'uniqid'
 
-export class Catalog<TKey extends Key, TItem extends Item<TKey>> extends CatalogAbstract<TKey, TItem> {
-  constructor(data: { [key: Key]: TItem }, idKey: TKey) {
+export class Catalog<TItem extends Item> extends CatalogAbstract<TItem> {
+  constructor(data: { [key: Key]: TItem }, idKey: Key) {
     super(idKey)
     this.data = data
   }
 
-  forEach(cb: (item: TItem, key: Key, entities: CatalogData<TKey, TItem>) => void) {
+  forEach(cb: (item: TItem, key: Key, entities: CatalogData<TItem>) => void) {
     for (let index = 0; index < this.entries.length; index++) {
       const [key, item] = this.entries[index] as [Key, TItem]
 

@@ -1,30 +1,28 @@
 export type Key = string | number
 
-export type Item<TKey extends Key = Key> = {
-  [tkey in TKey]: string | number // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} & { [key: Key]: any }
+export type Item = { [key: Key]: any }
 
-export type CatalogData<TKey extends Key, TItem extends Item<TKey>> = { [key: Key]: TItem }
+export type CatalogData<TItem extends Item> = { [key: Key]: TItem }
 
-export interface CatalogBase<TKey extends Key, TItem extends Item<TKey>> {
-  data: CatalogData<TKey, TItem>
-  idKey: TKey
+export interface ICatalogAbstract<TItem extends Item> {
+  data: CatalogData<TItem>
+  idKey: Key
 }
 
-export abstract class CatalogAbstract<TKey extends Key, TItem extends Item<TKey>> implements CatalogBase<TKey, TItem> {
-  private _data: CatalogData<TKey, TItem>
-  idKey: TKey
+export abstract class CatalogAbstract<TItem extends Item> implements ICatalogAbstract<TItem> {
+  private _data: CatalogData<TItem>
+  idKey: Key
 
-  constructor(idKey: TKey) {
+  constructor(idKey: Key) {
     this._data = {}
     this.idKey = idKey
   }
 
-  get data(): CatalogData<TKey, TItem> {
+  get data(): CatalogData<TItem> {
     return this._data
   }
 
-  set data(newCatalog: CatalogData<TKey, TItem>) {
+  set data(newCatalog: CatalogData<TItem>) {
     this._data = newCatalog
   }
 
@@ -45,7 +43,7 @@ export abstract class CatalogAbstract<TKey extends Key, TItem extends Item<TKey>
     return this
   }
 
-  idKeyValue(id: string | number | Item<Key>): string | number {
+  idKeyValue(id: string | number | Item): string | number {
     if (typeof id === 'string' || typeof id === 'number') {
       return (this._data[id] as unknown) as string | number
     } else {
@@ -70,18 +68,16 @@ export abstract class CatalogAbstract<TKey extends Key, TItem extends Item<TKey>
     return entity
   }
 
-  getMany(ids: string[]): CatalogData<TKey, TItem> {
-    return ids.reduce<CatalogData<TKey, TItem>>((acc, id) => {
+  getMany(ids: string[]): CatalogData<TItem> {
+    return ids.reduce<CatalogData<TItem>>((acc, id) => {
       acc[id] = this.get(id)
 
       return acc
     }, {})
   }
 
-  filter(
-    cb: (entity: TItem, key: string, catalog: CatalogData<TKey, TItem>) => unknown
-  ): CatalogData<TKey, TItem> | undefined {
-    const result = Object.entries(this.data).reduce<CatalogData<TKey, TItem>>((acc, [id, entity]) => {
+  filter(cb: (entity: TItem, key: string, catalog: CatalogData<TItem>) => unknown): CatalogData<TItem> | undefined {
+    const result = Object.entries(this.data).reduce<CatalogData<TItem>>((acc, [id, entity]) => {
       if (!cb(entity, id, this.data)) {
         return acc
       }

@@ -2,7 +2,7 @@ import { CatalogData } from './catalog-abstract'
 import { TreeCatalog } from './tree-catalog'
 
 describe(`${TreeCatalog.name}`, () => {
-  const data: CatalogData<'id', { id: string; children: string[] }> = {
+  const data: CatalogData<{ id: string; children: string[] }> = {
     rootId: {
       id: 'rootId',
       children: ['childId1'],

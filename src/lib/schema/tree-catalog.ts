@@ -13,14 +13,14 @@ export interface TreeNormItem extends TreeItem {
   parentId?: Key
 }
 
-export type TreeData<TKey extends Key, TItem extends TreeItem = TreeItem> = CatalogData<TKey, TItem>
+export type TreeData<TItem extends TreeItem = TreeItem> = CatalogData<TItem>
 
-export type TreeNormData<TKey extends Key, TItem extends TreeItem> = CatalogData<TKey, TreeNormItem & TItem>
+export type TreeNormData<TItem extends TreeItem> = CatalogData<TreeNormItem & TItem>
 
-export class TreeCatalog<TKey extends Key, TItem extends TreeItem> extends CatalogAbstract<TKey, TItem & TreeNormItem> {
+export class TreeCatalog<TItem extends TreeItem> extends CatalogAbstract<TItem & TreeNormItem> {
   rootId: Key
 
-  constructor(data: CatalogData<TKey, TItem>, rootId: Key, idKey: TKey) {
+  constructor(data: CatalogData<TItem>, idKey: Key, rootId: Key) {
     super(idKey)
     this.data = TreeCatalog.normalize(data, rootId, idKey)
     this.rootId = rootId
@@ -36,16 +36,16 @@ export class TreeCatalog<TKey extends Key, TItem extends TreeItem> extends Catal
     return root
   }
 
-  public forEach(cb: (entity: TItem, idKeyValue: Key, data: CatalogData<TKey, TItem>) => void): void {
+  public forEach(cb: (entity: TItem, idKeyValue: Key, data: CatalogData<TItem>) => void): void {
     walk(this.root, this.data, this.idKey, cb)
   }
 
-  static normalize<TKey extends Key, TItem extends TreeItem>(
-    data: TreeData<TKey, TItem>,
+  static normalize<TItem extends TreeItem>(
+    data: TreeData<TItem>,
     rootId: string | number,
     idKey: string | number
-  ): TreeNormData<TKey, TItem> {
-    const result: TreeNormData<TKey, TItem> = {}
+  ): TreeNormData<TItem> {
+    const result: TreeNormData<TItem> = {}
     const root = data[rootId]
     const parents: Record<string, string | number> = {}
 
@@ -181,11 +181,11 @@ export class TreeCatalog<TKey extends Key, TItem extends TreeItem> extends Catal
 
 // Private
 
-function walk<TKey extends string | number, TItem extends TreeItem>(
+function walk<TItem extends TreeItem>(
   item: TItem,
-  data: CatalogData<TKey, TItem>,
+  data: CatalogData<TItem>,
   idKey: string | number,
-  cb: (item: TItem, idKeyValue: string | number, data: CatalogData<TKey, TItem>) => void
+  cb: (item: TItem, idKeyValue: string | number, data: CatalogData<TItem>) => void
 ) {
   cb(item, item[idKey], data)
 

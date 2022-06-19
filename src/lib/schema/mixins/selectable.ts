@@ -2,13 +2,7 @@ import { Key } from '../catalog-abstract'
 import { TreeCatalog, TreeItem } from '../tree-catalog'
 import { AnyConstructor } from '../types'
 
-export const Selectable = <
-  TKey extends Key,
-  TItem extends TreeItem,
-  T extends AnyConstructor<TreeCatalog<TKey, TItem>>
->(
-  base: T
-) => {
+export const Selectable = <TItem extends TreeItem, T extends AnyConstructor<TreeCatalog<TItem>>>(base: T) => {
   class SelectableMixin extends base {
     selectedKeys: string[] = []
 
