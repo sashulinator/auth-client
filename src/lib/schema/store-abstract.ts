@@ -37,6 +37,7 @@ export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> 
 
   changeItem(item: TItem) {
     this.data = { ...this.data, [this.idKeyValue(item)]: item }
+    return this
   }
 
   idKeyValue(id: string | number | Item<Key>): string | number {

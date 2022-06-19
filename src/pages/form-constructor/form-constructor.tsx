@@ -28,7 +28,6 @@ import {
   schemasState,
   selectedCompIdsState,
   selectedCompSchemaState,
-  updateCompSetter,
   updateCompsSetter,
 } from '@/entities/schema'
 import {
@@ -36,11 +35,10 @@ import {
   copyEntities,
   findDependencyIds,
   findEntities,
-  findEntity,
   findEntityPosition,
   findRootParentIds,
-  removeEntity,
 } from '@/lib/entity-actions'
+import { TreeStore } from '@/lib/schema/tree-store'
 import { Catalog, Comp } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
@@ -77,6 +75,8 @@ const FormConstructor: FC = (): JSX.Element => {
     missingSchemaIds
   )
 
+  const treeStore = new TreeStore(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
+
   useEffect(() => {
     resetSchemas()
     resetCurrentSchemaHistory()
@@ -112,7 +112,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
   // TODO rename to updateComp
   function updateCompInCurrentSchemaState(comp: Comp) {
-    setCurrentSchemaHistory(updateCompSetter(comp))
+    setCurrentSchemaHistory(updateCompsSetter(treeStore.changeItem(comp).data))
   }
 
   function updateCompsInCurrentSchemaState(comps: Catalog<Comp>) {
@@ -122,16 +122,23 @@ const FormConstructor: FC = (): JSX.Element => {
   function removeCompFromState(compId: string): void {
     assertNotNull(currentSchemaHistory)
 
-    const comps = removeEntity(compId, currentSchemaHistory.data.catalog)
-    assertNotUndefined(comps)
+    const compLocation = treeStore.getPosition(compId)
 
-    setCurrentSchemaHistory(updateCompsSetter(comps))
+    const data = treeStore.remove(compId).data
+
+    setCurrentSchemaHistory(updateCompsSetter(data))
 
     if (compId === propertyPanelComp?.id) {
-      const compLocation = findEntityPosition(compId, currentSchemaHistory.data.catalog)
-      const parentComp = findEntity(compLocation?.parentId || '', comps)
-      const siblingId = parentComp.children?.[compLocation?.index || 0]
-      siblingId ? setSelectedCompIds([siblingId]) : setSelectedCompIds([])
+      const parent = treeStore.data[compLocation?.parentId || '']
+      const siblingId = parent?.children?.[compLocation?.index || 0]
+      const siblingAheadId = parent?.children?.[(compLocation?.index || 0) - 1 || 0]
+      if (siblingId) {
+        setSelectedCompIds([siblingId])
+      } else if (siblingAheadId) {
+        setSelectedCompIds([siblingAheadId])
+      } else {
+        setSelectedCompIds([])
+      }
     }
   }
 

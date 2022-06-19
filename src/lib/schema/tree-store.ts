@@ -54,17 +54,17 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
     }
 
     walk(root, data, idKey, (item: TItem, idKeyValue) => {
-      const children = item.children?.forEach((childIdKeyValue) => {
+      item.children?.forEach((childIdKeyValue) => {
         parents[childIdKeyValue] = idKeyValue
       })
 
-      const parent = data[parents[idKeyValue] as string]
+      const parentId = data[parents[idKeyValue] as string]?.[idKey]
 
-      if (parent === undefined && idKeyValue !== rootId) {
+      if (parentId === undefined && idKeyValue !== rootId) {
         throw new Error(`Some items are missing: ${idKeyValue}`)
       }
 
-      result[idKeyValue] = { ...item, parent, children }
+      result[idKeyValue] = { ...item, parentId }
     })
 
     return result
@@ -105,6 +105,9 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
   }
 
   remove(id: Key) {
+    console.log('this.data', this.data)
+    this.removeFromParent(id)
+
     const removeChildrenDeep = (childId: Key) => {
       this.get(childId).children?.forEach(removeChildrenDeep)
       this.removeFromData(childId)
@@ -112,7 +115,36 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
 
     removeChildrenDeep(id)
 
-    this.removeFromParent(id)
+    return this
+  }
+
+  getPosition(id: Key): { index: number; parentId: Key } | undefined {
+    const item = this.get(id)
+    console.log('item', item)
+
+    const parent = this.data[item.parentId || '']
+
+    if (parent === undefined) {
+      return undefined
+    }
+
+    if (this.idKeyValue(item) === this.rootId) {
+      return { index: 0, parentId: this.rootId }
+    }
+
+    const index = parent.children?.reduce<number | undefined>(
+      (acc, childId, i) => (childId === id ? i : acc),
+      undefined
+    )
+
+    if (index === undefined) {
+      throw new Error('Something went wrong...')
+    }
+
+    return {
+      index,
+      parentId: parent.id,
+    }
   }
 
   private removeFromData(id: Key) {
@@ -129,16 +161,17 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
     }
 
     const parent = this.get(item.parentId)
-    const newParentChildren = parent.children?.filter((childId) => childId === id)
 
-    if (newParentChildren?.length !== 0) {
-      this.changeItem(parent)
+    const newParentChildren = parent.children?.filter((childId) => childId !== id)
+
+    if (newParentChildren?.length === 0) {
+      const newParent = { ...parent }
+      delete newParent.children
+      this.changeItem(newParent)
       return
     }
 
-    const newParent = { ...parent }
-    delete newParent.children
-    this.changeItem(newParent)
+    this.changeItem({ ...parent, children: newParentChildren })
   }
 }
 
