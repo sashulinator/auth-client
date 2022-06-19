@@ -1,6 +1,9 @@
+import { CatalogBase, Item, Key } from '../catalog-abstract'
 import { AnyConstructor } from '../types'
 
-export const Updatable = <T extends AnyConstructor>(base: T) => {
+export const Updatable = <TKey extends Key, TItem extends Item, T extends AnyConstructor<CatalogBase<TKey, TItem>>>(
+  base: T
+) => {
   class UpdatableMixin extends base {
     private _listeners: ((arg: this) => void)[] = []
 

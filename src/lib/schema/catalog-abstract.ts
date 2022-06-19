@@ -6,7 +6,12 @@ export type Item<TKey extends Key = Key> = {
 
 export type CatalogData<TKey extends Key, TItem extends Item<TKey>> = { [key: Key]: TItem }
 
-export abstract class CatalogAbstract<TKey extends Key, TItem extends Item<TKey>> {
+export interface CatalogBase<TKey extends Key, TItem extends Item<TKey>> {
+  data: CatalogData<TKey, TItem>
+  idKey: TKey
+}
+
+export abstract class CatalogAbstract<TKey extends Key, TItem extends Item<TKey>> implements CatalogBase<TKey, TItem> {
   private _data: CatalogData<TKey, TItem>
   idKey: TKey
 
