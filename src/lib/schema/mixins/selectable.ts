@@ -1,18 +1,12 @@
-import { Key, StoreData } from '../store-abstract'
+import { Key } from '../store-abstract'
 import { TreeItem, TreeStore } from '../tree-store'
 import { AnyConstructor } from '../types'
 
 export const Selectable = <TKey extends Key, TItem extends TreeItem, T extends AnyConstructor<TreeStore<TKey, TItem>>>(
   base: T
 ) => {
-  // @ts-expect-error https://github.com/microsoft/TypeScript/issues/37142
   class SelectableMixin extends base {
-    selectedKeys: string[]
-
-    constructor(data: StoreData<TKey, TItem>, rootId: Key, idKey: TKey) {
-      super(data, rootId, idKey)
-      this.selectedKeys = []
-    }
+    selectedKeys: string[] = []
 
     remove(id: Key): this {
       const position = this.getPosition(id)

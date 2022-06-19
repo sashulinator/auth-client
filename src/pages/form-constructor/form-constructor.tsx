@@ -75,7 +75,7 @@ const FormConstructor: FC = (): JSX.Element => {
     missingSchemaIds
   )
 
-  const treeStore = new SelectableTree<'id', Comp>(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
+  const treeStore = new SelectableTree(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
   treeStore.selectedKeys = [...selectedCompIds]
   treeStore.addUpdateListener((tree) => setCurrentSchemaHistory(updateCompsSetter(tree.data)))
 
