@@ -75,11 +75,9 @@ const FormConstructor: FC = (): JSX.Element => {
     missingSchemaIds
   )
 
-  const treeStore = SelectableTree(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
+  const treeStore = new SelectableTree<'id', Comp>(currentSchemaHistory.data.catalog, ROOT_ID, 'id')
   treeStore.selectedKeys = [...selectedCompIds]
-  // treeStore.addUpdateListener((tree) => {
-  //   setCurrentSchemaHistory(updateCompsSetter(tree.data))
-  // })
+  treeStore.addUpdateListener((tree) => setCurrentSchemaHistory(updateCompsSetter(tree.data)))
 
   useEffect(() => {
     resetSchemas()
@@ -125,8 +123,8 @@ const FormConstructor: FC = (): JSX.Element => {
 
   function removeCompFromState(compId: string): void {
     assertNotNull(currentSchemaHistory)
-
-    setCurrentSchemaHistory(updateCompsSetter(treeStore.remove(compId).data))
+    treeStore.remove(compId)
+    treeStore.update()
 
     setSelectedCompIds(treeStore.selectedKeys)
   }

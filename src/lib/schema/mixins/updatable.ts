@@ -1,10 +1,12 @@
-import { Item, Key, StoreData } from '../store-abstract'
+import { Key, StoreData } from '../store-abstract'
 import { TreeItem, TreeStore } from '../tree-store'
-import { GConstructor } from '../types'
+import { AnyConstructor } from '../types'
 
-export function updatable<TBase extends GConstructor<TreeStore<Key, Item>>>(Base: TBase) {
+export const Updatable = <TKey extends Key, TItem extends TreeItem, T extends AnyConstructor<TreeStore<TKey, TItem>>>(
+  base: T
+) => {
   // @ts-expect-error https://github.com/microsoft/TypeScript/issues/37142
-  return class TreeStoreUpdatable<TKey extends Key, TItem extends TreeItem> extends Base {
+  class UpdatableMixin extends base {
     private _listeners: ((arg: this) => void)[]
 
     constructor(data: StoreData<TKey, TItem>, rootId: Key, idKey: TKey) {
@@ -15,9 +17,10 @@ export function updatable<TBase extends GConstructor<TreeStore<Key, Item>>>(Base
     update() {
       this._listeners.forEach((fn) => fn(this))
     }
-
     addUpdateListener(fn: (arg: this) => void) {
       this._listeners.push(fn)
     }
   }
+
+  return UpdatableMixin as AnyConstructor<UpdatableMixin> & typeof UpdatableMixin & T
 }
