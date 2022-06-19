@@ -1,12 +1,12 @@
 // import { applyMixins } from './mixins/apply-mixins'
+import { Catalog } from './catalog'
 import { Selectable } from './mixins/selectable'
 import { Updatable } from './mixins/updatable'
-import { Store } from './store'
-import { TreeStore } from './tree-store'
+import { TreeCatalog } from './tree-catalog'
 
-export * from './store-abstract'
+export * from './catalog-abstract'
 
-export { Store }
-export { TreeStore }
+export { Catalog as Store }
+export { TreeCatalog }
 
-export const SelectableTree = Updatable(Selectable(TreeStore))
+export const SelectableTree = Updatable(Selectable(TreeCatalog))

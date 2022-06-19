@@ -4,10 +4,10 @@ export type Item<TKey extends Key = Key> = {
   [tkey in TKey]: string | number // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } & { [key: Key]: any }
 
-export type StoreData<TKey extends Key, TItem extends Item<TKey>> = { [key: Key]: TItem }
+export type CatalogData<TKey extends Key, TItem extends Item<TKey>> = { [key: Key]: TItem }
 
-export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> {
-  private _data: StoreData<TKey, TItem>
+export abstract class CatalogAbstract<TKey extends Key, TItem extends Item<TKey>> {
+  private _data: CatalogData<TKey, TItem>
   idKey: TKey
 
   constructor(idKey: TKey) {
@@ -15,11 +15,11 @@ export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> 
     this.idKey = idKey
   }
 
-  get data(): StoreData<TKey, TItem> {
+  get data(): CatalogData<TKey, TItem> {
     return this._data
   }
 
-  set data(newCatalog: StoreData<TKey, TItem>) {
+  set data(newCatalog: CatalogData<TKey, TItem>) {
     this._data = newCatalog
   }
 
@@ -65,8 +65,8 @@ export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> 
     return entity
   }
 
-  getMany(ids: string[]): StoreData<TKey, TItem> {
-    return ids.reduce<StoreData<TKey, TItem>>((acc, id) => {
+  getMany(ids: string[]): CatalogData<TKey, TItem> {
+    return ids.reduce<CatalogData<TKey, TItem>>((acc, id) => {
       acc[id] = this.get(id)
 
       return acc
@@ -74,9 +74,9 @@ export abstract class StoreAbstract<TKey extends Key, TItem extends Item<TKey>> 
   }
 
   filter(
-    cb: (entity: TItem, key: string, catalog: StoreData<TKey, TItem>) => unknown
-  ): StoreData<TKey, TItem> | undefined {
-    const result = Object.entries(this.data).reduce<StoreData<TKey, TItem>>((acc, [id, entity]) => {
+    cb: (entity: TItem, key: string, catalog: CatalogData<TKey, TItem>) => unknown
+  ): CatalogData<TKey, TItem> | undefined {
+    const result = Object.entries(this.data).reduce<CatalogData<TKey, TItem>>((acc, [id, entity]) => {
       if (!cb(entity, id, this.data)) {
         return acc
       }

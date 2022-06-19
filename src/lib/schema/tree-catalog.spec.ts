@@ -1,8 +1,8 @@
-import { StoreData } from './store-abstract'
-import { TreeStore } from './tree-store'
+import { CatalogData } from './catalog-abstract'
+import { TreeCatalog } from './tree-catalog'
 
-describe(`${TreeStore.name}`, () => {
-  const data: StoreData<'id', { id: string; children: string[] }> = {
+describe(`${TreeCatalog.name}`, () => {
+  const data: CatalogData<'id', { id: string; children: string[] }> = {
     rootId: {
       id: 'rootId',
       children: ['childId1'],
@@ -18,7 +18,7 @@ describe(`${TreeStore.name}`, () => {
   }
 
   it('remove', () => {
-    const treeStore = new TreeStore(data, 'rootId', 'id')
+    const treeStore = new TreeCatalog(data, 'rootId', 'id')
 
     treeStore.remove('childId2')
 

@@ -1,5 +1,5 @@
 import { insert } from '../change-unmutable'
-import { Item, Key, StoreAbstract, StoreData } from './store-abstract'
+import { CatalogAbstract, CatalogData, Item, Key } from './catalog-abstract'
 
 // import uniqid from 'uniqid'
 
@@ -13,16 +13,16 @@ export interface TreeNormItem extends TreeItem {
   parentId?: Key
 }
 
-export type TreeData<TKey extends Key, TItem extends TreeItem = TreeItem> = StoreData<TKey, TItem>
+export type TreeData<TKey extends Key, TItem extends TreeItem = TreeItem> = CatalogData<TKey, TItem>
 
-export type TreeNormData<TKey extends Key, TItem extends TreeItem> = StoreData<TKey, TreeNormItem & TItem>
+export type TreeNormData<TKey extends Key, TItem extends TreeItem> = CatalogData<TKey, TreeNormItem & TItem>
 
-export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAbstract<TKey, TItem & TreeNormItem> {
+export class TreeCatalog<TKey extends Key, TItem extends TreeItem> extends CatalogAbstract<TKey, TItem & TreeNormItem> {
   rootId: Key
 
-  constructor(data: StoreData<TKey, TItem>, rootId: Key, idKey: TKey) {
+  constructor(data: CatalogData<TKey, TItem>, rootId: Key, idKey: TKey) {
     super(idKey)
-    this.data = TreeStore.normalize(data, rootId, idKey)
+    this.data = TreeCatalog.normalize(data, rootId, idKey)
     this.rootId = rootId
   }
 
@@ -36,7 +36,7 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
     return root
   }
 
-  public forEach(cb: (entity: TItem, idKeyValue: Key, data: StoreData<TKey, TItem>) => void): void {
+  public forEach(cb: (entity: TItem, idKeyValue: Key, data: CatalogData<TKey, TItem>) => void): void {
     walk(this.root, this.data, this.idKey, cb)
   }
 
@@ -183,9 +183,9 @@ export class TreeStore<TKey extends Key, TItem extends TreeItem> extends StoreAb
 
 function walk<TKey extends string | number, TItem extends TreeItem>(
   item: TItem,
-  data: StoreData<TKey, TItem>,
+  data: CatalogData<TKey, TItem>,
   idKey: string | number,
-  cb: (item: TItem, idKeyValue: string | number, data: StoreData<TKey, TItem>) => void
+  cb: (item: TItem, idKeyValue: string | number, data: CatalogData<TKey, TItem>) => void
 ) {
   cb(item, item[idKey], data)
 
