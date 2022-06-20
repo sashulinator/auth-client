@@ -38,7 +38,7 @@ import {
   findEntityPosition,
   findRootParentIds,
 } from '@/lib/entity-actions'
-import { SelectableTree } from '@/lib/schema'
+import { SelectableTreeSchema } from '@/lib/schema'
 import { Catalog, Comp } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
@@ -75,7 +75,9 @@ const FormConstructor: FC = (): JSX.Element => {
     missingSchemaIds
   )
 
-  const treeStore = new SelectableTree(currentSchemaHistory.data.catalog, 'id', ROOT_ID)
+  const { catalog, ...schema } = currentSchemaHistory.data
+
+  const treeStore = new SelectableTreeSchema(catalog, 'id', ROOT_ID, schema)
   treeStore.selectedKeys = [...selectedCompIds]
   treeStore.addUpdateListener((tree) => setCurrentSchemaHistory(updateCompsSetter(tree.data)))
 
