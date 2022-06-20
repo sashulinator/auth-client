@@ -10,11 +10,11 @@ export interface ICatalogAbstract<TItem extends Item> {
 }
 
 export abstract class CatalogAbstract<TItem extends Item> implements ICatalogAbstract<TItem> {
-  private _data: CatalogData<TItem>
+  private _data!: CatalogData<TItem>
   idKey: Key
 
-  constructor(idKey: Key) {
-    this._data = {}
+  constructor(data: CatalogData<TItem>, idKey: Key) {
+    this.setData(data)
     this.idKey = idKey
   }
 
@@ -22,8 +22,12 @@ export abstract class CatalogAbstract<TItem extends Item> implements ICatalogAbs
     return this._data
   }
 
-  set data(newCatalog: CatalogData<TItem>) {
+  setData(newCatalog: CatalogData<TItem>) {
     this._data = newCatalog
+  }
+
+  get isEmpty() {
+    return !!this.keys.length
   }
 
   get values(): TItem[] {
@@ -39,7 +43,7 @@ export abstract class CatalogAbstract<TItem extends Item> implements ICatalogAbs
   }
 
   changeItem(item: TItem) {
-    this.data = { ...this.data, [this.idKeyValue(item)]: item }
+    this.setData({ ...this.data, [this.idKeyValue(item)]: item })
     return this
   }
 

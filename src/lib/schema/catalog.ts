@@ -3,11 +3,6 @@ import { CatalogAbstract, CatalogData, Item, Key } from './catalog-abstract'
 // import uniqid from 'uniqid'
 
 export class Catalog<TItem extends Item> extends CatalogAbstract<TItem> {
-  constructor(data: { [key: Key]: TItem }, idKey: Key) {
-    super(idKey)
-    this.data = data
-  }
-
   forEach(cb: (item: TItem, key: Key, entities: CatalogData<TItem>) => void) {
     for (let index = 0; index < this.entries.length; index++) {
       const [key, item] = this.entries[index] as [Key, TItem]
@@ -19,7 +14,7 @@ export class Catalog<TItem extends Item> extends CatalogAbstract<TItem> {
   add(item: TItem) {
     const newCatalog = { ...this.data, [this.idKeyValue(item)]: item }
 
-    this.data = newCatalog
+    this.setData(newCatalog)
   }
 
   copy(id: Key): TItem {
@@ -30,6 +25,6 @@ export class Catalog<TItem extends Item> extends CatalogAbstract<TItem> {
   remove(id: Key) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { [id]: removedProperty, ...newData } = this.data
-    this.data = newData
+    this.setData(newData)
   }
 }

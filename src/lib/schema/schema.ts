@@ -6,7 +6,7 @@ export class Schema<TItem extends Item, T> extends TreeCatalog<TItem> {
 
   constructor(data: CatalogData<TItem>, idkey: Key, rootId: Key, schema: T) {
     super(data, idkey, rootId)
-    this.data = data
+    this.setData(data)
     this.schema = schema
   }
 }

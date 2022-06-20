@@ -21,8 +21,8 @@ export class TreeCatalog<TItem extends TreeItem> extends CatalogAbstract<TItem &
   rootId: Key
 
   constructor(data: CatalogData<TItem>, idKey: Key, rootId: Key) {
-    super(idKey)
-    this.data = TreeCatalog.normalize(data, rootId, idKey)
+    super(data, idKey)
+    this.setData(TreeCatalog.normalize(data, rootId, idKey))
     this.rootId = rootId
   }
 
@@ -154,7 +154,7 @@ export class TreeCatalog<TItem extends TreeItem> extends CatalogAbstract<TItem &
   private removeFromData(id: Key) {
     const dataClone = { ...this.data }
     delete dataClone[id]
-    this.data = dataClone
+    this.setData(dataClone)
   }
 
   private removeFromParent(id: Key) {
