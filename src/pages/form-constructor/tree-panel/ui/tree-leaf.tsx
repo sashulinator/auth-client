@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import React from 'react'
 
 import componentList from '@/constants/component-list'
+import { assertInputElement } from '@/lib/dom-utils'
 import { isEnter } from '@/lib/key-events'
 import EditableText from '@/shared/editable-text'
 import { Comp } from '@/shared/schema-drawer'
@@ -33,6 +34,17 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
   const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
 
   const title = (props.item.data?.comp.title || '').replace(searchQuery, `<span class="query">${searchQuery}</span>`)
+
+  function handlePressEnterOnChangingTitle(e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    if (!isEnter(e)) {
+      return
+    }
+    assertInputElement(e.target)
+    if (e.target.value) {
+      props.item.data?.updateComp({ ...comp, title: e.target.value })
+      props.item.data?.onDoubleClick(undefined)
+    }
+  }
 
   return (
     <div
@@ -76,28 +88,16 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
           className={clsx('treeLeafText')}
         >
           <Icon iconName={iconName} style={{ marginRight: '8px' }} />
-          {isEdited ? (
+          {!isOneOfMultipleDragging ? (
             <EditableText
-              isInitialEditing={isEdited}
+              key={isEdited.toString()}
+              isEditing={isEdited}
               onEditingChange={(isEdited) => props.item.data?.onDoubleClick(isEdited ? comp.id : undefined)}
-              defaultValue={props.item.data?.comp.title}
-              onKeyDown={(e) => {
-                // TODO написать функцию создать файл event-action
-                // TODO добавить в него функцию getValue
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const value = (e.target as any).value
-                if (isEnter(e) && value) {
-                  props.item.data?.updateComp({ ...comp, title: value })
-                  props.item.data?.onDoubleClick(undefined)
-                }
-              }}
+              defaultValue={isEdited ? props.item.data?.comp.title : title}
+              onKeyDown={handlePressEnterOnChangingTitle}
             />
           ) : (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: isOneOfMultipleDragging ? `multiple ${props.item.data?.pickedIds.length || ''}` : title,
-              }}
-            ></div>
+            <div>multiple ${props.item.data?.pickedIds.length || ''}</div>
           )}
         </Text>
       </Stack>

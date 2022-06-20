@@ -9,7 +9,8 @@ import TextField from '@/shared/textfield'
 
 interface EditableTextProps extends ITextFieldProps {
   onEditingChange?: (isEditing: boolean) => void
-  isInitialEditing?: boolean
+  initialIsEditing?: boolean
+  isEditing?: boolean
 }
 
 const textFieldStyles = {
@@ -17,13 +18,47 @@ const textFieldStyles = {
 }
 
 export default function EditableText(props: EditableTextProps): JSX.Element {
+  if (props.initialIsEditing !== undefined && props.isEditing !== undefined) {
+    throw new Error('Pass prop initialIsEditing or isEditing')
+  }
   const ref = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLDivElement | null>(null)
 
-  const [isEditing, setIsEditing] = useState(props.isInitialEditing ?? false)
+  const [isLocalEditing, setIsLocalEditing] = useState(props.initialIsEditing ?? false)
+  const isEditing = props.isEditing ?? isLocalEditing
+  console.log('isLocalEditing', isLocalEditing)
+
+  function setIsEditing(newValue: boolean) {
+    if (props.isEditing === undefined) {
+      props.onEditingChange?.(newValue)
+      console.log(
+        'ну допустим. Если я тут, значит изэтитинг не андефайнд, newval=',
+        newValue,
+        'props.isEditing',
+        props.isEditing,
+        'isEditing',
+        isEditing,
+        'isLocalEditing',
+        isLocalEditing
+      )
+    } else {
+      setIsLocalEditing(newValue)
+      console.log(
+        'я оказалась в странном месте в странное время, newval',
+        newValue,
+        'props.isEditing',
+        props.isEditing,
+        'isEditing',
+        isEditing,
+        'isLocalEditing',
+        isLocalEditing
+      )
+    }
+  }
+  console.log('ISEDITINNNGGGG', isEditing)
 
   useLayoutEffect(() => {
-    if (!isEditing) {
+    if (!isLocalEditing) {
       setTimeout(() => {
         if (window.getSelection) {
           if (window.getSelection()?.empty) {
@@ -41,7 +76,7 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
       })
     }
 
-    props.onEditingChange?.(isEditing)
+    props.onEditingChange?.(isLocalEditing)
   }, [isEditing])
 
   useEffect(() => {
@@ -62,7 +97,11 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
   return (
     <div className="EditableText" ref={rootRef}>
       <div style={{ visibility: !isEditing ? 'hidden' : 'visible' }}>
-        <TextField {...props} styles={!isEditing ? textFieldStyles : undefined} value={isEditing ? props.value : ''} />
+        <TextField
+          {...props}
+          styles={!isEditing ? textFieldStyles : undefined}
+          value={isEditing ? props.value : undefined}
+        />
       </div>
       {!isEditing && (
         <div
@@ -76,9 +115,10 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
           className="text"
           onDoubleClick={() => setIsEditing(true)}
           ref={ref}
-        >
-          {props.value}
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: (props.value === undefined ? props.defaultValue : props.value) || '',
+          }}
+        ></div>
       )}
     </div>
   )
