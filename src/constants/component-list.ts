@@ -7,6 +7,7 @@ import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
 import DatePicker from '@/shared/date-picker/date-picker'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
+import EditableText from '@/shared/editable-text'
 import EventBindingEditor from '@/shared/event-binding-editor'
 import Fetcher from '@/shared/fetcher'
 import Portal from '@/shared/header-portal'
@@ -42,6 +43,12 @@ const componentList: Record<string, CompMeta> = {
   [BasicComponentsNames.TextField]: {
     type: 'input',
     component: TextField,
+    iconName: 'TextField',
+  },
+
+  EditableText: {
+    type: 'input',
+    component: EditableText,
     iconName: 'TextField',
   },
 
