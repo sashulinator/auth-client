@@ -6,8 +6,8 @@ import React from 'react'
 
 import componentList from '@/constants/component-list'
 import { isEnter } from '@/lib/key-events'
+import EditableText from '@/shared/editable-text'
 import { Comp } from '@/shared/schema-drawer'
-import TextField from '@/shared/textfield'
 
 const buttonStyles: IButtonStyles = {
   rootHovered: {
@@ -77,7 +77,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
         >
           <Icon iconName={iconName} style={{ marginRight: '8px' }} />
           {isEdited ? (
-            <TextField
+            <EditableText
+              isInitialEditing={isEdited}
+              onEditingChange={(isEdited) => props.item.data?.onDoubleClick(isEdited ? comp.id : undefined)}
               defaultValue={props.item.data?.comp.title}
               onKeyDown={(e) => {
                 // TODO написать функцию создать файл event-action
