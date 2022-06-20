@@ -92,7 +92,9 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
             <EditableText
               key={isEdited.toString()}
               isEditing={isEdited}
-              onEditingChange={(isEdited) => props.item.data?.onDoubleClick(isEdited ? comp.id : undefined)}
+              onClickOutside={() => {
+                props.item.data?.onDoubleClick(undefined)
+              }}
               defaultValue={isEdited ? props.item.data?.comp.title : title}
               onKeyDown={handlePressEnterOnChangingTitle}
             />

@@ -8,7 +8,7 @@ import { isEnter } from '@/lib/key-events'
 import TextField from '@/shared/textfield'
 
 interface EditableTextProps extends ITextFieldProps {
-  onEditingChange?: (isEditing: boolean) => void
+  onClickOutside?: () => void
   initialIsEditing?: boolean
   isEditing?: boolean
 }
@@ -21,41 +21,20 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
   if (props.initialIsEditing !== undefined && props.isEditing !== undefined) {
     throw new Error('Pass prop initialIsEditing or isEditing')
   }
+
   const ref = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLDivElement | null>(null)
 
   const [isLocalEditing, setIsLocalEditing] = useState(props.initialIsEditing ?? false)
   const isEditing = props.isEditing ?? isLocalEditing
-  console.log('isLocalEditing', isLocalEditing)
 
   function setIsEditing(newValue: boolean) {
-    if (props.isEditing === undefined) {
-      props.onEditingChange?.(newValue)
-      console.log(
-        'ну допустим. Если я тут, значит изэтитинг не андефайнд, newval=',
-        newValue,
-        'props.isEditing',
-        props.isEditing,
-        'isEditing',
-        isEditing,
-        'isLocalEditing',
-        isLocalEditing
-      )
+    if (props.isEditing !== undefined) {
+      props.onClickOutside?.()
     } else {
       setIsLocalEditing(newValue)
-      console.log(
-        'я оказалась в странном месте в странное время, newval',
-        newValue,
-        'props.isEditing',
-        props.isEditing,
-        'isEditing',
-        isEditing,
-        'isLocalEditing',
-        isLocalEditing
-      )
     }
   }
-  console.log('ISEDITINNNGGGG', isEditing)
 
   useLayoutEffect(() => {
     if (!isLocalEditing) {
@@ -75,8 +54,6 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
         rootRef.current?.querySelector<HTMLInputElement>('input')?.focus()
       })
     }
-
-    props.onEditingChange?.(isLocalEditing)
   }, [isEditing])
 
   useEffect(() => {
@@ -84,6 +61,7 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
     function clickOutside(event: any) {
       if (!rootRef.current?.contains(event?.target)) {
         setIsEditing(false)
+        props.onClickOutside?.()
       }
     }
 
