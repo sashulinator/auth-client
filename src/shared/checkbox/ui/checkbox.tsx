@@ -4,8 +4,9 @@ import React from 'react'
 import { useForm } from 'react-final-form'
 
 interface CheckBoxProps extends ICheckboxProps {
-  dontConverFalseToUndefined: boolean
+  dontConvertFalseToUndefined: boolean
   name: string
+  defaultChecked: boolean
 }
 
 export default function CheckBox(props: CheckBoxProps): JSX.Element {
@@ -14,7 +15,7 @@ export default function CheckBox(props: CheckBoxProps): JSX.Element {
   function onChange(ev?: React.FormEvent<HTMLElement | HTMLInputElement>, checked?: boolean) {
     props?.onChange?.(ev, checked)
 
-    if (!props.dontConverFalseToUndefined && !checked) {
+    if (!props.dontConvertFalseToUndefined && !checked) {
       form.change(props.name, undefined)
     }
   }
