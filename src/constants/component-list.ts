@@ -6,7 +6,7 @@ import { Button } from '@/shared/button'
 import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
 import DatePicker from '@/shared/date-picker/date-picker'
-import Dimension, { DimensionNode } from '@/shared/dimension'
+import Dimension, { DimensionNode, DimensionTree } from '@/shared/dimension'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import EditableText from '@/shared/editable-text'
 import EventBindingEditor from '@/shared/event-binding-editor'
@@ -46,6 +46,12 @@ const componentList: Record<string, CompMeta> = {
   },
 
   // Inputs
+
+  DimensionTree: {
+    type: 'input',
+    component: DimensionTree,
+    iconName: 'TextField',
+  },
 
   [BasicComponentsNames.TextField]: {
     type: 'input',
