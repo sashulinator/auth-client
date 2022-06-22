@@ -8,5 +8,5 @@ interface DimensionTreeProps {
 }
 
 export default function DimensionTree(props: DimensionTreeProps): JSX.Element {
-  return <div className="DimensionTree">{props.id}</div>
+  return <div className="DimensionTree">{props.id}alooo</div>
 }
