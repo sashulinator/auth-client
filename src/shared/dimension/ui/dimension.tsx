@@ -1,5 +1,7 @@
 import { isString } from '@savchenko91/schema-validator'
 
+import './dimension.css'
+
 import { Dimension } from '../model/types'
 import React, { memo } from 'react'
 

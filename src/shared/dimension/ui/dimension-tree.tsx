@@ -1,12 +1,12 @@
 import { ItemId, TreeData, TreeItem } from '@atlaskit/tree'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import './dimension-tree.css'
-
 import { DimensionNode } from '..'
 import { buildTree } from './build-tree'
 import React, { useEffect, useState } from 'react'
+import { Form } from 'react-final-form'
 
+import Autosave from '@/shared/autosave'
 import { CompSchema } from '@/shared/schema-drawer'
 
 interface DimensionTreeProps {
@@ -24,8 +24,19 @@ export default function DimensionTree(props: DimensionTreeProps): JSX.Element {
   }
 
   return (
-    <div className="DimensionTree">
-      {tree && tree.items[tree.rootId]?.children.map((childId) => factory(childId, tree.items))}
+    <div className="DimensionTree" style={{ margin: '24px' }}>
+      <Form
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onSubmit={() => {}}
+        render={() => {
+          return (
+            <>
+              <Autosave save={console.log} debounce={500} />
+              {tree && tree.items[tree.rootId]?.children.map((childId) => factory(childId, tree.items))}
+            </>
+          )
+        }}
+      />
     </div>
   )
 }
@@ -38,10 +49,8 @@ function factory(id: string | number | undefined, items: Record<ItemId, TreeItem
   const item = items[id]
   assertNotUndefined(item)
 
-  console.log('item', item)
-
   return (
-    <div className="dimensionFactory">
+    <div key={id} className="dimensionFactory">
       <>
         <DimensionNode item={item} />
         {item.children.map((childId) => {

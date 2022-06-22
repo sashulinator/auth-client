@@ -15,22 +15,19 @@ export interface TreeLeafProps {
   }
 }
 
-export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
+export default function DimensionNode(props: TreeLeafProps): JSX.Element {
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      data-comp-id={props.item.data?.comp.id}
-      className={clsx('NewTreeLeaf', 'DimensionLeaf')}
-    >
-      <Stack className="treeLeafContent" horizontal verticalAlign="center">
-        <div className="treeLeafBorder" />
-        {props.item.data?.comp && (
-          <Field<boolean> {...props.item.data?.comp}>
-            {({ input }) => <CheckBox {...input} {...props.item.data?.comp.props} />}
-          </Field>
-        )}
-      </Stack>
+    <div data-comp-id={props.item.data?.comp.id} className={clsx('NewTreeLeaf', 'DimensionNode')}>
+      <label>
+        <Stack className="treeLeafContent" horizontal verticalAlign="center">
+          <div className="treeLeafBorder" />
+          {props.item.data?.comp && (
+            <Field<boolean> type="checkbox" {...props.item.data?.comp}>
+              {({ input }) => <CheckBox {...input} {...props.item.data?.comp.props} />}
+            </Field>
+          )}
+        </Stack>
+      </label>
     </div>
   )
 }
