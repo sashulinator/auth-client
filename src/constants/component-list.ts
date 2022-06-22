@@ -6,7 +6,7 @@ import { Button } from '@/shared/button'
 import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
 import DatePicker from '@/shared/date-picker/date-picker'
-import Dimension from '@/shared/dimension'
+import Dimension, { DimensionNode } from '@/shared/dimension'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import EditableText from '@/shared/editable-text'
 import EventBindingEditor from '@/shared/event-binding-editor'
@@ -36,6 +36,12 @@ const componentList: Record<string, CompMeta> = {
   [BasicComponentsNames.Checkbox]: {
     type: 'checkbox',
     component: Checkbox,
+    iconName: 'CheckboxComposite',
+  },
+
+  DimensionNode: {
+    type: 'checkbox',
+    component: DimensionNode,
     iconName: 'CheckboxComposite',
   },
 
