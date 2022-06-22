@@ -8,9 +8,11 @@ import { Field } from 'react-final-form'
 import CheckBox from '@/shared/checkbox/ui/checkbox'
 import { Comp } from '@/shared/schema-drawer'
 
+type DimensionComp = Pick<Required<Comp>, 'name' | 'id'> & { props: { label: string } }
+
 export interface TreeLeafProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
-    data?: { comp: Comp }
+    data?: { comp: DimensionComp }
   }
 }
 
@@ -27,9 +29,11 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBorder" />
-        <Field<boolean> name={props.item.data?.comp.name || ''}>
-          {({ input }) => <CheckBox {...props} {...input} />}
-        </Field>
+        {props.item.data?.comp && (
+          <Field<boolean> {...props.item.data?.comp}>
+            {({ input }) => <CheckBox {...input} {...props.item.data?.comp.props} />}
+          </Field>
+        )}
       </Stack>
     </div>
   )

@@ -1,11 +1,20 @@
 import { TreeItem } from '@atlaskit/tree'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { ROOT_ID } from '@/constants/common'
 import { mutateObject } from '@/lib/mutate-object'
 import { Catalog, Comp } from '@/shared/schema-drawer'
 
-export function buildTree(comps: Catalog<Comp> | undefined) {
-  if (comps === undefined) {
+export function buildTree(allComps: Catalog<Comp> | undefined) {
+  if (allComps === undefined) {
+    return undefined
+  }
+
+  const { [ROOT_ID]: rootComp, ...comps } = allComps
+  assertNotUndefined(rootComp)
+  const dimensionTreeId = rootComp.children?.[0]
+
+  if (dimensionTreeId === undefined) {
     return undefined
   }
 
@@ -13,7 +22,7 @@ export function buildTree(comps: Catalog<Comp> | undefined) {
     return {
       ...comp,
       id: comp.id,
-      isExpanded: false,
+      isExpanded: true,
       hasChildren: comp.children !== undefined,
       children: comp.children || [],
       data: { comp },
@@ -21,7 +30,7 @@ export function buildTree(comps: Catalog<Comp> | undefined) {
   })
 
   return {
-    rootId: ROOT_ID,
+    rootId: dimensionTreeId,
     items,
   }
 }
