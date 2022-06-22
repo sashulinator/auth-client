@@ -1,1 +1,1 @@
-export { default as DimensionTree } from './ui/dimension-tree'
+export { default as DimensionTree } from './ui/dimension'

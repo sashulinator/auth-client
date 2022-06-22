@@ -5,13 +5,13 @@ import React, { memo } from 'react'
 
 import { Catalog, Schema } from '@/shared/schema-drawer'
 
-interface DimensionTreeProps {
+interface DimensionProps {
   schemas: Catalog<Schema<Dimension>> | string | undefined
   value: string[] | string | undefined
 }
 
-export default memo(function DimensionTree(props: DimensionTreeProps): JSX.Element {
+export default memo(function Dimension(props: DimensionProps): JSX.Element {
   const value = isString(props.value) ? undefined : props.value
 
-  return <div className="DimensionTree">{value?.join()}</div>
+  return <div className="Dimension">{value?.join()}</div>
 })
