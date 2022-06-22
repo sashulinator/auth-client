@@ -1,4 +1,3 @@
-import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 import { Stack } from '@fluentui/react'
 
 import clsx from 'clsx'
@@ -10,8 +9,8 @@ import { Comp } from '@/shared/schema-drawer'
 
 type DimensionComp = Pick<Required<Comp>, 'name' | 'id'> & { props: { label: string } }
 
-export interface TreeLeafProps extends RenderItemParams {
-  item: Omit<TreeItem, 'data'> & {
+export interface TreeLeafProps {
+  item: {
     data?: { comp: DimensionComp }
   }
 }
@@ -21,11 +20,8 @@ export default function TreeLeaf(props: TreeLeafProps): JSX.Element {
     <div
       role="button"
       tabIndex={0}
-      data-comp-id={props.item.id}
+      data-comp-id={props.item.data?.comp.id}
       className={clsx('NewTreeLeaf', 'DimensionLeaf')}
-      {...props.provided.draggableProps}
-      {...props.provided.dragHandleProps}
-      ref={props.provided.innerRef}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBorder" />

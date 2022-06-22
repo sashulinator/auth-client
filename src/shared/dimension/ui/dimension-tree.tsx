@@ -1,11 +1,13 @@
-import { TreeData } from '@atlaskit/tree'
+import { ItemId, TreeData, TreeItem } from '@atlaskit/tree'
+import { assertNotUndefined } from '@savchenko91/schema-validator'
+
+import './dimension-tree.css'
 
 import { DimensionNode } from '..'
 import { buildTree } from './build-tree'
 import React, { useEffect, useState } from 'react'
 
 import { CompSchema } from '@/shared/schema-drawer'
-import Tree from '@/shared/tree'
 
 interface DimensionTreeProps {
   schema?: CompSchema
@@ -23,17 +25,29 @@ export default function DimensionTree(props: DimensionTreeProps): JSX.Element {
 
   return (
     <div className="DimensionTree">
-      {tree && (
-        <Tree
-          renderItem={DimensionNode}
-          tree={tree}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          onDragStart={() => {}}
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          onDragEnd={() => {}}
-          setTree={setTree}
-        />
-      )}
+      {tree && tree.items[tree.rootId]?.children.map((childId) => factory(childId, tree.items))}
+    </div>
+  )
+}
+
+function factory(id: string | number | undefined, items: Record<ItemId, TreeItem>) {
+  if (id === undefined) {
+    return null
+  }
+
+  const item = items[id]
+  assertNotUndefined(item)
+
+  console.log('item', item)
+
+  return (
+    <div className="dimensionFactory">
+      <>
+        <DimensionNode item={item} />
+        {item.children.map((childId) => {
+          return factory(childId, items)
+        })}
+      </>
     </div>
   )
 }
