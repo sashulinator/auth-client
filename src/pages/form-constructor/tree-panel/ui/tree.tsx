@@ -6,8 +6,8 @@ import './tree-panel.css'
 
 import { AreaClassNames } from '../../preview/constants/area-classnames'
 import { TreeAdditionalData } from '../types'
-import TreeLeaf from './tree-leaf'
-import React, { useEffect, useState } from 'react'
+import TreeNode from './tree-node'
+import React, { useEffect, useState, useTransition } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { ROOT_ID } from '@/constants/common'
@@ -33,14 +33,14 @@ export interface TreeProps {
 export default function PanelTree(props: TreeProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
   const [editId, setEditId] = useState<string | undefined>()
+  const [, startTransition] = useTransition()
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds, editId])
+  useEffect(() => startTransition(() => setTree(rebuildTree)), [props.schemas, props.searchQuery])
 
   function rebuildTree(): TreeData | undefined {
-    return buildTree<TreeAdditionalData>(tree, props.schema.catalog, {
+    return buildTree<TreeAdditionalData>(tree, props.schema.catalog, props.schema.type, {
       searchQuery: props.searchQuery,
       schemas: props.schemas,
-      pickedIds: props.selectedCompIds,
       editId,
       onItemClick,
       onDoubleClick,
@@ -54,10 +54,10 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     setEditId(compId)
   }
 
-  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string) {
+  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string, selectedCompIds: string[]) {
     assertString(compId)
 
-    if (props.selectedCompIds.includes(compId)) {
+    if (selectedCompIds.includes(compId)) {
       return
     }
 
@@ -140,7 +140,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
         )}
         {tree && (
           <Tree
-            renderItem={TreeLeaf}
+            renderItem={TreeNode}
             tree={tree}
             onDragStart={PreventMovingUnpickedItems}
             onDragEnd={onDragEnd}

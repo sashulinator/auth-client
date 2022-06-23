@@ -11,8 +11,7 @@ export interface TreeLeafProps extends RenderItemParams {
 }
 
 export interface TreeAdditionalData {
-  onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
-  pickedIds: string[]
+  onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string, selectedIds: string[]) => void
   onMouseOver?: (itemId: string | number) => void
   // onMouseLeave?: (itemId: string | number) => void
   // onFocus?: (itemId: string | number) => void

@@ -3,7 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { ROOT_ID } from '@/constants/common'
 import { Entity } from '@/lib/entity-actions'
-import { Catalog } from '@/shared/schema-drawer'
+import { Catalog, CompSchemaType } from '@/shared/schema-drawer'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface AddiotioanlData extends Record<string, any> {
@@ -16,6 +16,7 @@ interface AddiotioanlData extends Record<string, any> {
 export function buildTree<TAdditionalData extends AddiotioanlData>(
   currentTree: TreeData | undefined,
   entities: Catalog<Entity> | undefined,
+  schemaType: CompSchemaType,
   additionalData: TAdditionalData
 ): TreeData | undefined {
   if (entities === undefined) {
@@ -46,7 +47,7 @@ export function buildTree<TAdditionalData extends AddiotioanlData>(
     const treeItem: TreeItem = {
       ...entity,
       id: entity.id,
-      isExpanded: currentTreeItem?.isExpanded ?? true,
+      isExpanded: currentTreeItem?.isExpanded ?? schemaType !== CompSchemaType.FORM_DIMENSION,
       data: { comp: entity, ...additionalData },
       children: entity.children || [],
       hasChildren: entity.children !== undefined,
