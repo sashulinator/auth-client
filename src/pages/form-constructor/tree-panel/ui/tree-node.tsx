@@ -86,7 +86,7 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
 function OptimizationLayer(props: TreeLeafProps) {
   const [selectedCompIds] = useRecoilState(selectedCompIdsState)
   const [schemas] = useRecoilState(schemasState)
-  const schema = schemas?.[props.item.data?.entity.compSchemaId || '']
+  const schema = schemas?.[props.item.data?.entity?.compSchemaId || '']
   const isSelected = selectedCompIds.includes(props.item.data?.entity.id || '')
   const isExpandButton = !!props.item.hasChildren
 

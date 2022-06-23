@@ -18,21 +18,21 @@ export function buildTree(
     return undefined
   }
 
-  const rootComp = entities[ROOT_ID]
-  assertNotUndefined(rootComp)
+  const rootEntity = entities[ROOT_ID]
+  assertNotUndefined(rootEntity)
 
   return {
     rootId: ROOT_ID,
     items: additionalData.searchQuery
-      ? buildTreeWithSearchQuery(rootComp, tree, entities, additionalData)
-      : buildTreeDefault(rootComp, tree, entities, additionalData),
+      ? buildTreeWithSearchQuery(rootEntity, tree, entities, additionalData)
+      : buildTreeDefault(rootEntity, tree, entities, additionalData),
   }
 }
 
 // Private
 
 function buildTreeWithSearchQuery(
-  rootComp: Entity,
+  rootEntity: Entity,
   tree: TreeData | undefined,
   entities: Catalog<Entity>,
   additionalData: AdditionalData
@@ -40,7 +40,7 @@ function buildTreeWithSearchQuery(
   const items: Record<string, TreeItem> = {}
   const parentIds: Record<string, string> = {}
 
-  walk(rootComp, entities, 'id', (entity, id, data, parentId) => {
+  walk(rootEntity, entities, 'id', (entity, id, data, parentId) => {
     const isExpandedBeforeSearchQuery = tree?.items[id]?.data.isExpandedBeforeSearchQuery
 
     if (parentId !== undefined) {
@@ -66,7 +66,7 @@ function buildTreeWithSearchQuery(
     }
 
     const parentItem = items[parentId]
-    const parentComp = entities[parentId]
+    const parentEntity = entities[parentId]
 
     if (parentItem === undefined) {
       items[parentId] = {
@@ -74,7 +74,7 @@ function buildTreeWithSearchQuery(
         isExpanded: true,
         hasChildren: true,
         children: [id],
-        data: { comp: parentComp, ...additionalData },
+        data: { entity: parentEntity, ...additionalData },
       }
     } else {
       parentItem.children = [...new Set([...parentItem.children, id])]
@@ -89,14 +89,14 @@ function buildTreeWithSearchQuery(
 }
 
 function buildTreeDefault(
-  rootComp: Entity,
+  rootEntity: Entity,
   tree: TreeData | undefined,
   entities: Catalog<Entity>,
   additionalData: AdditionalData
 ): Record<string, TreeItem> {
   const items: Record<string, TreeItem> = {}
 
-  walk(rootComp, entities, 'id', (entity, id) => {
+  walk(rootEntity, entities, 'id', (entity, id) => {
     const isExpandedBeforeSearchQuery =
       tree?.items[id]?.data.isExpandedBeforeSearchQuery ?? additionalData.isInitialExpanded
 
