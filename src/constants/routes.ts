@@ -10,7 +10,7 @@ const ROUTES = {
 
   SCHEMA_LIST: new Route({ name: 'Schemas', path: '/schema-list' }),
 
-  INCIDENT_LIST: new Route({ name: 'Incidents', path: '/incident-list' }),
+  INCIDENT_LIST: new Route({ name: 'Kukaracha', path: '/incident-list' }),
 
   CREATE_INCIDENT: new Route({ name: 'Incident', path: '/incident' }),
 
