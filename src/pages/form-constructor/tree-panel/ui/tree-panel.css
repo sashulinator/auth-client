@@ -45,3 +45,7 @@
   background-color: transparent;
   opacity: 0.7;
 }
+
+.TreePanel .NewTreeLeaf .text {
+  background-color: transparent;
+}

@@ -1,0 +1,18 @@
+.EditableText {
+  position: relative;
+}
+
+.EditableText .text {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  background-color: var(--black01);
+  padding-left: 9px;
+  box-sizing: border-box;
+}
