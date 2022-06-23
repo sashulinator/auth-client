@@ -1,12 +1,15 @@
-import { IButtonStyles, Icon, IconButton, Stack, Text } from '@fluentui/react'
+import { IButtonStyles, Icon, IconButton, Stack } from '@fluentui/react'
 
 import { TreeLeafProps } from '../types'
 import clsx from 'clsx'
-import React, { memo } from 'react'
+import React, { memo, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 import componentList from '@/constants/component-list'
 import { schemasState, selectedCompIdsState } from '@/entities/schema'
+import { getValue, removeFocus } from '@/lib/dom-utils'
+import { isEnter } from '@/lib/key-events'
+import EditableText from '@/shared/editable-text'
 import { Comp } from '@/shared/schema-drawer'
 
 const buttonStyles: IButtonStyles = {
@@ -26,20 +29,35 @@ interface TreeNodeContentProps extends Pick<TreeLeafProps, 'onCollapse' | 'onExp
   isExpanded: boolean
   id: string
   onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
+  setTitle: (title: string) => void
 }
 
 const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProps) {
+  const [isEditing, setIsEditing] = useState(false)
+
+  function onRootClick(e: React.MouseEvent<HTMLElement>) {
+    if (isEditing) {
+      return
+    }
+
+    props.onItemClick?.(e, props.id)
+    removeFocus()
+  }
+
+  function saveTitle(e: React.KeyboardEvent) {
+    if (isEnter(e)) {
+      setIsEditing(false)
+      props.setTitle(getValue(e))
+    }
+  }
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <div
       role="button"
       tabIndex={0}
-      className={clsx('NewTreeLeaf', props.isSelected && 'isSelected', props.isExpandButton && 'isExpandButton')}
-      onClick={(e) => {
-        props.onItemClick?.(e, props.id)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ;(document as any)?.activeElement?.blur()
-      }}
+      className={clsx('TreeNodeContent', props.isSelected && 'isSelected', props.isExpandButton && 'isExpandButton')}
+      onClick={onRootClick}
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBorder" />
@@ -53,22 +71,13 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
         ) : (
           <div style={{ width: '44px', height: '32px' }} />
         )}
-
-        <Text
-          as="div"
-          onClick={() => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ;(document as any)?.activeElement?.blur()
-          }}
-          className={clsx('treeLeafText')}
-        >
-          <Icon iconName={props.iconName} style={{ marginRight: '8px' }} />
-          <div
-            dangerouslySetInnerHTML={{
-              __html: props.title,
-            }}
-          ></div>
-        </Text>
+        <Icon iconName={props.iconName} style={{ marginRight: '8px' }} />
+        <EditableText
+          defaultValue={props.title}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+          onKeyDown={saveTitle}
+        />
       </Stack>
     </div>
   )
@@ -95,14 +104,15 @@ function OptimizationLayer(props: TreeLeafProps) {
     <TreeNodeContent
       key={comp.id}
       id={comp.id}
+      iconName={iconName}
+      isSelected={isSelected}
       isExpandButton={isExpandButton}
+      title={isOneOfMultipleDragging ? `multiple ${selectedCompIds.length || ''}` : comp.title}
       onCollapse={props.onCollapse}
       onExpand={props.onExpand}
-      isSelected={isSelected}
       onItemClick={onItemClick}
+      setTitle={(title) => props.item.data?.updateComp({ ...comp, title })}
       isExpanded={!!props.item.isExpanded}
-      iconName={iconName}
-      title={isOneOfMultipleDragging ? `multiple ${selectedCompIds.length || ''}` : comp.title}
     />
   )
 }
@@ -120,10 +130,6 @@ export default function TreeNode(props: TreeLeafProps): JSX.Element {
       onFocus={(e) => {
         props.provided.dragHandleProps.onFocus(e)
         // props.item.data?.onFocus?.(props.item.id)
-      }}
-      onBlur={(e) => {
-        props.provided.dragHandleProps.onBlur(e)
-        // props.item.data?.onBlur?.(props.item.id)
       }}
       onKeyDown={(e) => {
         props.provided.dragHandleProps.onKeyDown(e)

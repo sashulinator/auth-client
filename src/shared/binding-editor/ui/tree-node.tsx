@@ -76,7 +76,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
 
   return (
     <div
-      className={clsx('BindingTreeLeaf NewTreeLeaf', isSelected && 'isSelected', isError && 'isError')}
+      className={clsx('BindingTreeLeaf TreeNodeContent', isSelected && 'isSelected', isError && 'isError')}
       role="button"
       tabIndex={0}
       onClick={() => props.item.data?.selectItemId(props.item.id.toString())}

@@ -17,7 +17,7 @@ export interface TreeLeafProps {
 
 export default function DimensionNode(props: TreeLeafProps): JSX.Element {
   return (
-    <div data-comp-id={props.item.data?.comp.id} className={clsx('NewTreeLeaf', 'DimensionNode')}>
+    <div data-comp-id={props.item.data?.comp.id} className={clsx('TreeNodeContent', 'DimensionNode')}>
       <label>
         <Stack className="treeLeafContent" horizontal verticalAlign="center">
           <div className="treeLeafBorder" />
