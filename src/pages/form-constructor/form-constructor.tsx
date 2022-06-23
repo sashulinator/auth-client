@@ -141,7 +141,7 @@ const FormConstructor: FC = (): JSX.Element => {
     window.open(url, '_blanc')?.focus()
   }
 
-  function selectAndUnselectComp(compId: string | string[]): void {
+  function toggleCompSelection(compId: string | string[]): void {
     if (Array.isArray(compId)) {
       setSelectedCompIds(compId)
       return
@@ -273,7 +273,7 @@ const FormConstructor: FC = (): JSX.Element => {
         <TreePanel
           schema={currentSchemaHistory.data}
           schemas={schemas}
-          selectAndUnselectComp={selectAndUnselectComp}
+          toggleCompSelection={toggleCompSelection}
           upsertComps={updateCompsInCurrentSchemaState}
           selectedCompIds={selectedCompIds}
           isLoading={isCurrentSchemaLoading}

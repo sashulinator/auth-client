@@ -6,7 +6,7 @@ import { CompSchema } from '@/shared/schema-drawer'
 interface KeyListenerProps {
   schema: CompSchema
   selectedCompIds: string[]
-  selectAndUnselectComp: (compId: string | string[]) => void
+  toggleCompSelection: (compId: string | string[]) => void
   removeSelectedComps: () => void
   pasteFromClipboard: () => void
   copyToClipboard: () => void
@@ -35,7 +35,7 @@ export default function KeyListener(props: KeyListenerProps): null {
       }
 
       if (isEscape(event)) {
-        props.selectAndUnselectComp([])
+        props.toggleCompSelection([])
       } else if (isBackspace(event)) {
         props.removeSelectedComps()
       } else if (isCtrl(event) && isZ(event) && !isShift(event)) {

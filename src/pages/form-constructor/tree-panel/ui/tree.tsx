@@ -19,13 +19,13 @@ import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
 
 export interface TreeProps {
-  selectAndUnselectComp: (compId: string | string[]) => void
   schema: CompSchema
-  selectedCompIds: string[]
-  upsertComps: (comps: Catalog<Comp>) => void
-  isLoading: boolean
   schemas: Catalog<CompSchema> | null
+  selectedCompIds: string[]
   searchQuery?: string
+  isLoading: boolean
+  toggleCompSelection: (compId: string | string[]) => void
+  upsertComps: (comps: Catalog<Comp>) => void
   updateComp: (comp: Comp) => void
 }
 
@@ -65,9 +65,9 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     }
 
     if (isCtrl(e)) {
-      props.selectAndUnselectComp(compId)
+      props.toggleCompSelection(compId)
     } else {
-      props.selectAndUnselectComp([compId])
+      props.toggleCompSelection([compId])
     }
   }
 
@@ -75,9 +75,9 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     assertString(compId)
 
     if (isEnter(e) && isCtrl(e)) {
-      props.selectAndUnselectComp(compId)
+      props.toggleCompSelection(compId)
     } else if (isEnter(e)) {
-      props.selectAndUnselectComp([compId])
+      props.toggleCompSelection([compId])
     }
   }
 
@@ -116,7 +116,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       return
     }
 
-    props.selectAndUnselectComp([compId])
+    props.toggleCompSelection([compId])
   }
 
   return (
@@ -125,7 +125,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
         {!props.isLoading && (
           <ActionButton
             styles={getRootCompButtonStyles(props.selectedCompIds)}
-            onClick={() => props.selectAndUnselectComp([ROOT_ID])}
+            onClick={() => props.toggleCompSelection([ROOT_ID])}
           >
             ROOT
           </ActionButton>
