@@ -34,7 +34,7 @@ interface TreePanelProps {
 }
 
 const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function TreePanel(props, ref): JSX.Element {
-  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 0)
+  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 1000)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
 
   return (

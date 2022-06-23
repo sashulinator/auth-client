@@ -9,9 +9,10 @@ export function walk<TItem extends TreeItem>(
   item: TItem,
   data: Catalog<TItem>,
   idKey: string | number,
-  cb: (item: TItem, idKeyValue: string | number, data: Catalog<TItem>) => void
+  cb: (item: TItem, idKeyValue: string | number, data: Catalog<TItem>, parentId: string) => void,
+  parentId = ''
 ) {
-  cb(item, item[idKey], data)
+  cb(item, item[idKey], data, parentId)
 
   if (item.children === undefined || item.children === null) {
     return
@@ -26,6 +27,6 @@ export function walk<TItem extends TreeItem>(
       throw new Error('Entity does not exists')
     }
 
-    walk(childItem, data, idKey, cb)
+    walk(childItem, data, idKey, cb, item.id)
   }
 }
