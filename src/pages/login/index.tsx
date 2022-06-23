@@ -27,7 +27,7 @@ export default function Login(): JSX.Element {
               <Stack tokens={{ childrenGap: 8 }} style={{ width: '300px' }}>
                 <Stack horizontalAlign="center">
                   <Text nowrap variant="mega">
-                    OMS
+                    KOKOKOKO
                   </Text>
                 </Stack>
                 <Field<string> name="username">{({ input }) => <CustomTextField label="username" {...input} />}</Field>
