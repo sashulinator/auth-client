@@ -5,7 +5,6 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 import './tree-panel.css'
 
 import { AreaClassNames } from '../../preview/constants/area-classnames'
-import { TreeAdditionalData } from '../types'
 import TreeNode from './tree-node'
 import React, { useEffect, useState, useTransition } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -35,18 +34,22 @@ export default function PanelTree(props: TreeProps): JSX.Element {
   const [editId, setEditId] = useState<string | undefined>()
   const [, startTransition] = useTransition()
 
-  useEffect(() => startTransition(() => setTree(rebuildTree)), [props.schemas, props.searchQuery])
+  useEffect(rebuildTree, [props.schema])
 
-  function rebuildTree(): TreeData | undefined {
-    return buildTree<TreeAdditionalData>(tree, props.schema.catalog, props.schema.type, {
-      searchQuery: props.searchQuery,
-      schemas: props.schemas,
-      editId,
-      onItemClick,
-      onDoubleClick,
-      onMouseOver: highlightHovered,
-      onKeyDown: selectOnEnterKey,
-      updateComp: props.updateComp,
+  function rebuildTree() {
+    startTransition(() => {
+      const newTree = buildTree(tree, props.schema.catalog, {
+        searchQuery: props.searchQuery,
+        schemas: props.schemas,
+        editId,
+        onItemClick,
+        onDoubleClick,
+        onMouseOver: highlightHovered,
+        onKeyDown: selectOnEnterKey,
+        updateComp: props.updateComp,
+      })
+
+      setTree(newTree)
     })
   }
 

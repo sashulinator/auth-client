@@ -36,8 +36,6 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
       tabIndex={0}
       className={clsx('NewTreeLeaf', props.isSelected && 'isSelected', props.isExpandButton && 'isExpandButton')}
       onClick={(e) => {
-        console.log('onItemClick', props.id, props.onItemClick)
-
         props.onItemClick?.(e, props.id)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ;(document as any)?.activeElement?.blur()
