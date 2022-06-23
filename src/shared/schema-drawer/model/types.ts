@@ -23,6 +23,7 @@ export enum CompSchemaType {
   FORM = 'FORM',
   PRESET = 'PRESET',
   COMP = 'COMP',
+  FORM_DIMENSION = 'FORM_DIMENSION',
 }
 
 export interface Comp {

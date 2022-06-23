@@ -13,7 +13,6 @@ import { schemaValidator } from '@/common/schemas'
 import { componentNameOptions } from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
 import { currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
-import { generateOptionsFromStringArray } from '@/lib/generate-options'
 import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
@@ -21,8 +20,6 @@ import FieldError from '@/shared/field-error'
 import { CompSchema, CompSchemaType } from '@/shared/schema-drawer'
 import CustomTextField from '@/shared/textfield'
 import { successMessage } from '@/shared/toast'
-
-const typeArray = [CompSchemaType.FORM, CompSchemaType.PRESET, CompSchemaType.COMP]
 
 type SchemaFormValues = Pick<CompSchema, 'title' | 'componentName' | 'type'>
 
@@ -45,7 +42,14 @@ export default function SchemaForm(): JSX.Element {
     },
   })
 
-  const options = useMemo(() => generateOptionsFromStringArray(typeArray, t), [i18n.language])
+  const options = useMemo(
+    () =>
+      Object.values(CompSchemaType).map((schemaType) => ({
+        key: schemaType,
+        text: t(`t.schemaTypes.${schemaType}`),
+      })),
+    [i18n.language]
+  )
 
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
@@ -109,12 +113,12 @@ export default function SchemaForm(): JSX.Element {
               }}
             </Field>
             <Field<string> name="type">
-              {({ input }) => <Dropdown styles={{ root: { width: '150px' } }} options={options} {...input} />}
+              {({ input }) => <Dropdown styles={{ root: { width: '250px' } }} options={options} {...input} />}
             </Field>
             {formProps.form.getFieldState('type')?.value === 'COMP' && (
               <Field<string> name="componentName">
                 {({ input }) => (
-                  <Dropdown styles={{ root: { width: '150px' } }} options={componentNameOptions} {...input} />
+                  <Dropdown styles={{ root: { width: '250px' } }} options={componentNameOptions} {...input} />
                 )}
               </Field>
             )}
