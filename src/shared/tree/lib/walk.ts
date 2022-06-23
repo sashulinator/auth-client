@@ -9,8 +9,8 @@ export function walk<TItem extends TreeItem>(
   item: TItem,
   data: Catalog<TItem>,
   idKey: string | number,
-  cb: (item: TItem, idKeyValue: string | number, data: Catalog<TItem>, parentId: string) => void,
-  parentId = ''
+  cb: (item: TItem, idKeyValue: string | number, data: Catalog<TItem>, parentId?: string) => void,
+  parentId?: string
 ) {
   cb(item, item[idKey], data, parentId)
 

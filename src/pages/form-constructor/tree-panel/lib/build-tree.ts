@@ -31,17 +31,22 @@ export function buildTree(
 function buildTreeWithSearchQuery(
   rootComp: Comp,
   tree: TreeData | undefined,
-  entities: Catalog<Comp>,
+  comps: Catalog<Comp>,
   additionalData: TreeAdditionalData
 ): Record<string, TreeItem> {
   const items: Record<string, TreeItem> = {}
+  const parentIds: Record<string, string> = {}
 
-  walk(rootComp, entities, 'id', (comp, id) => {
+  walk(rootComp, comps, 'id', (comp, id, data, parentId) => {
     const isExpandedBeforeSearchQuery = tree?.items[id]?.data.isExpandedBeforeSearchQuery
+
+    if (parentId !== undefined) {
+      parentIds[id] = parentId
+    }
 
     if (new RegExp(additionalData.searchQuery || '').test(id.toString())) {
       items[id] = {
-        id,
+        id: id,
         isExpanded: true,
         hasChildren: comp.children !== undefined,
         children: [],
@@ -49,6 +54,33 @@ function buildTreeWithSearchQuery(
       }
     }
   })
+
+  function addParents(id: string) {
+    const parentId = parentIds[id]
+
+    if (parentId === undefined) {
+      return
+    }
+
+    const parentItem = items[parentId]
+    const parentComp = comps[parentId]
+
+    if (parentItem === undefined) {
+      items[parentId] = {
+        id: parentId,
+        isExpanded: true,
+        hasChildren: true,
+        children: [id],
+        data: { comp: parentComp, ...additionalData },
+      }
+    } else {
+      parentItem.children = [...new Set([...parentItem.children, id])]
+    }
+
+    addParents(parentId)
+  }
+
+  Object.keys(items).forEach(addParents)
 
   return items
 }
