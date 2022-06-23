@@ -2,14 +2,16 @@ import { TreeData, TreeItem } from '@atlaskit/tree'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { ROOT_ID } from '@/constants/common'
-import { TreeAdditionalData } from '@/pages/form-constructor/tree-panel/types'
-import { Catalog, Comp } from '@/shared/schema-drawer'
+import { Entity } from '@/lib/entity-actions'
+import { Catalog } from '@/shared/schema-drawer'
 import { walk } from '@/shared/tree'
+
+type AdditionalData = { searchQuery?: string } & Record<string, unknown>
 
 export function buildTree(
   tree: TreeData | undefined,
-  entities: Catalog<Comp>,
-  additionalData: TreeAdditionalData
+  entities: Catalog<Entity>,
+  additionalData: AdditionalData
 ): TreeData | undefined {
   if (entities === undefined) {
     return undefined
@@ -29,15 +31,15 @@ export function buildTree(
 // Private
 
 function buildTreeWithSearchQuery(
-  rootComp: Comp,
+  rootComp: Entity,
   tree: TreeData | undefined,
-  comps: Catalog<Comp>,
-  additionalData: TreeAdditionalData
+  entities: Catalog<Entity>,
+  additionalData: AdditionalData
 ): Record<string, TreeItem> {
   const items: Record<string, TreeItem> = {}
   const parentIds: Record<string, string> = {}
 
-  walk(rootComp, comps, 'id', (comp, id, data, parentId) => {
+  walk(rootComp, entities, 'id', (entity, id, data, parentId) => {
     const isExpandedBeforeSearchQuery = tree?.items[id]?.data.isExpandedBeforeSearchQuery
 
     if (parentId !== undefined) {
@@ -48,9 +50,9 @@ function buildTreeWithSearchQuery(
       items[id] = {
         id: id,
         isExpanded: true,
-        hasChildren: comp.children !== undefined,
+        hasChildren: entity.children !== undefined,
         children: [],
-        data: { comp, isExpandedBeforeSearchQuery, ...additionalData },
+        data: { entity, isExpandedBeforeSearchQuery, ...additionalData },
       }
     }
   })
@@ -63,7 +65,7 @@ function buildTreeWithSearchQuery(
     }
 
     const parentItem = items[parentId]
-    const parentComp = comps[parentId]
+    const parentComp = entities[parentId]
 
     if (parentItem === undefined) {
       items[parentId] = {
@@ -86,22 +88,22 @@ function buildTreeWithSearchQuery(
 }
 
 function buildTreeDefault(
-  rootComp: Comp,
+  rootComp: Entity,
   tree: TreeData | undefined,
-  entities: Catalog<Comp>,
-  additionalData: TreeAdditionalData
+  entities: Catalog<Entity>,
+  additionalData: AdditionalData
 ): Record<string, TreeItem> {
   const items: Record<string, TreeItem> = {}
 
-  walk(rootComp, entities, 'id', (comp, id) => {
+  walk(rootComp, entities, 'id', (entity, id) => {
     const isExpandedBeforeSearchQuery = tree?.items[id]?.data.isExpandedBeforeSearchQuery ?? false
 
     items[id] = {
       id,
       isExpanded: isExpandedBeforeSearchQuery,
-      hasChildren: comp.children !== undefined,
-      children: comp.children || [],
-      data: { comp, isExpandedBeforeSearchQuery, ...additionalData },
+      hasChildren: entity.children !== undefined,
+      children: entity.children || [],
+      data: { entity, isExpandedBeforeSearchQuery, ...additionalData },
     }
   })
 

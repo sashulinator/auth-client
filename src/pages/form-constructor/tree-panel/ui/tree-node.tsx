@@ -77,12 +77,12 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
 function OptimizationLayer(props: TreeLeafProps) {
   const [selectedCompIds] = useRecoilState(selectedCompIdsState)
   const [schemas] = useRecoilState(schemasState)
-  const schema = schemas?.[props.item.data?.comp.compSchemaId || '']
-  const isSelected = selectedCompIds.includes(props.item.data?.comp.id || '')
+  const schema = schemas?.[props.item.data?.entity.compSchemaId || '']
+  const isSelected = selectedCompIds.includes(props.item.data?.entity.id || '')
   const isExpandButton = !!props.item.hasChildren
 
   const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
-  const comp = props.item.data?.comp as Comp
+  const comp = props.item.data?.entity as Comp
 
   const isOneOfMultipleDragging =
     props.snapshot.isDragging && isSelected && props.item.data && selectedCompIds.length > 1
