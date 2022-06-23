@@ -124,18 +124,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       <LoadingAria loading={props.isLoading} label="Schema loading...">
         {!props.isLoading && (
           <ActionButton
-            styles={{
-              root: {
-                borderRadius: '0',
-                width: '100%',
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'transparent',
-              },
-              rootHovered: {
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                  ? 'var(--themePrimary03)'
-                  : 'var(--themePrimary01)',
-              },
-            }}
+            styles={getRootCompButtonStyles(props.selectedCompIds)}
             onClick={() => props.selectAndUnselectComp([ROOT_ID])}
           >
             ROOT
@@ -154,4 +143,17 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       </LoadingAria>
     </PerfectScrollbar>
   )
+}
+
+function getRootCompButtonStyles(selectedCompIds: string[]) {
+  return {
+    root: {
+      borderRadius: '0',
+      width: '100%',
+      backgroundColor: selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'transparent',
+    },
+    rootHovered: {
+      backgroundColor: selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'var(--themePrimary01)',
+    },
+  }
 }
