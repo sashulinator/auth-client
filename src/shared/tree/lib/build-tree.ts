@@ -1,10 +1,11 @@
 import { TreeData, TreeItem } from '@atlaskit/tree'
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import { walk } from './walk'
+
 import { ROOT_ID } from '@/constants/common'
 import { Entity } from '@/lib/entity-actions'
 import { Catalog } from '@/shared/schema-drawer'
-import { walk } from '@/shared/tree'
 
 type AdditionalData = { searchQuery?: string } & Record<string, unknown>
 
