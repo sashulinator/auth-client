@@ -13,10 +13,10 @@ import { ROOT_ID } from '@/constants/common'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
+import { buildTree } from '@/pages/form-constructor/tree-panel/lib/build-tree'
 import LoadingAria from '@/shared/loading-aria'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 import Tree from '@/shared/tree'
-import { buildTree } from '@/shared/tree/lib/build-tree'
 
 export interface TreeProps {
   selectAndUnselectComp: (compId: string | string[]) => void

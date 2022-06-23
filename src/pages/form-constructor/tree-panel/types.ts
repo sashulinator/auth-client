@@ -23,4 +23,5 @@ export interface TreeAdditionalData {
 
 export interface TreeItemData extends TreeAdditionalData {
   comp: Comp
+  isExpandedBeforeSearchQuery: boolean
 }
