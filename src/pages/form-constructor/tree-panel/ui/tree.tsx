@@ -39,6 +39,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     startTransition(() => {
       const newTree = buildTree(tree, props.schema.catalog, {
         searchQuery: props.searchQuery,
+        isInitialExpanded: false,
         schemas: props.schemas,
         editId,
         onItemClick,

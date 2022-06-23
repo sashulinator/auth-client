@@ -9,7 +9,7 @@ import { Form } from 'react-final-form'
 import componentList from '@/constants/component-list'
 import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
-import { BindingEditor, TreeNode, buildTree, createRemoveHandler, typeIcons } from '@/shared/binding-editor'
+import { BindingEditor, TreeNode, createRemoveHandler, typeIcons } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import SchemaDrawer, {
@@ -28,7 +28,7 @@ import SchemaDrawer, {
   onFieldChange,
   setValue,
 } from '@/shared/schema-drawer'
-import Tree from '@/shared/tree'
+import Tree, { buildTree } from '@/shared/tree'
 
 export interface BindingSetterProps {
   comp: Comp
@@ -52,35 +52,39 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   const bindingEditorId = `binding-${useId()}`
 
   const {
+    schema,
+    catalog,
+    selectedBinding,
+    selectedItemId,
     addBinding,
     changeBinding,
-    catalog,
-    schema,
-    selectedBinding,
     selectItemId,
-    selectedItemId,
   } = useBindingStates<EventBinding, EventBindingSchema>(props.onChange, props.value)
 
   const remove = createRemoveHandler(schema, {}, props.onChange)
 
-  const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
+  const [tree, setTree] = useState<TreeData | undefined>()
+
   const assertionItem =
     eventAssertionBindingMetaCatalog[selectedBinding?.name || ''] ||
     actionList[selectedBinding?.name || ''] ||
     eventList[selectedBinding?.name || '']
 
-  useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
+  useEffect(rebuildTree, [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(catalog || undefined, {
+    const newTree = buildTree(tree, catalog || undefined, {
+      errorId: props.validationError?._inputName,
+      isInitialExpanded: true,
+      assertionNames: Object.keys(EventAssertionBindingMetaName),
+      bindingEditorId,
+      selectedItemId,
       changeBinding,
       remove,
       selectItemId,
-      selectedItemId,
-      errorId: props.validationError?._inputName,
-      bindingEditorId,
-      assertionNames: Object.keys(EventAssertionBindingMetaName),
     })
+
+    setTree(newTree)
   }
 
   const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
