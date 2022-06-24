@@ -25,9 +25,13 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
 
   const ref = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const isInit = useRef(true)
 
   const [isLocalEditing, setIsLocalEditing] = useState(props.initialIsEditing ?? false)
   const isEditing = props.isEditing ?? isLocalEditing
+
+  useEffect(setFocusOrRemoveSelection, [isEditing])
+  useEffect(handleClickOutside, [isEditing])
 
   function setIsEditing(newValue: boolean) {
     if (props.isEditing !== undefined) {
@@ -37,22 +41,24 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
     }
   }
 
-  useEffect(() => {
-    if (!isEditing) {
-      setTimeout(removeSelection)
-    } else {
-      setTimeout(() => {
-        rootRef.current?.querySelector<HTMLInputElement>('input')?.focus()
-      })
+  function setFocusOrRemoveSelection() {
+    if (isInit.current) {
+      isInit.current = false
+      return
     }
-  }, [isEditing])
 
-  useEffect(() => {
+    if (isEditing) {
+      setTimeout(() => rootRef.current?.querySelector<HTMLInputElement>('input')?.focus())
+    } else {
+      setTimeout(removeSelection)
+    }
+  }
+
+  function handleClickOutside() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function clickOutside(event: any) {
       if (!rootRef.current?.contains(event?.target)) {
         setIsEditing(false)
-        props.setIsEditing?.(false)
       }
     }
 
@@ -61,7 +67,7 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
     return () => {
       document.removeEventListener('click', clickOutside)
     }
-  }, [isEditing])
+  }
 
   return (
     <div className="EditableText" ref={rootRef}>
@@ -88,7 +94,7 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
           dangerouslySetInnerHTML={{
             __html: (props.value === undefined ? props.defaultValue : props.value) || '',
           }}
-        ></div>
+        />
       )}
     </div>
   )
