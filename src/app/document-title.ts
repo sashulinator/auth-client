@@ -10,6 +10,6 @@ export default function DocumentTitle(): null {
   useLocation()
   const routeName = getCurrent(ROUTES)?.NAME
   const name = routeName ? ` | ${routeName}` : ''
-  document.title = `KOKOKOKO${name}`
+  document.title = `OMS${name}`
   return null
 }
