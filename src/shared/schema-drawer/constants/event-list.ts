@@ -1,30 +1,40 @@
+import { createCatalog } from '../lib/create-catalog'
 import { onBlur, onChange, onDestroy, onFieldChange, onFieldLife, onFocus, onInit } from '../lib/events'
-import { Catalog, EventBindingMeta } from '../model/types'
+import { Catalog, EventPackageProperties } from '../model/types'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const eventList: Catalog<EventBindingMeta> = {
-  [onFieldChange.name]: {
+export const eventList: EventPackageProperties[] = [
+  {
+    name: 'onFieldChange',
     function: onFieldChange,
   },
-  [onFieldLife.name]: {
+  {
+    name: 'onFieldLife',
     function: onFieldLife,
   },
-  [onChange.name]: {
+  {
+    name: 'onChange',
     function: onChange,
   },
-  [onBlur.name]: {
+  {
+    name: 'onBlur',
     function: onBlur,
   },
-  [onFocus.name]: {
+  {
+    name: 'onFocus',
     function: onFocus,
   },
-  [onInit.name]: {
+  {
+    name: 'onInit',
     function: onInit,
   },
-  [onDestroy.name]: {
+  {
+    name: 'onDestroy',
     function: onDestroy,
   },
-}
+]
 
-export const eventNameOptions = generateOptionsFromObject(eventList)
+export const eventDictionary: Catalog<EventPackageProperties> = createCatalog(eventList, 'name')
+
+export const eventNameOptions = generateOptionsFromObject(eventDictionary)

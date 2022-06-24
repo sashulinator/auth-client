@@ -2,7 +2,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { actionList } from '../constants/action-list'
 import { eventAssertionBindingMetaCatalog } from '../constants/event-assertion-list'
-import { eventList } from '../constants/event-list'
+import { eventDictionary } from '../constants/event-list'
 import { ActionProps, Catalog, EventBinding, EventBindingType, EventProps, FieldComponentContext } from '../model/types'
 import bindAssertions from './bind-assertions'
 
@@ -25,7 +25,7 @@ export default function bindEvents(context: FieldComponentContext) {
   const eventBindingCatalog = findEntities(rootBinding.children, eventBindingSchema.catalog)
 
   Object.values(eventBindingCatalog).forEach((eventBinding) => {
-    const eventBindingMeta = eventList[eventBinding.name]
+    const eventBindingMeta = eventDictionary[eventBinding.name]
 
     if (eventBindingMeta === undefined) {
       console.log(`eventBindingMeta ${eventBinding.name}`)
