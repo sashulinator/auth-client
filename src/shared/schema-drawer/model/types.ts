@@ -153,6 +153,7 @@ export interface EventPackageProperties extends BindingMeta {
 }
 
 export interface ActionBindingMeta extends BindingMeta {
+  name: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (actionProps: ActionProps, value: any) => void
 }

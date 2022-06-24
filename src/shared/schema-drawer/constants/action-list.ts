@@ -1,4 +1,5 @@
 import { setCompProp, setValue } from '../lib/actions'
+import { createCatalog } from '../lib/create-catalog'
 import {
   ActionBindingMeta,
   AssertionBindingType,
@@ -11,8 +12,9 @@ import { BasicComponentsNames } from './basic-components-schemas'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
-export const actionList: Catalog<ActionBindingMeta> = {
-  [setValue.name]: {
+export const actionList: ActionBindingMeta[] = [
+  {
+    name: 'setValue',
     function: setValue,
     schema: {
       id: 'hereCouldBeYourAd',
@@ -60,7 +62,8 @@ export const actionList: Catalog<ActionBindingMeta> = {
       },
     },
   },
-  [setCompProp.name]: {
+  {
+    name: 'setCompProp',
     function: setCompProp,
     schema: {
       id: '7021a575-562a-42f8-a640-4292afb2977e',
@@ -296,6 +299,8 @@ export const actionList: Catalog<ActionBindingMeta> = {
       },
     },
   },
-}
+]
 
-export const actionNameOptions = generateOptionsFromObject(actionList)
+export const actionDictionary: Catalog<ActionBindingMeta> = createCatalog(actionList, 'name')
+
+export const actionNameOptions = generateOptionsFromObject(actionDictionary)

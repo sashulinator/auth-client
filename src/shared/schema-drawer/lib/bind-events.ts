@@ -1,6 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { actionList } from '../constants/action-list'
+import { actionDictionary } from '../constants/action-list'
 import { eventAssertionBindingMetaCatalog } from '../constants/event-assertion-list'
 import { eventDictionary } from '../constants/event-list'
 import { ActionProps, Catalog, EventBinding, EventBindingType, EventProps, FieldComponentContext } from '../model/types'
@@ -47,7 +47,7 @@ export default function bindEvents(context: FieldComponentContext) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function emitActions(value: any) {
       Object.values(actionBindingCatalog).forEach((actionBinding) => {
-        const actionBindingMeta = actionList[actionBinding.name]
+        const actionBindingMeta = actionDictionary[actionBinding.name]
 
         if (actionBindingMeta === undefined) {
           console.log(`actionBindingMeta ${actionBinding.name}`)
