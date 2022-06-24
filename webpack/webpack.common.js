@@ -88,7 +88,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         { from: './locales', to: 'locales' },
-        { from: './favicon.ico', to: 'test' },
+        { from: './favicon.ico', to: './favicon.ico' },
       ],
     }),
     new ForkTsCheckerWebpackPlugin(),

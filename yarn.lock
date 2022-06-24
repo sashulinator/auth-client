@@ -1821,6 +1821,15 @@
     "@jridgewell/set-array" "^1.0.0"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@jridgewell/gen-mapping@^0.3.0":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.1.tgz#cf92a983c83466b8c0ce9124fadeaf09f7c66ea9"
+  integrity sha512-GcHwniMlA2z+WFPWuY8lp3fsza0I8xPFMWL5+n8LYyP6PSvPrXf4+n8stDHZY2DM0zy9sVkRDy1jDI4XGzYVqg==
+  dependencies:
+    "@jridgewell/set-array" "^1.0.0"
+    "@jridgewell/sourcemap-codec" "^1.4.10"
+    "@jridgewell/trace-mapping" "^0.3.9"
+
 "@jridgewell/resolve-uri@^3.0.3":
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/@jridgewell/resolve-uri/-/resolve-uri-3.0.6.tgz#4ac237f4dabc8dd93330386907b97591801f7352"
@@ -1830,6 +1839,14 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@jridgewell/set-array/-/set-array-1.1.0.tgz#1179863356ac8fbea64a5a4bcde93a4871012c01"
   integrity sha512-SfJxIxNVYLTsKwzB3MoOQ1yxf4w/E6MdkvTgrgAt1bfxjSrLUoHMKrDOykwN14q65waezZIdqDneUIPh4/sKxg==
+
+"@jridgewell/source-map@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@jridgewell/source-map/-/source-map-0.3.2.tgz#f45351aaed4527a298512ec72f81040c998580fb"
+  integrity sha512-m7O9o2uR8k2ObDysZYzdfhb08VuEml5oWGiosa1VdaPZ/A6QyPkAJuwN0Q1lhULOf6B7MtQmHENS743hWtCrgw==
+  dependencies:
+    "@jridgewell/gen-mapping" "^0.3.0"
+    "@jridgewell/trace-mapping" "^0.3.9"
 
 "@jridgewell/sourcemap-codec@^1.4.10":
   version "1.4.12"
@@ -2454,6 +2471,11 @@ acorn@^8.0.4:
   version "8.0.5"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.0.5.tgz#a3bfb872a74a6a7f661bc81b9849d9cac12601b7"
   integrity sha512-v+DieK/HJkJOpFBETDJioequtc3PfxsWMaxIdIwujtF7FEV/MAyDQLlm6/zPvr7Mix07mLh6ccVwIsloceodlg==
+
+acorn@^8.5.0:
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.1.tgz#0197122c843d1bf6d0a5e83220a788f278f63c30"
+  integrity sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==
 
 aggregate-error@^3.0.0:
   version "3.1.0"
@@ -6100,6 +6122,15 @@ jest-worker@^26.6.2:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
+jest-worker@^27.4.5:
+  version "27.5.1"
+  resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-27.5.1.tgz#8d146f0900e8973b106b6f73cc1e9a8cb86f8db0"
+  integrity sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==
+  dependencies:
+    "@types/node" "*"
+    merge-stream "^2.0.0"
+    supports-color "^8.0.0"
+
 jest-worker@^28.0.2:
   version "28.0.2"
   resolved "https://registry.yarnpkg.com/jest-worker/-/jest-worker-28.0.2.tgz#75f7e5126541289ba02e9c1a67e46349ddb8141d"
@@ -8287,6 +8318,14 @@ source-map-support@~0.5.12, source-map-support@~0.5.19:
     buffer-from "^1.0.0"
     source-map "^0.6.0"
 
+source-map-support@~0.5.20:
+  version "0.5.21"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
+  integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==
+  dependencies:
+    buffer-from "^1.0.0"
+    source-map "^0.6.0"
+
 source-map-url@^0.4.0:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.1.tgz#0af66605a745a5a2f91cf1bbf8a7afbc283dec56"
@@ -8617,6 +8656,17 @@ terser-webpack-plugin@^5.1.1:
     source-map "^0.6.1"
     terser "^5.5.1"
 
+terser-webpack-plugin@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-5.3.3.tgz#8033db876dd5875487213e87c627bca323e5ed90"
+  integrity sha512-Fx60G5HNYknNTNQnzQ1VePRuu89ZVYWfjRAeT5rITuCY/1b08s49e5kSQwHDirKZWuoKOBRFS98EUUoZ9kLEwQ==
+  dependencies:
+    "@jridgewell/trace-mapping" "^0.3.7"
+    jest-worker "^27.4.5"
+    schema-utils "^3.1.1"
+    serialize-javascript "^6.0.0"
+    terser "^5.7.2"
+
 terser@^4.6.3:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.0.tgz#63056343d7c70bb29f3af665865a46fe03a0df17"
@@ -8634,6 +8684,16 @@ terser@^5.5.1:
     commander "^2.20.0"
     source-map "~0.7.2"
     source-map-support "~0.5.19"
+
+terser@^5.7.2:
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.14.1.tgz#7c95eec36436cb11cf1902cc79ac564741d19eca"
+  integrity sha512-+ahUAE+iheqBTDxXhTisdA8hgvbEG1hHOQ9xmNjeUJSoi6DU/gMrKNcfZjHkyY6Alnuyc+ikYJaxxfHkT3+WuQ==
+  dependencies:
+    "@jridgewell/source-map" "^0.3.2"
+    acorn "^8.5.0"
+    commander "^2.20.0"
+    source-map-support "~0.5.20"
 
 test-exclude@^6.0.0:
   version "6.0.0"
