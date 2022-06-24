@@ -21,9 +21,6 @@
   left: 0;
   z-index: 4;
 }
-.TreePanel.isFocused {
-  box-shadow: 0 0 0;
-}
 
 .Header {
   box-shadow: 0px 0 7px rgba(0, 0, 0, 0.35);
@@ -53,9 +50,6 @@
   top: calc(var(--headerHeight) * 1px);
   right: 0;
   z-index: 4;
-}
-.FormConstructor .isFocused .CompPanel {
-  box-shadow: 0 0 0;
 }
 
 .FormConstructor .addCompButton {
