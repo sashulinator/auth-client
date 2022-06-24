@@ -26,7 +26,11 @@ export default function bindEvents(context: FieldComponentContext) {
 
   Object.values(eventBindingCatalog).forEach((eventBinding) => {
     const eventBindingMeta = eventList[eventBinding.name]
-    assertNotUndefined(eventBindingMeta)
+
+    if (eventBindingMeta === undefined) {
+      console.log(`eventBindingMeta ${eventBinding.name}`)
+      return
+    }
 
     const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingSchema.catalog)
 
@@ -44,7 +48,12 @@ export default function bindEvents(context: FieldComponentContext) {
     function emitActions(value: any) {
       Object.values(actionBindingCatalog).forEach((actionBinding) => {
         const actionBindingMeta = actionList[actionBinding.name]
-        assertNotUndefined(actionBindingMeta)
+
+        if (actionBindingMeta === undefined) {
+          console.log(`actionBindingMeta ${actionBinding.name}`)
+          return
+        }
+
         const actionProps = { ...eventProps, actionBinding, actionBindingMeta }
 
         if (isPassedAssertions(actionProps, value)) {
