@@ -23,6 +23,7 @@ export enum CompSchemaType {
   FORM = 'FORM',
   PRESET = 'PRESET',
   COMP = 'COMP',
+  FORM_DIMENSION = 'FORM_DIMENSION',
 }
 
 export interface Comp {
@@ -193,7 +194,7 @@ export type DrawerContext = Context & {
 
 export type ComponentContext = DrawerContext & {
   comp: Comp
-  schema: CompSchema
+  compSchema: CompSchema
 }
 
 export type ContentComponentContext = ComponentContext & {

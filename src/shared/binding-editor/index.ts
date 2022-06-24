@@ -6,7 +6,6 @@ export * from './constants/classNames'
 export * from './constants/label-colors'
 export * from './constants/type-icons'
 
-export * from './lib/build-tree'
 export * from './lib/create-drag-end-handler'
 export * from './lib/create-remove-handler'
 export * from './lib/use-binding-states'

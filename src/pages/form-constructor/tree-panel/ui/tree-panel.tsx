@@ -13,7 +13,7 @@ import ResizeTarget from '@/shared/resize-target'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
 interface TreePanelProps {
-  selectAndUnselectComp: (compId: string | string[]) => void
+  toggleCompSelection: (compId: string | string[]) => void
   schema: CompSchema
   selectedCompIds: string[]
   upsertComps: (comps: Catalog<Comp>) => void
@@ -34,17 +34,17 @@ interface TreePanelProps {
 }
 
 const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function TreePanel(props, ref): JSX.Element {
-  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 0)
+  const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 1000)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
 
   return (
     <>
-      <PaletteModal addNewComps={props.addNewComps} selectAndUnselectComp={props.selectAndUnselectComp} />
+      <PaletteModal addNewComps={props.addNewComps} toggleCompSelection={props.toggleCompSelection} />
       <div className={clsx('TreePanel', props.isFocused && 'isFocused')} ref={ref}>
         <KeyListener
           selectedCompIds={props.selectedCompIds}
           schema={props.schema}
-          selectAndUnselectComp={props.selectAndUnselectComp}
+          toggleCompSelection={props.toggleCompSelection}
           removeSelectedComps={props.removeSelectedComps}
           pasteFromClipboard={props.pasteFromClipboard}
           copyToClipboard={props.copyToClipboard}
@@ -68,7 +68,7 @@ const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function Tre
         <PanelTree
           schema={props.schema}
           schemas={props.schemas}
-          selectAndUnselectComp={props.selectAndUnselectComp}
+          toggleCompSelection={props.toggleCompSelection}
           upsertComps={props.upsertComps}
           selectedCompIds={props.selectedCompIds}
           isLoading={props.isCurrentSchemaLoading}

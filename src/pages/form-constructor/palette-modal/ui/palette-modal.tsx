@@ -16,7 +16,7 @@ import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
   addNewComps: (comps: Catalog<Comp>) => void
-  selectAndUnselectComp: (compId: string | string[]) => void
+  toggleCompSelection: (compId: string | string[]) => void
 }
 
 export default function PaletteModal(props: PaletteModalProps): JSX.Element {

@@ -67,17 +67,17 @@
   margin: 2px;
 }
 
-.NewTreeLeaf:focus {
+.TreeNodeContent:focus {
   outline: none !important;
 }
 
-.NewTreeLeaf .treeLeafContent {
+.TreeNodeContent .treeLeafContent {
   position: relative;
   cursor: pointer;
   user-select: none;
 }
 
-.NewTreeLeaf .treeLeafBorder {
+.TreeNodeContent .treeLeafBorder {
   border: solid 2px transparent;
   box-sizing: border-box;
   border-radius: 3px;
@@ -86,28 +86,28 @@
   height: calc(100% - 1px);
 }
 
-div.NewTreeLeaf.isSelected .treeLeafContent {
+div.TreeNodeContent.isSelected .treeLeafContent {
   background-color: var(--themePrimary03);
   z-index: 0;
 }
 
-.NewTreeLeaf:hover .treeLeafContent {
+.TreeNodeContent:hover .treeLeafContent {
   background-color: var(--themePrimary01);
 }
 
-.NewTreeLeaf:focus .treeLeafBorder {
+.TreeNodeContent:focus .treeLeafBorder {
   border: solid 2px var(--themePrimary);
 }
 
-.NewTreeLeaf.isError .treeLeafContent {
+.TreeNodeContent.isError .treeLeafContent {
   background-color: var(--red03);
 }
 
-.NewTreeLeaf.isError.isSelected .treeLeafContent {
+.TreeNodeContent.isError.isSelected .treeLeafContent {
   background-color: var(--red05);
 }
 
-.NewTreeLeaf .treeLeafText {
+.TreeNodeContent .treeLeafText {
   display: flex;
   align-items: center;
   height: 32px;
@@ -117,24 +117,24 @@ div.NewTreeLeaf.isSelected .treeLeafContent {
   white-space: nowrap;
 }
 
-.NewTreeLeaf .treeLeafText.addOneButtonSpace {
+.TreeNodeContent .treeLeafText.addOneButtonSpace {
   padding-left: 36px;
 }
 
-.NewTreeLeaf .treeLeafText {
+.TreeNodeContent .treeLeafText {
   padding-left: 2px;
   padding-right: 12px;
 }
 
-.NewTreeLeaf.isSelected .treeLeafText {
+.TreeNodeContent.isSelected .treeLeafText {
   color: var(--themePrimary);
 }
 
-.NewTreeLeaf .button {
+.TreeNodeContent .button {
   margin: 2px;
 }
 
-.NewTreeLeaf .query {
+.TreeNodeContent .query {
   background-color: var(--black);
   color: var(--white);
 }

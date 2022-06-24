@@ -5,9 +5,8 @@ import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 import './tree-panel.css'
 
 import { AreaClassNames } from '../../preview/constants/area-classnames'
-import { TreeAdditionalData } from '../types'
-import TreeLeaf from './tree-leaf'
-import React, { useEffect, useState } from 'react'
+import TreeNode from './tree-node'
+import React, { useEffect, useState, useTransition } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { ROOT_ID } from '@/constants/common'
@@ -16,37 +15,44 @@ import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
 import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
-import Tree from '@/shared/tree'
-import { buildTree } from '@/shared/tree/lib/build-tree'
+import Tree, { buildTree } from '@/shared/tree'
 
 export interface TreeProps {
-  selectAndUnselectComp: (compId: string | string[]) => void
   schema: CompSchema
-  selectedCompIds: string[]
-  upsertComps: (comps: Catalog<Comp>) => void
-  isLoading: boolean
   schemas: Catalog<CompSchema> | null
+  selectedCompIds: string[]
   searchQuery?: string
+  isLoading: boolean
+  toggleCompSelection: (compId: string | string[]) => void
+  upsertComps: (comps: Catalog<Comp>) => void
   updateComp: (comp: Comp) => void
 }
 
 export default function PanelTree(props: TreeProps): JSX.Element {
   const [tree, setTree] = useState<TreeData | undefined>()
   const [editId, setEditId] = useState<string | undefined>()
+  const [, startTransition] = useTransition()
 
-  useEffect(() => setTree(rebuildTree), [props.schema, props.schemas, props.searchQuery, props.selectedCompIds, editId])
+  useEffect(rebuildTree, [props.schema, props.searchQuery])
 
-  function rebuildTree(): TreeData | undefined {
-    return buildTree<TreeAdditionalData>(tree, props.schema.catalog, {
-      searchQuery: props.searchQuery,
-      schemas: props.schemas,
-      pickedIds: props.selectedCompIds,
-      editId,
-      onItemClick,
-      onDoubleClick,
-      onMouseOver: highlightHovered,
-      onKeyDown: selectOnEnterKey,
-      updateComp: props.updateComp,
+  function rebuildTree() {
+    startTransition(() => {
+      const newTree = buildTree(tree, props.schema.catalog, {
+        search: {
+          query: props.searchQuery,
+          fieldNames: ['id', 'title'],
+        },
+        isInitialExpanded: false,
+        schemas: props.schemas,
+        editId,
+        onItemClick,
+        onDoubleClick,
+        onMouseOver: highlightHovered,
+        onKeyDown: selectOnEnterKey,
+        updateComp: props.updateComp,
+      })
+
+      setTree(newTree)
     })
   }
 
@@ -54,17 +60,17 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     setEditId(compId)
   }
 
-  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string) {
+  function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, compId: string, selectedCompIds: string[]) {
     assertString(compId)
 
-    if (props.selectedCompIds.includes(compId)) {
+    if (selectedCompIds.includes(compId)) {
       return
     }
 
     if (isCtrl(e)) {
-      props.selectAndUnselectComp(compId)
+      props.toggleCompSelection(compId)
     } else {
-      props.selectAndUnselectComp([compId])
+      props.toggleCompSelection([compId])
     }
   }
 
@@ -72,9 +78,9 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     assertString(compId)
 
     if (isEnter(e) && isCtrl(e)) {
-      props.selectAndUnselectComp(compId)
+      props.toggleCompSelection(compId)
     } else if (isEnter(e)) {
-      props.selectAndUnselectComp([compId])
+      props.toggleCompSelection([compId])
     }
   }
 
@@ -113,7 +119,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       return
     }
 
-    props.selectAndUnselectComp([compId])
+    props.toggleCompSelection([compId])
   }
 
   return (
@@ -121,26 +127,15 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       <LoadingAria loading={props.isLoading} label="Schema loading...">
         {!props.isLoading && (
           <ActionButton
-            styles={{
-              root: {
-                borderRadius: '0',
-                width: '100%',
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'transparent',
-              },
-              rootHovered: {
-                backgroundColor: props.selectedCompIds.includes(ROOT_ID)
-                  ? 'var(--themePrimary03)'
-                  : 'var(--themePrimary01)',
-              },
-            }}
-            onClick={() => props.selectAndUnselectComp([ROOT_ID])}
+            styles={getRootCompButtonStyles(props.selectedCompIds)}
+            onClick={() => props.toggleCompSelection([ROOT_ID])}
           >
             ROOT
           </ActionButton>
         )}
         {tree && (
           <Tree
-            renderItem={TreeLeaf}
+            renderItem={TreeNode}
             tree={tree}
             onDragStart={PreventMovingUnpickedItems}
             onDragEnd={onDragEnd}
@@ -151,4 +146,17 @@ export default function PanelTree(props: TreeProps): JSX.Element {
       </LoadingAria>
     </PerfectScrollbar>
   )
+}
+
+function getRootCompButtonStyles(selectedCompIds: string[]) {
+  return {
+    root: {
+      borderRadius: '0',
+      width: '100%',
+      backgroundColor: selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'transparent',
+    },
+    rootHovered: {
+      backgroundColor: selectedCompIds.includes(ROOT_ID) ? 'var(--themePrimary03)' : 'var(--themePrimary01)',
+    },
+  }
 }

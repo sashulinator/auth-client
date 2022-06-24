@@ -4,7 +4,7 @@ import { Icon, IconButton, Stack } from '@fluentui/react'
 import './tree-node.css'
 
 import { labelColors } from '../constants/label-colors'
-import { AdditionalData } from '../lib/build-tree'
+import { AdditionalData } from '../model/types'
 import clsx from 'clsx'
 import React from 'react'
 
@@ -24,7 +24,7 @@ import {
 export interface TreeNodeProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
-      binding: EventBinding
+      entity: EventBinding
     }
   }
 }
@@ -41,12 +41,12 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
   const data = props.item.data
 
   const isError = data.errorId === props.item.id
-  const isSelected = props.item.data.selectedItemId === props.item.data.binding.id
+  const isSelected = props.item.data.selectedItemId === props.item.data.entity.id
 
-  const isOperator = data.binding.type === EventBindingType.OPERATOR
-  const isAction = data.binding.type === EventBindingType.ACTION
-  const isEvent = data.binding.type === EventBindingType.EVENT
-  const isEventAssertion = data.binding.type === EventBindingType.EVENT_ASSERTION
+  const isOperator = data.entity.type === EventBindingType.OPERATOR
+  const isAction = data.entity.type === EventBindingType.ACTION
+  const isEvent = data.entity.type === EventBindingType.EVENT
+  const isEventAssertion = data.entity.type === EventBindingType.EVENT_ASSERTION
   const options = isOperator
     ? generateOptionsFromStringArray(['or', 'and'])
     : isAction
@@ -61,7 +61,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
   const currentBindingFormSelector = `.${currentBindingSelector}.${ClassNames.bindingForm}`
 
   const handlePressEnterOnLabel = createPressEnterOnLabelHandler(
-    data.binding.id,
+    data.entity.id,
     currentBindingFormSelector,
     data.selectItemId
   )
@@ -76,7 +76,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
 
   return (
     <div
-      className={clsx('BindingTreeLeaf NewTreeLeaf', isSelected && 'isSelected', isError && 'isError')}
+      className={clsx('BindingTreeLeaf TreeNodeContent', isSelected && 'isSelected', isError && 'isError')}
       role="button"
       tabIndex={0}
       onClick={() => props.item.data?.selectItemId(props.item.id.toString())}
@@ -90,11 +90,11 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
         <Icon
           tabIndex={0}
           onKeyDown={handlePressEnterOnLabel}
-          className={clsx('label', 'deleteBindingButton', labelColors[data.binding.type])}
-          iconName={typeIcons[data.binding.type]}
+          className={clsx('label', 'deleteBindingButton', labelColors[data.entity.type])}
+          iconName={typeIcons[data.entity.type]}
         />
         <Dropdown
-          value={data.binding.name}
+          value={data.entity.name}
           options={options}
           onChange={(name) => props.item.data?.changeBinding?.(props.item.id, name)}
           styles={dropdownStyles}

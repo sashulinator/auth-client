@@ -42,6 +42,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     comps: comps,
     compIds: Object.keys(comps),
     schemas: props.schemas,
+    schema: props.schema,
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
@@ -90,7 +91,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   const context: ComponentContext = {
     ...props.context,
     comp: comp,
-    schema: schema,
+    compSchema: schema,
   }
 
   // Схема еще не прогрузилась и поэтому undefined

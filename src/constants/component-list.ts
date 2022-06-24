@@ -6,6 +6,7 @@ import { Button } from '@/shared/button'
 import { Checkbox, MultiCheckbox } from '@/shared/checkbox'
 import Collapse from '@/shared/collapse'
 import DatePicker from '@/shared/date-picker/date-picker'
+import Dimension, { DimensionTree } from '@/shared/dimension'
 import { Dropdown, DropdownMultipleSelect } from '@/shared/dropdown'
 import EditableText from '@/shared/editable-text'
 import EventBindingEditor from '@/shared/event-binding-editor'
@@ -38,7 +39,19 @@ const componentList: Record<string, CompMeta> = {
     iconName: 'CheckboxComposite',
   },
 
+  DimensionNode: {
+    type: 'checkbox',
+    component: () => 'Must be inside DimensionTree',
+    iconName: 'CheckboxComposite',
+  },
+
   // Inputs
+
+  DimensionTree: {
+    type: 'input',
+    component: DimensionTree,
+    iconName: 'TextField',
+  },
 
   [BasicComponentsNames.TextField]: {
     type: 'input',
@@ -62,6 +75,12 @@ const componentList: Record<string, CompMeta> = {
     type: 'input',
     iconName: 'DateTime',
     component: DatePicker,
+  },
+
+  Dimension: {
+    type: 'input',
+    component: Dimension,
+    iconName: 'TouchPointer',
   },
 
   EventBindingEditor: {

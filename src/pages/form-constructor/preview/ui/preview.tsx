@@ -8,7 +8,7 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import LoadingAria from '@/shared/loading-aria'
-import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, CompSchema, CompSchemaType } from '@/shared/schema-drawer'
 import { setCSSVar } from '@/shared/theme'
 
 interface PreviewProps {
@@ -23,7 +23,7 @@ interface Positions {
   client: { x: number; y: number }
 }
 
-export default function Preview(props: PreviewProps): JSX.Element {
+export default function Preview(props: PreviewProps): JSX.Element | null {
   const { schemas, schema } = props
   const ref = useRef<null | HTMLDivElement>(null)
 
@@ -166,6 +166,10 @@ export default function Preview(props: PreviewProps): JSX.Element {
 
     setCSSVar('previewLeft', position.el.x - diffX)
     setCSSVar('previewTop', position.el.y - diffY)
+  }
+
+  if (props.schema.type === CompSchemaType.FORM_DIMENSION) {
+    return null
   }
 
   return (

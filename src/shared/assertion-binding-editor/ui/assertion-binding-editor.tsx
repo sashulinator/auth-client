@@ -12,7 +12,7 @@ import { Field, Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave'
-import { BindingEditor, TreeNode, buildTree, createRemoveHandler } from '@/shared/binding-editor'
+import { BindingEditor, TreeNode, createRemoveHandler } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import { Dropdown } from '@/shared/dropdown'
@@ -28,6 +28,7 @@ import SchemaDrawer, {
   basicComponentsSchemas,
   hasSchema,
 } from '@/shared/schema-drawer'
+import { buildTree } from '@/shared/tree'
 import Tree from '@/shared/tree/ui/tree'
 
 export interface AssertionBindingEditorProps {
@@ -61,22 +62,25 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
 
   const remove = createRemoveHandler(schema, { eventToShowError: EventToShowError.onVisited }, props.onChange)
 
-  const [tree, setTree] = useState<TreeData | undefined>(() => rebuildTree())
+  const [tree, setTree] = useState<TreeData | undefined>()
 
   const assertionItem = assertionList[selectedBinding?.name || '']
 
-  useEffect(() => setTree(rebuildTree), [props.value, selectedItemId])
+  useEffect(rebuildTree, [props.value, selectedItemId])
 
   function rebuildTree() {
-    return buildTree(schema?.catalog || undefined, {
+    const newTree = buildTree(tree, schema?.catalog || undefined, {
+      bindingEditorId,
+      isInitialExpanded: true,
+      assertionNames: Object.keys(assertionList),
+      errorId: props.validationError?._inputName,
+      selectedItemId,
+      selectItemId,
       changeBinding,
       remove,
-      selectItemId,
-      selectedItemId,
-      bindingEditorId,
-      errorId: props.validationError?._inputName,
-      assertionNames: Object.keys(assertionList),
     })
+
+    setTree(newTree)
   }
 
   function addAssertion() {

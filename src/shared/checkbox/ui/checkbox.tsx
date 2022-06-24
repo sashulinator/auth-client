@@ -4,7 +4,7 @@ import React from 'react'
 import { useForm } from 'react-final-form'
 
 interface CheckBoxProps extends ICheckboxProps {
-  dontConverFalseToUndefined: boolean
+  dontConverFalseToUndefined?: boolean
   name: string
 }
 

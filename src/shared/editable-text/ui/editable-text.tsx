@@ -2,13 +2,14 @@ import { ITextFieldProps } from '@fluentui/react'
 
 import './editable-text.css'
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
+import { removeSelection } from '@/lib/dom-utils'
 import { isEnter } from '@/lib/key-events'
 import TextField from '@/shared/textfield'
 
 interface EditableTextProps extends ITextFieldProps {
-  onClickOutside?: () => void
+  setIsEditing?: (isEditing: boolean) => void
   initialIsEditing?: boolean
   isEditing?: boolean
 }
@@ -24,44 +25,40 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
 
   const ref = useRef<HTMLDivElement | null>(null)
   const rootRef = useRef<HTMLDivElement | null>(null)
+  const isInit = useRef(true)
 
   const [isLocalEditing, setIsLocalEditing] = useState(props.initialIsEditing ?? false)
   const isEditing = props.isEditing ?? isLocalEditing
 
+  useEffect(setFocusOrRemoveSelection, [isEditing])
+  useEffect(handleClickOutside, [isEditing])
+
   function setIsEditing(newValue: boolean) {
     if (props.isEditing !== undefined) {
-      props.onClickOutside?.()
+      props.setIsEditing?.(newValue)
     } else {
       setIsLocalEditing(newValue)
     }
   }
 
-  useLayoutEffect(() => {
-    if (!isLocalEditing) {
-      setTimeout(() => {
-        if (window.getSelection) {
-          if (window.getSelection()?.empty) {
-            // Chrome
-            window.getSelection()?.empty()
-          } else if (window.getSelection()?.removeAllRanges) {
-            // Firefox
-            window.getSelection()?.removeAllRanges()
-          }
-        }
-      })
-    } else {
-      setTimeout(() => {
-        rootRef.current?.querySelector<HTMLInputElement>('input')?.focus()
-      })
+  function setFocusOrRemoveSelection() {
+    if (isInit.current) {
+      isInit.current = false
+      return
     }
-  }, [isEditing])
 
-  useEffect(() => {
+    if (isEditing) {
+      setTimeout(() => rootRef.current?.querySelector<HTMLInputElement>('input')?.focus())
+    } else {
+      setTimeout(removeSelection)
+    }
+  }
+
+  function handleClickOutside() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function clickOutside(event: any) {
       if (!rootRef.current?.contains(event?.target)) {
         setIsEditing(false)
-        props.onClickOutside?.()
       }
     }
 
@@ -70,13 +67,14 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
     return () => {
       document.removeEventListener('click', clickOutside)
     }
-  }, [isEditing])
+  }
 
   return (
     <div className="EditableText" ref={rootRef}>
       <div style={{ visibility: !isEditing ? 'hidden' : 'visible' }}>
         <TextField
           {...props}
+          key={isEditing.toString()}
           styles={!isEditing ? textFieldStyles : undefined}
           value={isEditing ? props.value : undefined}
         />
@@ -96,7 +94,7 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
           dangerouslySetInnerHTML={{
             __html: (props.value === undefined ? props.defaultValue : props.value) || '',
           }}
-        ></div>
+        />
       )}
     </div>
   )
