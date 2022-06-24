@@ -74,7 +74,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
         parent.removeEventListener('mousedown', onMouseDown, true)
       }
     }
-  }, [])
+  }, [props.schema.id])
 
   function onWheel(event: WheelEvent) {
     const previewEl = ref.current

@@ -69,7 +69,7 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
             onCollapse={props.onCollapse}
           />
         ) : (
-          <div style={{ width: '44px', height: '32px' }} />
+          <div style={{ width: '36px', height: '32px' }} />
         )}
         <Icon iconName={props.iconName} style={{ marginRight: '8px' }} />
         <EditableText
