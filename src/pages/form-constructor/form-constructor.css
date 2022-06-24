@@ -22,7 +22,7 @@
   z-index: 4;
 }
 .TreePanel.isFocused {
-  box-shadow: 0 0 10px var(--themePrimary01);
+  box-shadow: 0 0 0;
 }
 
 .Header {
@@ -55,7 +55,7 @@
   z-index: 4;
 }
 .FormConstructor .isFocused .CompPanel {
-  box-shadow: 0 0 10px var(--themePrimary01);
+  box-shadow: 0 0 0;
 }
 
 .FormConstructor .addCompButton {
