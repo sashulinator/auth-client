@@ -30,13 +30,13 @@ interface TreeNodeContentProps extends Pick<TreeLeafProps, 'onCollapse' | 'onExp
   id: string
   onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string) => void
   setTitle: (title: string) => void
+  setIsEditing: (isEditing: boolean) => void
+  isEditing: boolean
 }
 
 const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProps) {
-  const [isEditing, setIsEditing] = useState(false)
-
   function onRootClick(e: React.MouseEvent<HTMLElement>) {
-    if (isEditing) {
+    if (props.isEditing) {
       return
     }
 
@@ -46,7 +46,7 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
 
   function saveTitle(e: React.KeyboardEvent) {
     if (isEnter(e)) {
-      setIsEditing(false)
+      props.setIsEditing(false)
       props.setTitle(getValue(e))
     }
   }
@@ -74,8 +74,8 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
         <Icon iconName={props.iconName} style={{ marginRight: '8px' }} />
         <EditableText
           defaultValue={props.title}
-          isEditing={isEditing}
-          setIsEditing={setIsEditing}
+          isEditing={props.isEditing}
+          setIsEditing={props.setIsEditing}
           onKeyDown={saveTitle}
         />
       </Stack>
@@ -89,12 +89,10 @@ function OptimizationLayer(props: TreeLeafProps) {
   const schema = schemas?.[props.item.data?.entity?.compSchemaId || '']
   const isSelected = selectedCompIds.includes(props.item.data?.entity.id || '')
   const isExpandButton = !!props.item.hasChildren
+  const [isEditing, setIsEditing] = useState(false)
 
   const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
   const comp = props.item.data?.entity as Comp
-
-  const isOneOfMultipleDragging =
-    props.snapshot.isDragging && isSelected && props.item.data && selectedCompIds.length > 1
 
   function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) {
     props.item.data?.onItemClick(e, id, selectedCompIds)
@@ -106,8 +104,10 @@ function OptimizationLayer(props: TreeLeafProps) {
       id={comp.id}
       iconName={iconName}
       isSelected={isSelected}
+      isEditing={isEditing}
+      setIsEditing={setIsEditing}
       isExpandButton={isExpandButton}
-      title={isOneOfMultipleDragging ? `multiple ${selectedCompIds.length || ''}` : comp.title}
+      title={getTitle(props, isSelected, selectedCompIds)}
       onCollapse={props.onCollapse}
       onExpand={props.onExpand}
       onItemClick={onItemClick}
@@ -157,4 +157,18 @@ function ExpandButton(props: ExpandButtonProps) {
       onClick={toggle}
     />
   )
+}
+
+// Private
+
+function getTitle(props: TreeLeafProps, isSelected: boolean, selectedCompIds: string[]): string {
+  const searchQuery = props.item.data?.search?.query || ''
+  let title = props.item.data?.entity.title || ''
+
+  title = title.replaceAll(new RegExp(searchQuery, 'ig'), (match) => `<span class="query">${match}</span>`)
+
+  const isOneOfMultipleDragging =
+    props.snapshot.isDragging && isSelected && props.item.data && selectedCompIds.length > 1
+
+  return isOneOfMultipleDragging ? `multiple ${selectedCompIds.length || ''}` : title
 }

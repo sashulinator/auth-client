@@ -7,7 +7,7 @@ import { ROOT_ID } from '@/constants/common'
 import { Entity } from '@/lib/entity-actions'
 import { Catalog } from '@/shared/schema-drawer'
 
-type AdditionalData = {
+export type AdditionalData = {
   isInitialExpanded: boolean
   search?: {
     query?: string
