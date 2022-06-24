@@ -7,7 +7,13 @@ import { ROOT_ID } from '@/constants/common'
 import { Entity } from '@/lib/entity-actions'
 import { Catalog } from '@/shared/schema-drawer'
 
-type AdditionalData = { searchQuery?: string; isInitialExpanded: boolean } & Record<string, unknown>
+type AdditionalData = {
+  isInitialExpanded: boolean
+  search?: {
+    query?: string
+    fieldNames: string[]
+  }
+} & Record<string, unknown>
 
 export function buildTree(
   tree: TreeData | undefined,
@@ -23,7 +29,7 @@ export function buildTree(
 
   return {
     rootId: ROOT_ID,
-    items: additionalData.searchQuery
+    items: additionalData.search?.query
       ? buildTreeWithSearchQuery(rootEntity, tree, entities, additionalData)
       : buildTreeDefault(rootEntity, tree, entities, additionalData),
   }
@@ -47,7 +53,11 @@ function buildTreeWithSearchQuery(
       parentIds[id] = parentId
     }
 
-    if (new RegExp(additionalData.searchQuery || '').test(id.toString())) {
+    const isFound = additionalData.search?.fieldNames.some((fieldName) => {
+      return new RegExp(additionalData.search?.query || '', 'i').test(entity[fieldName])
+    })
+
+    if (isFound) {
       items[id] = {
         id: id,
         isExpanded: additionalData.isInitialExpanded,
