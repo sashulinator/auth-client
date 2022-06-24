@@ -134,7 +134,7 @@ export interface EventProps {
   eventBindingSchema: EventBindingSchema
   eventBindingCatalog: Catalog<EventBinding>
   eventBinding: EventBinding
-  eventBindingMeta: EventBindingMeta
+  eventBindingMeta: EventPackageProperties
   actionBindingCatalog: Catalog<EventBinding>
   context: FieldComponentContext | ContentComponentContext // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
@@ -146,12 +146,14 @@ export interface ActionProps extends EventProps {
   actionBinding: EventBinding
 }
 
-export interface EventBindingMeta extends BindingMeta {
+export interface EventPackageProperties extends BindingMeta {
+  name: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (eventProps: EventProps) => (eventOrValue: any) => void
 }
 
 export interface ActionBindingMeta extends BindingMeta {
+  name: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function: (actionProps: ActionProps, value: any) => void
 }

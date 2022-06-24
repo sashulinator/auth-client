@@ -24,10 +24,10 @@ export function assertCompSchema(input: unknown): asserts input is ComponentComp
 export function assertEventBindings(input: unknown): asserts input is Catalog<Binding> {
   const messages = {
     [EventBindingType.EVENT]: 'event cannot be a child',
-    [EventBindingType.ACTION]: 'action must be a child of event',
-    [EventBindingType.EVENT_ASSERTION]: 'assertion must be a child of action or operator',
-    [EventBindingType.OPERATOR]: 'operator must be a child of action or operator',
-    [EventBindingType.ROOT]: 'root must be root',
+    [EventBindingType.ACTION]: 'action must be a child of an event',
+    [EventBindingType.EVENT_ASSERTION]: 'assertion must be a child of an action or operator',
+    [EventBindingType.OPERATOR]: 'operator must be a child of an action or operator',
+    [EventBindingType.ROOT]: 'root must be a root',
   }
 
   const validateBindingUnit = rootWrapArr(

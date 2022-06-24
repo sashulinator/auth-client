@@ -20,10 +20,10 @@ import SchemaDrawer, {
   EventBinding,
   EventBindingSchema,
   EventBindingType,
-  actionList,
+  actionDictionary,
   basicComponentsSchemas,
   eventAssertionBindingMetaCatalog,
-  eventList,
+  eventDictionary,
   hasSchema,
   onFieldChange,
   setValue,
@@ -67,8 +67,8 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
   const assertionItem =
     eventAssertionBindingMetaCatalog[selectedBinding?.name || ''] ||
-    actionList[selectedBinding?.name || ''] ||
-    eventList[selectedBinding?.name || '']
+    actionDictionary[selectedBinding?.name || ''] ||
+    eventDictionary[selectedBinding?.name || '']
 
   useEffect(rebuildTree, [props.value, selectedItemId])
 
