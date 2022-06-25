@@ -43,10 +43,7 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
               componentList={componentList}
               schema={props.schema}
               schemas={props.schemas}
-              context={{
-                formState: formProps.form.getState(),
-                form: formProps.form,
-              }}
+              context={{ form: formProps.form }}
             />
           </form>
         )

@@ -7,7 +7,7 @@ interface AssertUndefinedProps {
 
 export function assertUndefined(v: unknown, assertionProps: AssertUndefinedProps, meta: EventAssertionMeta) {
   const { context } = meta.payload
-  const fieldState = context.formProps.form.getFieldState(assertionProps.name)
+  const fieldState = context.form.getFieldState(assertionProps.name)
   const targetValue = fieldState?.[assertionProps.isInit ? 'initial' : 'value']
 
   if (targetValue !== undefined) {
@@ -23,7 +23,7 @@ interface AssertVisitedProps {
 
 export function assertVisited(v: unknown, assertionProps: AssertVisitedProps, meta: EventAssertionMeta) {
   const { context } = meta?.payload
-  const visited = context.formProps.form.getFieldState(assertionProps.name)?.visited
+  const visited = context.form.getFieldState(assertionProps.name)?.visited
 
   if (visited) {
     throw new Error('Field was not visited')
@@ -37,7 +37,7 @@ interface AssertMatchPatternProps {
 
 export function assertMatchPattern(v: unknown, assertionProps: AssertMatchPatternProps, meta: EventAssertionMeta) {
   const { context } = meta?.payload
-  const targetValue = context.formProps.form.getFieldState(assertionProps.name)?.value
+  const targetValue = context.form.getFieldState(assertionProps.name)?.value
 
   console.log('targetValue', targetValue)
 
