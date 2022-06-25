@@ -2,7 +2,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
 import { generateInitComps } from '../lib/generate-init-comps'
-import isInputType from '../lib/is'
+import { isInputType } from '../lib/is'
 import {
   Catalog,
   Comp,
@@ -15,7 +15,7 @@ import {
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
@@ -47,6 +47,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   }
 
   const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.catalog, context))
+
+  useEffect(() => setComps(generateInitComps(props.schema.catalog, context)), [props.schema.catalog])
 
   const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)

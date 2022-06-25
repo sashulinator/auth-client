@@ -1,5 +1,6 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
+import { isCheckbox } from '..'
 import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
 import bindEvents from '../lib/bind-events'
@@ -47,7 +48,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
       validate={(v) => validate?.(v)}
       type={сomponentItem.type}
       name={injectedComp.name}
-      defaultValue={injectedComp.defaultValue}
+      defaultValue={isCheckbox(сomponentItem) ? injectedComp.defaultValue ?? false : injectedComp.defaultValue}
     >
       {({ input, meta }) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
