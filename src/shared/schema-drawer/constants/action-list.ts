@@ -27,7 +27,7 @@ export const actionList: ActionBindingMeta[] = [
           title: 'stackRoot',
           name: 'hello',
           children: ['namesDropdown'],
-          props: { tokens: { padding: '5px' } },
+          props: { tokens: { padding: '8px' } },
           compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {

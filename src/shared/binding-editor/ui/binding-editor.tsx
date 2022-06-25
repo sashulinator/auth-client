@@ -5,6 +5,7 @@ import './binding-editor.css'
 import { ClassNames } from '../constants/classNames'
 import clsx from 'clsx'
 import React, { LegacyRef, forwardRef } from 'react'
+import HeightAnimatedContainer from 'react-auto-animated-container'
 
 export interface RootProps {
   ref: LegacyRef<HTMLDivElement | null>
@@ -34,8 +35,10 @@ export default function BindingEditor(props: BindingEditorProps) {
       className={clsx(ClassNames.BindingEditor, props.isNotEmpty && 'notEmpty', props.isFocused && 'isFocused')}
       verticalAlign="space-between"
     >
-      <div className="fakeBorder" />
-      <Stack tokens={{ childrenGap: '16px' }}>{props.children}</Stack>
+      <HeightAnimatedContainer duration={300} transitionTimingFunction="ease">
+        <div className="fakeBorder" />
+        <Stack tokens={{ childrenGap: '16px' }}>{props.children}</Stack>
+      </HeightAnimatedContainer>
     </Stack>
   )
 }
