@@ -180,6 +180,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
           <div className="hoverArea" />
           {schemas && schema && (
             <Form
+              key={JSON.stringify(schema.catalog)}
               onSubmit={onSubmit}
               render={(formProps) => {
                 return (

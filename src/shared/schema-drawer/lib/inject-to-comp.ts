@@ -12,8 +12,8 @@ export default function injectToComp(injections: Comp['injections'], context: Co
     if (!injection.from || !injection.to) {
       return comp
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data = get({ context: context }, injection.from as any)
+
+    const data = get({ context }, injection.from)
 
     const newProps = (buildObject({ ...accComp }, injection.to, { ...data }) as unknown) as Comp
 

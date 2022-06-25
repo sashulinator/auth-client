@@ -1,7 +1,11 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
+import bindEvents from '../lib/bind-events'
+import { onFieldLife, onInit } from '../lib/events'
+import injectToComp from '../lib/inject-to-comp'
 import isInputType from '../lib/is'
+import { Observer } from '../lib/observer'
 import {
   Catalog,
   Comp,
@@ -14,8 +18,8 @@ import {
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import { FormState } from 'final-form'
-import React, { useEffect, useRef, useState } from 'react'
+import { FormState, getIn, setIn } from 'final-form'
+import React, { useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
@@ -27,11 +31,81 @@ interface SchemaDrawerProps {
   componentList: Record<string, CompMeta>
 }
 
+function setDefaultValueToFormState(
+  formState: DrawerContext['formState'],
+  comps: Catalog<Comp>
+): DrawerContext['formState'] {
+  return Object.values(comps).reduce((formStateAcc, comp) => {
+    if (comp.name === undefined) {
+      return formStateAcc
+    }
+
+    const newValues = setIn(formState.values, comp.name, comp.defaultValue)
+
+    return {
+      ...formStateAcc,
+      values: {
+        ...formStateAcc.values,
+        ...newValues,
+      },
+    }
+  }, formState)
+}
+
+function initComps(comps: Catalog<Comp>, rawContext: DrawerContext): Catalog<Comp> {
+  const fakeComps = { current: comps }
+
+  function setComp(newComp: Comp) {
+    fakeComps.current = replace(comps, newComp.id, newComp)
+  }
+
+  const newFormState = setDefaultValueToFormState(rawContext.formState, comps)
+
+  const context: DrawerContext = {
+    ...rawContext,
+    formState: newFormState,
+    fns: { ...rawContext.fns, setComp },
+    formProps: {
+      ...rawContext.formProps,
+      form: {
+        ...rawContext.formProps.form,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        getFieldState: (name: any) => {
+          const field = rawContext.formProps.form.getFieldState(name)
+
+          const res = {
+            ...field,
+            value: getIn(newFormState.values, name),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any
+
+          return res
+        },
+      },
+    },
+  }
+
+  Object.values(comps).forEach((comp) => {
+    const injectedComp = injectToComp(comp.injections, context, comp)
+    const schema = context.schemas[comp.compSchemaId] as ComponentCompSchema
+
+    const compContext = {
+      ...context,
+      comp: injectedComp,
+      compSchema: schema,
+      observer: new Observer(),
+    }
+
+    bindEvents(compContext)
+    compContext.observer.emitEvent(onInit.name)()
+    compContext.observer.emitEvent(onFieldLife.name)()
+  })
+
+  return fakeComps.current
+}
+
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
-  const [comps, setComps] = useState<Catalog<Comp>>(props.schema.catalog)
-
-  useEffect(() => setComps(props.schema.catalog), [props.schema.catalog])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
 
@@ -39,16 +113,20 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
-    comps: comps,
-    compIds: Object.keys(comps),
+    comps: props.schema.catalog,
+    compIds: Object.keys(props.schema.catalog),
     schemas: props.schemas,
     schema: props.schema,
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
-      setComp: (comp) => setComps((comps) => replace(comps, comp.id, comp)),
+      setComp: () => {
+        throw new Error('I am not here')
+      },
     },
   }
+
+  const [comps, setComps] = useState<Catalog<Comp>>(() => initComps(props.schema.catalog, context))
 
   const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)
@@ -56,9 +134,17 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   if (props.schemas === null) {
     return null
   }
+
   return (
     <ComponentFactory
-      context={context}
+      context={{
+        ...context,
+        comps,
+        fns: {
+          ...context.fns,
+          setComp: (comp: Comp) => setComps((comps) => replace(comps, comp.id, comp)),
+        },
+      }}
       comps={comps}
       compId={rootComp.id}
       schemas={props.schemas}
