@@ -107,15 +107,17 @@ function buildTreeDefault(
   const items: Record<string, TreeItem> = {}
 
   walk(rootEntity, entities, 'id', (entity, id) => {
-    const isExpandedBeforeSearchQuery =
-      tree?.items[id]?.data.isExpandedBeforeSearchQuery ?? additionalData.isInitialExpanded
+    const isExpanded =
+      tree?.items[id]?.data.isExpandedBeforeSearchQuery ??
+      tree?.items[id]?.isExpanded ??
+      additionalData.isInitialExpanded
 
     items[id] = {
       id,
-      isExpanded: isExpandedBeforeSearchQuery,
+      isExpanded,
       hasChildren: entity.children !== undefined,
       children: entity.children || [],
-      data: { entity, isExpandedBeforeSearchQuery, ...additionalData },
+      data: { entity, isExpandedBeforeSearchQuery: isExpanded, ...additionalData },
     }
   })
 

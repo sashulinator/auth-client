@@ -140,10 +140,7 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
                     componentList={componentList}
                     schema={assertionItem.schema}
                     schemas={basicComponentsSchemas}
-                    context={{
-                      formState: formProps.form.getState(),
-                      formProps,
-                    }}
+                    context={{ form: formProps.form }}
                   />
                 </>
               )

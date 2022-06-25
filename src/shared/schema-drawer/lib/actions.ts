@@ -16,7 +16,7 @@ export function setValue(actionProps: ActionProps, eventFieldValue: any) {
     return
   }
 
-  context.formProps.form.change(eventFieldName, eventFieldValue)
+  context.form.change(eventFieldName, eventFieldValue)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,7 +1,8 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
-import isInputType from '../lib/is'
+import { generateInitComps } from '../lib/generate-init-comps'
+import { isInputType } from '../lib/is'
 import {
   Catalog,
   Comp,
@@ -14,7 +15,6 @@ import {
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import { FormState } from 'final-form'
 import React, { useEffect, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
@@ -29,26 +29,26 @@ interface SchemaDrawerProps {
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
-  const [comps, setComps] = useState<Catalog<Comp>>(props.schema.catalog)
-
-  useEffect(() => setComps(props.schema.catalog), [props.schema.catalog])
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
+  const formStatePrev = useRef(props.context.form.getState())
 
   const context: DrawerContext = {
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
-    comps: comps,
-    compIds: Object.keys(comps),
+    comps: props.schema.catalog,
+    compIds: Object.keys(props.schema.catalog),
     schemas: props.schemas,
     schema: props.schema,
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
-      setComp: (comp) => setComps((comps) => replace(comps, comp.id, comp)),
+      setComp: (comp: Comp) => setComps((comps) => replace(comps, comp.id, comp)),
     },
   }
+
+  const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.catalog, context))
+
+  useEffect(() => setComps(generateInitComps(props.schema.catalog, context)), [props.schema.catalog])
 
   const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)
@@ -56,9 +56,10 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
   if (props.schemas === null) {
     return null
   }
+
   return (
     <ComponentFactory
-      context={context}
+      context={{ ...context, comps }}
       comps={comps}
       compId={rootComp.id}
       schemas={props.schemas}

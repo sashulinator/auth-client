@@ -1,8 +1,7 @@
 import { Meta } from '@savchenko91/schema-validator'
 
 import { Observer } from '../lib/observer'
-import { FormState } from 'final-form'
-import { FormRenderProps } from 'react-final-form'
+import { FormApi, FormState } from 'final-form'
 
 export type Catalog<T> = Record<string, T>
 
@@ -178,8 +177,7 @@ export interface EventAssertionBindingMeta extends BindingMeta {
 
 export type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formState: FormState<any, any> // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formProps: FormRenderProps<any, any> // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: FormApi<any, any> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   fns?: Record<string, (...args: any[]) => any>
 } & Record<string, unknown>
 

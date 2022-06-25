@@ -113,6 +113,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
   }
 
   function onMouseDown(event: MouseEvent) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const target: any = event.target
 
     if (!target?.classList.contains('PreviewPanel') && !target?.classList.contains('ms-Stack')) {
@@ -188,10 +189,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
                       componentList={componentList}
                       schema={schema}
                       schemas={schemas}
-                      context={{
-                        formState: formProps.form.getState(),
-                        formProps,
-                      }}
+                      context={{ form: formProps.form }}
                     />
                   </form>
                 )

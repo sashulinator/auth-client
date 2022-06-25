@@ -2,6 +2,7 @@ import {
   ANY_KEY,
   _null,
   and,
+  boolean,
   ignorePattern,
   keyDoesNotExist,
   notEmptyString,
@@ -29,7 +30,7 @@ export const schemaValidator = rootOnly({
       compSchemaId: and(string, notEmptyString),
       title: and(string, notEmptyString),
       name: or(string, keyDoesNotExist),
-      defaultValue: or(string, keyDoesNotExist),
+      defaultValue: or(string, boolean, keyDoesNotExist),
       props: or(keyDoesNotExist, {
         label: or(string, keyDoesNotExist),
       }),

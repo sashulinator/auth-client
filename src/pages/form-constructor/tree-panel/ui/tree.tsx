@@ -42,7 +42,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
           query: props.searchQuery,
           fieldNames: ['id', 'title'],
         },
-        isInitialExpanded: false,
+        isInitialExpanded: Object.keys(props.schema.catalog).length < 500,
         schemas: props.schemas,
         editId,
         onItemClick,

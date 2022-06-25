@@ -125,7 +125,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
         {hasSchema(assertionItem) && selectedBinding && (
           <div className="bindinForm">
             <Form
-              key={selectedItemId}
+              key={JSON.stringify(assertionItem.schema)}
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               onSubmit={() => {}}
               initialValues={selectedBinding.props}
@@ -143,8 +143,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
                       context={{
                         previewSchema: props.context?.previewSchema,
                         previewData: props.context?.previewData,
-                        formState: formProps.form.getState(),
-                        formProps,
+                        form: formProps.form,
                       }}
                     />
                   </>
