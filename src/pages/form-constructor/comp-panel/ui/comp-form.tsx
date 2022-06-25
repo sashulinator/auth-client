@@ -55,8 +55,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                   schema={props.schema}
                   schemas={props.schemas}
                   context={{
-                    formState: formProps.form.getState(),
-                    formProps,
+                    form: formProps.form,
                     previewSchema: props.previewSchema,
                     previewData: {
                       schema: props.previewSchema,

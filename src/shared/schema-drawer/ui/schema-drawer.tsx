@@ -18,7 +18,7 @@ import {
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import { FormState, getIn, setIn } from 'final-form'
+import { FormApi, createForm } from 'final-form'
 import React, { useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
@@ -31,25 +31,17 @@ interface SchemaDrawerProps {
   componentList: Record<string, CompMeta>
 }
 
-function setDefaultValueToFormState(
-  formState: DrawerContext['formState'],
-  comps: Catalog<Comp>
-): DrawerContext['formState'] {
-  return Object.values(comps).reduce((formStateAcc, comp) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function setDefaultValueToFormState(comps: Catalog<Comp>, form: FormApi<any, any>) {
+  Object.values(comps).forEach((comp) => {
     if (comp.name === undefined) {
-      return formStateAcc
+      return
     }
 
-    const newValues = setIn(formState.values, comp.name, comp.defaultValue)
-
-    return {
-      ...formStateAcc,
-      values: {
-        ...formStateAcc.values,
-        ...newValues,
-      },
-    }
-  }, formState)
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    form.registerField(comp.name, () => {}, { active: true, dirty: true, touched: true, valid: true, value: true })
+    form.change(comp.name, comp.defaultValue)
+  })
 }
 
 function initComps(comps: Catalog<Comp>, rawContext: DrawerContext): Catalog<Comp> {
@@ -59,30 +51,18 @@ function initComps(comps: Catalog<Comp>, rawContext: DrawerContext): Catalog<Com
     fakeComps.current = replace(comps, newComp.id, newComp)
   }
 
-  const newFormState = setDefaultValueToFormState(rawContext.formState, comps)
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const form = createForm({ onSubmit: () => {} })
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  form.subscribe(() => {}, { dirty: true, valid: true, values: true })
+
+  setDefaultValueToFormState(comps, form)
 
   const context: DrawerContext = {
     ...rawContext,
-    formState: newFormState,
+    formState: form.getState(),
     fns: { ...rawContext.fns, setComp },
-    formProps: {
-      ...rawContext.formProps,
-      form: {
-        ...rawContext.formProps.form,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        getFieldState: (name: any) => {
-          const field = rawContext.formProps.form.getFieldState(name)
-
-          const res = {
-            ...field,
-            value: getIn(newFormState.values, name),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } as any
-
-          return res
-        },
-      },
-    },
+    form,
   }
 
   Object.values(comps).forEach((comp) => {
@@ -106,8 +86,7 @@ function initComps(comps: Catalog<Comp>, rawContext: DrawerContext): Catalog<Com
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const formStatePrev = useRef<FormState<any, any>>(props.context.formState)
+  const formStatePrev = useRef(props.context.form.getState())
 
   const context: DrawerContext = {
     ...props.context,

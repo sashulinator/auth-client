@@ -5,7 +5,7 @@ import { getIn } from 'final-form'
 
 export function registerFieldChangeEvent(context: FieldComponentContext) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return context.formProps.form.subscribe(
+  return context.form.subscribe(
     (state) => {
       if (context?.formStatePrev?.values.id !== state?.values.id) {
         setTimeout(() => (context.formStatePrev = state))

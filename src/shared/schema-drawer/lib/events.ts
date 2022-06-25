@@ -16,7 +16,7 @@ export function onInit(eventProps: EventProps) {
   return () => {
     const { context, emitActions } = eventProps
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   }
 }
@@ -26,14 +26,14 @@ export function onFieldLife(eventProps: EventProps) {
 
   context.observer.addEvent(onInit.name, () => {
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     const { emitActions } = eventProps
     emitActions(value)
   })
 
   context.observer.addEvent(onFieldChange.name, () => {
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     const { emitActions } = eventProps
     emitActions(value)
   })
@@ -46,7 +46,7 @@ export function onBlur(eventProps: EventProps) {
   return () => {
     const { emitActions, context } = eventProps
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   }
 }
@@ -55,7 +55,7 @@ export function onClick(eventProps: EventProps) {
   return () => {
     const { emitActions, context } = eventProps
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   }
 }
@@ -64,7 +64,7 @@ export function onFocus(eventProps: EventProps) {
   return () => {
     const { emitActions, context } = eventProps
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   }
 }
@@ -73,7 +73,7 @@ export function onChange(eventProps: EventProps) {
   return () => {
     const { emitActions, context } = eventProps
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   }
 }
@@ -82,7 +82,7 @@ export function onDestroy(eventProps: EventProps) {
   return () => {
     const { emitActions, context } = eventProps
     assertNotUndefined(context.comp.name)
-    const value = context.formProps.form.getFieldState(context.comp.name)?.value
+    const value = context.form.getFieldState(context.comp.name)?.value
     emitActions(value)
   }
 }
