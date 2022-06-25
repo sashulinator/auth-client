@@ -190,10 +190,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
                       componentList={componentList}
                       schema={schema}
                       schemas={schemas}
-                      context={{
-                        formState: formProps.form.getState(),
-                        form: formProps.form,
-                      }}
+                      context={{ form: formProps.form }}
                     />
                   </form>
                 )

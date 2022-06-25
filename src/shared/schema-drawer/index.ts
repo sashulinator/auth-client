@@ -8,6 +8,7 @@ export * from './constants/event-assertion-list'
 export * from './constants/event-list'
 
 export * from './lib/actions'
+export * from './lib/empty-function'
 export * from './lib/assertions'
 export * from './lib/event-assertions'
 export * from './lib/events'
