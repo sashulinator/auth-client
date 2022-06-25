@@ -28,7 +28,7 @@ export function generateInitComps(comps: Catalog<Comp>, rawContext: DrawerContex
     if (comp.name === undefined) {
       return
     }
-    // регистрируем и устанавливаем значения в фейкофой форме
+    // зарегистрируем поля и установим значения в фейкофой форме
     form.registerField(comp.name, emptyFunction, {})
     form.change(comp.name, comp.defaultValue)
   })
