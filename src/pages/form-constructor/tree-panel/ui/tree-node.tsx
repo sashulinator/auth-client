@@ -94,6 +94,10 @@ function OptimizationLayer(props: TreeLeafProps) {
   const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
   const comp = props.item.data?.entity as Comp
 
+  const title = getTitle(props, isSelected, isEditing, selectedCompIds)
+
+  console.log('title', title)
+
   function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) {
     props.item.data?.onItemClick(e, id, selectedCompIds)
   }
@@ -107,7 +111,7 @@ function OptimizationLayer(props: TreeLeafProps) {
       isEditing={isEditing}
       setIsEditing={setIsEditing}
       isExpandButton={isExpandButton}
-      title={getTitle(props, isSelected, selectedCompIds)}
+      title={title}
       onCollapse={props.onCollapse}
       onExpand={props.onExpand}
       onItemClick={onItemClick}
@@ -161,9 +165,13 @@ function ExpandButton(props: ExpandButtonProps) {
 
 // Private
 
-function getTitle(props: TreeLeafProps, isSelected: boolean, selectedCompIds: string[]): string {
+function getTitle(props: TreeLeafProps, isSelected: boolean, isEditing: boolean, selectedCompIds: string[]): string {
   const searchQuery = props.item.data?.search?.query || ''
   let title = props.item.data?.entity.title || ''
+
+  if (isEditing) {
+    return title
+  }
 
   title = title.replaceAll(new RegExp(searchQuery, 'ig'), (match) => `<span class="query">${match}</span>`)
 
