@@ -96,8 +96,6 @@ function OptimizationLayer(props: TreeLeafProps) {
 
   const title = getTitle(props, isSelected, isEditing, selectedCompIds)
 
-  console.log('title', title)
-
   function onItemClick(e: React.MouseEvent<HTMLElement, MouseEvent>, id: string) {
     props.item.data?.onItemClick(e, id, selectedCompIds)
   }
