@@ -6,7 +6,7 @@ import { FormApi, FormState } from 'final-form'
 export type Catalog<T> = Record<string, T>
 
 export interface Schema<TItem> {
-  catalog: Catalog<TItem>
+  data: Catalog<TItem>
 }
 
 interface Injection {

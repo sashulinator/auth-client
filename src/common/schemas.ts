@@ -24,7 +24,7 @@ export const schemaValidator = rootOnly({
   id: string,
   title: and(string, notEmptyString, withValue(/\W+/, ignorePattern)),
   type: string,
-  catalog: wrap({
+  data: wrap({
     [ANY_KEY]: {
       id: string,
       compSchemaId: and(string, notEmptyString),

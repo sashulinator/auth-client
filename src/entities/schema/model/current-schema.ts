@@ -18,7 +18,7 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema>>({
       componentName: null,
       title: 'Name',
       type: CompSchemaType.FORM,
-      catalog: {
+      data: {
         [ROOT_ID]: {
           id: ROOT_ID,
           name: 'noname',
@@ -47,19 +47,19 @@ export function updateCompsSetter(comps: Catalog<Comp>) {
     return {
       prev: currentSchemaHistory,
       next: null,
-      data: { ...currentSchemaHistory.data, catalog: comps },
+      data: { ...currentSchemaHistory.data, data: comps },
     }
   }
 }
 
 export function updateCompSetter(comp: Comp) {
   return (currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> => {
-    const comps = replace(currentSchemaHistory.data.catalog, comp.id, comp)
+    const comps = replace(currentSchemaHistory.data.data, comp.id, comp)
 
     return {
       prev: currentSchemaHistory,
       next: null,
-      data: { ...currentSchemaHistory.data, catalog: comps },
+      data: { ...currentSchemaHistory.data, data: comps },
     }
   }
 }

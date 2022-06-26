@@ -8,11 +8,11 @@ export function findMissingSchemaIds(schema: CompSchema, schemas: Catalog<CompSc
   }
 
   if (schemas && Object.keys(schemas).length === 1) {
-    return findSchemaDependencies(schema.catalog)
+    return findSchemaDependencies(schema.data)
   }
 
   const existingSchemaIds = Object.keys(schemas)
-  const dependencySchemaIds = findSchemaDependencies(schema.catalog)
+  const dependencySchemaIds = findSchemaDependencies(schema.data)
 
   const missingSchemaIds = dependencySchemaIds.filter((id) => !existingSchemaIds.includes(id))
 

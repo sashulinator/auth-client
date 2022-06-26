@@ -21,7 +21,7 @@ export const actionList: ActionBindingMeta[] = [
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      catalog: {
+      data: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',
@@ -38,7 +38,7 @@ export const actionList: ActionBindingMeta[] = [
           compSchemaId: BasicComponentsNames.Dropdown,
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -70,7 +70,7 @@ export const actionList: ActionBindingMeta[] = [
       title: 'Training',
       componentName: null,
       type: CompSchemaType.FORM,
-      catalog: {
+      data: {
         ROOT_ID: {
           id: 'ROOT_ID',
           name: 'noname',
@@ -94,7 +94,7 @@ export const actionList: ActionBindingMeta[] = [
           compSchemaId: BasicComponentsNames.TextField,
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -115,7 +115,7 @@ export const actionList: ActionBindingMeta[] = [
           title: 'typeof',
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -142,7 +142,7 @@ export const actionList: ActionBindingMeta[] = [
             ],
           },
           eventBindingSchema: {
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'root',
@@ -259,7 +259,7 @@ export const actionList: ActionBindingMeta[] = [
           compSchemaId: BasicComponentsNames.TextField,
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',

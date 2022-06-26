@@ -51,15 +51,10 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 ): JSX.Element {
   const bindingEditorId = `binding-${useId()}`
 
-  const {
-    schema,
-    catalog,
-    selectedBinding,
-    selectedItemId,
-    addBinding,
-    changeBinding,
-    selectItemId,
-  } = useBindingStates<EventBinding, EventBindingSchema>(props.onChange, props.value)
+  const { schema, data, selectedBinding, selectedItemId, addBinding, changeBinding, selectItemId } = useBindingStates<
+    EventBinding,
+    EventBindingSchema
+  >(props.onChange, props.value)
 
   const remove = createRemoveHandler(schema, {}, props.onChange)
 
@@ -73,7 +68,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
   useEffect(rebuildTree, [props.value, selectedItemId])
 
   function rebuildTree() {
-    const newTree = buildTree(tree, catalog || undefined, {
+    const newTree = buildTree(tree, data || undefined, {
       errorId: props.validationError?._inputName,
       isInitialExpanded: true,
       assertionNames: Object.keys(EventAssertionBindingMetaName),
@@ -87,7 +82,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
     setTree(newTree)
   }
 
-  const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
+  const onDragEnd = createDragEndHandler(schema, tree, data, setTree, props.onChange)
 
   function addAssertion(): void {
     addBinding({ type: EventBindingType.EVENT_ASSERTION, name: 'undefined' })
@@ -107,7 +102,7 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
 
   return (
     <BindingEditor.Root ref={ref} label={props.label} className={bindingEditorId}>
-      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
+      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(data)}>
         <BindingEditor.ActionPanel
           mainButton={{ iconName: typeIcons.EVENT, onClick: addEvent, name: 'Event' }}
           buttons={[

@@ -7,25 +7,25 @@ import { Binding, BindingSchema, Catalog } from '@/shared/schema-drawer'
 export function createDragEndHandler<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
   schema: TSchema | undefined,
   tree: TreeData | undefined,
-  catalog: Catalog<Binding> | undefined,
+  data: Catalog<Binding> | undefined,
   setTree: React.Dispatch<React.SetStateAction<TreeData | undefined>>,
   onChange: (value: TSchema | undefined) => void
 ) {
   return (from: TreeSourcePosition, to?: TreeDestinationPosition) => {
-    if (!to || !tree || !catalog || to.parentId === 'rootId') {
+    if (!to || !tree || !data || to.parentId === 'rootId') {
       return
     }
 
-    const fromParentBinding = findEntity(from.parentId, catalog)
+    const fromParentBinding = findEntity(from.parentId, data)
     const bindingId = fromParentBinding?.children?.[from.index]
 
     assertNotUndefined(bindingId)
 
-    const binding = findEntity(bindingId, catalog)
+    const binding = findEntity(bindingId, data)
 
-    if (catalog) {
-      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, catalog)
-      onChange({ ...schema, catalog: newCatalog } as TSchema)
+    if (data) {
+      const newCatalog = moveEntity(binding, to.parentId, to.index || 0, data)
+      onChange({ ...schema, data: newCatalog } as TSchema)
       setTree(moveItemOnTree(tree, from, to))
     }
   }

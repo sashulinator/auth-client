@@ -33,7 +33,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
   const validateBindingUnit = rootWrapArr(
     or(
       {
-        catalog: {
+        data: {
           [ANY_KEY]: only({
             id: string,
             name: string,
@@ -63,9 +63,9 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
 
   if (isObject(input)) {
     const eventBindingSchema = (input as unknown) as EventBindingSchema
-    const { catalog } = eventBindingSchema
+    const { data } = eventBindingSchema
 
-    const rootBinding = catalog[ROOT_ID]
+    const rootBinding = data[ROOT_ID]
 
     if (rootBinding === undefined) {
       throw new Error('Root cannot be undefined')
@@ -74,7 +74,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
       throw new Error('Root cannot must have children')
     }
 
-    const eventUnits = findEntities(rootBinding.children, catalog)
+    const eventUnits = findEntities(rootBinding.children, data)
 
     Object.values(eventUnits).forEach((eventUnit) => {
       if (eventUnit.type !== EventBindingType.EVENT) {
@@ -86,7 +86,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
         })
       }
 
-      const actionUnits = findEntities(eventUnit.children || [], catalog)
+      const actionUnits = findEntities(eventUnit.children || [], data)
 
       Object.values(actionUnits).forEach((actionUnit) => {
         if (actionUnit.type !== EventBindingType.ACTION) {
@@ -98,7 +98,7 @@ export function assertEventBindings(input: unknown): asserts input is Catalog<Bi
           })
         }
 
-        const assertionUnits = findEntities(actionUnit.children || [], catalog)
+        const assertionUnits = findEntities(actionUnit.children || [], data)
 
         Object.values(assertionUnits).forEach((assertionUnit) => {
           if (

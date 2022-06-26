@@ -40,8 +40,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
-    comps: props.schema.catalog,
-    compIds: Object.keys(props.schema.catalog),
+    comps: props.schema.data,
+    compIds: Object.keys(props.schema.data),
     schemas: props.schemas,
     schema: props.schema,
     fns: {
@@ -51,11 +51,9 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const [comps, setComps] = useState<Catalog<Comp>>(() =>
-    generateInitComps(props.schema.catalog, context, props.values)
-  )
+  const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.data, context, props.values))
 
-  useEffect(() => setComps(generateInitComps(props.schema.catalog, context, props.values)), [props.schema.catalog])
+  useEffect(() => setComps(generateInitComps(props.schema.data, context, props.values)), [props.schema.data])
 
   const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)

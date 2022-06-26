@@ -3,7 +3,7 @@ import { AssertionBindingSchema, AssertionBindingType, EventToShowError } from '
 
 export const initialSchema: AssertionBindingSchema = {
   eventToShowError: EventToShowError.onInit,
-  catalog: {
+  data: {
     [ROOT_ID]: {
       id: ROOT_ID,
       name: 'root',
