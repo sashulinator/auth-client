@@ -26,6 +26,7 @@ interface Positions {
 export default function Preview(props: PreviewProps): JSX.Element | null {
   const { schemas, schema } = props
   const ref = useRef<null | HTMLDivElement>(null)
+  const values = useRef({})
 
   useEffect(() => {
     function updateHighlights() {
@@ -183,9 +184,12 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
             <Form
               onSubmit={onSubmit}
               render={(formProps) => {
+                values.current = formProps.form.getState().values as Record<string, unknown>
+
                 return (
                   <form id="main" onSubmit={formProps.handleSubmit}>
                     <SchemaDrawer
+                      values={values.current}
                       componentList={componentList}
                       schema={schema}
                       schemas={schemas}

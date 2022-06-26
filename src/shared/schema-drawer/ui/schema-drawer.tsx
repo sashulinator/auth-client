@@ -21,10 +21,15 @@ import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
-  schemas: Catalog<CompSchema>
+  values: Record<string, unknown>
   schema: CompSchema
+  schemas: Catalog<CompSchema>
   context: Context
   componentList: Record<string, CompMeta>
+}
+
+SchemaDrawer.defaultProps = {
+  values: {},
 }
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
@@ -46,9 +51,11 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.catalog, context))
+  const [comps, setComps] = useState<Catalog<Comp>>(() =>
+    generateInitComps(props.schema.catalog, context, props.values)
+  )
 
-  useEffect(() => setComps(generateInitComps(props.schema.catalog, context)), [props.schema.catalog])
+  useEffect(() => setComps(generateInitComps(props.schema.catalog, context, props.values)), [props.schema.catalog])
 
   const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)

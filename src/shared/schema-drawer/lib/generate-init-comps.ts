@@ -4,7 +4,7 @@ import { emptyFunction } from './empty-function'
 import { onFieldLife, onInit } from './events'
 import injectToComp from './inject-to-comp'
 import { Observer } from './observer'
-import { FormApi, createForm } from 'final-form'
+import { FormApi, createForm, getIn } from 'final-form'
 
 import { replace } from '@/lib/change-unmutable'
 
@@ -13,9 +13,12 @@ import { replace } from '@/lib/change-unmutable'
  * Причина: после срабатывания события onInit, comps изменялись и форма перерендеривалась
  * Решение: данная функция вычисляет новые значения comps до первого рендеринга
  */
-export function generateInitComps(comps: Catalog<Comp>, rawContext: DrawerContext): Catalog<Comp> {
+export function generateInitComps(
+  comps: Catalog<Comp>,
+  rawContext: DrawerContext,
+  values: Record<string, unknown>
+): Catalog<Comp> {
   let newComps = comps
-
   // создадим фейковую функцию по изменению компонента
   function setComp(newComp: Comp) {
     newComps = replace(newComps, newComp.id, newComp)
@@ -30,7 +33,7 @@ export function generateInitComps(comps: Catalog<Comp>, rawContext: DrawerContex
     }
     // зарегистрируем поля и установим значения в фейкофой форме
     form.registerField(comp.name, emptyFunction, {})
-    form.change(comp.name, comp.defaultValue)
+    form.change(comp.name, getIn(values, comp.name) ?? comp.defaultValue)
   })
 
   // добавим фейки в контекст

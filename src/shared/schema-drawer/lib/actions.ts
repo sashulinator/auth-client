@@ -7,10 +7,10 @@ import buildObject from '@/lib/build-object'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function setValue(actionProps: ActionProps, eventFieldValue: any) {
   const { actionBinding: actionUnit, context } = actionProps
-  const eventFieldName = actionUnit.props.name
+  const eventFieldName = actionUnit.props?.name
 
   try {
-    assertNotUndefined(actionUnit.props.name)
+    assertNotUndefined(actionUnit.props?.name)
   } catch (e) {
     // event was draged and droped
     return
