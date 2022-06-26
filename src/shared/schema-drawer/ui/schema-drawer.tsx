@@ -21,10 +21,15 @@ import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
-  schemas: Catalog<CompSchema>
+  values: Record<string, unknown>
   schema: CompSchema
+  schemas: Catalog<CompSchema>
   context: Context
   componentList: Record<string, CompMeta>
+}
+
+SchemaDrawer.defaultProps = {
+  values: {},
 }
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
@@ -35,8 +40,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     ...props.context,
     ...{ formStatePrev: formStatePrev.current },
     fetchedData: fetchedDataContext,
-    comps: props.schema.catalog,
-    compIds: Object.keys(props.schema.catalog),
+    comps: props.schema.data,
+    compIds: Object.keys(props.schema.data),
     schemas: props.schemas,
     schema: props.schema,
     fns: {
@@ -46,9 +51,9 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.catalog, context))
+  const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.data, context, props.values))
 
-  useEffect(() => setComps(generateInitComps(props.schema.catalog, context)), [props.schema.catalog])
+  useEffect(() => setComps(generateInitComps(props.schema.data, context, props.values)), [props.schema.data])
 
   const rootComp = comps[ROOT_ID]
   assertNotUndefined(rootComp)
@@ -112,26 +117,26 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     )
   }
 
-  if (isInputType(сomponentItem)) {
-    return (
-      <FieldComponent
-        context={context}
-        comp={comp}
-        schema={schema}
-        schemas={props.schemas}
-        componentList={props.componentList}
-      />
-    )
-  }
-
   return (
-    <ContentComponent
-      context={context}
-      comp={comp}
-      schema={schema}
-      schemas={props.schemas}
-      comps={props.comps}
-      componentList={props.componentList}
-    />
+    <div data-comp-id={comp.id}>
+      {isInputType(сomponentItem) ? (
+        <FieldComponent
+          context={context}
+          comp={comp}
+          schema={schema}
+          schemas={props.schemas}
+          componentList={props.componentList}
+        />
+      ) : (
+        <ContentComponent
+          context={context}
+          comp={comp}
+          schema={schema}
+          schemas={props.schemas}
+          comps={props.comps}
+          componentList={props.componentList}
+        />
+      )}
+    </div>
   )
 }

@@ -37,12 +37,12 @@ export default function PanelTree(props: TreeProps): JSX.Element {
 
   function rebuildTree() {
     startTransition(() => {
-      const newTree = buildTree(tree, props.schema.catalog, {
+      const newTree = buildTree(tree, props.schema.data, {
         search: {
           query: props.searchQuery,
           fieldNames: ['id', 'title'],
         },
-        isInitialExpanded: Object.keys(props.schema.catalog).length < 500,
+        isInitialExpanded: Object.keys(props.schema.data).length < 500,
         schemas: props.schemas,
         editId,
         onItemClick,
@@ -91,7 +91,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
 
     assertNotUndefined(tree)
 
-    let tempComps = props.schema.catalog
+    let tempComps = props.schema.data
     let tempTree = tree
 
     props.selectedCompIds.forEach((compId) => {

@@ -27,39 +27,39 @@ export function useBindingStates<TUnit extends Binding, TSchema extends BindingS
   const [selectedItemId, selectItemId] = useState('')
 
   const schema = isString(value) ? undefined : value
-  const catalog = schema?.catalog
-  const selectedBinding = catalog?.[selectedItemId]
+  const data = schema?.data
+  const selectedBinding = data?.[selectedItemId]
 
   function changeBinding(id: string | number, name: string, newBindingItemProps: unknown) {
-    assertNotUndefined(catalog)
+    assertNotUndefined(data)
 
-    const binding = findEntity(id, catalog)
-    const newBindings = replace(catalog, id, {
+    const binding = findEntity(id, data)
+    const newBindings = replace(data, id, {
       ...binding,
       name,
       ...(newBindingItemProps ? { props: newBindingItemProps } : undefined),
     })
 
-    const newCatalog: TSchema['catalog'] = omitEmpty(newBindings)
+    const newCatalog: TSchema['data'] = omitEmpty(newBindings)
 
-    onChange({ catalog: newCatalog } as TSchema)
+    onChange({ data: newCatalog } as TSchema)
   }
 
   function addBinding(rawBinding: Omit<TUnit, 'id' | 'children'> & { children?: string[] }): void {
     const id = uniqid()
     const binding = { children: [], ...rawBinding, id }
 
-    let newCatalog = catalog ?? defaultCompBindings
+    let newCatalog = data ?? defaultCompBindings
 
     newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
 
-    onChange({ ...initialSchema, catalog: newCatalog } as TSchema)
+    onChange({ ...initialSchema, data: newCatalog } as TSchema)
   }
 
   return {
     changeBinding,
     schema,
-    catalog,
+    data,
     selectedBinding,
     selectItemId,
     selectedItemId,

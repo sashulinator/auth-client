@@ -29,7 +29,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
         ],
         assertionBindingSchema: {
           eventToShowError: EventToShowError.onVisited,
-          catalog: {
+          data: {
             ROOT_ID: {
               id: 'ROOT_ID',
               name: 'and',
@@ -60,7 +60,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      catalog: {
+      data: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',
@@ -83,7 +83,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
           ],
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -109,7 +109,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      catalog: {
+      data: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',
@@ -126,7 +126,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
           compSchemaId: BasicComponentsNames.TextField,
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',
@@ -155,7 +155,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
           ],
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
-            catalog: {
+            data: {
               ROOT_ID: {
                 id: 'ROOT_ID',
                 name: 'and',

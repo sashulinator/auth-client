@@ -5,5 +5,5 @@ export function findSchemaContainingCompId(compId = '', schemas: Catalog<CompSch
     return null
   }
 
-  return Object.values(schemas).find((schema) => schema.catalog[compId]) ?? null
+  return Object.values(schemas).find((schema) => schema.data[compId]) ?? null
 }

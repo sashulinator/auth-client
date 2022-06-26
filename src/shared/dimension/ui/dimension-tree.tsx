@@ -20,7 +20,7 @@ export default function DimensionTree(props: DimensionTreeProps): JSX.Element {
   useEffect(() => setTree(rebuildTree), [props.schema])
 
   function rebuildTree(): TreeData | undefined {
-    return buildTree(props.schema?.catalog)
+    return buildTree(props.schema?.data)
   }
 
   return (

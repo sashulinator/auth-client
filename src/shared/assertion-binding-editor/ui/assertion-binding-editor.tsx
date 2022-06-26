@@ -50,15 +50,10 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
 ): JSX.Element {
   const bindingEditorId = `binding-${useId()}`
 
-  const {
-    schema,
-    catalog,
-    selectedItemId,
-    selectedBinding,
-    addBinding,
-    changeBinding,
-    selectItemId,
-  } = useBindingStates<AssertionBinding, AssertionBindingSchema>(props.onChange, props.value, initialSchema)
+  const { schema, data, selectedItemId, selectedBinding, addBinding, changeBinding, selectItemId } = useBindingStates<
+    AssertionBinding,
+    AssertionBindingSchema
+  >(props.onChange, props.value, initialSchema)
 
   const remove = createRemoveHandler(schema, { eventToShowError: EventToShowError.onVisited }, props.onChange)
 
@@ -69,7 +64,7 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
   useEffect(rebuildTree, [props.value, selectedItemId])
 
   function rebuildTree() {
-    const newTree = buildTree(tree, schema?.catalog || undefined, {
+    const newTree = buildTree(tree, schema?.data || undefined, {
       bindingEditorId,
       isInitialExpanded: true,
       assertionNames: Object.keys(assertionList),
@@ -91,11 +86,11 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
     addBinding({ type: AssertionBindingType.OPERATOR, name: 'and' })
   }
 
-  const onDragEnd = createDragEndHandler(schema, tree, catalog, setTree, props.onChange)
+  const onDragEnd = createDragEndHandler(schema, tree, data, setTree, props.onChange)
 
   return (
     <BindingEditor.Root ref={ref} label={props.label}>
-      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(catalog)}>
+      <BindingEditor isFocused={props.isFocused} isNotEmpty={Boolean(data)}>
         <BindingEditor.ActionPanel
           mainButton={{ iconName: typeIcons.ASSERTION, onClick: addAssertion, name: 'Assertion' }}
           buttons={[{ iconName: typeIcons.OPERATOR, onClick: addOperator, name: 'Operator' }]}

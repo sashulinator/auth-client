@@ -5,12 +5,12 @@ import { Binding, BindingSchema } from '@/shared/schema-drawer'
 
 export function createRemoveHandler<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
   schema: TSchema | undefined,
-  defaultSchema: Omit<TSchema, 'catalog'>,
+  defaultSchema: Omit<TSchema, 'data'>,
   onChange: (value: TSchema | undefined) => void
 ) {
   return (id: string | number): void => {
-    if (schema?.catalog) {
-      const units = removeEntity(id, schema.catalog)
+    if (schema?.data) {
+      const units = removeEntity(id, schema.data)
       assertNotUndefined(units)
 
       // isOnlyRoot?
@@ -18,7 +18,7 @@ export function createRemoveHandler<TUnit extends Binding, TSchema extends Bindi
         onChange(undefined)
       } else {
         const newSchema = schema ?? defaultSchema
-        onChange({ ...newSchema, catalog: units })
+        onChange({ ...newSchema, data: units })
       }
     }
   }

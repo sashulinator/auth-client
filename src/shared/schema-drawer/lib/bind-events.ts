@@ -19,10 +19,10 @@ export default function bindEvents(context: FieldComponentContext) {
     return
   }
 
-  const rootBinding = eventBindingSchema.catalog[ROOT_ID]
+  const rootBinding = eventBindingSchema.data[ROOT_ID]
   assertNotUndefined(rootBinding?.children)
 
-  const eventBindingCatalog = findEntities(rootBinding.children, eventBindingSchema.catalog)
+  const eventBindingCatalog = findEntities(rootBinding.children, eventBindingSchema.data)
 
   Object.values(eventBindingCatalog).forEach((eventBinding) => {
     const eventBindingMeta = eventDictionary[eventBinding.name]
@@ -32,7 +32,7 @@ export default function bindEvents(context: FieldComponentContext) {
       return
     }
 
-    const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingSchema.catalog)
+    const actionBindingCatalog = findEntities(eventBinding.children || [], eventBindingSchema.data)
 
     const eventProps: EventProps = {
       eventBindingSchema,
@@ -88,7 +88,7 @@ function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: s
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function isPassedAssertions(actionProps: ActionProps, value: any) {
   const { actionBinding, eventBindingSchema } = actionProps
-  const newBindings = addRootOperator(eventBindingSchema.catalog, actionBinding.id)
+  const newBindings = addRootOperator(eventBindingSchema.data, actionBinding.id)
 
   const validate = bindAssertions(eventAssertionBindingMetaCatalog, newBindings, operatorId)
 

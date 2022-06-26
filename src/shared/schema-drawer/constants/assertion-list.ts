@@ -36,7 +36,7 @@ export const assertionList: Catalog<AssertionBindingMeta> = {
       title: 'hereCouldBeYourAd',
       componentName: null,
       type: CompSchemaType.FORM,
-      catalog: {
+      data: {
         ROOT_ID: {
           id: 'ROOT_ID',
           title: 'stackRoot',
