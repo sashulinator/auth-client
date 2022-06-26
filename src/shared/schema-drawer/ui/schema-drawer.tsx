@@ -119,26 +119,26 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     )
   }
 
-  if (isInputType(сomponentItem)) {
-    return (
-      <FieldComponent
-        context={context}
-        comp={comp}
-        schema={schema}
-        schemas={props.schemas}
-        componentList={props.componentList}
-      />
-    )
-  }
-
   return (
-    <ContentComponent
-      context={context}
-      comp={comp}
-      schema={schema}
-      schemas={props.schemas}
-      comps={props.comps}
-      componentList={props.componentList}
-    />
+    <div data-comp-id={comp.id}>
+      {isInputType(сomponentItem) ? (
+        <FieldComponent
+          context={context}
+          comp={comp}
+          schema={schema}
+          schemas={props.schemas}
+          componentList={props.componentList}
+        />
+      ) : (
+        <ContentComponent
+          context={context}
+          comp={comp}
+          schema={schema}
+          schemas={props.schemas}
+          comps={props.comps}
+          componentList={props.componentList}
+        />
+      )}
+    </div>
   )
 }
