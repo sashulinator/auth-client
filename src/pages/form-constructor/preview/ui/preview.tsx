@@ -2,7 +2,7 @@ import { assertNotNull } from '@savchenko91/schema-validator'
 
 import './preview.css'
 
-import { highlightSelected } from '../lib/highlight'
+import { highlightOnEvents } from '../lib/highlight-on-events'
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
@@ -28,19 +28,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
   const ref = useRef<null | HTMLDivElement>(null)
   const values = useRef({})
 
-  useEffect(() => {
-    function updateHighlights() {
-      window.setTimeout(() => highlightSelected(props.selectedCompIds))
-    }
-
-    document.addEventListener('click', updateHighlights)
-    document.addEventListener('keydown', updateHighlights)
-
-    return () => {
-      document.removeEventListener('click', updateHighlights)
-      document.addEventListener('keydown', updateHighlights)
-    }
-  }, [props.selectedCompIds, props.schema])
+  useEffect(() => highlightOnEvents(props.selectedCompIds), [props.selectedCompIds, props.schema])
 
   function onSubmit(data: unknown) {
     console.log('data', data)
