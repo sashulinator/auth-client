@@ -12,7 +12,8 @@ import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
-import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
+import HorizontalLine from '@/shared/horizontal-line'
+import { Catalog, Comp, CompSchema, CompSchemaType, isInputType } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
   addNewComps: (comps: Catalog<Comp>) => void
@@ -23,6 +24,8 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
 
   const { data } = useQuery('schemas', getSchemaList)
+  const presets: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.PRESET)
+  const components: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.COMP)
 
   function onAdd(schema: CompSchema) {
     const createdNewComp = createNewComp(schema, componentList)
@@ -34,6 +37,17 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
     const comps = remove(schema.data, ROOT_ID)
     props.addNewComps(comps)
     setOpen(false)
+  }
+
+  function getElements(cb: (component: any) => boolean): CompSchema[] {
+    const typeCompList: CompSchema[] = []
+    components?.map((schema) => {
+      const component = componentList[schema.componentName || '']
+      if (cb(component)) {
+        typeCompList.push(schema)
+      }
+    })
+    return typeCompList
   }
 
   return (
@@ -48,31 +62,38 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
         <PivotItem headerText="Компоненты">
           <Stack className="rootContainer">
             <Stack className="container">
-              {data?.map((schema) => {
-                if (schema.type === 'PRESET' || schema.type === 'FORM') {
-                  return null
-                }
-                return (
-                  <PrimaryButton key={schema.id} onClick={() => onAdd(schema)}>
-                    {schema.title}
-                  </PrimaryButton>
-                )
-              })}
+              <HorizontalLine color="black" label="Input" />
+              <div className="buttons">
+                {getElements((component) => isInputType(component)).map((element) => {
+                  return (
+                    <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
+                      {element.title}
+                    </PrimaryButton>
+                  )
+                })}
+              </div>
+              <HorizontalLine color="black" label="Content" />
+              <div className="buttons">
+                {getElements((component) => !isInputType(component)).map((element) => {
+                  return (
+                    <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
+                      {element.title}
+                    </PrimaryButton>
+                  )
+                })}
+              </div>
             </Stack>
           </Stack>
         </PivotItem>
         <PivotItem headerText="Пресеты">
           <Stack className="rootContainer">
             <Stack className="container">
-              {data?.map((schema) => {
-                if (schema.type === 'PRESET') {
-                  return (
-                    <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
-                      {schema.title}
-                    </PrimaryButton>
-                  )
-                }
-                return null
+              {presets?.map((schema) => {
+                return (
+                  <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
+                    {schema.title}
+                  </PrimaryButton>
+                )
               })}
             </Stack>
           </Stack>
