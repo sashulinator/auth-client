@@ -59,8 +59,15 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                     previewSchema: props.previewSchema,
                     previewData: {
                       schema: props.previewSchema,
-                      compIds: Object.keys(props.previewSchema.data),
                       names,
+                      options: {
+                        comps: Object.values(props.previewSchema.data)
+                          .sort((a, b) => (a.title?.toLowerCase() > b.title?.toLowerCase() ? 1 : -1))
+                          .map((comp) => ({
+                            key: comp.id,
+                            text: comp.title,
+                          })),
+                      },
                     },
                     ...props.context,
                   }}
