@@ -66,7 +66,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
           title: 'stackRoot',
           name: 'hello',
           children: ['namesDropdown'],
-          props: { tokens: { padding: '5px', childrenGap: '4px' } },
+          props: { tokens: { padding: '8px', childrenGap: '24px' } },
           compSchemaId: BasicComponentsNames.Stack,
         },
         namesDropdown: {
@@ -115,7 +115,11 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
           title: 'stackRoot',
           name: 'hello',
           children: ['pattern', 'namesDropdown'],
-          props: { tokens: { padding: '5px' } },
+          props: {
+            tokens: {
+              padding: '8px',
+            },
+          },
           compSchemaId: BasicComponentsNames.Stack,
         },
         pattern: {

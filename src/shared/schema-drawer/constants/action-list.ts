@@ -88,10 +88,16 @@ export const actionList: ActionBindingMeta[] = [
           id: 'l44hsywr',
           name: 'compId',
           props: {
-            label: 'compId',
+            label: 'comp',
           },
-          title: 'compId',
-          compSchemaId: BasicComponentsNames.TextField,
+          title: 'comp',
+          compSchemaId: BasicComponentsNames.Dropdown,
+          injections: [
+            {
+              from: 'context.previewData.options.comps',
+              to: 'props.options',
+            },
+          ],
           assertionBindingSchema: {
             eventToShowError: EventToShowError.onVisited,
             data: {
@@ -130,6 +136,7 @@ export const actionList: ActionBindingMeta[] = [
             },
           },
           props: {
+            label: 'typeof',
             options: [
               {
                 key: 'boolean',
