@@ -21,7 +21,6 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema>>({
       data: {
         [ROOT_ID]: {
           id: ROOT_ID,
-          name: 'noname',
           compSchemaId: 'ee4254ef-9099-4289-be68-51ce733b3376',
           title: 'stackRoot',
         },

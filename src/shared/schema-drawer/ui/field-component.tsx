@@ -75,7 +75,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
         }, [props.comp.eventBindingSchema?.data])
 
         return (
-          <div className="FieldErrorPositionRelative">
+          <div className="FieldErrorPositionRelative" data-comp-id={injectedComp.id}>
             <сomponentItem.component
               {...input}
               {...injectedComp.props}
