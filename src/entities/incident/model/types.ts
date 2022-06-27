@@ -7,5 +7,5 @@ export interface Incident {
   sourceSystemCd: string
   createdAt: string
   editedAt: string
-  values: unknown
+  data: unknown
 }

@@ -21,11 +21,15 @@ const ContentComponent = memo(function ContentComponent(props: ContentComponentP
   // useEffect(() => handleBindEvents(props.context), [props.comp.bindings, props.schema])
 
   if (props.comp.children === undefined) {
-    return <сomponentItem.component {...props.comp.props}>{props.comp?.props?.children}</сomponentItem.component>
+    return (
+      <сomponentItem.component data-comp-id={props.comp.id} {...props.comp.props}>
+        {props.comp?.props?.children}
+      </сomponentItem.component>
+    )
   }
 
   return (
-    <сomponentItem.component {...props.comp.props}>
+    <сomponentItem.component data-comp-id={props.comp.id} {...props.comp.props}>
       {props.comp.children.map((compId) => {
         return (
           <ComponentFactory
