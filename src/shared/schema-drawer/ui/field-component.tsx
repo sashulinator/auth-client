@@ -74,6 +74,9 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
           return context.observer.emitEvent(onDestroy.name)
         }, [props.comp.eventBindingSchema?.data])
 
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => () => input.onChange(undefined), [])
+
         return (
           <div className="FieldErrorPositionRelative" data-comp-id={injectedComp.id}>
             <сomponentItem.component
