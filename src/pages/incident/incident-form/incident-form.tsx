@@ -27,7 +27,7 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
       editedAt: new Date().toISOString(),
       sourceSystemCd: 'test',
       name: data.name,
-      values: data.values,
+      data: data.data,
     })
     console.log('resData', resData)
   }
