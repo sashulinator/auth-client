@@ -48,6 +48,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
           onExpand={props.onExpand}
           onCollapse={props.onCollapse}
         />
+        {data.entity.title}
       </Stack>
     </div>
   )
