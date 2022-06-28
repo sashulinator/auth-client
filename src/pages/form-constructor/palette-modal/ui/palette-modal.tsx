@@ -1,9 +1,9 @@
-import { Modal, Pivot, PivotItem, PrimaryButton, Stack } from '@fluentui/react'
+import { Modal, Pivot, PivotItem, PrimaryButton, SearchBox, Stack } from '@fluentui/react'
 
 import './palette-modal.css'
 
 import { paletteModalState } from '../model'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 
@@ -22,6 +22,7 @@ interface PaletteModalProps {
 
 export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
+  const [searchQuery, setFilterString] = useState('')
 
   const { data } = useQuery('schemas', getSchemaList)
   const presets: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.PRESET)
@@ -39,14 +40,16 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
     setOpen(false)
   }
 
-  function getElements(cb: (component: any) => boolean): CompSchema[] {
+  function getElements(cb: (component: any) => boolean, searchQuery: string): CompSchema[] {
     const typeCompList: CompSchema[] = []
-    components?.map((schema) => {
-      const component = componentList[schema.componentName || '']
-      if (cb(component)) {
-        typeCompList.push(schema)
-      }
-    })
+    components
+      .filter((schema) => new RegExp(searchQuery, 'i').test(schema.componentName || ''))
+      ?.map((schema) => {
+        const component = componentList[schema.componentName || '']
+        if (cb(component)) {
+          typeCompList.push(schema)
+        }
+      })
     return typeCompList
   }
 
@@ -60,11 +63,18 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
     >
       <Pivot aria-label="Palette of components" styles={{ root: { display: 'flex', justifyContent: 'center' } }}>
         <PivotItem headerText="Компоненты">
+          <Stack maxWidth={400} tokens={{ padding: '0 0 0 32px' }}>
+            <SearchBox
+              autoComplete="off"
+              className="searchBox"
+              onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
+            />
+          </Stack>
           <Stack className="rootContainer">
             <Stack className="container">
               <HorizontalLine color="black" label="Input" />
               <div className="buttons">
-                {getElements((component) => isInputType(component)).map((element) => {
+                {getElements((component) => isInputType(component), searchQuery).map((element) => {
                   return (
                     <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
                       {element.title}
@@ -74,7 +84,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
               </div>
               <HorizontalLine color="black" label="Content" />
               <div className="buttons">
-                {getElements((component) => !isInputType(component)).map((element) => {
+                {getElements((component) => !isInputType(component), searchQuery).map((element) => {
                   return (
                     <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
                       {element.title}
@@ -86,15 +96,26 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
           </Stack>
         </PivotItem>
         <PivotItem headerText="Пресеты">
+          <Stack maxWidth={400} tokens={{ padding: '0 0 0 32px' }}>
+            <SearchBox
+              autoComplete="off"
+              className="searchBox"
+              onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
+            />
+          </Stack>
           <Stack className="rootContainer">
             <Stack className="container">
-              {presets?.map((schema) => {
-                return (
-                  <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
-                    {schema.title}
-                  </PrimaryButton>
-                )
-              })}
+              <div className="buttons">
+                {presets
+                  .filter((schema) => new RegExp(searchQuery, 'i').test(schema.componentName || ''))
+                  ?.map((schema) => {
+                    return (
+                      <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
+                        {schema.title}
+                      </PrimaryButton>
+                    )
+                  })}
+              </div>
             </Stack>
           </Stack>
         </PivotItem>

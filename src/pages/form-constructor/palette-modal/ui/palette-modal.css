@@ -1,7 +1,7 @@
 .PaletteModal .rootContainer {
   width: 70vw;
   height: 50vh;
-  padding: 32px 0 0;
+  padding: 20px 0 0;
 }
 
 .PaletteModal .container {
@@ -21,4 +21,8 @@
 
 .PaletteModal .buttons > * {
   margin: 10px;
+}
+
+.PaletteModal .searchBox {
+  margin-right: 25px;
 }
