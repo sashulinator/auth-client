@@ -2,7 +2,9 @@ import { TreeData } from '@atlaskit/tree'
 
 import TreeNode from './tree-node'
 import React, { useEffect, useState } from 'react'
+import { Form } from 'react-final-form'
 
+import Autosave from '@/shared/autosave'
 import { CompSchema, emptyFunction } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
@@ -31,13 +33,30 @@ export default function Modal(props: ModalProps): JSX.Element | null {
   }
 
   return (
-    <Tree
-      key={props.schema.id}
-      tree={tree}
-      renderItem={TreeNode}
-      onDragEnd={emptyFunction}
-      onDragStart={emptyFunction}
-      setTree={setTree}
+    <Form
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onSubmit={emptyFunction}
+      // initialValues={selectedBinding.props}
+      render={() => {
+        return (
+          <>
+            <Autosave
+              save={(data) => {
+                console.log('data', data)
+              }}
+              debounce={0}
+            />
+            <Tree
+              key={props.schema.id}
+              tree={tree}
+              renderItem={TreeNode}
+              onDragEnd={emptyFunction}
+              onDragStart={emptyFunction}
+              setTree={setTree}
+            />
+          </>
+        )
+      }}
     />
   )
 }

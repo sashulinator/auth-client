@@ -30,7 +30,7 @@ export default function DimensionComp(props: DimensionProps): JSX.Element {
       <PrimaryButton onClick={() => setOpen(true)} />
       <Panel
         type={PanelType.customNear}
-        customWidth={'1200px'}
+        customWidth={'920px'}
         className="DimensionModal"
         isOpen={isOpen}
         onDismiss={() => setOpen(false)}

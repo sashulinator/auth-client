@@ -12,7 +12,13 @@ import { RecoilRoot } from 'recoil'
 
 import { ThemeProvider } from '@/shared/theme'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 export const App = () => {
   initializeIcons()
