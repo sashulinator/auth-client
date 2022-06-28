@@ -52,6 +52,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
       })
     return typeCompList
   }
+  console.log(presets.filter((schema) => schema))
 
   return (
     <Modal
@@ -107,7 +108,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
             <Stack className="container">
               <div className="buttons">
                 {presets
-                  .filter((schema) => new RegExp(searchQuery, 'i').test(schema.componentName || ''))
+                  .filter((schema) => new RegExp(searchQuery, 'i').test(schema.title || ''))
                   ?.map((schema) => {
                     return (
                       <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
