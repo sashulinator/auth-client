@@ -1,19 +1,58 @@
+import { Modal, PrimaryButton } from '@fluentui/react'
 import { isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
-import { Dimension } from '../model/types'
-import React, { memo } from 'react'
+import { isEmpty } from 'lodash'
+import React, { useState } from 'react'
 
-import { Catalog, Schema } from '@/shared/schema-drawer'
+import TreeNode from '@/pages/form-constructor/tree-panel/ui/tree-node'
+import { Catalog, CompSchema, emptyFunction } from '@/shared/schema-drawer'
+import Tree, { buildTree } from '@/shared/tree'
 
 interface DimensionProps {
-  schemas: Catalog<Schema<Dimension>> | string | undefined
+  schemas: Catalog<CompSchema>
   value: string[] | string | undefined
 }
 
-export default memo(function Dimension(props: DimensionProps): JSX.Element {
-  const value = isString(props.value) ? undefined : props.value
+DimensionComp.defaultValues = {
+  schemas: {},
+}
 
-  return <div className="Dimension">{value?.join()}</div>
-})
+export default function DimensionComp(props: DimensionProps): JSX.Element {
+  const [isOpen, setOpen] = useState(false)
+  const value = isString(props.value) ? undefined : props.value
+  console.log('value', value)
+
+  console.log('tree', props.schemas)
+  return (
+    <div className="Dimension">
+      {'value?.join()'}
+      <PrimaryButton onClick={() => setOpen(true)} />
+      <Modal isOpen={isOpen} onDismiss={() => setOpen(false)}>
+        {Object.values(props.schemas || {}).map((schema) => {
+          if (isEmpty(schema.data)) {
+            return
+          }
+
+          const tree = buildTree(undefined, schema.data, { isInitialExpanded: false })
+
+          if (tree === undefined) {
+            return null
+          }
+
+          return (
+            <Tree
+              key={schema.id}
+              tree={tree}
+              renderItem={TreeNode}
+              onDragEnd={emptyFunction}
+              onDragStart={emptyFunction}
+              setTree={emptyFunction}
+            />
+          )
+        })}
+      </Modal>
+    </div>
+  )
+}

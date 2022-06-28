@@ -9,6 +9,7 @@ import { Catalog } from '@/shared/schema-drawer'
 
 export type AdditionalData = {
   isInitialExpanded: boolean
+  isRoot?: boolean
   search?: {
     query?: string
     fieldNames: string[]
