@@ -91,7 +91,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
               <div className="buttons">
                 {isEmpty(contentComponents)
                   ? 'nothing found'
-                  : inputComponents.map((element) => {
+                  : contentComponents.map((element) => {
                       return (
                         <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
                           {element.title}
