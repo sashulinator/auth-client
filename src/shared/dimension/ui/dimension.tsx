@@ -1,12 +1,13 @@
+import { TreeData } from '@atlaskit/tree'
 import { Modal, PrimaryButton } from '@fluentui/react'
 import { isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
+import TreeNode from './tree-node'
 import { isEmpty } from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import TreeNode from '@/pages/form-constructor/tree-panel/ui/tree-node'
 import { Catalog, CompSchema, emptyFunction } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
@@ -21,7 +22,9 @@ DimensionComp.defaultValues = {
 
 export default function DimensionComp(props: DimensionProps): JSX.Element {
   const [isOpen, setOpen] = useState(false)
+  const [tree, setTree] = useState<TreeData>()
   const value = isString(props.value) ? undefined : props.value
+
   console.log('value', value)
 
   console.log('tree', props.schemas)
@@ -31,11 +34,24 @@ export default function DimensionComp(props: DimensionProps): JSX.Element {
       <PrimaryButton onClick={() => setOpen(true)} />
       <Modal isOpen={isOpen} onDismiss={() => setOpen(false)}>
         {Object.values(props.schemas || {}).map((schema) => {
+          // eslint-disable-next-line react-hooks/rules-of-hooks
+          useEffect(rebuildTree, [props.schemas])
+
+          function rebuildTree() {
+            const newTree = buildTree(tree, schema.data, {
+              search: {
+                fieldNames: ['id', 'title'],
+              },
+              isInitialExpanded: false,
+              schemas: props.schemas,
+              isRoot: true,
+            })
+            setTree(newTree)
+          }
+
           if (isEmpty(schema.data)) {
             return
           }
-
-          const tree = buildTree(undefined, schema.data, { isInitialExpanded: false })
 
           if (tree === undefined) {
             return null
@@ -48,7 +64,7 @@ export default function DimensionComp(props: DimensionProps): JSX.Element {
               renderItem={TreeNode}
               onDragEnd={emptyFunction}
               onDragStart={emptyFunction}
-              setTree={emptyFunction}
+              setTree={setTree}
             />
           )
         })}

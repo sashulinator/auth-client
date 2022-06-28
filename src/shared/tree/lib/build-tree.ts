@@ -28,11 +28,21 @@ export function buildTree(
   const rootEntity = entities[ROOT_ID]
   assertNotUndefined(rootEntity)
 
+  const rootTreeItem = {
+    id: 'rootId',
+    isExpanded: true,
+    children: [ROOT_ID],
+  }
+
+  const items = additionalData.search?.query
+    ? buildTreeWithSearchQuery(rootEntity, tree, entities, additionalData)
+    : buildTreeDefault(rootEntity, tree, entities, additionalData)
+
+  const itemsRoot = { rootId: rootTreeItem, ...items }
+
   return {
-    rootId: ROOT_ID,
-    items: additionalData.search?.query
-      ? buildTreeWithSearchQuery(rootEntity, tree, entities, additionalData)
-      : buildTreeDefault(rootEntity, tree, entities, additionalData),
+    rootId: additionalData.isRoot ? rootTreeItem.id : ROOT_ID,
+    items: additionalData.isRoot ? itemsRoot : items,
   }
 }
 
