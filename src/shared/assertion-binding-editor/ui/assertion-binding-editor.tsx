@@ -11,6 +11,7 @@ import React, { forwardRef, useEffect, useState } from 'react'
 import { Field, Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
+import withFocus from '@/lib/with-focus'
 import Autosave from '@/shared/autosave'
 import { BindingEditor, TreeNode, createRemoveHandler } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
@@ -147,4 +148,4 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
   )
 })
 
-export default AssertionBindingEditor
+export default withFocus(AssertionBindingEditor)

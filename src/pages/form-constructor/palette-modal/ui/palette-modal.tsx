@@ -52,7 +52,6 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
       })
     return typeCompList
   }
-  console.log(presets.filter((schema) => schema))
 
   return (
     <Modal
