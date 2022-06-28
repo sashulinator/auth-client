@@ -1,4 +1,5 @@
 import { Modal, Pivot, PivotItem, PrimaryButton, SearchBox, Stack } from '@fluentui/react'
+import { isEmpty } from '@savchenko91/schema-validator'
 
 import './palette-modal.css'
 
@@ -41,17 +42,19 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   }
 
   function getElements(cb: (component: any) => boolean, searchQuery: string): CompSchema[] {
-    const typeCompList: CompSchema[] = []
-    components
-      .filter((schema) => new RegExp(searchQuery, 'i').test(schema.componentName || ''))
-      ?.map((schema) => {
-        const component = componentList[schema.componentName || '']
-        if (cb(component)) {
-          typeCompList.push(schema)
-        }
-      })
-    return typeCompList
+    return components.reduce<CompSchema[]>((acc, schema) => {
+      const component = componentList[schema.componentName || '']
+
+      if (cb(component) && new RegExp(searchQuery, 'i').test(schema.componentName || '')) {
+        acc.push(schema)
+      }
+
+      return acc
+    }, [])
   }
+
+  const inputComponents = getElements((component) => isInputType(component), searchQuery)
+  const contentComponents = getElements((component) => !isInputType(component), searchQuery)
 
   return (
     <Modal
@@ -74,23 +77,27 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
             <Stack className="container">
               <HorizontalLine color="black" label="Input" />
               <div className="buttons">
-                {getElements((component) => isInputType(component), searchQuery).map((element) => {
-                  return (
-                    <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
-                      {element.title}
-                    </PrimaryButton>
-                  )
-                })}
+                {isEmpty(inputComponents)
+                  ? 'nothing found'
+                  : inputComponents.map((element) => {
+                      return (
+                        <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
+                          {element.title}
+                        </PrimaryButton>
+                      )
+                    })}
               </div>
               <HorizontalLine color="black" label="Content" />
               <div className="buttons">
-                {getElements((component) => !isInputType(component), searchQuery).map((element) => {
-                  return (
-                    <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
-                      {element.title}
-                    </PrimaryButton>
-                  )
-                })}
+                {isEmpty(contentComponents)
+                  ? 'nothing found'
+                  : inputComponents.map((element) => {
+                      return (
+                        <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
+                          {element.title}
+                        </PrimaryButton>
+                      )
+                    })}
               </div>
             </Stack>
           </Stack>
