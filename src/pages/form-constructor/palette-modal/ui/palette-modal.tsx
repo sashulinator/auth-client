@@ -28,6 +28,9 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   const { data } = useQuery('schemas', getSchemaList)
   const presets: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.PRESET)
   const components: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.COMP)
+  const dimensions: CompSchema[] = Object.values(data || {}).filter(
+    (schema) => schema.type === CompSchemaType.FORM_DIMENSION
+  )
 
   function onAdd(schema: CompSchema) {
     const createdNewComp = createNewComp(schema, componentList)
@@ -122,6 +125,21 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
                       </PrimaryButton>
                     )
                   })}
+              </div>
+            </Stack>
+          </Stack>
+        </PivotItem>
+        <PivotItem headerText="Классификаторы">
+          <Stack className="rootContainer">
+            <Stack className="container">
+              <div className="buttons">
+                {dimensions.map((schema) => {
+                  return (
+                    <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
+                      {schema.title}
+                    </PrimaryButton>
+                  )
+                })}
               </div>
             </Stack>
           </Stack>
