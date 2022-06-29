@@ -21,6 +21,7 @@ import SchemaDrawer, {
   AssertionBinding,
   AssertionBindingSchema,
   AssertionBindingType,
+  BindingSchema,
   Catalog,
   Comp,
   CompSchema,
@@ -42,7 +43,7 @@ export interface AssertionBindingEditorProps {
   label?: string
   isFocused: boolean
   validationError?: ValidationError
-  onChange: (value: AssertionBindingSchema | undefined) => void
+  onChange: (value: BindingSchema<AssertionBinding> | undefined) => void
 }
 
 const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindingEditorProps>(function ValidatorPicker(
