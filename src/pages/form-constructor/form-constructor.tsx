@@ -142,16 +142,17 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function toggleCompSelection(compId: string | string[]): void {
-    if (Array.isArray(compId)) {
-      setSelectedCompIds(compId)
-      return
-    }
+    setSelectedCompIds((selectedCompIds) => {
+      if (Array.isArray(compId)) {
+        return compId
+      }
 
-    if (selectedCompIds.includes(compId)) {
-      setSelectedCompIds(selectedCompIds.filter((id) => id !== compId))
-    } else {
-      setSelectedCompIds([...new Set([...selectedCompIds, compId])])
-    }
+      if (selectedCompIds.includes(compId)) {
+        return selectedCompIds.filter((id) => id !== compId)
+      } else {
+        return [...new Set([...selectedCompIds, compId])]
+      }
+    })
   }
 
   function removeSelectedComps() {
