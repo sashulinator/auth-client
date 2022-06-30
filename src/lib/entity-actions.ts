@@ -42,10 +42,14 @@ export function copyEntity<T extends Entity>(entity: T, uniqKeys: string[] = [])
   const newUniqKeys = ['id', ...uniqKeys]
 
   return newUniqKeys.reduce((acc, keyName) => {
-    return {
-      ...acc,
-      [keyName]: uniqid(),
+    if (acc[keyName]) {
+      return {
+        ...acc,
+        [keyName]: uniqid(),
+      }
     }
+
+    return acc
   }, entity)
 }
 

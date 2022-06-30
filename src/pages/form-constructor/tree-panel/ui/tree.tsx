@@ -33,7 +33,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
   const [editId, setEditId] = useState<string | undefined>()
   const [, startTransition] = useTransition()
 
-  useEffect(rebuildTree, [props.schema, props.searchQuery])
+  useEffect(rebuildTree, [props.schema, props.searchQuery, props.schemas])
 
   function rebuildTree() {
     startTransition(() => {

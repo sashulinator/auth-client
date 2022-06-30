@@ -2,7 +2,7 @@ import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
 import React from 'react'
 
-import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp } from '@/shared/schema-drawer'
 import { AdditionalData } from '@/shared/tree'
 
 export interface TreeLeafProps extends RenderItemParams {
@@ -18,10 +18,10 @@ export interface TreeAdditionalData extends AdditionalData {
   schemas: Catalog<CompSchema> | null
   editId?: string
   onDoubleClick: (compId?: string) => void
-  updateComp: (comp: Comp) => void
+  updateComp: (comp: Comp | LinkedComp) => void
 }
 
 export interface TreeItemData extends TreeAdditionalData {
-  entity: Comp
+  entity: Comp | LinkedComp
   isExpandedBeforeSearchQuery: boolean
 }

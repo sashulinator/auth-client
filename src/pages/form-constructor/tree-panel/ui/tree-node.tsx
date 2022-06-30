@@ -10,7 +10,7 @@ import { schemasState, selectedCompIdsState } from '@/entities/schema'
 import { getValue, removeFocus } from '@/lib/dom-utils'
 import { isEnter } from '@/lib/key-events'
 import EditableText from '@/shared/editable-text'
-import { Comp } from '@/shared/schema-drawer'
+import { Comp, LinkedComp, isComp, isLinkedComp } from '@/shared/schema-drawer'
 
 const buttonStyles: IButtonStyles = {
   rootHovered: {
@@ -84,15 +84,16 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
 })
 
 function OptimizationLayer(props: TreeLeafProps) {
+  const comp = props.item.data?.entity as LinkedComp | Comp
+
   const [selectedCompIds] = useRecoilState(selectedCompIdsState)
   const [schemas] = useRecoilState(schemasState)
-  const schema = schemas?.[props.item.data?.entity?.compSchemaId || '']
+  const schema = schemas?.[isComp(comp) ? comp?.compSchemaId : comp?.linkedSchemaId]
   const isSelected = selectedCompIds.includes(props.item.data?.entity.id || '')
   const isExpandButton = !!props.item.hasChildren
   const [isEditing, setIsEditing] = useState(false)
 
   const iconName = componentList[schema?.componentName || '']?.iconName || 'Unknown'
-  const comp = props.item.data?.entity as Comp
 
   const title = getTitle(props, isSelected, isEditing, selectedCompIds)
 
@@ -164,8 +165,15 @@ function ExpandButton(props: ExpandButtonProps) {
 // Private
 
 function getTitle(props: TreeLeafProps, isSelected: boolean, isEditing: boolean, selectedCompIds: string[]): string {
+  const comp = props.item.data?.entity
+
+  if (isLinkedComp(comp)) {
+    const schema = props.item.data?.schemas?.[comp.linkedSchemaId]
+    return schema?.title || ''
+  }
+
   const searchQuery = props.item.data?.search?.query || ''
-  let title = props.item.data?.entity.title || ''
+  let title = comp?.title || ''
 
   if (isEditing) {
     return title
