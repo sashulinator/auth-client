@@ -6,7 +6,7 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave/ui/autosave'
-import SchemaDrawer, { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, Comp, CompSchema, LinkedComp, isComp, isLinkedComp } from '@/shared/schema-drawer'
 
 interface CompFormProps {
   previewSchema: CompSchema
@@ -14,11 +14,12 @@ interface CompFormProps {
   schemas: Catalog<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']
   context: Record<string, unknown>
-  comp: Comp
+  comp: Comp | LinkedComp
 }
 
-export default function CompForm(props: CompFormProps): JSX.Element {
+export default function CompForm(props: CompFormProps): JSX.Element | null {
   const [initialValues, setInitialValues] = useState(props.comp || undefined)
+  const comp = props.comp
 
   useEffect(() => {
     setInitialValues(props.comp)
@@ -26,15 +27,20 @@ export default function CompForm(props: CompFormProps): JSX.Element {
 
   const names = useMemo(() => {
     return Object.values(props.previewSchema.data)
+      .filter(isComp)
       .filter((comp) => comp.name)
       .map((comp) => comp.name)
       .sort()
   }, [])
 
+  if (isLinkedComp(comp)) {
+    return null
+  }
+
   return (
     <Form<Comp, Comp>
       key={`${initialValues.id}${props.schema.id}${props.comp.id}`}
-      initialValues={initialValues}
+      initialValues={initialValues as Comp}
       onSubmit={props.onSubmit}
       render={(formProps) => {
         return (
@@ -46,7 +52,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                 horizontalAlign="space-between"
                 verticalAlign="center"
               >
-                <Stack as="h2">{props.comp.title}</Stack>
+                <Stack as="h2">{comp.title}</Stack>
               </Stack>
               <Stack tokens={{ padding: '20px 20px 0' }}>id: {props.comp.id}</Stack>
               <Stack>
@@ -62,6 +68,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                       names,
                       options: {
                         comps: Object.values(props.previewSchema.data)
+                          .filter(isComp)
                           .sort((a, b) => (a.title?.toLowerCase() > b.title?.toLowerCase() ? 1 : -1))
                           .map((comp) => ({
                             key: comp.id,

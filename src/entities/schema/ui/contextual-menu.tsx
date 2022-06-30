@@ -5,19 +5,23 @@ import { useTranslation } from 'react-i18next'
 
 import { ROOT_ID } from '@/constants/common'
 import ContextualMenu from '@/shared/contextual-menu/contextual-menu'
-import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp, isLinkedComp } from '@/shared/schema-drawer'
 
 interface CompContextualMenuProps {
   remove: (compId: string) => void
   openSchemaInNewTab: (schemaId: string) => void
   schemas: Catalog<CompSchema> | null
-  comp: Comp
+  comp: Comp | LinkedComp
 }
 
 export function CompContextualMenu(props: CompContextualMenuProps): JSX.Element | null {
   const { t } = useTranslation()
-
+  const comp = props.comp
   const items: IContextualMenuItem[] = []
+
+  if (isLinkedComp(comp)) {
+    return null
+  }
 
   if (props.comp.id !== ROOT_ID) {
     items.push({
@@ -27,11 +31,11 @@ export function CompContextualMenu(props: CompContextualMenuProps): JSX.Element 
     })
   }
 
-  if (props.schemas?.[props.comp.compSchemaId]) {
+  if (props.schemas?.[comp.compSchemaId]) {
     items.push({
       key: 'editThisForm',
       text: t('t.formConstructorPage.editThisForm'),
-      onClick: () => props.openSchemaInNewTab(props.comp.compSchemaId),
+      onClick: () => props.openSchemaInNewTab(comp.compSchemaId),
     })
   }
 

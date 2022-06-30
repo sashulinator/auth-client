@@ -2,7 +2,7 @@ import { atom } from 'recoil'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
-import { Catalog, Comp, CompSchema, CompSchemaType } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CompSchemaType, LinkedComp } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 // STATES
@@ -42,7 +42,7 @@ export function schemaSetter(schema: CompSchema) {
   }
 }
 
-export function updateCompsSetter(comps: Catalog<Comp>) {
+export function updateCompsSetter(comps: Catalog<Comp | LinkedComp>) {
   return (currentSchemaHistory: DoublyLinkedList<CompSchema>): DoublyLinkedList<CompSchema> => {
     return {
       prev: currentSchemaHistory,

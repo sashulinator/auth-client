@@ -2,7 +2,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
 import { generateInitComps } from '../lib/generate-init-comps'
-import { isInputType } from '../lib/is'
+import { assertNotLinkedComp, isInputType, isLinkedComp } from '../lib/is'
 import {
   Catalog,
   Comp,
@@ -12,6 +12,7 @@ import {
   ComponentContext,
   Context,
   DrawerContext,
+  LinkedComp,
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
@@ -47,15 +48,18 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     fns: {
       ...props.context.fns,
       setFetchedDataToContext,
-      setComp: (comp: Comp) => setComps((comps) => replace(comps, comp.id, comp)),
+      setComp: (comp: Comp | LinkedComp) => setComps((comps) => replace(comps, comp.id, comp)),
     },
   }
 
-  const [comps, setComps] = useState<Catalog<Comp>>(() => generateInitComps(props.schema.data, context, props.values))
+  const [comps, setComps] = useState<Catalog<Comp | LinkedComp>>(() =>
+    generateInitComps(props.schema.data, context, props.values)
+  )
 
   useEffect(() => setComps(generateInitComps(props.schema.data, context, props.values)), [props.schema.data])
 
   const rootComp = comps[ROOT_ID]
+  assertNotLinkedComp(rootComp)
   assertNotUndefined(rootComp)
 
   if (props.schemas === null) {
@@ -82,7 +86,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
  */
 interface ComponentFactoryProps {
   schemas: Catalog<CompSchema>
-  comps: Catalog<Comp>
+  comps: Catalog<Comp | LinkedComp>
   compId: string
   context: DrawerContext
   componentList: Record<string, CompMeta>
@@ -91,6 +95,17 @@ interface ComponentFactoryProps {
 export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | null {
   const comp = props.comps[props.compId]
   assertNotUndefined(comp)
+
+  if (isLinkedComp(comp)) {
+    const schema = props.schemas[(comp as any).schemaId] as ComponentCompSchema
+
+    // Схема еще не прогрузилась и поэтому undefined
+    if (schema === undefined) {
+      return null
+    }
+
+    return <SchemaDrawer {...props} schema={schema} />
+  }
 
   const schema = props.schemas[comp.compSchemaId] as ComponentCompSchema
 

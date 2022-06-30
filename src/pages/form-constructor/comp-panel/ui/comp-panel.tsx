@@ -9,7 +9,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp } from '@/shared/schema-drawer'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -17,9 +17,9 @@ interface CompPanelProps {
   context: Record<string, unknown>
   schemas: Catalog<CompSchema> | null
   schema: CompSchema | null
-  comp: Comp | null
+  comp: Comp | LinkedComp | null
   previewSchema: CompSchema
-  ContextualMenu: (props: { comp: Comp }) => JSX.Element
+  ContextualMenu: (props: { comp: Comp | LinkedComp }) => JSX.Element
   ref: LegacyRef<HTMLDivElement | null>
   isFocused?: boolean
 }

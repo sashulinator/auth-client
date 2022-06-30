@@ -38,7 +38,12 @@ export interface Comp {
   injections?: Injection[]
 }
 
-export interface CompSchema extends Schema<Comp> {
+export interface LinkedComp {
+  id: string
+  linkedSchemaId: string
+}
+
+export interface CompSchema extends Schema<Comp | LinkedComp> {
   id: string
   title: string
   type: CompSchemaType
@@ -182,13 +187,13 @@ export type Context = {
 } & Record<string, unknown>
 
 export type DrawerContext = Context & {
-  comps: Catalog<Comp>
+  comps: Catalog<Comp | LinkedComp>
   compIds: string[]
   schemas: Catalog<CompSchema> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>> // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setComp: (comp: Comp) => void
+    setComp: (comp: Comp | LinkedComp) => void
   }
 }
 
