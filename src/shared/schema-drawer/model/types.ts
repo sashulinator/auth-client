@@ -45,6 +45,8 @@ export interface CompSchema extends Schema<Comp> {
   componentName: null | string
 }
 
+export type CreateCompSchema = Omit<CompSchema, 'id'>
+
 export type ComponentCompSchema = Omit<CompSchema, 'componentName'> & {
   componentName: string
 }

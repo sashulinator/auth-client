@@ -5,12 +5,12 @@ import { atom } from 'recoil'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import { replace } from '@/lib/change-unmutable'
-import { Catalog, Comp, CompSchema, CompSchemaType } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 // STATES
 
-export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema | null>>({
+export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema | CreateCompSchema | null>>({
   key: 'currentSchemaHistoryState',
   default: {
     prev: null,
@@ -19,7 +19,6 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema | null
       ? null
       : {
           // we cannot omit id so let's make it localSchema
-          id: 'localSchema',
           componentName: null,
           title: 'Name',
           type: CompSchemaType.FORM,
@@ -37,8 +36,10 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema | null
 
 // SETTERS
 
-export function schemaSetter(schema: CompSchema) {
-  return (currentSchemaHistory: DoublyLinkedList<CompSchema | null>): DoublyLinkedList<CompSchema | null> => {
+export function schemaSetter(schema: CompSchema | CreateCompSchema) {
+  return (
+    currentSchemaHistory: DoublyLinkedList<CompSchema | CreateCompSchema | null>
+  ): DoublyLinkedList<CompSchema | CreateCompSchema | null> => {
     return {
       prev: currentSchemaHistory,
       next: null,
@@ -48,7 +49,9 @@ export function schemaSetter(schema: CompSchema) {
 }
 
 export function updateCompsSetter(comps: Catalog<Comp>) {
-  return (currentSchemaHistory: DoublyLinkedList<CompSchema | null>): DoublyLinkedList<CompSchema | null> => {
+  return (
+    currentSchemaHistory: DoublyLinkedList<CompSchema | CreateCompSchema | null>
+  ): DoublyLinkedList<CompSchema | CreateCompSchema | null> => {
     assertNotNull(currentSchemaHistory.data)
     return {
       prev: currentSchemaHistory,
@@ -59,7 +62,9 @@ export function updateCompsSetter(comps: Catalog<Comp>) {
 }
 
 export function updateCompSetter(comp: Comp) {
-  return (currentSchemaHistory: DoublyLinkedList<CompSchema | null>): DoublyLinkedList<CompSchema | null> => {
+  return (
+    currentSchemaHistory: DoublyLinkedList<CompSchema | CreateCompSchema | null>
+  ): DoublyLinkedList<CompSchema | CreateCompSchema | null> => {
     assertNotNull(currentSchemaHistory.data)
     const comps = replace(currentSchemaHistory.data.data, comp.id, comp)
 
@@ -72,8 +77,8 @@ export function updateCompSetter(comp: Comp) {
 }
 
 export function prevSetter(
-  currentSchemaHistory: DoublyLinkedList<CompSchema | null>
-): DoublyLinkedList<CompSchema | null> {
+  currentSchemaHistory: DoublyLinkedList<CompSchema | CreateCompSchema | null>
+): DoublyLinkedList<CompSchema | CreateCompSchema | null> {
   if (currentSchemaHistory.prev === null) {
     return currentSchemaHistory
   }
@@ -88,8 +93,8 @@ export function prevSetter(
 }
 
 export function nextSetter(
-  currentSchemaHistory: DoublyLinkedList<CompSchema | null>
-): DoublyLinkedList<CompSchema | null> {
+  currentSchemaHistory: DoublyLinkedList<CompSchema | CreateCompSchema | null>
+): DoublyLinkedList<CompSchema | CreateCompSchema | null> {
   if (currentSchemaHistory.next === null) {
     return currentSchemaHistory
   }

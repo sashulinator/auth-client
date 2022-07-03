@@ -11,6 +11,7 @@ import {
   ComponentCompSchema,
   ComponentContext,
   Context,
+  CreateCompSchema,
   DrawerContext,
 } from '../model/types'
 import ContentComponent from './content-component'
@@ -22,7 +23,7 @@ import { replace } from '@/lib/change-unmutable'
 
 interface SchemaDrawerProps {
   values: Record<string, unknown>
-  schema: CompSchema
+  schema: CompSchema | CreateCompSchema
   schemas: Catalog<CompSchema>
   context: Context
   componentList: Record<string, CompMeta>

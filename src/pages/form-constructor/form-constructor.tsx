@@ -1,5 +1,5 @@
 import { Stack } from '@fluentui/react'
-import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined, isObject } from '@savchenko91/schema-validator'
 
 import './form-constructor.css'
 
@@ -41,7 +41,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { Catalog, Comp } from '@/shared/schema-drawer'
+import { Catalog, Comp, assertHasId } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
@@ -108,10 +108,12 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function updateSchemas() {
-    if (currentSchemaHistory.data === null) {
-      setSchemas({ ...schemas })
+    const isCompSchema = isObject(currentSchemaHistory?.data) && 'id' in currentSchemaHistory?.data
+    if (isCompSchema) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setSchemas({ [(currentSchemaHistory.data as any).id]: currentSchemaHistory.data, ...schemas })
     } else {
-      setSchemas({ [currentSchemaHistory.data.id]: currentSchemaHistory.data, ...schemas })
+      setSchemas({ ...schemas })
     }
   }
 
@@ -260,6 +262,7 @@ const FormConstructor: FC = (): JSX.Element => {
 
   async function deleteSchema() {
     assertNotNull(currentSchemaHistory.data)
+    assertHasId(currentSchemaHistory.data)
     const response = await fetch('/api/v1/schemas', {
       method: 'DELETE',
       body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
