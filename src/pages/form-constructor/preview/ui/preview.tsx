@@ -10,7 +10,7 @@ import LoadingAria from '@/shared/loading-aria'
 import SchemaDrawer, { Catalog, CompSchema, CompSchemaType } from '@/shared/schema-drawer'
 
 interface PreviewProps {
-  schema: CompSchema
+  schema: CompSchema | null
   schemas: Catalog<CompSchema> | null
   selectedCompIds: string[]
   isLoading: boolean
@@ -24,6 +24,10 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
   const values = useRef({})
 
   useEffect(() => highlightOnEvents(props.selectedCompIds), [props.selectedCompIds, props.schema])
+
+  if (props.schema === null) {
+    return null
+  }
 
   function onSubmit(data: unknown) {
     console.log('data', data)

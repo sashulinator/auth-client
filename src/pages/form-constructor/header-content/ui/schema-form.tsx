@@ -1,5 +1,5 @@
 import { PrimaryButton, Stack } from '@fluentui/react'
-import { ErrorCollection } from '@savchenko91/schema-validator'
+import { ErrorCollection, assertNotNull } from '@savchenko91/schema-validator'
 
 import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
@@ -23,7 +23,7 @@ import { successMessage } from '@/shared/toast'
 
 type SchemaFormValues = Pick<CompSchema, 'title' | 'componentName' | 'type'>
 
-export default function SchemaForm(): JSX.Element {
+export default function SchemaForm(): JSX.Element | null {
   const { t, i18n } = useTranslation()
   const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const { id } = useParams()
@@ -53,7 +53,7 @@ export default function SchemaForm(): JSX.Element {
 
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
-
+    assertNotNull(currentSchemaHistory.data)
     const newComponentName = type !== CompSchemaType.COMP ? null : submitSchemaData.componentName
     const newId = id ? id : uuid()
 
@@ -79,7 +79,13 @@ export default function SchemaForm(): JSX.Element {
   }
 
   function saveLocaly(schema: SchemaFormValues) {
-    setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, ...schema }))
+    if (currentSchemaHistory && currentSchemaHistory.data && schema) {
+      setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, ...schema }))
+    }
+  }
+
+  if (!currentSchemaHistory.data) {
+    return null
   }
 
   return (

@@ -108,7 +108,11 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function updateSchemas() {
-    setSchemas({ [currentSchemaHistory.data.id]: currentSchemaHistory.data, ...schemas })
+    if (currentSchemaHistory.data === null) {
+      setSchemas({ ...schemas })
+    } else {
+      setSchemas({ [currentSchemaHistory.data.id]: currentSchemaHistory.data, ...schemas })
+    }
   }
 
   // TODO rename to updateComp
@@ -121,7 +125,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function removeCompFromState(compId: string): void {
-    assertNotNull(currentSchemaHistory)
+    assertNotNull(currentSchemaHistory.data)
 
     const comps = removeEntity(compId, currentSchemaHistory.data.data)
     assertNotUndefined(comps)
@@ -167,7 +171,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function undo() {
-    if (currentSchemaHistory.prev) {
+    if (currentSchemaHistory.prev?.data) {
       // TODO проверяет только в корне а надо везде!!
       keepCompsSelected(currentSchemaHistory.prev.data.data[ROOT_ID]?.children)
     }
@@ -175,7 +179,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function redo() {
-    if (currentSchemaHistory.next) {
+    if (currentSchemaHistory.next?.data) {
       // TODO проверяет только в корне а надо везде!!
       keepCompsSelected(currentSchemaHistory.next.data.data[ROOT_ID]?.children)
     }
@@ -183,6 +187,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function copyToClipboard() {
+    assertNotNull(currentSchemaHistory.data)
     const dependencyIds = findDependencyIds(selectedCompIds, currentSchemaHistory.data.data)
     const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.data)
     localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
@@ -210,6 +215,7 @@ const FormConstructor: FC = (): JSX.Element => {
     const rootCompIds = findRootParentIds(copiedComps)
     const rootComps = findEntities(rootCompIds, copiedComps)
 
+    assertNotNull(currentSchemaHistory.data)
     const mergedComps = { ...currentSchemaHistory.data.data, ...copiedComps }
 
     const isRoot = selectedCompIds.includes(ROOT_ID)
@@ -230,6 +236,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   async function copySchema() {
+    assertNotNull(currentSchemaHistory.data)
     const response = await fetch('/api/v1/schemas', {
       method: 'POST',
       // TODO копируется текущий стейт а не тот что пришел с сервера
@@ -252,6 +259,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   async function deleteSchema() {
+    assertNotNull(currentSchemaHistory.data)
     const response = await fetch('/api/v1/schemas', {
       method: 'DELETE',
       body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
