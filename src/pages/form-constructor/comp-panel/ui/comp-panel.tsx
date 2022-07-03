@@ -1,6 +1,7 @@
 import './comp-panel.css'
 
 import CompForm from './comp-form'
+import DimensionCompForm from './dimension-comp-form'
 import clsx from 'clsx'
 import { Config } from 'final-form'
 import React, { LegacyRef, forwardRef } from 'react'
@@ -9,7 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp, isDimensionComp } from '@/shared/schema-drawer'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -35,16 +36,26 @@ const CompPanel = forwardRef<HTMLDivElement | null, CompPanelProps>(function Com
           <PerfectScrollbar className="compPanelScrollable">
             <LoadingAria loading={props.isLoading}>
               {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
-              {props.schema && (
-                <CompForm
-                  schema={props.schema}
-                  schemas={props.schemas}
-                  comp={props.comp}
-                  context={props.context}
-                  onSubmit={props.onSubmit}
-                  previewSchema={props.previewSchema}
-                />
-              )}
+              {props.schema &&
+                (isDimensionComp(props.comp) ? (
+                  <DimensionCompForm
+                    schema={props.schema}
+                    schemas={props.schemas}
+                    comp={props.comp}
+                    context={props.context}
+                    onSubmit={props.onSubmit}
+                    previewSchema={props.previewSchema}
+                  />
+                ) : (
+                  <CompForm
+                    schema={props.schema}
+                    schemas={props.schemas}
+                    comp={props.comp as Comp}
+                    context={props.context}
+                    onSubmit={props.onSubmit}
+                    previewSchema={props.previewSchema}
+                  />
+                ))}
             </LoadingAria>
           </PerfectScrollbar>
         </div>

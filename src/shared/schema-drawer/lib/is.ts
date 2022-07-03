@@ -1,6 +1,6 @@
 import { isObject } from '@savchenko91/schema-validator'
 
-import { Comp, CompSchema, LinkedComp } from '../model/types'
+import { Comp, CompSchema, DimensionComp, LinkedComp } from '../model/types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function hasSchema<T>(input: T | undefined): input is T & { schema: CompSchema } {
@@ -19,6 +19,10 @@ export function isCheckbox<T extends { type: string }>(input: T): boolean {
 }
 
 export function isLinkedComp(input: unknown): input is LinkedComp {
+  return isObject(input) && 'linkedSchemaId' in input
+}
+
+export function isDimensionComp(input: unknown): input is DimensionComp {
   return isObject(input) && 'linkedSchemaId' in input
 }
 

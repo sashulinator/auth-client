@@ -43,6 +43,11 @@ export interface LinkedComp {
   linkedSchemaId: string
 }
 
+export interface DimensionComp extends LinkedComp {
+  required: boolean
+  multiselect: boolean
+}
+
 export interface CompSchema extends Schema<Comp | LinkedComp> {
   id: string
   title: string

@@ -23,6 +23,7 @@ export default function Modal(props: ModalProps): JSX.Element | null {
         fieldNames: ['id', 'title'],
       },
       isInitialExpanded: false,
+      isRoot: true,
     })
     setTree(newTree)
   }

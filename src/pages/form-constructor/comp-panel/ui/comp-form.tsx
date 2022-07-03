@@ -6,7 +6,7 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave/ui/autosave'
-import SchemaDrawer, { Catalog, Comp, CompSchema, LinkedComp, isComp, isLinkedComp } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, Comp, CompSchema, isComp } from '@/shared/schema-drawer'
 
 interface CompFormProps {
   previewSchema: CompSchema
@@ -14,7 +14,7 @@ interface CompFormProps {
   schemas: Catalog<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']
   context: Record<string, unknown>
-  comp: Comp | LinkedComp
+  comp: Comp
 }
 
 export default function CompForm(props: CompFormProps): JSX.Element | null {
@@ -33,14 +33,10 @@ export default function CompForm(props: CompFormProps): JSX.Element | null {
       .sort()
   }, [])
 
-  if (isLinkedComp(comp)) {
-    return null
-  }
-
   return (
     <Form<Comp, Comp>
       key={`${initialValues.id}${props.schema.id}${props.comp.id}`}
-      initialValues={initialValues as Comp}
+      initialValues={initialValues}
       onSubmit={props.onSubmit}
       render={(formProps) => {
         return (
@@ -54,7 +50,6 @@ export default function CompForm(props: CompFormProps): JSX.Element | null {
               >
                 <Stack as="h2">{comp.title}</Stack>
               </Stack>
-              <Stack tokens={{ padding: '20px 20px 0' }}>id: {props.comp.id}</Stack>
               <Stack>
                 <SchemaDrawer
                   componentList={componentList}
