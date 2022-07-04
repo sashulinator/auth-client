@@ -41,7 +41,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { Catalog, Comp, assertHasId } from '@/shared/schema-drawer'
+import { Catalog, Comp, LinkedComp, assertNotLinkedComp, isComp, isLinkedComp, assertHasId } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
@@ -102,8 +102,12 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function updateSelectedCompSchema() {
-    if (propertyPanelComp?.compSchemaId) {
-      setSelectedCompSchema(schemas?.[propertyPanelComp?.compSchemaId] ?? null)
+    if (isComp(propertyPanelComp)) {
+      setSelectedCompSchema(schemas?.[propertyPanelComp.compSchemaId] ?? null)
+    }
+
+    if (isLinkedComp(propertyPanelComp)) {
+      setSelectedCompSchema(schemas?.[propertyPanelComp.linkedSchemaId] ?? null)
     }
   }
 
@@ -122,7 +126,7 @@ const FormConstructor: FC = (): JSX.Element => {
     setCurrentSchemaHistory(updateCompSetter(comp))
   }
 
-  function updateCompsInCurrentSchemaState(comps: Catalog<Comp>) {
+  function updateCompsInCurrentSchemaState(comps: Catalog<Comp | LinkedComp>) {
     setCurrentSchemaHistory(updateCompsSetter(comps))
   }
 
@@ -137,6 +141,7 @@ const FormConstructor: FC = (): JSX.Element => {
     if (compId === propertyPanelComp?.id) {
       const compLocation = findEntityPosition(compId, currentSchemaHistory.data.data)
       const parentComp = findEntity(compLocation?.parentId || '', comps)
+      assertNotLinkedComp(parentComp)
       const siblingId = parentComp.children?.[compLocation?.index || 0]
       siblingId ? setSelectedCompIds([siblingId]) : setSelectedCompIds([])
     }
@@ -174,16 +179,22 @@ const FormConstructor: FC = (): JSX.Element => {
 
   function undo() {
     if (currentSchemaHistory.prev?.data) {
+      const root = currentSchemaHistory.prev.data.data[ROOT_ID]
+      assertNotLinkedComp(root)
+
       // TODO проверяет только в корне а надо везде!!
-      keepCompsSelected(currentSchemaHistory.prev.data.data[ROOT_ID]?.children)
+      keepCompsSelected(root?.children)
     }
     setCurrentSchemaHistory(prevSetter)
   }
 
   function redo() {
     if (currentSchemaHistory.next?.data) {
+      const root = currentSchemaHistory.next.data.data[ROOT_ID]
+      assertNotLinkedComp(root)
+
       // TODO проверяет только в корне а надо везде!!
-      keepCompsSelected(currentSchemaHistory.next.data.data[ROOT_ID]?.children)
+      keepCompsSelected(root?.children)
     }
     setCurrentSchemaHistory(nextSetter)
   }
@@ -211,7 +222,7 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
-  function addNewComps(comps: Catalog<Comp>) {
+  function addNewComps(comps: Catalog<Comp | LinkedComp>) {
     const copiedComps = copyEntities(comps, ['name'])
 
     const rootCompIds = findRootParentIds(copiedComps)

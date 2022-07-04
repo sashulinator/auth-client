@@ -6,7 +6,7 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave/ui/autosave'
-import SchemaDrawer, { Catalog, Comp, CompSchema, CreateCompSchema } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, Comp, CompSchema, CreateCompSchema, isComp } from '@/shared/schema-drawer'
 
 interface CompFormProps {
   previewSchema: CompSchema | CreateCompSchema
@@ -17,8 +17,9 @@ interface CompFormProps {
   comp: Comp
 }
 
-export default function CompForm(props: CompFormProps): JSX.Element {
+export default function CompForm(props: CompFormProps): JSX.Element | null {
   const [initialValues, setInitialValues] = useState(props.comp || undefined)
+  const comp = props.comp
 
   useEffect(() => {
     setInitialValues(props.comp)
@@ -26,6 +27,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
 
   const names = useMemo(() => {
     return Object.values(props.previewSchema.data)
+      .filter(isComp)
       .filter((comp) => comp.name)
       .map((comp) => comp.name)
       .sort()
@@ -46,9 +48,8 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                 horizontalAlign="space-between"
                 verticalAlign="center"
               >
-                <Stack as="h2">{props.comp.title}</Stack>
+                <Stack as="h2">{comp.title}</Stack>
               </Stack>
-              <Stack tokens={{ padding: '20px 20px 0' }}>id: {props.comp.id}</Stack>
               <Stack>
                 <SchemaDrawer
                   componentList={componentList}
@@ -62,6 +63,7 @@ export default function CompForm(props: CompFormProps): JSX.Element {
                       names,
                       options: {
                         comps: Object.values(props.previewSchema.data)
+                          .filter(isComp)
                           .sort((a, b) => (a.title?.toLowerCase() > b.title?.toLowerCase() ? 1 : -1))
                           .map((comp) => ({
                             key: comp.id,

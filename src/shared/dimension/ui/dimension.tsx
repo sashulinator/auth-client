@@ -1,19 +1,54 @@
-import { isString } from '@savchenko91/schema-validator'
+import { Panel, PanelType, PrimaryButton } from '@fluentui/react'
 
 import './dimension.css'
 
-import { Dimension } from '../model/types'
-import React, { memo } from 'react'
+import Tree from './tree'
+import React, { useState } from 'react'
 
-import { Catalog, Schema } from '@/shared/schema-drawer'
+import { CompSchema, FieldComponentContext, assertLinkedComp } from '@/shared/schema-drawer'
 
 interface DimensionProps {
-  schemas: Catalog<Schema<Dimension>> | string | undefined
   value: string[] | string | undefined
+  children: string[]
+  context: FieldComponentContext
 }
 
-export default memo(function Dimension(props: DimensionProps): JSX.Element {
-  const value = isString(props.value) ? undefined : props.value
+DimensionComp.defaultValues = {
+  schemas: {},
+}
 
-  return <div className="Dimension">{value?.join()}</div>
-})
+export default function DimensionComp(props: DimensionProps): JSX.Element {
+  const [isOpen, setOpen] = useState(false)
+
+  const schemas = props.context.comp.children?.reduce<CompSchema[]>((acc, id) => {
+    const comp = props.context.comps[id]
+    assertLinkedComp(comp)
+
+    const schema = props.context.schemas[comp.linkedSchemaId]
+    if (schema) {
+      acc.push(schema)
+    }
+
+    return acc
+  }, [])
+
+  return (
+    <div className="Dimension">
+      {'value?.join()'}
+      <PrimaryButton onClick={() => setOpen(true)} />
+      <Panel
+        type={PanelType.customNear}
+        customWidth={'920px'}
+        className="DimensionModal"
+        isOpen={isOpen}
+        onDismiss={() => setOpen(false)}
+      >
+        <div className="rootContainer">
+          {schemas?.map((schema) => {
+            return <Tree key={schema.id} schema={schema} />
+          })}
+        </div>
+      </Panel>
+    </div>
+  )
+}

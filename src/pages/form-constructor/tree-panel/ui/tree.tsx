@@ -14,7 +14,7 @@ import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
-import { Catalog, Comp, CompSchema, CreateCompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp, CreateCompSchema } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
 export interface TreeProps {
@@ -24,7 +24,7 @@ export interface TreeProps {
   searchQuery?: string
   isLoading: boolean
   toggleCompSelection: (compId: string | string[]) => void
-  upsertComps: (comps: Catalog<Comp>) => void
+  upsertComps: (comps: Catalog<Comp | LinkedComp>) => void
   updateComp: (comp: Comp) => void
 }
 
@@ -33,7 +33,7 @@ export default function PanelTree(props: TreeProps): JSX.Element {
   const [editId, setEditId] = useState<string | undefined>()
   const [, startTransition] = useTransition()
 
-  useEffect(rebuildTree, [props.schema, props.searchQuery])
+  useEffect(rebuildTree, [props.schema, props.searchQuery, props.schemas])
 
   function rebuildTree() {
     startTransition(() => {
