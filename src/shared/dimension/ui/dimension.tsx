@@ -3,15 +3,16 @@ import { isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
-import Tree from './tree'
 import React, { useState } from 'react'
 
+import { TreeCheckbox } from '@/shared/checkbox'
 import { CompSchema, DimensionComp, FieldComponentContext, assertLinkedComp } from '@/shared/schema-drawer'
 
 interface DimensionProps {
   value: Record<string, string[]> | string | undefined
   children: string[]
   context: FieldComponentContext
+  onChange: (value: Record<string, string[]>) => void
 }
 
 Dimension.defaultValues = {
@@ -35,6 +36,15 @@ export default function Dimension(props: DimensionProps): JSX.Element {
     return acc
   }, [])
 
+  function onChange(name: string) {
+    return (data: string[]) => {
+      props.onChange({
+        ...value,
+        [name]: data,
+      })
+    }
+  }
+
   return (
     <div className="Dimension">
       {'value?.join()'}
@@ -48,7 +58,16 @@ export default function Dimension(props: DimensionProps): JSX.Element {
       >
         <div className="rootContainer">
           {compsAndSchemas?.map(([comp, schema]) => {
-            return <Tree key={schema.id} schema={schema} comp={comp} value={value?.[schema.title]} />
+            return (
+              <TreeCheckbox
+                key={schema.id}
+                name={schema.title}
+                value={value?.[schema.title] || []}
+                schema={schema}
+                onChange={onChange(schema.title)}
+                multiselect={comp.props?.multiselect}
+              />
+            )
           })}
         </div>
       </Panel>

@@ -3,7 +3,6 @@ import { IButtonStyles, IconButton, Stack } from '@fluentui/react'
 
 import clsx from 'clsx'
 import React from 'react'
-import { Field } from 'react-final-form'
 
 import CheckBox from '@/shared/checkbox/ui/checkbox'
 import { Comp } from '@/shared/schema-drawer'
@@ -22,6 +21,8 @@ export interface TreeNodeProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
       entity: Comp
+      onChange: (name: string) => void
+      value: string[]
     }
   }
 }
@@ -32,6 +33,7 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
   }
 
   const data = props.item.data
+  const name = data.entity.name || ''
 
   return (
     <div
@@ -52,22 +54,17 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
             onCollapse={props.onCollapse}
           />
         ) : (
-          <div style={{ width: '36px', height: '32px' }} />
+          <div style={{ width: '36px', height: '36px' }} />
         )}
-        <Field type="checkbox" name={data.entity.name || ''}>
-          {({ input }) => {
-            return (
-              <div>
-                <CheckBox
-                  {...input}
-                  label={data.entity.title}
-                  disabled={!input.value && Boolean(data.disabled)}
-                  сonvertFalseToUndefined={true}
-                />
-              </div>
-            )
-          }}
-        </Field>
+
+        <div>
+          <CheckBox
+            checked={data.value.includes(name)}
+            name={name}
+            label={data.entity.title}
+            onChange={() => data.onChange(name)}
+          />
+        </div>
       </Stack>
     </div>
   )
