@@ -5,11 +5,13 @@ import React, { useEffect, useState } from 'react'
 import { Form } from 'react-final-form'
 
 import Autosave from '@/shared/autosave'
-import { CompSchema, emptyFunction } from '@/shared/schema-drawer'
+import { CompSchema, DimensionComp, emptyFunction } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
 interface ModalProps {
   schema: CompSchema
+  comp: DimensionComp
+  value: undefined | string[]
 }
 
 export default function Modal(props: ModalProps): JSX.Element | null {

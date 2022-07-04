@@ -1,32 +1,35 @@
 import { Panel, PanelType, PrimaryButton } from '@fluentui/react'
+import { isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
 import Tree from './tree'
 import React, { useState } from 'react'
 
-import { CompSchema, FieldComponentContext, assertLinkedComp } from '@/shared/schema-drawer'
+import { CompSchema, DimensionComp, FieldComponentContext, assertLinkedComp } from '@/shared/schema-drawer'
 
 interface DimensionProps {
-  value: string[] | string | undefined
+  value: Record<string, string[]> | string | undefined
   children: string[]
   context: FieldComponentContext
 }
 
-DimensionComp.defaultValues = {
+Dimension.defaultValues = {
   schemas: {},
 }
 
-export default function DimensionComp(props: DimensionProps): JSX.Element {
+export default function Dimension(props: DimensionProps): JSX.Element {
   const [isOpen, setOpen] = useState(false)
+  const value = isString(props.value) ? undefined : props.value
 
-  const schemas = props.context.comp.children?.reduce<CompSchema[]>((acc, id) => {
+  const compsAndSchemas = props.context.comp.children?.reduce<[DimensionComp, CompSchema][]>((acc, id) => {
     const comp = props.context.comps[id]
     assertLinkedComp(comp)
 
     const schema = props.context.schemas[comp.linkedSchemaId]
+
     if (schema) {
-      acc.push(schema)
+      acc.push([comp as DimensionComp, schema])
     }
 
     return acc
@@ -44,8 +47,8 @@ export default function DimensionComp(props: DimensionProps): JSX.Element {
         onDismiss={() => setOpen(false)}
       >
         <div className="rootContainer">
-          {schemas?.map((schema) => {
-            return <Tree key={schema.id} schema={schema} />
+          {compsAndSchemas?.map(([comp, schema]) => {
+            return <Tree key={schema.id} schema={schema} comp={comp} value={value?.[schema.title]} />
           })}
         </div>
       </Panel>
