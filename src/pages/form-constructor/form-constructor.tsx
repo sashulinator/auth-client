@@ -41,7 +41,15 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { Catalog, Comp, LinkedComp, assertNotLinkedComp, isComp, isLinkedComp, assertHasId } from '@/shared/schema-drawer'
+import {
+  Catalog,
+  Comp,
+  LinkedComp,
+  assertHasId,
+  assertNotLinkedComp,
+  isComp,
+  isLinkedComp,
+} from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()

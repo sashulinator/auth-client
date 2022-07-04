@@ -19,8 +19,8 @@ interface CompPanelProps {
   schemas: Catalog<CompSchema> | null
   schema: CompSchema | null
   comp: Comp | LinkedComp | null
-  previewSchema: CompSchema | null | CreateCompSchema | LinkedComp
-  ContextualMenu: (props: { comp: Comp }) => JSX.Element
+  previewSchema: CompSchema | null | CreateCompSchema
+  ContextualMenu: (props: { comp: Comp | LinkedComp }) => JSX.Element
   ref: LegacyRef<HTMLDivElement | null>
   isFocused?: boolean
 }
