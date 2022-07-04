@@ -28,6 +28,7 @@ export default function DimensionCompForm(props: DimensionCompFormProps): JSX.El
     <Form<DimensionComp, DimensionComp>
       key={`${initialValues.id}${props.schema.id}${props.comp.id}`}
       initialValues={initialValues}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onSubmit={props.onSubmit as any}
       render={(formProps) => {
         return (
@@ -42,10 +43,10 @@ export default function DimensionCompForm(props: DimensionCompFormProps): JSX.El
                 <Stack as="h2">{props.schema.title}</Stack>
               </Stack>
               <Stack tokens={{ padding: '24px 24px 0', childrenGap: 24 }}>
-                <Field<boolean> type="checkbox" name="required">
+                <Field<boolean> type="checkbox" name="props.required">
                   {({ input }) => <Checkbox {...input} label="required" />}
                 </Field>
-                <Field<boolean> type="checkbox" name="multiselect">
+                <Field<boolean> type="checkbox" name="props.multiselect">
                   {({ input }) => <Checkbox {...input} label="multiselect" />}
                 </Field>
               </Stack>

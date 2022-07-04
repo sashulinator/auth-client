@@ -36,11 +36,7 @@ export default function MultiCheckbox(props: MultiCheckboxProps): JSX.Element {
         {props.label && <Label>{props.label}</Label>}
         <Stack tokens={{ childrenGap: props.childrenGap }}>
           {options.map((option) => (
-            <Checkbox
-              key={option.key}
-              label={option.text}
-              onChange={() => onChange(option.key.toString() || '')}
-            ></Checkbox>
+            <Checkbox key={option.key} label={option.text} onChange={() => onChange(option.key.toString() || '')} />
           ))}
         </Stack>
       </Stack>
