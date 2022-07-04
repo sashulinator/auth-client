@@ -1,5 +1,5 @@
 import { Stack } from '@fluentui/react'
-import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined, isObject } from '@savchenko91/schema-validator'
 
 import './form-constructor.css'
 
@@ -41,7 +41,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { Catalog, Comp } from '@/shared/schema-drawer'
+import { Catalog, Comp, assertHasId } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
   const { id } = useParams()
@@ -108,7 +108,13 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function updateSchemas() {
-    setSchemas({ [currentSchemaHistory.data.id]: currentSchemaHistory.data, ...schemas })
+    const isCompSchema = isObject(currentSchemaHistory?.data) && 'id' in currentSchemaHistory?.data
+    if (isCompSchema) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setSchemas({ [(currentSchemaHistory.data as any).id]: currentSchemaHistory.data, ...schemas })
+    } else {
+      setSchemas({ ...schemas })
+    }
   }
 
   // TODO rename to updateComp
@@ -121,7 +127,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function removeCompFromState(compId: string): void {
-    assertNotNull(currentSchemaHistory)
+    assertNotNull(currentSchemaHistory.data)
 
     const comps = removeEntity(compId, currentSchemaHistory.data.data)
     assertNotUndefined(comps)
@@ -167,7 +173,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function undo() {
-    if (currentSchemaHistory.prev) {
+    if (currentSchemaHistory.prev?.data) {
       // TODO проверяет только в корне а надо везде!!
       keepCompsSelected(currentSchemaHistory.prev.data.data[ROOT_ID]?.children)
     }
@@ -175,7 +181,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function redo() {
-    if (currentSchemaHistory.next) {
+    if (currentSchemaHistory.next?.data) {
       // TODO проверяет только в корне а надо везде!!
       keepCompsSelected(currentSchemaHistory.next.data.data[ROOT_ID]?.children)
     }
@@ -183,6 +189,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function copyToClipboard() {
+    assertNotNull(currentSchemaHistory.data)
     const dependencyIds = findDependencyIds(selectedCompIds, currentSchemaHistory.data.data)
     const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.data)
     localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
@@ -210,6 +217,7 @@ const FormConstructor: FC = (): JSX.Element => {
     const rootCompIds = findRootParentIds(copiedComps)
     const rootComps = findEntities(rootCompIds, copiedComps)
 
+    assertNotNull(currentSchemaHistory.data)
     const mergedComps = { ...currentSchemaHistory.data.data, ...copiedComps }
 
     const isRoot = selectedCompIds.includes(ROOT_ID)
@@ -230,6 +238,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   async function copySchema() {
+    assertNotNull(currentSchemaHistory.data)
     const response = await fetch('/api/v1/schemas', {
       method: 'POST',
       // TODO копируется текущий стейт а не тот что пришел с сервера
@@ -252,6 +261,8 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   async function deleteSchema() {
+    assertNotNull(currentSchemaHistory.data)
+    assertHasId(currentSchemaHistory.data)
     const response = await fetch('/api/v1/schemas', {
       method: 'DELETE',
       body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
