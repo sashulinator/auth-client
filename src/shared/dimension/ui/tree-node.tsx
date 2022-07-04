@@ -44,17 +44,26 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
     >
       <Stack className="treeLeafContent" verticalAlign="center" horizontal={true}>
         <div className="treeLeafBorder" />
-        <ExpandButton
-          id={data.entity.id}
-          isExpanded={props.item.isExpanded || false}
-          onExpand={props.onExpand}
-          onCollapse={props.onCollapse}
-        />
+        {props.item.hasChildren ? (
+          <ExpandButton
+            id={data.entity.id}
+            isExpanded={props.item.isExpanded || false}
+            onExpand={props.onExpand}
+            onCollapse={props.onCollapse}
+          />
+        ) : (
+          <div style={{ width: '36px', height: '32px' }} />
+        )}
         <Field type="checkbox" name={data.entity.name || ''}>
           {({ input }) => {
             return (
               <div>
-                <CheckBox {...input} label={data.entity.title} />
+                <CheckBox
+                  {...input}
+                  label={data.entity.title}
+                  disabled={!input.value && Boolean(data.disabled)}
+                  сonvertFalseToUndefined={true}
+                />
               </div>
             )
           }}
