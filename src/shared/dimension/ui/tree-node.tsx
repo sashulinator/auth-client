@@ -5,7 +5,6 @@ import clsx from 'clsx'
 import React from 'react'
 import { Field } from 'react-final-form'
 
-import { ROOT_ID } from '@/constants/common'
 import CheckBox from '@/shared/checkbox/ui/checkbox'
 import { Comp } from '@/shared/schema-drawer'
 import { AdditionalData } from '@/shared/tree'
@@ -51,19 +50,15 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
           onExpand={props.onExpand}
           onCollapse={props.onCollapse}
         />
-        {data.entity.id !== ROOT_ID ? (
-          <Field type="checkbox" name={data.entity.name || ''}>
-            {({ input }) => {
-              return (
-                <div>
-                  <CheckBox {...input} label={data.entity.title} />
-                </div>
-              )
-            }}
-          </Field>
-        ) : (
-          'here will be name of tree'
-        )}
+        <Field type="checkbox" name={data.entity.name || ''}>
+          {({ input }) => {
+            return (
+              <div>
+                <CheckBox {...input} label={data.entity.title} />
+              </div>
+            )
+          }}
+        </Field>
       </Stack>
     </div>
   )
