@@ -5,7 +5,7 @@ import { atom } from 'recoil'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import { replace } from '@/lib/change-unmutable'
-import { Catalog, Comp, CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CompSchemaType, CreateCompSchema, LinkedComp } from '@/shared/schema-drawer'
 import { DoublyLinkedList } from '@/types/common'
 
 // STATES
@@ -48,7 +48,7 @@ export function schemaSetter(schema: CompSchema | CreateCompSchema) {
   }
 }
 
-export function updateCompsSetter(comps: Catalog<Comp>) {
+export function updateCompsSetter(comps: Catalog<Comp | LinkedComp>) {
   return (
     currentSchemaHistory: DoublyLinkedList<CompSchema | CreateCompSchema | null>
   ): DoublyLinkedList<CompSchema | CreateCompSchema | null> => {

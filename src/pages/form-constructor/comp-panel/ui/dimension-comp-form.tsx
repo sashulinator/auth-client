@@ -6,10 +6,10 @@ import { Field, Form } from 'react-final-form'
 
 import Autosave from '@/shared/autosave/ui/autosave'
 import { Checkbox } from '@/shared/checkbox'
-import { Catalog, Comp, CompSchema, DimensionComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CreateCompSchema, DimensionComp } from '@/shared/schema-drawer'
 
 interface DimensionCompFormProps {
-  previewSchema: CompSchema
+  previewSchema: CompSchema | CreateCompSchema
   schema: CompSchema
   schemas: Catalog<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']
