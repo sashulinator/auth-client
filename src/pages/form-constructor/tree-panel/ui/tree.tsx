@@ -14,11 +14,11 @@ import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
 import LoadingAria from '@/shared/loading-aria'
-import { Catalog, Comp, CompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp, CreateCompSchema } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
 export interface TreeProps {
-  schema: CompSchema
+  schema: CompSchema | CreateCompSchema
   schemas: Catalog<CompSchema> | null
   selectedCompIds: string[]
   searchQuery?: string

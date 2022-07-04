@@ -1,9 +1,12 @@
 import { findSchemaDependencies } from './find-schema-dependencies'
 
-import { Catalog, CompSchema } from '@/shared/schema-drawer'
+import { Catalog, CompSchema, CreateCompSchema } from '@/shared/schema-drawer'
 
-export function findMissingSchemaIds(schema: CompSchema, schemas: Catalog<CompSchema> | null) {
-  if (schemas === null) {
+export function findMissingSchemaIds(
+  schema: CompSchema | CreateCompSchema | null,
+  schemas: Catalog<CompSchema> | null
+) {
+  if (schemas === null || schema === null) {
     return []
   }
 

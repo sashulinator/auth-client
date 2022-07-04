@@ -19,7 +19,8 @@ export const defaultCompBindings: Catalog<Binding> = {
 }
 
 export function useBindingStates<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
-  onChange: (value: TSchema | undefined) => void,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChange: (value: BindingSchema<any> | undefined) => void,
   // can receive string because of final-form
   value: TSchema | string | undefined,
   initialSchema?: TSchema
@@ -42,7 +43,7 @@ export function useBindingStates<TUnit extends Binding, TSchema extends BindingS
 
     const newCatalog: TSchema['data'] = omitEmpty(newBindings)
 
-    onChange({ data: newCatalog } as TSchema)
+    onChange({ ...schema, data: newCatalog } as TSchema)
   }
 
   function addBinding(rawBinding: Omit<TUnit, 'id' | 'children'> & { children?: string[] }): void {
@@ -53,7 +54,7 @@ export function useBindingStates<TUnit extends Binding, TSchema extends BindingS
 
     newCatalog = addEntity(binding, ROOT_ID, 0, newCatalog)
 
-    onChange({ ...initialSchema, data: newCatalog } as TSchema)
+    onChange({ ...initialSchema, data: newCatalog })
   }
 
   return {

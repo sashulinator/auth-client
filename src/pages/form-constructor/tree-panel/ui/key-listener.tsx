@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
 import { isBackspace, isC, isCtrl, isEscape, isShift, isV, isZ } from '@/lib/key-events'
-import { CompSchema } from '@/shared/schema-drawer'
+import { CompSchema, CreateCompSchema } from '@/shared/schema-drawer'
 
 interface KeyListenerProps {
-  schema: CompSchema
+  schema: CompSchema | CreateCompSchema
   selectedCompIds: string[]
   toggleCompSelection: (compId: string | string[]) => void
   removeSelectedComps: () => void

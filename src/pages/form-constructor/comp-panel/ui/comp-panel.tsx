@@ -10,7 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema, LinkedComp, isDimensionComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp, isDimensionComp } from '@/shared/schema-drawer'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -19,14 +19,18 @@ interface CompPanelProps {
   schemas: Catalog<CompSchema> | null
   schema: CompSchema | null
   comp: Comp | LinkedComp | null
-  previewSchema: CompSchema
-  ContextualMenu: (props: { comp: Comp | LinkedComp }) => JSX.Element
+  previewSchema: CompSchema | null | CreateCompSchema | LinkedComp
+  ContextualMenu: (props: { comp: Comp }) => JSX.Element
   ref: LegacyRef<HTMLDivElement | null>
   isFocused?: boolean
 }
 
 const CompPanel = forwardRef<HTMLDivElement | null, CompPanelProps>(function CompPanel(props, ref): JSX.Element | null {
   const schemaIsMissing = !props.isLoading && !props.schema
+
+  if (props.previewSchema === null) {
+    return null
+  }
 
   return (
     <div className={clsx(props.isFocused && 'isFocused')} ref={ref} style={{ overflow: 'visible' }}>

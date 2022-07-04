@@ -6,10 +6,10 @@ import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import Autosave from '@/shared/autosave/ui/autosave'
-import SchemaDrawer, { Catalog, Comp, CompSchema, isComp } from '@/shared/schema-drawer'
+import SchemaDrawer, { Catalog, Comp, CompSchema, CreateCompSchema, isComp } from '@/shared/schema-drawer'
 
 interface CompFormProps {
-  previewSchema: CompSchema
+  previewSchema: CompSchema | CreateCompSchema
   schema: CompSchema
   schemas: Catalog<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']

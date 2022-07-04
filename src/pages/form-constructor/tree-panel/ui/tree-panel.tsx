@@ -10,11 +10,11 @@ import { useRecoilState } from 'recoil'
 import { useDebounce } from '@/lib/use-debaunce'
 import withFocus from '@/lib/with-focus'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp, CreateCompSchema } from '@/shared/schema-drawer'
 
 interface TreePanelProps {
   toggleCompSelection: (compId: string | string[]) => void
-  schema: CompSchema
+  schema: CompSchema | CreateCompSchema | null
   selectedCompIds: string[]
   upsertComps: (comps: Catalog<Comp | LinkedComp>) => void
   isLoading: boolean
@@ -33,9 +33,13 @@ interface TreePanelProps {
   redo: () => void
 }
 
-const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function TreePanel(props, ref): JSX.Element {
+const TreePanel = forwardRef<HTMLDivElement | null, TreePanelProps>(function TreePanel(props, ref): JSX.Element | null {
   const [searchQuery, setFilterString] = useDebounce<string | undefined>(undefined, 1000)
   const [, setPaletteOpen] = useRecoilState(paletteModalState)
+
+  if (props.schema === null) {
+    return null
+  }
 
   return (
     <>
