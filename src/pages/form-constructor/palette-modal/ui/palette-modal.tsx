@@ -7,6 +7,7 @@ import { paletteModalState } from '../model'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
+import uniqid from 'uniqid'
 
 import { getSchemaList } from '@/api/schema'
 import { ROOT_ID } from '@/constants/common'
@@ -14,10 +15,10 @@ import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
 import HorizontalLine from '@/shared/horizontal-line'
-import { Catalog, Comp, CompSchema, CompSchemaType, isInputType } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CompSchemaType, LinkedComp, isInputType } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
-  addNewComps: (comps: Catalog<Comp>) => void
+  addNewComps: (comps: Catalog<Comp | LinkedComp>) => void
   toggleCompSelection: (compId: string | string[]) => void
 }
 
@@ -28,6 +29,9 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   const { data } = useQuery('schemas', getSchemaList)
   const presets: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.PRESET)
   const components: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.COMP)
+  const dimensions: CompSchema[] = Object.values(data || {}).filter(
+    (schema) => schema.type === CompSchemaType.FORM_DIMENSION
+  )
 
   function onAdd(schema: CompSchema) {
     const createdNewComp = createNewComp(schema, componentList)
@@ -38,6 +42,12 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   function addPreset(schema: CompSchema) {
     const comps = remove(schema.data, ROOT_ID)
     props.addNewComps(comps)
+    setOpen(false)
+  }
+
+  function addSchema(schema: CompSchema) {
+    const id = uniqid()
+    props.addNewComps({ [id]: { id, linkedSchemaId: schema.id } })
     setOpen(false)
   }
 
@@ -122,6 +132,21 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
                       </PrimaryButton>
                     )
                   })}
+              </div>
+            </Stack>
+          </Stack>
+        </PivotItem>
+        <PivotItem headerText="Классификаторы">
+          <Stack className="rootContainer">
+            <Stack className="container">
+              <div className="buttons">
+                {dimensions.map((schema) => {
+                  return (
+                    <PrimaryButton onClick={() => addSchema(schema)} key={schema.id}>
+                      {schema.title}
+                    </PrimaryButton>
+                  )
+                })}
               </div>
             </Stack>
           </Stack>

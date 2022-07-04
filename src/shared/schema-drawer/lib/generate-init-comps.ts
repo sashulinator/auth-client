@@ -1,4 +1,5 @@
-import { Catalog, Comp, ComponentCompSchema, DrawerContext } from '../model/types'
+import { isLinkedComp } from '..'
+import { Catalog, Comp, ComponentCompSchema, DrawerContext, LinkedComp } from '../model/types'
 import bindEvents from './bind-events'
 import { emptyFunction } from './empty-function'
 import { onFieldLife, onInit } from './events'
@@ -14,13 +15,13 @@ import { replace } from '@/lib/change-unmutable'
  * Решение: данная функция вычисляет новые значения comps до первого рендеринга
  */
 export function generateInitComps(
-  comps: Catalog<Comp>,
+  comps: Catalog<Comp | LinkedComp>,
   rawContext: DrawerContext,
   values: Record<string, unknown>
-): Catalog<Comp> {
+): Catalog<Comp | LinkedComp> {
   let newComps = comps
   // создадим фейковую функцию по изменению компонента
-  function setComp(newComp: Comp) {
+  function setComp(newComp: Comp | LinkedComp) {
     newComps = replace(newComps, newComp.id, newComp)
   }
 
@@ -28,6 +29,10 @@ export function generateInitComps(
   const form: FormApi<Record<string, unknown>, Partial<unknown>> = createForm({ onSubmit: emptyFunction })
 
   Object.values(comps).forEach((comp) => {
+    if (isLinkedComp(comp)) {
+      return
+    }
+
     if (comp.name === undefined) {
       return
     }
@@ -41,6 +46,10 @@ export function generateInitComps(
 
   // пройдёмся по всем comp и вызовем у них собитые onInit
   Object.values(comps).forEach((comp) => {
+    if (isLinkedComp(comp)) {
+      return
+    }
+
     const injectedComp = injectToComp(comp.injections, context, comp)
     const schema = context.schemas[comp.compSchemaId] as ComponentCompSchema
 

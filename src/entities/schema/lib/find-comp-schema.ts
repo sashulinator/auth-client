@@ -1,11 +1,11 @@
-import { Catalog, Comp, CompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, LinkedComp, isLinkedComp } from '@/shared/schema-drawer'
 
-export function findCompSchema(comp: Comp | null, schemas: Catalog<CompSchema> | null): CompSchema | null {
+export function findCompSchema(comp: Comp | null | LinkedComp, schemas: Catalog<CompSchema> | null): CompSchema | null {
   if (schemas === null || comp === null) {
     return null
   }
 
-  const schema = schemas[comp.compSchemaId]
+  const schema = isLinkedComp(comp) ? schemas[comp.linkedSchemaId] : schemas[comp.compSchemaId]
 
   if (!schema) {
     return null

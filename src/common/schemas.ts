@@ -6,6 +6,7 @@ import {
   ignorePattern,
   keyDoesNotExist,
   notEmptyString,
+  only,
   or,
   string,
   withRef,
@@ -25,23 +26,28 @@ export const schemaValidator = rootOnly({
   title: and(string, notEmptyString, withValue(/\W+/, ignorePattern)),
   type: string,
   data: wrap({
-    [ANY_KEY]: {
-      id: string,
-      compSchemaId: and(string, notEmptyString),
-      title: and(string, notEmptyString),
-      name: or(string, keyDoesNotExist),
-      defaultValue: or(string, boolean, keyDoesNotExist),
-      props: or(keyDoesNotExist, {
-        label: or(string, keyDoesNotExist),
+    [ANY_KEY]: or(
+      only({
+        id: string,
+        linkedSchemaId: and(string, notEmptyString),
       }),
-      children: or([string], keyDoesNotExist),
-    },
+      {
+        id: string,
+        compSchemaId: and(string, notEmptyString),
+        title: and(string, notEmptyString),
+        name: or(string, keyDoesNotExist),
+        defaultValue: or(string, boolean, keyDoesNotExist),
+        props: or(keyDoesNotExist, {
+          label: or(string, keyDoesNotExist),
+        }),
+        children: or([string], keyDoesNotExist),
+      }
+    ),
   }),
 })
 
 export function assertsSchema(input: unknown): asserts input is CompSchema {
   const errors = schemaValidator(input)
-
   // TODO фигня какая-то. Надо создать отдельную ошибку
   if (errors) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
