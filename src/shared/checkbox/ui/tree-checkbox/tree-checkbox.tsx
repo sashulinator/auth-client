@@ -52,7 +52,6 @@ export default function TreeCheckbox(props: ModalProps): JSX.Element | null {
       search: { fieldNames: ['id', 'title'] },
       isInitialExpanded: false,
       isRoot: true,
-      name: props.name,
       onChange,
       value,
     })

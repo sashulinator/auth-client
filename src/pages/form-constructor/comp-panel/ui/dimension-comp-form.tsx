@@ -7,6 +7,7 @@ import { Field, Form } from 'react-final-form'
 import Autosave from '@/shared/autosave/ui/autosave'
 import { Checkbox } from '@/shared/checkbox'
 import { Catalog, Comp, CompSchema, CreateCompSchema, DimensionComp } from '@/shared/schema-drawer'
+import CustomTextField from '@/shared/textfield'
 
 interface DimensionCompFormProps {
   previewSchema: CompSchema | CreateCompSchema
@@ -43,6 +44,7 @@ export default function DimensionCompForm(props: DimensionCompFormProps): JSX.El
                 <Stack as="h2">{props.schema.title}</Stack>
               </Stack>
               <Stack tokens={{ padding: '24px 24px 0', childrenGap: 24 }}>
+                <Field<string> name="title">{({ input }) => <CustomTextField {...input} label="title" />}</Field>
                 <Field<boolean> type="checkbox" name="props.required">
                   {({ input }) => <Checkbox {...input} label="required" />}
                 </Field>

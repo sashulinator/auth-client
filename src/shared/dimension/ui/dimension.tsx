@@ -1,12 +1,15 @@
-import { Panel, PanelType, PrimaryButton } from '@fluentui/react'
-import { isString } from '@savchenko91/schema-validator'
+import { ActionButton, Panel, PanelType, PrimaryButton, Text } from '@fluentui/react'
+import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
 import React, { useState } from 'react'
+import useCollapse from 'react-collapsed'
 
+import { findParents } from '@/lib/entity-actions'
 import { TreeCheckbox } from '@/shared/checkbox'
 import { CompSchema, DimensionComp, FieldComponentContext, assertLinkedComp } from '@/shared/schema-drawer'
+import Stack from '@/shared/stack'
 
 interface DimensionProps {
   value: Record<string, string[]> | string | undefined
@@ -22,6 +25,9 @@ Dimension.defaultValues = {
 export default function Dimension(props: DimensionProps): JSX.Element {
   const [isOpen, setOpen] = useState(false)
   const value = isString(props.value) ? undefined : props.value
+  const { getCollapseProps, getToggleProps, isExpanded, setExpanded } = useCollapse({
+    defaultExpanded: true,
+  })
 
   const compsAndSchemas = props.context.comp.children?.reduce<[DimensionComp, CompSchema][]>((acc, id) => {
     const comp = props.context.comps[id]
@@ -47,11 +53,53 @@ export default function Dimension(props: DimensionProps): JSX.Element {
 
   return (
     <div className="Dimension">
-      {'value?.join()'}
-      <PrimaryButton onClick={() => setOpen(true)} />
+      <Stack horizontal horizontalAlign="space-between">
+        <ActionButton
+          {...getToggleProps()}
+          styles={{
+            root: {
+              paddingLeft: '0',
+            },
+            icon: {
+              marginLeft: '0',
+            },
+            label: {
+              color: 'var(--themePrimary)',
+            },
+          }}
+          iconProps={{ iconName: isExpanded ? 'ChevronDown' : 'ChevronRight' }}
+          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
+        >
+          Классификаторы
+        </ActionButton>
+        <PrimaryButton onClick={() => setOpen(true)}>Редактировать</PrimaryButton>
+      </Stack>
+      <div {...getCollapseProps()}>
+        <table>
+          {compsAndSchemas?.map(([comp, schema]) => {
+            return (
+              <tr key={schema.id}>
+                <Text as="td" key={schema.id} className="column titleColumn">
+                  {comp?.title}:
+                </Text>
+                <td className="column dimensionColumn">
+                  {value?.[schema?.title]?.map((id) => {
+                    const entity = schema.data[id] as DimensionComp
+                    assertNotUndefined(entity)
+                    const parents = (findParents(id, schema.data) || []) as DimensionComp[]
+                    console.log('[entity, ...parents]', [entity, ...parents])
+
+                    return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
+                  })}
+                </td>
+              </tr>
+            )
+          })}
+        </table>
+      </div>
       <Panel
         type={PanelType.customNear}
-        customWidth={'920px'}
+        customWidth={'720px'}
         className="DimensionModal"
         isOpen={isOpen}
         onDismiss={() => setOpen(false)}

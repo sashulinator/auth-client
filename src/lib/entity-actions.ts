@@ -94,6 +94,22 @@ export function findParent<T extends Entity>(id: string | number, entities: Cata
   return Object.values(entities).find(({ children }) => children?.includes(id.toString()))
 }
 
+export function findParents<T extends Entity>(id: string | number, entities: Catalog<T>): Entity[] | undefined {
+  const parent = findParent(id, entities)
+
+  if (!parent) {
+    return undefined
+  }
+
+  const parentsOfParent = findParents(parent.id, entities)
+
+  if (!parentsOfParent) {
+    return [parent]
+  }
+
+  return [...parentsOfParent, parent]
+}
+
 export function findEntityPosition<T extends Entity>(
   entityId: string,
   entities: Catalog<T>

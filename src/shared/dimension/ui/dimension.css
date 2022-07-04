@@ -1,3 +1,11 @@
 .DimensionTree .dimensionFactory .dimensionFactory {
   margin-left: 24px;
 }
+
+.Dimension td {
+  padding: 8px;
+}
+
+.Dimension td > * {
+  padding: 4px 0;
+}

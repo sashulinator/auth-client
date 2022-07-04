@@ -39,12 +39,6 @@ const componentList: Record<string, CompMeta> = {
     iconName: 'CheckboxComposite',
   },
 
-  DimensionNode: {
-    type: 'checkbox',
-    component: () => 'Must be inside DimensionTree',
-    iconName: 'CheckboxComposite',
-  },
-
   // Inputs
 
   // DimensionTree: {
@@ -120,6 +114,12 @@ const componentList: Record<string, CompMeta> = {
   },
 
   // Contents
+
+  DimensionNode: {
+    type: 'content',
+    component: () => 'Must be inside DimensionTree',
+    iconName: 'CheckboxComposite',
+  },
 
   Button: {
     type: 'content',

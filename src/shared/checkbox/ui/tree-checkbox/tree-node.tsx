@@ -33,7 +33,6 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
   }
 
   const data = props.item.data
-  const name = data.entity.name || ''
 
   return (
     <div
@@ -59,10 +58,10 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
 
         <div>
           <CheckBox
-            checked={data.value.includes(name)}
-            name={name}
+            checked={data.value.includes(data.entity.id)}
+            name={data.entity.id}
             label={data.entity.title}
-            onChange={() => data.onChange(name)}
+            onChange={() => data.onChange(data.entity.id)}
           />
         </div>
       </Stack>
