@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@atlaskit/tree": "8.6.0",
+    "@datastructures-js/linked-list": "5.2.2",
     "@fluentui/react": "8.49.0",
     "@savchenko91/rc-route-constant": "4.0.4",
     "@savchenko91/schema-validator": "0.2.15",
