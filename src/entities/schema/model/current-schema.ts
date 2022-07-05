@@ -15,7 +15,7 @@ export const currentSchemaHistoryState = atom<DoublyLinkedList<CompSchema | Crea
   default: {
     prev: null,
     next: null,
-    data: ROUTES.FORM_CONSTRUCTOR_EDIT
+    data: ROUTES.FORM_CONSTRUCTOR_EDIT.isCurrent
       ? null
       : {
           // we cannot omit id so let's make it localSchema

@@ -67,6 +67,10 @@
   margin: 2px;
 }
 
+.TreeNodeContent {
+  min-width: 200px;
+}
+
 .TreeNodeContent:focus {
   outline: none !important;
 }

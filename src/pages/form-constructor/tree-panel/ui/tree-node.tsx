@@ -61,7 +61,7 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBorder" />
-        <div style={{ width: '44px', height: '36px' }}>
+        <div style={{ minWidth: '44px', minHeight: '36px', maxWidth: '44px', maxHeight: '36px' }}>
           {props.isExpandButton && (
             <ExpandButton
               id={props.id}
