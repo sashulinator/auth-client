@@ -120,13 +120,6 @@ function buildTreeDefault(
   walk(rootEntity, entities, 'id', (entity, id) => {
     const isExpanded = tree?.items[id]?.isExpanded ?? additionalData.isInitialExpanded
 
-    console.log(
-      'isExpandedBeforeSearchQuery, isExpanded, isInitialExpanded',
-      tree?.items[id]?.data.isExpandedBeforeSearchQuery,
-      tree?.items[id]?.isExpanded,
-      additionalData.isInitialExpanded
-    )
-
     items[id] = {
       id,
       isExpanded,

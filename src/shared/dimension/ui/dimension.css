@@ -3,9 +3,9 @@
 }
 
 .Dimension td {
-  padding: 8px;
+  padding: 12px 8px 12px 0;
 }
 
-.Dimension td > * {
-  padding: 4px 0;
+.Dimension td > *:not(:first-child) {
+  padding: 12px 0 0 0;
 }

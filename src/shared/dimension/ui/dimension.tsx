@@ -3,7 +3,7 @@ import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useCollapse from 'react-collapsed'
 
 import { findParents } from '@/lib/entity-actions'
@@ -24,10 +24,13 @@ Dimension.defaultValues = {
 
 export default function Dimension(props: DimensionProps): JSX.Element {
   const [isOpen, setOpen] = useState(false)
-  const value = isString(props.value) ? undefined : props.value
+  const [value, setValue] = useState(isString(props.value) ? undefined : props.value)
+
   const { getCollapseProps, getToggleProps, isExpanded, setExpanded } = useCollapse({
     defaultExpanded: true,
   })
+
+  useEffect(() => setValue(value), [props.value])
 
   const compsAndSchemas = props.context.comp.children?.reduce<[DimensionComp, CompSchema][]>((acc, id) => {
     const comp = props.context.comps[id]
@@ -42,13 +45,15 @@ export default function Dimension(props: DimensionProps): JSX.Element {
     return acc
   }, [])
 
-  function onChange(name: string) {
-    return (data: string[]) => {
-      props.onChange({
+  function onChange(name: string, data: string[]) {
+    setValue((value) => {
+      const newValue = {
         ...value,
         [name]: data,
-      })
-    }
+      }
+      props.onChange(newValue)
+      return newValue
+    })
   }
 
   return (
@@ -87,8 +92,6 @@ export default function Dimension(props: DimensionProps): JSX.Element {
                     const entity = schema.data[id] as DimensionComp
                     assertNotUndefined(entity)
                     const parents = (findParents(id, schema.data) || []) as DimensionComp[]
-                    console.log('[entity, ...parents]', [entity, ...parents])
-
                     return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
                   })}
                 </td>
@@ -112,7 +115,7 @@ export default function Dimension(props: DimensionProps): JSX.Element {
                 name={schema.title}
                 value={value?.[schema.title] || []}
                 schema={schema}
-                onChange={onChange(schema.title)}
+                onChange={(data: string[]) => onChange(schema.title, data)}
                 multiselect={comp.props?.multiselect}
               />
             )
