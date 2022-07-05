@@ -30,6 +30,7 @@ export interface Comp {
   compSchemaId: string
   name?: string
   title: string // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  undefinedOnDestroy?: boolean
   defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
