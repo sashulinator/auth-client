@@ -3,7 +3,7 @@ import { isObject } from '@savchenko91/schema-validator'
 import { Comp, CompSchema, DimensionComp, LinkedComp } from '../model/types'
 
 export function hasId(input: unknown): input is { id: string } {
-  return !(isObject(input) && 'id' in input)
+  return isObject(input) && 'id' in input
 }
 
 export function assertHasId(input: unknown): asserts input is { id: string } {
