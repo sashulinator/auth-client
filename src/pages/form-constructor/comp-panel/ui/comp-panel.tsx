@@ -28,13 +28,9 @@ interface CompPanelProps {
 const CompPanel = forwardRef<HTMLDivElement | null, CompPanelProps>(function CompPanel(props, ref): JSX.Element | null {
   const schemaIsMissing = !props.isLoading && !props.schema
 
-  if (props.previewSchema === null) {
-    return null
-  }
-
   return (
     <div className={clsx(props.isFocused && 'isFocused')} ref={ref} style={{ overflow: 'visible' }}>
-      {props.schemas && props.comp && (
+      {props.schemas && props.comp && props.previewSchema && (
         <div className={clsx('CompPanel')}>
           <ResizeTarget name="compPanelWidth" direction="right" />
           <PerfectScrollbar className="compPanelScrollable">
