@@ -61,16 +61,16 @@ const TreeNodeContent = memo(function TreeNodeContent(props: TreeNodeContentProp
     >
       <Stack className="treeLeafContent" horizontal verticalAlign="center">
         <div className="treeLeafBorder" />
-        {props.isExpandButton ? (
-          <ExpandButton
-            id={props.id}
-            isExpanded={props.isExpanded}
-            onExpand={props.onExpand}
-            onCollapse={props.onCollapse}
-          />
-        ) : (
-          <div style={{ width: '36px', height: '32px' }} />
-        )}
+        <div style={{ width: '44px', height: '36px' }}>
+          {props.isExpandButton && (
+            <ExpandButton
+              id={props.id}
+              isExpanded={props.isExpanded}
+              onExpand={props.onExpand}
+              onCollapse={props.onCollapse}
+            />
+          )}
+        </div>
         <Icon iconName={props.iconName} style={{ marginRight: '8px' }} />
         <EditableText
           defaultValue={props.title}
@@ -172,14 +172,16 @@ function getTitle(props: TreeLeafProps, isSelected: boolean, isEditing: boolean,
     return schema?.title || ''
   }
 
-  const searchQuery = props.item.data?.search?.query || ''
+  const searchQuery = props.item.data?.search?.query
   let title = comp?.title || ''
 
   if (isEditing) {
     return title
   }
 
-  title = title.replaceAll(new RegExp(searchQuery, 'ig'), (match) => `<span class="query">${match}</span>`)
+  if (searchQuery !== undefined) {
+    title = title.replaceAll(new RegExp(searchQuery, 'ig'), (match) => `<span class="query">${match}</span>`)
+  }
 
   const isOneOfMultipleDragging =
     props.snapshot.isDragging && isSelected && props.item.data && selectedCompIds.length > 1
