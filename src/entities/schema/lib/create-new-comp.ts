@@ -14,7 +14,7 @@ export function createNewComp(schema: CompSchema, componentList: Record<string, 
     compSchemaId: schema.id,
   }
 
-  if (component.type === 'content') {
+  if (component.type !== 'content') {
     comp.name = uniqid()
   }
 
