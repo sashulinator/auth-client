@@ -3,9 +3,7 @@ import { IButtonStyles, IconButton, Stack } from '@fluentui/react'
 
 import clsx from 'clsx'
 import React from 'react'
-import { Field } from 'react-final-form'
 
-import { ROOT_ID } from '@/constants/common'
 import CheckBox from '@/shared/checkbox/ui/checkbox'
 import { Comp } from '@/shared/schema-drawer'
 import { AdditionalData } from '@/shared/tree'
@@ -23,6 +21,8 @@ export interface TreeNodeProps extends RenderItemParams {
   item: Omit<TreeItem, 'data'> & {
     data?: AdditionalData & {
       entity: Comp
+      onChange: (name: string) => void
+      value: string[]
     }
   }
 }
@@ -45,25 +45,25 @@ export default function TreeNode(props: TreeNodeProps): JSX.Element | null {
     >
       <Stack className="treeLeafContent" verticalAlign="center" horizontal={true}>
         <div className="treeLeafBorder" />
-        <ExpandButton
-          id={data.entity.id}
-          isExpanded={props.item.isExpanded || false}
-          onExpand={props.onExpand}
-          onCollapse={props.onCollapse}
-        />
-        {data.entity.id !== ROOT_ID ? (
-          <Field type="checkbox" name={data.entity.name || ''}>
-            {({ input }) => {
-              return (
-                <div>
-                  <CheckBox {...input} label={data.entity.title} />
-                </div>
-              )
-            }}
-          </Field>
+        {props.item.hasChildren ? (
+          <ExpandButton
+            id={data.entity.id}
+            isExpanded={props.item.isExpanded || false}
+            onExpand={props.onExpand}
+            onCollapse={props.onCollapse}
+          />
         ) : (
-          'here will be name of tree'
+          <div style={{ width: '36px', height: '36px' }} />
         )}
+
+        <div>
+          <CheckBox
+            checked={data.value.includes(data.entity.id)}
+            name={data.entity.id}
+            label={data.entity.title}
+            onChange={() => data.onChange(data.entity.id)}
+          />
+        </div>
       </Stack>
     </div>
   )

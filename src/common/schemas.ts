@@ -30,6 +30,11 @@ export const schemaValidator = rootOnly({
       only({
         id: string,
         linkedSchemaId: and(string, notEmptyString),
+        title: or(string),
+        props: or(keyDoesNotExist, {
+          required: or(boolean, keyDoesNotExist),
+          multiselect: or(boolean, keyDoesNotExist),
+        }),
       }),
       {
         id: string,
