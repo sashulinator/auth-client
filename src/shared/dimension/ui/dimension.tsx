@@ -1,4 +1,4 @@
-import { ActionButton, Panel, PanelType, PrimaryButton, Text } from '@fluentui/react'
+import { ActionButton, IconButton, Panel, PanelType, Text } from '@fluentui/react'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
@@ -58,7 +58,7 @@ export default function Dimension(props: DimensionProps): JSX.Element {
 
   return (
     <div className="Dimension">
-      <Stack horizontal horizontalAlign="space-between">
+      <Stack horizontal verticalAlign="center">
         <ActionButton
           {...getToggleProps()}
           styles={{
@@ -77,7 +77,7 @@ export default function Dimension(props: DimensionProps): JSX.Element {
         >
           Классификаторы
         </ActionButton>
-        <PrimaryButton onClick={() => setOpen(true)}>Редактировать</PrimaryButton>
+        <IconButton onClick={() => setOpen(true)} iconProps={{ iconName: 'Edit' }} />
       </Stack>
       <div {...getCollapseProps()}>
         <table>
