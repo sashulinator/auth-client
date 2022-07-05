@@ -1,4 +1,4 @@
-import { setCompProp, setValue } from '../lib/actions'
+import { hide, setCompProp, setValue } from '../lib/actions'
 import { createCatalog } from '../lib/create-catalog'
 import {
   ActionBindingMeta,
@@ -13,6 +13,61 @@ import { BasicComponentsNames } from './basic-components-schemas'
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
 export const actionList: ActionBindingMeta[] = [
+  {
+    name: 'hide',
+    function: hide,
+    schema: {
+      id: '7021a575-562a-42f8-a640-4292afb2977e',
+      title: 'Training',
+      componentName: null,
+      type: CompSchemaType.FORM,
+      data: {
+        ROOT_ID: {
+          id: 'ROOT_ID',
+          props: {
+            tokens: {
+              padding: '8px',
+              childrenGap: '8',
+            },
+          },
+          title: 'stackRoot',
+          children: ['l44hsywr'],
+          compSchemaId: BasicComponentsNames.Stack,
+        },
+        l44hsywr: {
+          id: 'l44hsywr',
+          name: 'compId',
+          props: {
+            label: 'comp',
+          },
+          title: 'comp',
+          compSchemaId: BasicComponentsNames.Dropdown,
+          injections: [
+            {
+              from: 'context.previewData.options.comps',
+              to: 'props.options',
+            },
+          ],
+          assertionBindingSchema: {
+            eventToShowError: EventToShowError.onVisited,
+            data: {
+              ROOT_ID: {
+                id: 'ROOT_ID',
+                name: 'and',
+                type: AssertionBindingType.OPERATOR,
+                children: ['l46vi95c'],
+              },
+              l46vi95c: {
+                id: 'l46vi95c',
+                name: 'string',
+                type: AssertionBindingType.ASSERTION,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   {
     name: 'setValue',
     function: setValue,
@@ -73,7 +128,6 @@ export const actionList: ActionBindingMeta[] = [
       data: {
         ROOT_ID: {
           id: 'ROOT_ID',
-          name: 'noname',
           props: {
             tokens: {
               padding: '8px',

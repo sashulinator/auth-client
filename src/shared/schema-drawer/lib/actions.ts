@@ -51,3 +51,14 @@ export function setCompProp(actionProps: ActionProps, eventFieldValue: any) {
 
   context.fns.setComp(newComp)
 }
+
+export function hide(actionProps: ActionProps, eventFieldValue: any) {
+  const { actionBinding, context } = actionProps
+  const comp = context.comps[actionBinding?.props?.compId]
+
+  if (eventFieldValue === undefined || comp === undefined) {
+    return
+  }
+
+  context.fns.setComp(buildObject(comp, 'props.hidden', !eventFieldValue))
+}
