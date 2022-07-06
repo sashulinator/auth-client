@@ -5,7 +5,6 @@ import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
 import { assertsSchema } from '@/common/schemas'
-import { isNormSchemas } from '@/common/validators'
 import ErrorFromObject from '@/lib/error-from-object'
 import { Catalog, CompSchema } from '@/shared/schema-drawer'
 
@@ -157,8 +156,6 @@ export function useGetDependencySchemas(ids: string[]): UseQueryResult<Catalog<C
     })
 
     const data = await req.json()
-
-    isNormSchemas(data)
 
     return data
   }
