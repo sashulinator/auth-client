@@ -99,7 +99,6 @@ const FormConstructor: FC = (): JSX.Element => {
     if (fetchedCurrentSchema !== undefined) {
       dll.removeEach(() => true)
       dll.insertLast([fetchedCurrentSchema, selectedCompIds])
-      dll.update()
       setSchemas({ [fetchedCurrentSchema.id]: fetchedCurrentSchema, ...schemas })
     }
   }
@@ -112,7 +111,6 @@ const FormConstructor: FC = (): JSX.Element => {
 
   function setCompSchema(compSchema: CompSchema | CreateCompSchema) {
     dll.insertLast([compSchema, selectedCompIds])
-    dll.update()
   }
 
   function updateSelectedCompSchema() {
@@ -139,13 +137,11 @@ const FormConstructor: FC = (): JSX.Element => {
     assertNotNull(currentCompSchema)
     const newData = replace(currentCompSchema.data, comp.id, comp)
     dll.insertLast([{ ...currentCompSchema, data: newData }, selectedCompIds])
-    dll.update()
   }
 
   function updateCompsInCurrentSchemaState(comps: Catalog<Comp | LinkedComp>) {
     assertNotNull(currentCompSchema)
     dll.insertLast([{ ...currentCompSchema, data: comps }, selectedCompIds])
-    dll.update()
   }
 
   function removeCompFromState(compId: string): void {
@@ -167,7 +163,6 @@ const FormConstructor: FC = (): JSX.Element => {
       setSelectedCompIds(newSelected)
 
       dll.insertLast([{ ...currentCompSchema, data: comps }, newSelected])
-      dll.update()
     }
   }
 
@@ -203,7 +198,6 @@ const FormConstructor: FC = (): JSX.Element => {
     dll.setIndex(dll.getIndex() - 1)
     const [, newSelectedCompIds] = dll.current().getValue()
     setSelectedCompIds(newSelectedCompIds)
-    dll.update()
   }
 
   function redo() {
@@ -214,7 +208,6 @@ const FormConstructor: FC = (): JSX.Element => {
     dll.setIndex(dll.getIndex() + 1)
     const [, newSelectedCompIds] = dll.current().getValue()
     setSelectedCompIds(newSelectedCompIds)
-    dll.update()
   }
 
   function copyToClipboard() {
@@ -266,7 +259,6 @@ const FormConstructor: FC = (): JSX.Element => {
     }, mergedComps)
 
     dll.insertLast([{ ...currentCompSchema, data: newComps }, Object.keys(copiedComps)])
-    dll.update()
   }
 
   async function copySchema() {

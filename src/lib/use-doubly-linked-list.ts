@@ -8,9 +8,9 @@ export function useDoublyLinkedList<T>(data: T): MyDoublyLinkedList<T> {
   const [state] = useState(() => {
     const dll = new MyDoublyLinkedList<T>()
 
-    dll.insertLast(data)
+    dll.onInsertedLast = update
 
-    dll.update = update
+    dll.insertLast(data)
 
     return dll
   })
