@@ -1,6 +1,7 @@
 import { DoublyLinkedList, DoublyLinkedListNode } from '@datastructures-js/linked-list'
 
-export class MyDoublyLinkedList<T> extends DoublyLinkedList<T> {
+export class HistoryLinkedList<T> extends DoublyLinkedList<T> {
+  onInsertedLast!: () => void
   index = 0
 
   getIndex() {
@@ -32,7 +33,11 @@ export class MyDoublyLinkedList<T> extends DoublyLinkedList<T> {
       this.removeEach((node, position) => position > this.index)
     }
 
-    return super.insertLast(data)
+    const res = super.insertLast(data)
+
+    this.setIndex(this.getMaxIndex())
+    this.onInsertedLast()
+    return res
   }
 
   getNodeByIndex(num: number): DoublyLinkedListNode<T> {

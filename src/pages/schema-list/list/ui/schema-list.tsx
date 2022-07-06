@@ -5,13 +5,13 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 
-import { getSchemaList } from '@/api/schema'
+import { getCompSchemaList } from '@/api/comp-schema'
 import ROUTES from '@/constants/routes'
 import LoadingAria from '@/shared/loading-aria'
 import { CompSchema } from '@/shared/schema-drawer'
 
 function List(): JSX.Element {
-  const { data, isLoading } = useQuery('schemas', getSchemaList)
+  const { data, isLoading } = useQuery('schemas', getCompSchemaList)
 
   function renderItemColumn(item: CompSchema, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof CompSchema] as string

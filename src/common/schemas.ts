@@ -17,7 +17,7 @@ import {
 import { assertSchemaComponentNameIsValid } from './assertions'
 
 import ErrorFromObject from '@/lib/error-from-object'
-import { rootOnly } from '@/lib/validators'
+import { rootOnly } from '@/lib/structure-validators'
 import { CompSchema } from '@/shared/schema-drawer'
 
 export const schemaValidator = rootOnly({

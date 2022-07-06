@@ -8,7 +8,7 @@ import useCollapse from 'react-collapsed'
 
 import { findParents } from '@/lib/entity-actions'
 import { TreeCheckbox } from '@/shared/checkbox'
-import { CompSchema, DimensionComp, FieldComponentContext, assertLinkedComp } from '@/shared/schema-drawer'
+import { CompSchema, FieldComponentContext, LinkedComp, assertLinkedComp } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
 
 interface DimensionProps {
@@ -32,14 +32,14 @@ export default function Dimension(props: DimensionProps): JSX.Element {
 
   useEffect(() => setValue(value), [props.value])
 
-  const compsAndSchemas = props.context.comp.children?.reduce<[DimensionComp, CompSchema][]>((acc, id) => {
+  const compsAndSchemas = props.context.comp.children?.reduce<[LinkedComp, CompSchema][]>((acc, id) => {
     const comp = props.context.comps[id]
     assertLinkedComp(comp)
 
     const schema = props.context.schemas[comp.linkedSchemaId]
 
     if (schema) {
-      acc.push([comp as DimensionComp, schema])
+      acc.push([comp, schema])
     }
 
     return acc
@@ -89,9 +89,9 @@ export default function Dimension(props: DimensionProps): JSX.Element {
                 </Text>
                 <td className="column dimensionColumn">
                   {value?.[schema?.title]?.map((id) => {
-                    const entity = schema.data[id] as DimensionComp
+                    const entity = schema.data[id] as LinkedComp
                     assertNotUndefined(entity)
-                    const parents = (findParents(id, schema.data) || []) as DimensionComp[]
+                    const parents = (findParents(id, schema.data) || []) as LinkedComp[]
                     return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
                   })}
                 </td>

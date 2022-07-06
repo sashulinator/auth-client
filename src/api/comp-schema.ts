@@ -5,7 +5,6 @@ import { stringify } from 'qs'
 import { UseQueryResult, useQuery } from 'react-query'
 
 import { assertsSchema } from '@/common/schemas'
-import { isNormSchemas } from '@/common/validators'
 import ErrorFromObject from '@/lib/error-from-object'
 import { Catalog, CompSchema } from '@/shared/schema-drawer'
 
@@ -20,7 +19,7 @@ type GetSchemaParams = {
 
 // CREATE SCHEMA
 
-export async function createSchema(newFSchema: CompSchema): Promise<CompSchema> {
+export async function createCompSchema(newFSchema: CompSchema): Promise<CompSchema> {
   assertsSchema(newFSchema)
 
   const response = await apiFetch('/api/v1/schemas', {
@@ -40,7 +39,7 @@ export async function createSchema(newFSchema: CompSchema): Promise<CompSchema> 
 
 // UPDATE SCHEMA
 
-export async function updateSchema(newFSchema: CompSchema): Promise<CompSchema> {
+export async function updateCompSchema(newFSchema: CompSchema): Promise<CompSchema> {
   assertsSchema(newFSchema)
 
   const response = await fetch('/api/v1/schemas', {
@@ -63,7 +62,7 @@ export async function updateSchema(newFSchema: CompSchema): Promise<CompSchema> 
   return data
 }
 
-export async function getSchema(params: GetSchemaParams): Promise<CompSchema | undefined> {
+export async function getCompSchema(params: GetSchemaParams): Promise<CompSchema | undefined> {
   const [, id] = params.queryKey
 
   if (id === undefined) {
@@ -93,7 +92,7 @@ type GetSchemaListParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getSchemaList(params: GetSchemaListParams): Promise<CompSchema[]> {
+export async function getCompSchemaList(params: GetSchemaListParams): Promise<CompSchema[]> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/schemas/list${stringify(ids)}`, {
@@ -119,7 +118,7 @@ type GetSchemasParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getSchemas(params: GetSchemasParams): Promise<Catalog<CompSchema>> {
+export async function getCompSchemas(params: GetSchemasParams): Promise<Catalog<CompSchema>> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/schemas${stringify({ ids }, { addQueryPrefix: true })}`, {
@@ -157,8 +156,6 @@ export function useGetDependencySchemas(ids: string[]): UseQueryResult<Catalog<C
     })
 
     const data = await req.json()
-
-    isNormSchemas(data)
 
     return data
   }

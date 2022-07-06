@@ -5,8 +5,8 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { useParams } from 'react-router-dom'
 
+import { useGetDependencySchemas } from '@/api/comp-schema'
 import { getIncident } from '@/api/incident'
-import { useGetDependencySchemas } from '@/api/schema'
 
 const IncidentId = 'd79d37b9-21a5-4017-a13d-27106cf749d8'
 

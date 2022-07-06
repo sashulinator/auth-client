@@ -14,7 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
-import { getSchema, useGetDependencySchemas } from '@/api/schema'
+import { getCompSchema, useGetDependencySchemas } from '@/api/comp-schema'
 import { schemaValidator } from '@/common/schemas'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
@@ -38,7 +38,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { useDoublyLinkedList } from '@/lib/use-doubly-linked-list'
+import { useHistoryLinkedList } from '@/lib/use-history-linked-list'
 import {
   Catalog,
   Comp,
@@ -59,7 +59,7 @@ const FormConstructor: FC = (): JSX.Element => {
   const [schemas, setSchemas] = useRecoilState(schemasState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
-  const dll = useDoublyLinkedList([compSchema, selectedCompIds] as const)
+  const dll = useHistoryLinkedList([compSchema, selectedCompIds] as const)
   const [currentCompSchema] = dll.current().getValue()
 
   const resetSchemas = useResetRecoilState(schemasState)
@@ -80,7 +80,7 @@ const FormConstructor: FC = (): JSX.Element => {
     },
   }
 
-  const { data: fetchedCurrentSchema, isLoading: isCurrentSchemaLoading } = useQuery(['schema', id], getSchema)
+  const { data: fetchedCurrentSchema, isLoading: isCurrentSchemaLoading } = useQuery(['schema', id], getCompSchema)
 
   const { data: fetchedDependencySchemas, isLoading: isDependencySchemasLoading } = useGetDependencySchemas(
     missingSchemaIds
@@ -99,8 +99,6 @@ const FormConstructor: FC = (): JSX.Element => {
     if (fetchedCurrentSchema !== undefined) {
       dll.removeEach(() => true)
       dll.insertLast([fetchedCurrentSchema, selectedCompIds])
-      dll.setIndex(dll.getMaxIndex())
-      dll.update()
       setSchemas({ [fetchedCurrentSchema.id]: fetchedCurrentSchema, ...schemas })
     }
   }
@@ -113,8 +111,6 @@ const FormConstructor: FC = (): JSX.Element => {
 
   function setCompSchema(compSchema: CompSchema | CreateCompSchema) {
     dll.insertLast([compSchema, selectedCompIds])
-    dll.setIndex(dll.getMaxIndex())
-    dll.update()
   }
 
   function updateSelectedCompSchema() {
@@ -141,15 +137,11 @@ const FormConstructor: FC = (): JSX.Element => {
     assertNotNull(currentCompSchema)
     const newData = replace(currentCompSchema.data, comp.id, comp)
     dll.insertLast([{ ...currentCompSchema, data: newData }, selectedCompIds])
-    dll.setIndex(dll.getMaxIndex())
-    dll.update()
   }
 
   function updateCompsInCurrentSchemaState(comps: Catalog<Comp | LinkedComp>) {
     assertNotNull(currentCompSchema)
     dll.insertLast([{ ...currentCompSchema, data: comps }, selectedCompIds])
-    dll.setIndex(dll.getMaxIndex())
-    dll.update()
   }
 
   function removeCompFromState(compId: string): void {
@@ -171,8 +163,6 @@ const FormConstructor: FC = (): JSX.Element => {
       setSelectedCompIds(newSelected)
 
       dll.insertLast([{ ...currentCompSchema, data: comps }, newSelected])
-      dll.setIndex(dll.getMaxIndex())
-      dll.update()
     }
   }
 
@@ -208,7 +198,6 @@ const FormConstructor: FC = (): JSX.Element => {
     dll.setIndex(dll.getIndex() - 1)
     const [, newSelectedCompIds] = dll.current().getValue()
     setSelectedCompIds(newSelectedCompIds)
-    dll.update()
   }
 
   function redo() {
@@ -219,7 +208,6 @@ const FormConstructor: FC = (): JSX.Element => {
     dll.setIndex(dll.getIndex() + 1)
     const [, newSelectedCompIds] = dll.current().getValue()
     setSelectedCompIds(newSelectedCompIds)
-    dll.update()
   }
 
   function copyToClipboard() {
@@ -271,8 +259,6 @@ const FormConstructor: FC = (): JSX.Element => {
     }, mergedComps)
 
     dll.insertLast([{ ...currentCompSchema, data: newComps }, Object.keys(copiedComps)])
-    dll.setIndex(dll.getMaxIndex())
-    dll.update()
   }
 
   async function copySchema() {

@@ -41,12 +41,9 @@ export interface Comp {
 
 export interface LinkedComp {
   id: string
-  linkedSchemaId: string
-}
-
-export interface DimensionComp extends LinkedComp {
   title: string
-  props: {
+  linkedSchemaId: string
+  props?: {
     required: boolean
     multiselect: boolean
   }

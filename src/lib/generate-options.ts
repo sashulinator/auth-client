@@ -2,8 +2,7 @@ import { IDropdownOption } from '@fluentui/react'
 import { isObject, number, or, string } from '@savchenko91/schema-validator'
 
 import { isArrayOfStringArrays, isObjectWithNumberKeys, isStringArray } from './is'
-
-import { rootWrap } from '@/lib/validators'
+import { rootWrap } from './structure-validators'
 
 export function generateOptionsFromObject(object: Record<string, unknown>): IDropdownOption[] {
   return generateOptionsFromStringArray(Object.keys(object))
