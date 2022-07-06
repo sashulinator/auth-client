@@ -38,7 +38,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
-import { useDoublyLinkedList } from '@/lib/use-doubly-linked-list'
+import { useHistoryLinkedList } from '@/lib/use-history-linked-list'
 import {
   Catalog,
   Comp,
@@ -59,7 +59,7 @@ const FormConstructor: FC = (): JSX.Element => {
   const [schemas, setSchemas] = useRecoilState(schemasState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
-  const dll = useDoublyLinkedList([compSchema, selectedCompIds] as const)
+  const dll = useHistoryLinkedList([compSchema, selectedCompIds] as const)
   const [currentCompSchema] = dll.current().getValue()
 
   const resetSchemas = useResetRecoilState(schemasState)

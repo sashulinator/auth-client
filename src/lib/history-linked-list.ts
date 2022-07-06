@@ -1,6 +1,6 @@
 import { DoublyLinkedList, DoublyLinkedListNode } from '@datastructures-js/linked-list'
 
-export class MyDoublyLinkedList<T> extends DoublyLinkedList<T> {
+export class HistoryLinkedList<T> extends DoublyLinkedList<T> {
   onInsertedLast!: () => void
   index = 0
 
