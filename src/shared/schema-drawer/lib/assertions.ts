@@ -13,7 +13,7 @@ import { Binding, Catalog, ComponentCompSchema, EventBindingSchema, EventBinding
 
 import { ROOT_ID } from '@/constants/common'
 import { findEntities } from '@/lib/entity-actions'
-import { rootWrapArr } from '@/lib/validators'
+import { rootWrapArr } from '@/lib/structure-validators'
 
 export function assertCompSchema(input: unknown): asserts input is ComponentCompSchema {
   if (isObject(input) && 'componenName' in input && input.componenName === null) {

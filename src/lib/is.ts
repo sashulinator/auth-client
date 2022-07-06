@@ -1,7 +1,6 @@
 import { isString, string } from '@savchenko91/schema-validator'
 
-import { objectWithNumberKeys } from './structure-validators'
-import { rootWrap } from './validators'
+import { objectWithNumberKeys, rootWrap } from './structure-validators'
 
 // перенести в либу
 export function isStringifiedNumber(input: unknown): input is `${number}` {
