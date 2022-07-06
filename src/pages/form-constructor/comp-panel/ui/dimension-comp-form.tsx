@@ -6,7 +6,7 @@ import { Field, Form } from 'react-final-form'
 
 import Autosave from '@/shared/autosave/ui/autosave'
 import { Checkbox } from '@/shared/checkbox'
-import { Catalog, Comp, CompSchema, CreateCompSchema, DimensionComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp } from '@/shared/schema-drawer'
 import CustomTextField from '@/shared/textfield'
 
 interface DimensionCompFormProps {
@@ -15,7 +15,7 @@ interface DimensionCompFormProps {
   schemas: Catalog<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']
   context: Record<string, unknown>
-  comp: DimensionComp
+  comp: LinkedComp
 }
 
 export default function DimensionCompForm(props: DimensionCompFormProps): JSX.Element | null {
@@ -26,7 +26,7 @@ export default function DimensionCompForm(props: DimensionCompFormProps): JSX.El
   }, [props.comp.id])
 
   return (
-    <Form<DimensionComp, DimensionComp>
+    <Form<LinkedComp, LinkedComp>
       key={`${initialValues.id}${props.schema.id}${props.comp.id}`}
       initialValues={initialValues}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

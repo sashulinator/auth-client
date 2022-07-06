@@ -10,7 +10,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp, isDimensionComp } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp, isLinkedComp } from '@/shared/schema-drawer'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
@@ -37,7 +37,7 @@ const CompPanel = forwardRef<HTMLDivElement | null, CompPanelProps>(function Com
             <LoadingAria loading={props.isLoading}>
               {(schemaIsMissing || props.comp) && <props.ContextualMenu comp={props.comp} />}
               {props.schema &&
-                (isDimensionComp(props.comp) ? (
+                (isLinkedComp(props.comp) ? (
                   <DimensionCompForm
                     schema={props.schema}
                     schemas={props.schemas}
@@ -50,7 +50,7 @@ const CompPanel = forwardRef<HTMLDivElement | null, CompPanelProps>(function Com
                   <CompForm
                     schema={props.schema}
                     schemas={props.schemas}
-                    comp={props.comp as Comp}
+                    comp={props.comp}
                     context={props.context}
                     onSubmit={props.onSubmit}
                     previewSchema={props.previewSchema}

@@ -47,7 +47,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
 
   function addSchema(schema: CompSchema) {
     const id = uniqid()
-    props.addNewComps({ [id]: { id, linkedSchemaId: schema.id } })
+    props.addNewComps({ [id]: { id, linkedSchemaId: schema.id, title: schema.title } })
     setOpen(false)
   }
 
