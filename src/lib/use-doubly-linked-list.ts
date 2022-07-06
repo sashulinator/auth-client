@@ -1,20 +1,19 @@
 import { MyDoublyLinkedList } from './doubly-linked-list'
+import { useForceUpdate } from './use-force-update'
 import { useState } from 'react'
 
-export function useDoublyLinkedList<T>(data: T): MyDoublyLinkedList<T> & { update: () => void } {
-  const dll = new MyDoublyLinkedList<T>()
+export function useDoublyLinkedList<T>(data: T): MyDoublyLinkedList<T> {
+  const update = useForceUpdate()
 
-  dll.insertLast(data)
+  const [state] = useState(() => {
+    const dll = new MyDoublyLinkedList<T>()
 
-  const [state] = useState(dll)
-  const [, setUpdate] = useState({})
+    dll.insertLast(data)
 
-  const update = function () {
-    setUpdate({})
-  }
+    dll.update = update
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ;(state as any).update = update
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return state as any
+    return dll
+  })
+
+  return state
 }

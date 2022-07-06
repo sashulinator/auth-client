@@ -99,7 +99,6 @@ const FormConstructor: FC = (): JSX.Element => {
     if (fetchedCurrentSchema !== undefined) {
       dll.removeEach(() => true)
       dll.insertLast([fetchedCurrentSchema, selectedCompIds])
-      dll.setIndex(dll.getMaxIndex())
       dll.update()
       setSchemas({ [fetchedCurrentSchema.id]: fetchedCurrentSchema, ...schemas })
     }
@@ -113,7 +112,6 @@ const FormConstructor: FC = (): JSX.Element => {
 
   function setCompSchema(compSchema: CompSchema | CreateCompSchema) {
     dll.insertLast([compSchema, selectedCompIds])
-    dll.setIndex(dll.getMaxIndex())
     dll.update()
   }
 
@@ -141,14 +139,12 @@ const FormConstructor: FC = (): JSX.Element => {
     assertNotNull(currentCompSchema)
     const newData = replace(currentCompSchema.data, comp.id, comp)
     dll.insertLast([{ ...currentCompSchema, data: newData }, selectedCompIds])
-    dll.setIndex(dll.getMaxIndex())
     dll.update()
   }
 
   function updateCompsInCurrentSchemaState(comps: Catalog<Comp | LinkedComp>) {
     assertNotNull(currentCompSchema)
     dll.insertLast([{ ...currentCompSchema, data: comps }, selectedCompIds])
-    dll.setIndex(dll.getMaxIndex())
     dll.update()
   }
 
@@ -171,7 +167,6 @@ const FormConstructor: FC = (): JSX.Element => {
       setSelectedCompIds(newSelected)
 
       dll.insertLast([{ ...currentCompSchema, data: comps }, newSelected])
-      dll.setIndex(dll.getMaxIndex())
       dll.update()
     }
   }
@@ -271,7 +266,6 @@ const FormConstructor: FC = (): JSX.Element => {
     }, mergedComps)
 
     dll.insertLast([{ ...currentCompSchema, data: newComps }, Object.keys(copiedComps)])
-    dll.setIndex(dll.getMaxIndex())
     dll.update()
   }
 
