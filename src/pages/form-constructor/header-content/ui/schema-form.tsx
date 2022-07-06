@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import uuid from 'uuid-random'
 
-import { createSchema, updateSchema } from '@/api/schema'
+import { createCompSchema, updateSchema } from '@/api/comp-schema'
 import { schemaValidator } from '@/common/schemas'
 import { componentNameOptions } from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
@@ -31,7 +31,7 @@ export default function SchemaForm(props: SchemaFormProps): JSX.Element | null {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const { mutateAsync: apiCreateSchema } = useAppMutation(createSchema, {
+  const { mutateAsync: apiCreateSchema } = useAppMutation(createCompSchema, {
     onSuccess: (data) => {
       navigate(ROUTES.FORM_CONSTRUCTOR_EDIT.PATH.replace(':id', data.id))
       successMessage(t('messages.saved'))

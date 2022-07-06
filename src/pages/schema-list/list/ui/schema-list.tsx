@@ -5,7 +5,7 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 
-import { getSchemaList } from '@/api/schema'
+import { getSchemaList } from '@/api/comp-schema'
 import ROUTES from '@/constants/routes'
 import LoadingAria from '@/shared/loading-aria'
 import { CompSchema } from '@/shared/schema-drawer'

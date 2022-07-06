@@ -9,7 +9,7 @@ import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 import uniqid from 'uniqid'
 
-import { getSchemaList } from '@/api/schema'
+import { getSchemaList } from '@/api/comp-schema'
 import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'

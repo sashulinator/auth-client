@@ -14,7 +14,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
-import { getSchema, useGetDependencySchemas } from '@/api/schema'
+import { getSchema, useGetDependencySchemas } from '@/api/comp-schema'
 import { schemaValidator } from '@/common/schemas'
 import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'

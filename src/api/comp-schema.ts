@@ -19,7 +19,7 @@ type GetSchemaParams = {
 
 // CREATE SCHEMA
 
-export async function createSchema(newFSchema: CompSchema): Promise<CompSchema> {
+export async function createCompSchema(newFSchema: CompSchema): Promise<CompSchema> {
   assertsSchema(newFSchema)
 
   const response = await apiFetch('/api/v1/schemas', {
