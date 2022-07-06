@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import uuid from 'uuid-random'
 
-import { createCompSchema, updateSchema } from '@/api/comp-schema'
+import { createCompSchema, updateCompSchema } from '@/api/comp-schema'
 import { schemaValidator } from '@/common/schemas'
 import { componentNameOptions } from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
@@ -38,7 +38,7 @@ export default function SchemaForm(props: SchemaFormProps): JSX.Element | null {
     },
   })
 
-  const { mutateAsync: apiUpdateSchema } = useAppMutation(updateSchema, {
+  const { mutateAsync: apiUpdateSchema } = useAppMutation(updateCompSchema, {
     onSuccess: () => {
       successMessage(t('messages.saved'))
     },

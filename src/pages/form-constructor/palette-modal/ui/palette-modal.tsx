@@ -9,7 +9,7 @@ import { useQuery } from 'react-query'
 import { useRecoilState } from 'recoil'
 import uniqid from 'uniqid'
 
-import { getSchemaList } from '@/api/comp-schema'
+import { getCompSchemaList } from '@/api/comp-schema'
 import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'
@@ -26,7 +26,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
   const [isOpen, setOpen] = useRecoilState(paletteModalState)
   const [searchQuery, setFilterString] = useState('')
 
-  const { data } = useQuery('schemas', getSchemaList)
+  const { data } = useQuery('schemas', getCompSchemaList)
   const presets: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.PRESET)
   const components: CompSchema[] = Object.values(data || {}).filter((schema) => schema.type === CompSchemaType.COMP)
   const dimensions: CompSchema[] = Object.values(data || {}).filter(
