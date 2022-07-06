@@ -16,3 +16,10 @@
   padding-left: 9px;
   box-sizing: border-box;
 }
+
+.EditableText .text span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

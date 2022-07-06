@@ -91,10 +91,13 @@ export default function EditableText(props: EditableTextProps): JSX.Element {
           className="text"
           onDoubleClick={() => setIsEditing(true)}
           ref={ref}
-          dangerouslySetInnerHTML={{
-            __html: (props.value === undefined ? props.defaultValue : props.value) || '',
-          }}
-        />
+        >
+          <span
+            dangerouslySetInnerHTML={{
+              __html: (props.value === undefined ? props.defaultValue : props.value) || '',
+            }}
+          />
+        </div>
       )}
     </div>
   )

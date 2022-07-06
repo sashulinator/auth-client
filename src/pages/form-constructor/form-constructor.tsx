@@ -1,9 +1,10 @@
 import { Stack } from '@fluentui/react'
-import { assertNotNull, assertNotUndefined, isObject } from '@savchenko91/schema-validator'
+import { assertNotNull, assertNotUndefined } from '@savchenko91/schema-validator'
 
 import './form-constructor.css'
 
 import CompPanel from './comp-panel'
+import compSchema from './constants/comp-schema'
 import HeaderContent from './header-content'
 import Preview from './preview'
 import TreePanel from './tree-panel'
@@ -19,18 +20,14 @@ import { ROOT_ID } from '@/constants/common'
 import ROUTES from '@/constants/routes'
 import {
   CompContextualMenu,
-  currentSchemaHistoryState,
   defineSelectedComp as definePropertyPanelComp,
   findCompSchema,
   findMissingSchemaIds,
-  nextSetter,
-  prevSetter,
   schemasState,
   selectedCompIdsState,
   selectedCompSchemaState,
-  updateCompSetter,
-  updateCompsSetter,
 } from '@/entities/schema'
+import { replace } from '@/lib/change-unmutable'
 import {
   addEntity,
   copyEntities,
@@ -41,12 +38,16 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
+import { useDoublyLinkedList } from '@/lib/use-doubly-linked-list'
 import {
   Catalog,
   Comp,
+  CompSchema,
+  CreateCompSchema,
   LinkedComp,
   assertHasId,
   assertNotLinkedComp,
+  hasId,
   isComp,
   isLinkedComp,
 } from '@/shared/schema-drawer'
@@ -58,19 +59,18 @@ const FormConstructor: FC = (): JSX.Element => {
   const [schemas, setSchemas] = useRecoilState(schemasState)
   const [selectedCompIds, setSelectedCompIds] = useRecoilState(selectedCompIdsState)
   const [selectedCompSchema, setSelectedCompSchema] = useRecoilState(selectedCompSchemaState)
-  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
+  const dll = useDoublyLinkedList([compSchema, selectedCompIds] as const)
+  const [currentCompSchema] = dll.current().getValue()
+
   const resetSchemas = useResetRecoilState(schemasState)
-  const resetCurrentSchemaHistory = useResetRecoilState(currentSchemaHistoryState)
   const resetSelectedCompIds = useResetRecoilState(selectedCompIdsState)
-  const missingSchemaIds = useMemo(() => findMissingSchemaIds(currentSchemaHistory.data, schemas), [
-    currentSchemaHistory.data,
-  ])
-  const propertyPanelComp = definePropertyPanelComp(currentSchemaHistory.data, selectedCompIds)
+  const missingSchemaIds = useMemo(() => findMissingSchemaIds(currentCompSchema, schemas), [currentCompSchema])
+  const propertyPanelComp = definePropertyPanelComp(currentCompSchema, selectedCompIds)
   const propertyPanelSchema = findCompSchema(propertyPanelComp, schemas)
   const context = {
     states: {
       schemas,
-      currentSchema: currentSchemaHistory.data,
+      currentSchema: currentCompSchema,
       selectedCompIds,
       propertyPanelComp,
       selectedCompSchema,
@@ -88,17 +88,19 @@ const FormConstructor: FC = (): JSX.Element => {
 
   useEffect(() => {
     resetSchemas()
-    resetCurrentSchemaHistory()
     resetSelectedCompIds()
   }, [])
   useEffect(setFetchedCurrentSchemaToState, [fetchedCurrentSchema])
   useEffect(updateSelectedCompSchema, [propertyPanelComp, schemas])
   useEffect(setFetchedSchemasToState, [fetchedDependencySchemas])
-  useEffect(updateSchemas, [currentSchemaHistory.data])
+  useEffect(updateSchemas, [currentCompSchema])
 
   function setFetchedCurrentSchemaToState() {
     if (fetchedCurrentSchema !== undefined) {
-      setCurrentSchemaHistory({ next: null, data: fetchedCurrentSchema, prev: null })
+      dll.removeEach(() => true)
+      dll.insertLast([fetchedCurrentSchema, selectedCompIds])
+      dll.setIndex(dll.getMaxIndex())
+      dll.update()
       setSchemas({ [fetchedCurrentSchema.id]: fetchedCurrentSchema, ...schemas })
     }
   }
@@ -107,6 +109,12 @@ const FormConstructor: FC = (): JSX.Element => {
     if (fetchedDependencySchemas !== undefined) {
       setSchemas({ ...fetchedDependencySchemas, ...schemas })
     }
+  }
+
+  function setCompSchema(compSchema: CompSchema | CreateCompSchema) {
+    dll.insertLast([compSchema, selectedCompIds])
+    dll.setIndex(dll.getMaxIndex())
+    dll.update()
   }
 
   function updateSelectedCompSchema() {
@@ -120,10 +128,9 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   function updateSchemas() {
-    const isCompSchema = isObject(currentSchemaHistory?.data) && 'id' in currentSchemaHistory?.data
-    if (isCompSchema) {
+    if (hasId(currentCompSchema)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      setSchemas({ [(currentSchemaHistory.data as any).id]: currentSchemaHistory.data, ...schemas })
+      setSchemas({ [currentCompSchema.id]: currentCompSchema, ...schemas })
     } else {
       setSchemas({ ...schemas })
     }
@@ -131,27 +138,41 @@ const FormConstructor: FC = (): JSX.Element => {
 
   // TODO rename to updateComp
   function updateCompInCurrentSchemaState(comp: Comp) {
-    setCurrentSchemaHistory(updateCompSetter(comp))
+    assertNotNull(currentCompSchema)
+    const newData = replace(currentCompSchema.data, comp.id, comp)
+    dll.insertLast([{ ...currentCompSchema, data: newData }, selectedCompIds])
+    dll.setIndex(dll.getMaxIndex())
+    dll.update()
   }
 
   function updateCompsInCurrentSchemaState(comps: Catalog<Comp | LinkedComp>) {
-    setCurrentSchemaHistory(updateCompsSetter(comps))
+    assertNotNull(currentCompSchema)
+    dll.insertLast([{ ...currentCompSchema, data: comps }, selectedCompIds])
+    dll.setIndex(dll.getMaxIndex())
+    dll.update()
   }
 
   function removeCompFromState(compId: string): void {
-    assertNotNull(currentSchemaHistory.data)
+    assertNotNull(currentCompSchema)
 
-    const comps = removeEntity(compId, currentSchemaHistory.data.data)
+    const comps = removeEntity(compId, currentCompSchema.data)
     assertNotUndefined(comps)
 
-    setCurrentSchemaHistory(updateCompsSetter(comps))
+    assertNotNull(currentCompSchema)
 
     if (compId === propertyPanelComp?.id) {
-      const compLocation = findEntityPosition(compId, currentSchemaHistory.data.data)
+      const compLocation = findEntityPosition(compId, currentCompSchema.data)
       const parentComp = findEntity(compLocation?.parentId || '', comps)
       assertNotLinkedComp(parentComp)
       const siblingId = parentComp.children?.[compLocation?.index || 0]
-      siblingId ? setSelectedCompIds([siblingId]) : setSelectedCompIds([])
+
+      const newSelected = siblingId ? [siblingId] : []
+
+      setSelectedCompIds(newSelected)
+
+      dll.insertLast([{ ...currentCompSchema, data: comps }, newSelected])
+      dll.setIndex(dll.getMaxIndex())
+      dll.update()
     }
   }
 
@@ -179,38 +200,32 @@ const FormConstructor: FC = (): JSX.Element => {
     })
   }
 
-  function keepCompsSelected(ids: string[] = []) {
-    const absentIds = selectedCompIds.filter((id) => !ids.includes(id))
-    const selectedIds = selectedCompIds.filter((id) => !absentIds.includes(id))
-    setSelectedCompIds(selectedIds)
-  }
-
   function undo() {
-    if (currentSchemaHistory.prev?.data) {
-      const root = currentSchemaHistory.prev.data.data[ROOT_ID]
-      assertNotLinkedComp(root)
-
-      // TODO проверяет только в корне а надо везде!!
-      keepCompsSelected(root?.children)
+    if (!dll.isPrevCurrent()) {
+      return
     }
-    setCurrentSchemaHistory(prevSetter)
+
+    dll.setIndex(dll.getIndex() - 1)
+    const [, newSelectedCompIds] = dll.current().getValue()
+    setSelectedCompIds(newSelectedCompIds)
+    dll.update()
   }
 
   function redo() {
-    if (currentSchemaHistory.next?.data) {
-      const root = currentSchemaHistory.next.data.data[ROOT_ID]
-      assertNotLinkedComp(root)
-
-      // TODO проверяет только в корне а надо везде!!
-      keepCompsSelected(root?.children)
+    if (!dll.isNextCurrent()) {
+      return
     }
-    setCurrentSchemaHistory(nextSetter)
+
+    dll.setIndex(dll.getIndex() + 1)
+    const [, newSelectedCompIds] = dll.current().getValue()
+    setSelectedCompIds(newSelectedCompIds)
+    dll.update()
   }
 
   function copyToClipboard() {
-    assertNotNull(currentSchemaHistory.data)
-    const dependencyIds = findDependencyIds(selectedCompIds, currentSchemaHistory.data.data)
-    const selectedComps = findEntities(dependencyIds, currentSchemaHistory.data.data)
+    assertNotNull(currentCompSchema)
+    const dependencyIds = findDependencyIds(selectedCompIds, currentCompSchema.data)
+    const selectedComps = findEntities(dependencyIds, currentCompSchema.data)
     localStorage.setItem('copyClipboard', JSON.stringify(selectedComps))
   }
 
@@ -236,8 +251,9 @@ const FormConstructor: FC = (): JSX.Element => {
     const rootCompIds = findRootParentIds(copiedComps)
     const rootComps = findEntities(rootCompIds, copiedComps)
 
-    assertNotNull(currentSchemaHistory.data)
-    const mergedComps = { ...currentSchemaHistory.data.data, ...copiedComps }
+    assertNotNull(currentCompSchema)
+
+    const mergedComps = { ...currentCompSchema.data, ...copiedComps }
 
     const isRoot = selectedCompIds.includes(ROOT_ID)
     const isToRoot = selectedCompIds.length === 0 || isRoot
@@ -250,21 +266,25 @@ const FormConstructor: FC = (): JSX.Element => {
         assertNotUndefined(position)
         acc = addEntity(comp, position.parentId.toString(), position.index + 1, acc)
       }
+
       return acc
     }, mergedComps)
 
-    setCurrentSchemaHistory(updateCompsSetter(newComps))
+    dll.insertLast([{ ...currentCompSchema, data: newComps }, Object.keys(copiedComps)])
+    dll.setIndex(dll.getMaxIndex())
+    dll.update()
   }
 
   async function copySchema() {
-    assertNotNull(currentSchemaHistory.data)
+    assertNotNull(currentCompSchema)
+
     const response = await fetch('/api/v1/schemas', {
       method: 'POST',
       // TODO копируется текущий стейт а не тот что пришел с сервера
       body: JSON.stringify({
-        ...currentSchemaHistory.data,
+        ...currentCompSchema,
         id: uuid(),
-        title: `${currentSchemaHistory.data.title}_copy`,
+        title: `${currentCompSchema.title}_copy`,
       }),
       headers: {
         'content-type': 'application/json',
@@ -280,11 +300,11 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   async function deleteSchema() {
-    assertNotNull(currentSchemaHistory.data)
-    assertHasId(currentSchemaHistory.data)
+    assertNotNull(currentCompSchema)
+    assertHasId(currentCompSchema)
     const response = await fetch('/api/v1/schemas', {
       method: 'DELETE',
-      body: JSON.stringify({ ids: [currentSchemaHistory.data.id] }),
+      body: JSON.stringify({ ids: [currentCompSchema.id] }),
       headers: {
         'content-type': 'application/json',
         accept: '*/*',
@@ -298,10 +318,15 @@ const FormConstructor: FC = (): JSX.Element => {
 
   return (
     <Stack className="headerOnlyLayout">
-      <HeaderContent deleteSchema={deleteSchema} copySchema={copySchema} />
+      <HeaderContent
+        compSchema={currentCompSchema}
+        setCompSchema={setCompSchema}
+        deleteCompSchema={deleteSchema}
+        copyCompSchema={copySchema}
+      />
       <Stack as="main" className="FormConstructor">
         <TreePanel
-          schema={currentSchemaHistory.data}
+          schema={currentCompSchema}
           schemas={schemas}
           toggleCompSelection={toggleCompSelection}
           upsertComps={updateCompsInCurrentSchemaState}
@@ -320,13 +345,13 @@ const FormConstructor: FC = (): JSX.Element => {
         <div className="PreviewPanel">
           <Preview
             isLoading={isDependencySchemasLoading}
-            schema={currentSchemaHistory.data}
+            schema={currentCompSchema}
             schemas={schemas}
             selectedCompIds={selectedCompIds}
           />
         </div>
         <CompPanel
-          previewSchema={currentSchemaHistory.data}
+          previewSchema={currentCompSchema}
           onSubmit={updateCompInCurrentSchemaState}
           isLoading={isDependencySchemasLoading}
           context={context}

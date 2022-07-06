@@ -5,27 +5,29 @@ import React, { useMemo } from 'react'
 import { Field, Form } from 'react-final-form'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useRecoilState } from 'recoil'
 import uuid from 'uuid-random'
 
 import { createSchema, updateSchema } from '@/api/schema'
 import { schemaValidator } from '@/common/schemas'
 import { componentNameOptions } from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
-import { currentSchemaHistoryState, schemaSetter } from '@/entities/schema'
 import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
 import { Dropdown } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
-import { CompSchema, CompSchemaType } from '@/shared/schema-drawer'
+import { CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
 import CustomTextField from '@/shared/textfield'
 import { successMessage } from '@/shared/toast'
 
 type SchemaFormValues = Pick<CompSchema, 'title' | 'componentName' | 'type'>
 
-export default function SchemaForm(): JSX.Element | null {
+interface SchemaFormProps {
+  compSchema: CreateCompSchema | CompSchema | null
+  setCompSchema: (compSchema: CreateCompSchema | CompSchema) => void
+}
+
+export default function SchemaForm(props: SchemaFormProps): JSX.Element | null {
   const { t, i18n } = useTranslation()
-  const [currentSchemaHistory, setCurrentSchemaHistory] = useRecoilState(currentSchemaHistoryState)
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -53,12 +55,12 @@ export default function SchemaForm(): JSX.Element | null {
 
   async function onSubmit(submitSchemaData: SchemaFormValues): Promise<void | ErrorCollection> {
     const { title, type } = submitSchemaData
-    assertNotNull(currentSchemaHistory.data)
+    assertNotNull(props.compSchema)
     const newComponentName = type !== CompSchemaType.COMP ? null : submitSchemaData.componentName
     const newId = id ? id : uuid()
 
     const newSchema: CompSchema = {
-      ...currentSchemaHistory.data,
+      ...props.compSchema,
       id: newId,
       componentName: newComponentName,
       title,
@@ -79,21 +81,20 @@ export default function SchemaForm(): JSX.Element | null {
   }
 
   function saveLocaly(schema: SchemaFormValues) {
-    if (currentSchemaHistory && currentSchemaHistory.data && schema) {
-      setCurrentSchemaHistory(schemaSetter({ ...currentSchemaHistory.data, ...schema }))
-    }
+    assertNotNull(props.compSchema)
+    props.setCompSchema({ ...props.compSchema, ...schema })
   }
 
-  if (!currentSchemaHistory.data) {
+  if (props.compSchema === null) {
     return null
   }
 
   return (
     <Form<SchemaFormValues, SchemaFormValues>
       initialValues={{
-        title: currentSchemaHistory.data?.title,
-        componentName: currentSchemaHistory.data?.componentName,
-        type: currentSchemaHistory.data?.type,
+        title: props.compSchema.title,
+        componentName: props.compSchema.componentName,
+        type: props.compSchema.type,
       }}
       onSubmit={onSubmit}
       render={(formProps) => {

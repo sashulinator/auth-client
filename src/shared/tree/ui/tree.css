@@ -71,6 +71,10 @@
   min-width: 200px;
 }
 
+.TreeNodeContent .EditableText {
+  width: 100%;
+}
+
 .TreeNodeContent:focus {
   outline: none !important;
 }
