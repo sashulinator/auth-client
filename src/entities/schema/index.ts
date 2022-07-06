@@ -1,5 +1,4 @@
 export * from './model/comp-schema'
-export * from './model/current-schema'
 export * from './model/selected-comps'
 
 export * from './lib/create-new-comp'

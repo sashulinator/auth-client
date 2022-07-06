@@ -1,16 +1,16 @@
-import { DoublyLinkedList } from '@datastructures-js/linked-list'
-
+import { MyDoublyLinkedList } from './doubly-linked-list'
 import { useState } from 'react'
 
-export function useDoublyLinkedList<T>(data: T): DoublyLinkedList<T> & { update: () => void } {
-  const dll = new DoublyLinkedList<T>()
+export function useDoublyLinkedList<T>(data: T): MyDoublyLinkedList<T> & { update: () => void } {
+  const dll = new MyDoublyLinkedList<T>()
 
   dll.insertLast(data)
 
-  const [state, setState] = useState(dll)
+  const [state] = useState(dll)
+  const [, setUpdate] = useState({})
 
-  const update = function (this: DoublyLinkedList<T>) {
-    setState(this)
+  const update = function () {
+    setUpdate({})
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

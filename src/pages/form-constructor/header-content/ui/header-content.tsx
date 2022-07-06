@@ -7,11 +7,14 @@ import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
+import { CompSchema, CreateCompSchema } from '@/shared/schema-drawer'
 import { HEADER_PORTAL_LEFT_CLASSNAME, HEADER_PORTAL_RIGHT_CLASSNAME } from '@/widgets/header'
 
 interface HeaderContentProps {
-  deleteSchema: () => void | Promise<void>
-  copySchema: () => void | Promise<void>
+  compSchema: CreateCompSchema | CompSchema | null
+  setCompSchema: (compSchema: CreateCompSchema | CompSchema) => void
+  deleteCompSchema: () => void | Promise<void>
+  copyCompSchema: () => void | Promise<void>
 }
 
 export default function HeaderContent(props: HeaderContentProps): null | JSX.Element {
@@ -35,8 +38,8 @@ export default function HeaderContent(props: HeaderContentProps): null | JSX.Ele
       )}
       {createPortal(
         <Stack horizontal verticalAlign="center" tokens={{ childrenGap: 6, padding: '0 32px 0 0' }}>
-          <SchemaForm />
-          <SchemaContextualMenu deleteSchema={props.deleteSchema} copySchema={props.copySchema} />
+          <SchemaForm setCompSchema={props.setCompSchema} compSchema={props.compSchema} />
+          <SchemaContextualMenu deleteSchema={props.deleteCompSchema} copySchema={props.copyCompSchema} />
         </Stack>,
         elRight
       )}
