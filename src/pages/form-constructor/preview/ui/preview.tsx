@@ -31,15 +31,11 @@ const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(function Preview
 
   useEffect(() => highlightOnEvents(props.selectedCompIds), [props.selectedCompIds, props.schema])
 
-  if (props.schema === null) {
-    return null
-  }
-
   function onSubmit(data: unknown) {
     console.log('data', data)
   }
 
-  if (props.schema.type === CompSchemaType.FORM_DIMENSION) {
+  if (props.schema?.type === CompSchemaType.FORM_DIMENSION) {
     return null
   }
 
