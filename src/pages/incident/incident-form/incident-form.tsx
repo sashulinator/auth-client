@@ -2,12 +2,11 @@ import './incident-form.css'
 
 import React from 'react'
 import { Form } from 'react-final-form'
-import uuid from 'uuid-random'
 
-import { createIncident } from '@/api/incident'
+import { createIncident, updateIncident } from '@/api/incident'
 import componentList from '@/constants/component-list'
-import { Incident } from '@/entities/incident/model/types'
-import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
+import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
+import SchemaDrawer, { Catalog, CompSchema, hasInstanceId } from '@/shared/schema-drawer'
 
 interface IncidentFormProps {
   schema: CompSchema
@@ -17,18 +16,21 @@ interface IncidentFormProps {
 }
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
-  async function onSubmit(data: Incident) {
-    const resData = await createIncident({
-      id: uuid(),
+  async function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
+    const resData: CreateInputIncident | UpdateInputIncident = {
+      ...data,
       status: data.status,
-      validationStateCd: data.validationStateCd,
-      creator: 'vasya',
-      createdAt: new Date().toISOString(),
-      editedAt: new Date().toISOString(),
-      sourceSystemCd: 'test',
+      validation_state_cd: data.validation_state_cd,
+      source_system_cd: data.source_system_cd,
       name: data.name,
-      data: data.data,
-    })
+    }
+
+    if (hasInstanceId(resData)) {
+      await updateIncident(resData as UpdateInputIncident)
+    } else {
+      await createIncident(resData)
+    }
+
     console.log('resData', resData)
   }
 
