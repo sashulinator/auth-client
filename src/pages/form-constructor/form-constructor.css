@@ -29,8 +29,6 @@
 .Preview {
   position: absolute;
   min-width: 300px;
-  background-color: var(--white);
-  border: 1px solid var(--black02);
   top: calc(var(--previewTop) * 1px);
   left: calc(var(--previewLeft) * 1px);
 }

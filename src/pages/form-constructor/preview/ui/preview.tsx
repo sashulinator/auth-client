@@ -1,11 +1,14 @@
 import './preview.css'
 
 import { highlightOnEvents } from '../lib/highlight-on-events'
-import React, { useEffect, useRef } from 'react'
+import clsx from 'clsx'
+import React, { LegacyRef, forwardRef, useEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import useMoving from '@/lib/use-moving'
+import useMergedRefs from '@/lib/useMergedRefs'
+import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
 import SchemaDrawer, { Catalog, CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
 
@@ -13,13 +16,16 @@ interface PreviewProps {
   schema: CompSchema | null | CreateCompSchema
   schemas: Catalog<CompSchema> | null
   selectedCompIds: string[]
+  ref: LegacyRef<HTMLDivElement | null>
+  isFocused?: boolean
   isLoading: boolean
 }
 
-export default function Preview(props: PreviewProps): JSX.Element | null {
+const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(function Preview(props, focusRef): JSX.Element | null {
   const { schemas, schema } = props
 
-  const ref = useMoving('preview', ['ms-Stack'])
+  const movingRef = useMoving('preview', ['ms-Stack'])
+  const ref = useMergedRefs(movingRef, focusRef)
 
   const values = useRef({})
 
@@ -38,7 +44,7 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
   }
 
   return (
-    <div className="Preview" ref={ref}>
+    <div className={clsx('Preview', props.isFocused && 'isFocused')} ref={ref}>
       <LoadingAria loading={props.isLoading} label="Components loading...">
         <div className="wrapper">
           <div className="selectorArea" />
@@ -67,4 +73,6 @@ export default function Preview(props: PreviewProps): JSX.Element | null {
       </LoadingAria>
     </div>
   )
-}
+})
+
+export default withFocus(Preview)
