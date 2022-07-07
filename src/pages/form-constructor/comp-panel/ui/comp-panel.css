@@ -6,7 +6,7 @@
 }
 
 .isFocused .CompPanel:before {
-  border-left: 1px solid var(--themePrimary05);
+  border-left: 2px solid var(--themePrimary);
 }
 
 .CompPanel:before {
@@ -19,7 +19,7 @@
   background-color: var(--white02);
   backdrop-filter: blur(11px);
   -webkit-backdrop-filter: blur(11px);
-  border-left: 1px solid var(--alwaysWhite02);
+  border-left: 1px solid var(--black02);
 }
 
 .CompPanel .ms-TextField-fieldGroup,
