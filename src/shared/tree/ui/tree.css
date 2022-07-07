@@ -95,12 +95,16 @@
 }
 
 div.TreeNodeContent.isSelected .treeLeafContent {
-  background-color: var(--themePrimary03);
+  background-color: var(--themePrimary);
+  color: var(--white);
   z-index: 0;
+}
+div.TreeNodeContent.isSelected .treeLeafContent i {
+  color: var(--white) !important;
 }
 
 .TreeNodeContent:hover .treeLeafContent {
-  background-color: var(--themePrimary01);
+  background-color: var(--themePrimary03);
 }
 
 .TreeNodeContent:focus .treeLeafBorder {

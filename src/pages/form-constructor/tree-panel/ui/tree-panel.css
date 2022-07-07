@@ -7,7 +7,7 @@
 }
 
 .TreePanel.isFocused:before {
-  border-right: 1px solid var(--themePrimary05);
+  border-right: 2px solid var(--themePrimary);
 }
 
 .TreePanel:before {
@@ -20,7 +20,7 @@
   background-color: var(--white02);
   backdrop-filter: blur(11px);
   -webkit-backdrop-filter: blur(11px);
-  border-right: 1px solid var(--alwaysWhite02);
+  border-right: 1px solid var(--black02);
 }
 
 .TreePanel .treePanelScrollable {

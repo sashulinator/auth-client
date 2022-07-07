@@ -3,6 +3,14 @@
   position: relative;
 }
 
+.Preview {
+  border: 2px solid var(--black02);
+}
+
+.Preview.isFocused {
+  border-color: var(--themePrimary);
+}
+
 .selectorArea,
 .hoverArea {
   position: absolute;

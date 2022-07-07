@@ -1,6 +1,6 @@
 .FormConstructor {
   position: relative;
-  background-color: var(--neutralLighter);
+  background-color: var(--white);
   overflow: hidden;
   display: grid;
   grid-template-areas: 'treePanel preview compPanel';
@@ -9,7 +9,6 @@
 }
 
 .TreePanel {
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   transform: translate(var(--treePanelWidth_expanded, calc(-100% + 5px)));
   position: fixed;
   width: calc(var(--treePanelWidth, 300) * 1px);
@@ -22,10 +21,6 @@
   z-index: 4;
 }
 
-.Header {
-  box-shadow: 0px 0 7px rgba(0, 0, 0, 0.35);
-}
-
 .PreviewPanel {
   grid-area: preview;
   position: relative;
@@ -34,13 +29,11 @@
 .Preview {
   position: absolute;
   min-width: 300px;
-  background-color: var(--white);
   top: calc(var(--previewTop) * 1px);
   left: calc(var(--previewLeft) * 1px);
 }
 
 .CompPanel {
-  box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.1);
   position: fixed;
   max-height: calc(100% - var(--headerHeight) * 1px);
   min-height: calc(100% - var(--headerHeight) * 1px);
