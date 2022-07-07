@@ -1,4 +1,4 @@
-import { isString, string } from '@savchenko91/schema-validator'
+import { ANY_KEY, isString, string } from '@savchenko91/schema-validator'
 
 import { objectWithNumberKeys, rootWrap } from './structure-validators'
 
@@ -22,5 +22,13 @@ export function isObjectWithNumberKeys(input: unknown): input is string[] {
 
 export function isArrayOfStringArrays(input: unknown): input is [string, string][] {
   const errors = rootWrap([[string]])(input)
+  return !errors
+}
+
+export function isTrie(input: unknown): input is Record<string, string> {
+  const errors = rootWrap({
+    [ANY_KEY]: string,
+  })(input)
+
   return !errors
 }
