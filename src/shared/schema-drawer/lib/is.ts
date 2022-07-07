@@ -6,6 +6,10 @@ export function hasId(input: unknown): input is { id: string } {
   return isObject(input) && 'id' in input
 }
 
+export function hasInstanceId(input: unknown): input is { instance_id: string } {
+  return isObject(input) && 'instance_id' in input
+}
+
 export function assertHasId(input: unknown): asserts input is { id: string } {
   if (!hasId(input)) {
     throw new Error('has not id!')
