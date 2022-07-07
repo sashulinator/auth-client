@@ -4,11 +4,10 @@ import { useId } from '@fluentui/react-hooks'
 import { ValidationError, and } from '@savchenko91/schema-validator'
 
 import React, { LegacyRef, forwardRef, useEffect, useState } from 'react'
-import { Form } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import withFocus from '@/lib/with-focus'
-import Autosave from '@/shared/autosave'
+import { FormAutosave } from '@/shared/autosave'
 import { BindingEditor, TreeNode, createRemoveHandler, typeIcons } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
@@ -119,29 +118,23 @@ const BindingSetter = forwardRef<HTMLDivElement | null, BindingSetterProps>(func
         )}
         {hasSchema(assertionItem) && selectedBinding && (
           <div className="bindinForm">
-            <Form
+            <FormAutosave
               key={JSON.stringify(assertionItem.schema)}
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-              onSubmit={() => {}}
               initialValues={selectedBinding.props}
+              debounce={500}
+              onSubmit={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
               render={(formProps) => {
                 return (
-                  <>
-                    <Autosave
-                      save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
-                      debounce={500}
-                    />
-                    <SchemaDrawer
-                      componentList={componentList}
-                      schema={assertionItem.schema}
-                      schemas={basicComponentsSchemas}
-                      context={{
-                        previewSchema: props.context?.previewSchema,
-                        previewData: props.context?.previewData,
-                        form: formProps.form,
-                      }}
-                    />
-                  </>
+                  <SchemaDrawer
+                    componentList={componentList}
+                    schema={assertionItem.schema}
+                    schemas={basicComponentsSchemas}
+                    context={{
+                      previewSchema: props.context?.previewSchema,
+                      previewData: props.context?.previewData,
+                      form: formProps.form,
+                    }}
+                  />
                 )
               }}
             />
