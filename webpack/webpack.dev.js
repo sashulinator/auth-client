@@ -10,7 +10,10 @@ module.exports = {
     port: 3001,
     historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/api/v1': 'http://localhost:3000',
+      '/api/task': 'http://10.4.40.254:8005',
+      '/api/processes': 'http://10.4.40.254:8005',
+      '/api/incident': 'http://10.4.40.254:8080',
     },
   },
   plugins: [
