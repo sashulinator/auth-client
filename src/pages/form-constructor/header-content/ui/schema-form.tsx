@@ -108,7 +108,7 @@ export default function SchemaForm(props: SchemaFormProps): JSX.Element | null {
             verticalAlign="center"
             tokens={{ childrenGap: 16, padding: '16px 0 16px' }}
           >
-            <Autosave save={saveLocaly} debounce={700} />
+            <Autosave onSubmit={saveLocaly} debounce={700} />
             <Field<string> name="title" validate={(v) => schemaValidator.title(v)}>
               {({ input, meta }) => {
                 return (

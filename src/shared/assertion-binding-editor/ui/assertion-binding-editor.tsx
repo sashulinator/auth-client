@@ -8,11 +8,11 @@ import './assertion-binding-editor.css'
 import { typeIcons } from '../constatnts/type-icons'
 import { initialSchema } from '../lib/constants'
 import React, { forwardRef, useEffect, useState } from 'react'
-import { Field, Form } from 'react-final-form'
+import { Field } from 'react-final-form'
 
 import componentList from '@/constants/component-list'
 import withFocus from '@/lib/with-focus'
-import Autosave from '@/shared/autosave'
+import { FormAutosave } from '@/shared/autosave'
 import { BindingEditor, TreeNode, createRemoveHandler } from '@/shared/binding-editor'
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
@@ -104,42 +104,33 @@ const AssertionBindingEditor = forwardRef<HTMLDivElement | null, AssertionBindin
           </Stack>
         )}
         {props.value && (
-          <Form
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onSubmit={() => {}}
-            initialValues={props.value}
+          <FormAutosave<AssertionBindingSchema>
+            initialValues={schema}
+            onSubmit={(newSchema) => props.onChange(newSchema)}
+            debounce={500}
             render={() => {
               return (
-                <>
-                  <Autosave save={(newSchema) => props.onChange(newSchema)} debounce={500} />
-                  <Field<string> name="eventToShowError">
-                    {({ input }) => <Dropdown label="eventToShowError" {...input} options={EventToShowError} />}
-                  </Field>
-                </>
+                <Field<string> name="eventToShowError">
+                  {({ input }) => <Dropdown label="eventToShowError" {...input} options={EventToShowError} />}
+                </Field>
               )
             }}
           />
         )}
 
         {hasSchema(assertionItem) && selectedBinding && (
-          <Form
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onSubmit={() => {}}
+          <FormAutosave<AssertionBindingSchema>
+            onSubmit={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
             initialValues={selectedBinding.props}
+            debounce={500}
             render={(formProps) => {
               return (
-                <>
-                  <Autosave
-                    save={(input2) => changeBinding(selectedBinding.id, selectedBinding.name, input2)}
-                    debounce={500}
-                  />
-                  <SchemaDrawer
-                    componentList={componentList}
-                    schema={assertionItem.schema}
-                    schemas={basicComponentsSchemas}
-                    context={{ form: formProps.form }}
-                  />
-                </>
+                <SchemaDrawer
+                  componentList={componentList}
+                  schema={assertionItem.schema}
+                  schemas={basicComponentsSchemas}
+                  context={{ form: formProps.form }}
+                />
               )
             }}
           />
