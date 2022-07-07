@@ -19,6 +19,7 @@ import { Pivot, PivotItem } from '@/shared/pivot'
 import { BasicComponentsNames, CompMeta } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
 import Table from '@/shared/table'
+import CRUDTable from '@/shared/table/ui/crud-table'
 import TextField from '@/shared/textfield'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -172,6 +173,12 @@ const componentList: Record<string, CompMeta> = {
   Table: {
     type: 'content',
     component: Table,
+    iconName: 'Table',
+  },
+
+  CRUDTable: {
+    type: 'content',
+    component: CRUDTable,
     iconName: 'Table',
   },
 

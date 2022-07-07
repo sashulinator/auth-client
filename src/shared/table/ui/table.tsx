@@ -1,4 +1,4 @@
-import { DetailsList, IColumn, IColumnReorderOptions, Label, SelectionMode } from '@fluentui/react'
+import { DetailsList, IColumn, IColumnReorderOptions, IDetailsListProps, Label, SelectionMode } from '@fluentui/react'
 
 import './table.css'
 
@@ -7,7 +7,7 @@ import React from 'react'
 
 import Stack from '@/shared/stack'
 
-interface TableProps {
+export interface TableProps extends IDetailsListProps {
   items: Record<string, unknown>[]
   columns: IColumn[]
   columnReorderOptions: IColumnReorderOptions
