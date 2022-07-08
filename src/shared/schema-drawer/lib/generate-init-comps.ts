@@ -50,7 +50,7 @@ export function generateInitComps(
       return
     }
 
-    const injectedComp = injectToComp(comp.injections, context, comp)
+    const injectedComp = injectToComp(comp, context)
     const schema = context.schemas[comp.compSchemaId] as ComponentCompSchema
 
     const compContext = {

@@ -3,6 +3,7 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { assertCompSchema } from '../lib/assertions'
 import { generateInitComps } from '../lib/generate-init-comps'
 import { assertNotLinkedComp, isInputType, isLinkedComp } from '../lib/is'
+import { Observer } from '../lib/observer'
 import {
   Catalog,
   Comp,
@@ -98,7 +99,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   assertNotUndefined(comp)
 
   if (isLinkedComp(comp)) {
-    const schema = props.schemas[(comp as any).schemaId] as ComponentCompSchema
+    const schema = props.schemas[comp.linkedSchemaId]
 
     // Схема еще не прогрузилась и поэтому undefined
     if (schema === undefined) {
@@ -114,6 +115,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     ...props.context,
     comp: comp,
     compSchema: schema,
+    observer: new Observer(),
   }
 
   // Схема еще не прогрузилась и поэтому undefined

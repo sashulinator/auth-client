@@ -3,12 +3,12 @@ import get from 'lodash.get'
 
 import buildObject from '@/lib/build-object'
 
-export default function injectToComp(injections: Comp['injections'], context: Context, comp: Comp): Comp {
-  if (!injections) {
+export default function injectToComp(comp: Comp, context: Context): Comp {
+  if (!comp?.injections) {
     return comp
   }
 
-  return injections?.reduce<Comp>((accComp, injection) => {
+  return comp?.injections?.reduce<Comp>((accComp, injection) => {
     if (!injection.from || !injection.to) {
       return comp
     }

@@ -29,8 +29,8 @@ export interface Comp {
   id: string
   compSchemaId: string
   name?: string
-  title: string // eslint-disable-next-line @typescript-eslint/no-explicit-any
   undefinedOnDestroy?: boolean
+  title: string // eslint-disable-next-line @typescript-eslint/no-explicit-any
   defaultValue?: any
   props?: Record<string, unknown>
   children?: string[]
@@ -206,12 +206,12 @@ export type DrawerContext = Context & {
 }
 
 export type ComponentContext = DrawerContext & {
+  observer: Observer
   comp: Comp
   compSchema: CompSchema
 }
 
 export type ContentComponentContext = ComponentContext & {
-  observer: Observer
   fns: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // onClick: (...args: any[]) => void

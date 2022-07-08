@@ -7,7 +7,6 @@ import bindEvents from '../lib/bind-events'
 import { onBlur, onChange, onDestroy, onFocus } from '../lib/events'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
-import { Observer } from '../lib/observer'
 import { registerFieldChangeEvent } from '../lib/register-field-change-event'
 import {
   Catalog,
@@ -38,7 +37,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
   const validate = bindAssertions(assertionList, props.comp.assertionBindingSchema?.data)
 
   // TODO move to ComponentFactory
-  const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
+  const injectedComp = injectToComp(props.comp, props.context)
 
   assertNotUndefined(injectedComp.name)
 
@@ -56,7 +55,6 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
           () => ({
             ...props.context,
             comp: injectedComp,
-            observer: new Observer(),
           }),
           [props.comp.eventBindingSchema?.data]
         )
