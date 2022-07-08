@@ -1,4 +1,4 @@
-import { ActionButton, IconButton, Label, Link, PrimaryButton, SearchBox, Text } from '@fluentui/react'
+import { IconButton, Label, Link, SearchBox, Text } from '@fluentui/react'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 import ValidatorPicker from '@/shared/assertion-binding-editor'
@@ -39,14 +39,6 @@ const componentList: Record<string, CompMeta> = {
     component: Checkbox,
     iconName: 'CheckboxComposite',
   },
-
-  // Inputs
-
-  // DimensionTree: {
-  //   type: 'input',
-  //   component: DimensionTree,
-  //   iconName: 'TextField',
-  // },
 
   [BasicComponentsNames.TextField]: {
     type: 'input',
@@ -152,12 +144,6 @@ const componentList: Record<string, CompMeta> = {
     iconName: 'Remove',
   },
 
-  PrimaryButton: {
-    type: 'content',
-    component: PrimaryButton,
-    iconName: 'ButtonControl',
-  },
-
   Text: {
     type: 'content',
     component: Text,
@@ -203,12 +189,6 @@ const componentList: Record<string, CompMeta> = {
   IconButton: {
     type: 'content',
     component: IconButton,
-    iconName: 'ButtonControl',
-  },
-
-  ActionButton: {
-    type: 'content',
-    component: ActionButton,
     iconName: 'ButtonControl',
   },
 

@@ -1,4 +1,4 @@
-import { ActionButton, IButtonStyles, Label, Stack } from '@fluentui/react'
+import { Label, Stack } from '@fluentui/react'
 
 import './binding-editor.css'
 
@@ -6,6 +6,8 @@ import { ClassNames } from '../constants/classNames'
 import clsx from 'clsx'
 import React, { LegacyRef, forwardRef } from 'react'
 import HeightAnimatedContainer from 'react-auto-animated-container'
+
+import { Button } from '@/shared/button'
 
 export interface RootProps {
   ref: LegacyRef<HTMLDivElement | null>
@@ -46,22 +48,6 @@ export default function BindingEditor(props: BindingEditorProps) {
 BindingEditor.Root = Root
 BindingEditor.ActionPanel = ActionPanel
 
-/**
- * ActionPanel
- */
-
-const buttonStyles: IButtonStyles = {
-  rootHovered: {
-    backgroundColor: 'var(--themePrimary01)',
-  },
-  root: {
-    height: '32px',
-  },
-  label: {
-    color: 'var(--themePrimary)',
-  },
-}
-
 export interface ActionButtonItem {
   name: string
   iconName: string
@@ -75,21 +61,17 @@ interface ActionPanelProps {
 function ActionPanel(props: ActionPanelProps) {
   return (
     <Stack horizontal horizontalAlign="space-between">
-      <ActionButton
-        iconProps={{ iconName: props.mainButton.iconName }}
-        onClick={props.mainButton.onClick}
-        styles={buttonStyles}
-      >
+      <Button variant="action" iconProps={{ iconName: props.mainButton.iconName }} onClick={props.mainButton.onClick}>
         {props.mainButton.name}
-      </ActionButton>
+      </Button>
       <Stack horizontal tokens={{ childrenGap: '12px' }}>
         {props.buttons.map((button) => {
           return (
-            <ActionButton
+            <Button
+              variant="action"
               key={button.name}
               iconProps={{ iconName: button.iconName }}
               onClick={button.onClick}
-              styles={buttonStyles}
             />
           )
         })}

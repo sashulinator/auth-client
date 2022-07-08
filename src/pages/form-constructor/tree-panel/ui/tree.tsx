@@ -1,5 +1,4 @@
 import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree } from '@atlaskit/tree'
-import { ActionButton } from '@fluentui/react'
 import { assertNotUndefined, assertString } from '@savchenko91/schema-validator'
 
 import './tree-panel.css'
@@ -13,8 +12,9 @@ import { ROOT_ID } from '@/constants/common'
 import { findEntity, findEntityPosition, moveEntity } from '@/lib/entity-actions'
 import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
+import { Button } from '@/shared/button'
 import LoadingAria from '@/shared/loading-aria'
-import { Catalog, Comp, CompSchema, LinkedComp, CreateCompSchema } from '@/shared/schema-drawer'
+import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
 export interface TreeProps {
@@ -126,12 +126,12 @@ export default function PanelTree(props: TreeProps): JSX.Element {
     <PerfectScrollbar className="treePanelScrollable">
       <LoadingAria loading={props.isLoading} label="Schema loading...">
         {!props.isLoading && (
-          <ActionButton
+          <Button
+            variant="action"
             styles={getRootCompButtonStyles(props.selectedCompIds)}
             onClick={() => props.toggleCompSelection([ROOT_ID])}
-          >
-            ROOT
-          </ActionButton>
+            text={props?.schema?.data?.[ROOT_ID]?.title}
+          />
         )}
         {tree && (
           <Tree

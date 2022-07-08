@@ -1,7 +1,7 @@
-import { ActionButton } from '@fluentui/react'
-
 import React from 'react'
 import useCollapse from 'react-collapsed'
+
+import { Button } from '@/shared/button'
 
 type CollapseProps = {
   children: React.ReactNode
@@ -18,24 +18,14 @@ export const Collapse = (props: CollapseProps) => {
 
   return (
     <div data-comp-id={props['data-comp-id']}>
-      <ActionButton
+      <Button
         {...getToggleProps()}
-        styles={{
-          root: {
-            paddingLeft: '0',
-          },
-          icon: {
-            marginLeft: '0',
-          },
-          label: {
-            color: 'var(--themePrimary)',
-          },
-        }}
+        variant="action"
         iconProps={{ iconName: isExpanded ? 'ChevronDown' : 'ChevronRight' }}
         onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
-      >
-        {isExpanded ? props.labelExpanded : props.labelCollapsed}
-      </ActionButton>
+        text={isExpanded ? props.labelExpanded : props.labelCollapsed}
+      />
+
       <section {...getCollapseProps()}>
         <div>{props.children}</div>
       </section>

@@ -1,4 +1,4 @@
-import { PrimaryButton, Stack } from '@fluentui/react'
+import { Stack } from '@fluentui/react'
 import { ErrorCollection, assertNotNull } from '@savchenko91/schema-validator'
 
 import React, { useMemo } from 'react'
@@ -13,6 +13,7 @@ import { componentNameOptions } from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
 import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
+import { Button } from '@/shared/button'
 import { Dropdown } from '@/shared/dropdown'
 import FieldError from '@/shared/field-error'
 import { CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
@@ -129,9 +130,7 @@ export default function SchemaForm(props: SchemaFormProps): JSX.Element | null {
                 )}
               </Field>
             )}
-            <PrimaryButton type="submit">
-              {id ? t('t.buttons.save').toString() : t('t.buttons.create').toString()}
-            </PrimaryButton>
+            <Button type="submit" text={id ? 't.buttons.save' : 't.buttons.create'} />
           </Stack>
         )
       }}
