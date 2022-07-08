@@ -46,11 +46,11 @@ main {
 }
 
 .Nav {
+  grid-area: fakeNav;
   position: fixed;
   left: 0;
   top: calc(var(--headerHeight) * 1px);
   height: 100%;
-  width: 100%;
 }
 
 .Header {
