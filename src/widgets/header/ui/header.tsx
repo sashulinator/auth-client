@@ -1,11 +1,11 @@
+import { Persona, PersonaSize } from '@fluentui/react'
 import { Stack } from '@fluentui/react/lib/Stack'
 
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
 import LogoutButton from '@/entities/user/ui/logout-button'
-import LanguageDropdown from '@/shared/language-dropdown'
-import ThemeDropdown from '@/shared/theme'
 
 export const HEADER_PORTAL_LEFT_CLASSNAME = '.headerPortalLeft'
 export const HEADER_PORTAL_CENTER_CLASSNAME = '.headerPortalCenter'
@@ -48,10 +48,13 @@ export default function Header(): JSX.Element | null {
       />
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
         <li>
-          <ThemeDropdown />
-        </li>
-        <li>
-          <LanguageDropdown />
+          <Link to={ROUTES.USER_PROFILE.PATH}>
+            <Persona
+              text="Юрий Кнорозов"
+              size={PersonaSize.size32}
+              imageUrl="https://upload.wikimedia.org/wikipedia/ru/thumb/4/4c/%D0%AE%D1%80%D0%B8%D0%B9_%D0%9A%D0%BD%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2.jpg/548px-%D0%AE%D1%80%D0%B8%D0%B9_%D0%9A%D0%BD%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2.jpg"
+            />
+          </Link>
         </li>
         <li>
           <LogoutButton />

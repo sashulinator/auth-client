@@ -16,6 +16,7 @@ const ROUTES = {
 
   INCIDENT: new Route({ name: 'Incident', path: '/incident/:id' }),
 
+  USER_PROFILE: new Route({ name: 'User profile', path: '/user-profile' }),
   // return id ? `${this.PATH}/${id}` : this.PATH
 }
 

@@ -26,7 +26,7 @@ export default function LanguageDropdown(): JSX.Element {
 
   return (
     <Dropdown
-      styles={{ root: { width: '90px' } }}
+      styles={{ root: { width: '150px' } }}
       aria-label="Change language"
       onChange={selectLanguage}
       defaultValue={i18n.language}
