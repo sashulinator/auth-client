@@ -36,7 +36,7 @@ SchemaDrawer.defaultProps = {
 
 export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | null {
   const [fetchedDataContext, setFetchedDataToContext] = useState<Record<string, unknown>>({})
-  const formStatePrev = useRef(props.context.form.getState())
+  const formStatePrev = useRef(props.context?.form?.getState?.())
 
   const context: DrawerContext = {
     ...props.context,
