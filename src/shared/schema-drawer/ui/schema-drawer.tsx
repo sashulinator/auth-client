@@ -119,7 +119,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     () => ({
       ...props.context,
       comp: injectedComp,
-      compSchema: schema,
+      schema: schema,
       observer: new Observer(),
     }),
     [comp.id]

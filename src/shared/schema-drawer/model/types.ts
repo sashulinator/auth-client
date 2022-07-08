@@ -208,7 +208,7 @@ export type DrawerContext = Context & {
 export type ComponentContext = DrawerContext & {
   observer: Observer
   comp: Comp
-  compSchema: CompSchema
+  schema: CompSchema
 }
 
 export type ContentComponentContext = ComponentContext & {
