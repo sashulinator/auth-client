@@ -7,7 +7,6 @@ import bindEvents from '../lib/bind-events'
 import { onBlur, onChange, onDestroy, onFocus } from '../lib/events'
 import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
-import { Observer } from '../lib/observer'
 import { registerFieldChangeEvent } from '../lib/register-field-change-event'
 import {
   Catalog,
@@ -56,7 +55,6 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
           () => ({
             ...props.context,
             comp: injectedComp,
-            observer: new Observer(),
           }),
           [props.comp.eventBindingSchema?.data]
         )
