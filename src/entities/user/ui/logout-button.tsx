@@ -1,13 +1,10 @@
-import { PrimaryButton } from '@fluentui/react'
-
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 
 import useLogout from '@/entities/user/lib/use-logout'
+import { Button } from '@/shared/button'
 
 export default function LogoutButton(): JSX.Element {
-  const { t } = useTranslation()
   const logout = useLogout()
 
-  return <PrimaryButton onClick={logout}>{t('t.buttons.logout').toString()}</PrimaryButton>
+  return <Button onClick={logout} text="t.buttons.logout" />
 }

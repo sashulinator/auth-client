@@ -36,7 +36,7 @@ export default memo(function Button(props: ButtonProps): JSX.Element {
   }
 
   if (variant === 'icon') {
-    return <IconButton {...restProps}>{t(text).toString()}</IconButton>
+    return <IconButton {...restProps} />
   }
 
   return <PrimaryButton {...restProps}>{t(text).toString()}</PrimaryButton>

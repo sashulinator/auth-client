@@ -1,4 +1,4 @@
-import { IconButton, Label, Link, PrimaryButton, SearchBox, Text } from '@fluentui/react'
+import { IconButton, Label, Link, SearchBox, Text } from '@fluentui/react'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 import ValidatorPicker from '@/shared/assertion-binding-editor'
@@ -142,12 +142,6 @@ const componentList: Record<string, CompMeta> = {
     type: 'content',
     component: HorizontalLine,
     iconName: 'Remove',
-  },
-
-  PrimaryButton: {
-    type: 'content',
-    component: PrimaryButton,
-    iconName: 'ButtonControl',
   },
 
   Text: {

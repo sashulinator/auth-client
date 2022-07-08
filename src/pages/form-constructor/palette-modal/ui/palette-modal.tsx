@@ -1,4 +1,4 @@
-import { Modal, Pivot, PivotItem, PrimaryButton, SearchBox, Stack } from '@fluentui/react'
+import { Modal, Pivot, PivotItem, SearchBox, Stack } from '@fluentui/react'
 import { isEmpty } from '@savchenko91/schema-validator'
 
 import './palette-modal.css'
@@ -14,6 +14,7 @@ import { ROOT_ID } from '@/constants/common'
 import componentList from '@/constants/component-list'
 import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
+import { Button } from '@/shared/button'
 import HorizontalLine from '@/shared/horizontal-line'
 import { Catalog, Comp, CompSchema, CompSchemaType, LinkedComp, isInputType } from '@/shared/schema-drawer'
 
@@ -90,11 +91,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
                 {isEmpty(inputComponents)
                   ? 'nothing found'
                   : inputComponents.map((element) => {
-                      return (
-                        <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
-                          {element.title}
-                        </PrimaryButton>
-                      )
+                      return <Button key={element.id} onClick={() => onAdd(element)} text={element.title} />
                     })}
               </div>
               <HorizontalLine color="black" label="Content" />
@@ -102,11 +99,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
                 {isEmpty(contentComponents)
                   ? 'nothing found'
                   : contentComponents.map((element) => {
-                      return (
-                        <PrimaryButton key={element.id} onClick={() => onAdd(element)}>
-                          {element.title}
-                        </PrimaryButton>
-                      )
+                      return <Button key={element.id} onClick={() => onAdd(element)} text={element.title} />
                     })}
               </div>
             </Stack>
@@ -126,11 +119,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
                 {presets
                   .filter((schema) => new RegExp(searchQuery, 'i').test(schema.title || ''))
                   ?.map((schema) => {
-                    return (
-                      <PrimaryButton onClick={() => addPreset(schema)} key={schema.id}>
-                        {schema.title}
-                      </PrimaryButton>
-                    )
+                    return <Button onClick={() => addPreset(schema)} key={schema.id} text={schema.title} />
                   })}
               </div>
             </Stack>
@@ -141,11 +130,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
             <Stack className="container">
               <div className="buttons">
                 {dimensions.map((schema) => {
-                  return (
-                    <PrimaryButton onClick={() => addSchema(schema)} key={schema.id}>
-                      {schema.title}
-                    </PrimaryButton>
-                  )
+                  return <Button onClick={() => addSchema(schema)} key={schema.id} text={schema.title} />
                 })}
               </div>
             </Stack>

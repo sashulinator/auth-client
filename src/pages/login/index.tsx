@@ -1,4 +1,4 @@
-import { PrimaryButton, Stack, Text } from '@fluentui/react'
+import { Stack, Text } from '@fluentui/react'
 
 import './index.css'
 
@@ -7,6 +7,7 @@ import { Field, Form } from 'react-final-form'
 import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
+import { Button } from '@/shared/button'
 import CustomTextField from '@/shared/textfield'
 
 export default function Login(): JSX.Element {
@@ -32,9 +33,7 @@ export default function Login(): JSX.Element {
                 </Stack>
                 <Field<string> name="username">{({ input }) => <CustomTextField label="username" {...input} />}</Field>
                 <Field<string> name="password">{({ input }) => <CustomTextField label="password" {...input} />}</Field>
-                <PrimaryButton type="submit" style={{ margin: '24px 0 0' }}>
-                  Login
-                </PrimaryButton>
+                <Button type="submit" style={{ margin: '24px 0 0' }} text="t.buttons.login" />
               </Stack>
             </form>
           )
