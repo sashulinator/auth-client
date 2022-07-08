@@ -14,17 +14,17 @@ import { isCtrl, isEnter } from '@/lib/key-events'
 import { highlightHovered, removeAllHighlights } from '@/pages/form-constructor/preview'
 import { Button } from '@/shared/button'
 import LoadingAria from '@/shared/loading-aria'
-import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Comp, CompSchema, CreateCompSchema, Dictionary, LinkedComp } from '@/shared/schema-drawer'
 import Tree, { buildTree } from '@/shared/tree'
 
 export interface TreeProps {
   schema: CompSchema | CreateCompSchema
-  schemas: Catalog<CompSchema> | null
+  schemas: Dictionary<CompSchema> | null
   selectedCompIds: string[]
   searchQuery?: string
   isLoading: boolean
   toggleCompSelection: (compId: string | string[]) => void
-  upsertComps: (comps: Catalog<Comp | LinkedComp>) => void
+  upsertComps: (comps: Dictionary<Comp | LinkedComp>) => void
   updateComp: (comp: Comp) => void
 }
 

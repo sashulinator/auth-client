@@ -7,7 +7,7 @@ import bindEvents from '../lib/bind-events'
 import { onBlur, onChange, onDestroy, onFocus } from '../lib/events'
 import isRequired from '../lib/is-required'
 import { registerFieldChangeEvent } from '../lib/register-field-change-event'
-import { Catalog, Comp, CompMeta, CompSchema, ComponentCompSchema, ComponentContext } from '../model/types'
+import { Comp, CompMeta, CompSchema, ComponentCompSchema, ComponentContext, Dictionary } from '../model/types'
 import React, { memo, useEffect } from 'react'
 import { Field } from 'react-final-form'
 
@@ -17,7 +17,7 @@ import FieldError from '@/shared/field-error'
 export interface FieldComponentProps {
   comp: Comp
   schema: ComponentCompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   context: ComponentContext
   componentList: Record<string, CompMeta>
 }

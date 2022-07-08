@@ -1,8 +1,8 @@
 import { atom } from 'recoil'
 
-import { Catalog, CompSchema } from '@/shared/schema-drawer'
+import { CompSchema, Dictionary } from '@/shared/schema-drawer'
 
-export const schemasState = atom<null | Catalog<CompSchema>>({
+export const schemasState = atom<null | Dictionary<CompSchema>>({
   key: 'schemasState',
   default: null,
 })

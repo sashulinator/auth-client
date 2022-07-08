@@ -1,13 +1,21 @@
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
-import { Catalog, Comp, CompMeta, CompSchema, ComponentCompSchema, ComponentContext, LinkedComp } from '../model/types'
+import {
+  Comp,
+  CompMeta,
+  CompSchema,
+  ComponentCompSchema,
+  ComponentContext,
+  Dictionary,
+  LinkedComp,
+} from '../model/types'
 import { ComponentFactory } from './schema-drawer'
 import React, { memo } from 'react'
 
 export interface ContentComponentProps {
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   schema: ComponentCompSchema
-  comps: Catalog<Comp | LinkedComp>
+  comps: Dictionary<Comp | LinkedComp>
   comp: Comp
   context: ComponentContext
   componentList: Record<string, CompMeta>

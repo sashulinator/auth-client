@@ -10,11 +10,11 @@ import {
   removeChildId,
 } from './entity-actions'
 
-import { Catalog } from '@/shared/schema-drawer'
+import { Dictionary } from '@/shared/schema-drawer'
 
 describe('entity-actions', () => {
   it(copyEntities.name, () => {
-    const entities: Catalog<Entity> = {
+    const entities: Dictionary<Entity> = {
       id1: { id: 'id1', children: ['id2'] },
       id2: { id: 'id2' },
     }
@@ -41,7 +41,7 @@ describe('entity-actions', () => {
       id3: { id: 'id3' },
     }
 
-    const position = findEntityPosition(entities.id2.id, (entities as unknown) as Catalog<Entity>)
+    const position = findEntityPosition(entities.id2.id, (entities as unknown) as Dictionary<Entity>)
 
     expect(position).toEqual({ index: 1, parentId: 'id1' })
   })
@@ -89,7 +89,7 @@ describe('entity-actions', () => {
         id2: { id: 'id2' },
         id3: { id: 'id3', children: ['id4'] },
         id4: { id: 'id4' },
-      } as unknown) as Catalog<Entity>
+      } as unknown) as Dictionary<Entity>
 
       const entity = ({ id: 'id5' } as unknown) as Entity
 
@@ -111,7 +111,7 @@ describe('entity-actions', () => {
       id2: { id: 'id2' },
       id3: { id: 'id3' },
       id4: { id: 'id4' },
-    } as unknown) as Catalog<Entity>
+    } as unknown) as Dictionary<Entity>
 
     const entity = ({ id: 'id4' } as unknown) as Entity
 

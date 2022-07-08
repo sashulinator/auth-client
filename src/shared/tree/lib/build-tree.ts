@@ -5,7 +5,7 @@ import { walk } from './walk'
 
 import { ROOT_ID } from '@/constants/common'
 import { Entity } from '@/lib/entity-actions'
-import { Catalog } from '@/shared/schema-drawer'
+import { Dictionary } from '@/shared/schema-drawer'
 
 export type AdditionalData = {
   isInitialExpanded: boolean
@@ -18,7 +18,7 @@ export type AdditionalData = {
 
 export function buildTree(
   tree: TreeData | undefined,
-  entities: Catalog<Entity> | undefined,
+  entities: Dictionary<Entity> | undefined,
   additionalData: AdditionalData
 ): TreeData | undefined {
   if (entities === undefined) {
@@ -51,7 +51,7 @@ export function buildTree(
 function buildTreeWithSearchQuery(
   rootEntity: Entity,
   tree: TreeData | undefined,
-  entities: Catalog<Entity>,
+  entities: Dictionary<Entity>,
   additionalData: AdditionalData
 ): Record<string, TreeItem> {
   const items: Record<string, TreeItem> = {}
@@ -112,7 +112,7 @@ function buildTreeWithSearchQuery(
 function buildTreeDefault(
   rootEntity: Entity,
   tree: TreeData | undefined,
-  entities: Catalog<Entity>,
+  entities: Dictionary<Entity>,
   additionalData: AdditionalData
 ): Record<string, TreeItem> {
   const items: Record<string, TreeItem> = {}

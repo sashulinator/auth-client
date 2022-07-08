@@ -3,7 +3,14 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 import { actionDictionary } from '../constants/action-list'
 import { eventAssertionBindingMetaCatalog } from '../constants/event-assertion-list'
 import { eventDictionary } from '../constants/event-list'
-import { ActionProps, Catalog, EventBinding, EventBindingType, EventProps, FieldComponentContext } from '../model/types'
+import {
+  ActionProps,
+  Dictionary,
+  EventBinding,
+  EventBindingType,
+  EventProps,
+  FieldComponentContext,
+} from '../model/types'
 import bindAssertions from './bind-assertions'
 
 import { ROOT_ID } from '@/constants/common'
@@ -70,7 +77,7 @@ export default function bindEvents(context: FieldComponentContext) {
 
 // Private
 
-function addRootOperator(eventBindingCatalog: Catalog<EventBinding>, actionId: string) {
+function addRootOperator(eventBindingCatalog: Dictionary<EventBinding>, actionId: string) {
   const actionUnit = findEntity(actionId, eventBindingCatalog)
   const newActionUnit = { ...actionUnit, children: [operatorId] }
   const newBindings = replace(eventBindingCatalog, newActionUnit.id, newActionUnit)

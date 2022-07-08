@@ -1,6 +1,6 @@
 import { createCatalog } from '../lib/create-catalog'
 import { onBlur, onChange, onDestroy, onFieldChange, onFieldLife, onFocus, onInit } from '../lib/events'
-import { Catalog, EventPackageProperties } from '../model/types'
+import { Dictionary, EventPackageProperties } from '../model/types'
 
 import { generateOptionsFromObject } from '@/lib/generate-options'
 
@@ -35,6 +35,6 @@ export const eventList: EventPackageProperties[] = [
   },
 ]
 
-export const eventDictionary: Catalog<EventPackageProperties> = createCatalog(eventList, 'name')
+export const eventDictionary: Dictionary<EventPackageProperties> = createCatalog(eventList, 'name')
 
 export const eventNameOptions = generateOptionsFromObject(eventDictionary)

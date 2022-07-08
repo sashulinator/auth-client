@@ -6,7 +6,6 @@ import injectToComp from '../lib/inject-to-comp'
 import { assertNotLinkedComp, isInputType, isLinkedComp } from '../lib/is'
 import { Observer } from '../lib/observer'
 import {
-  Catalog,
   Comp,
   CompMeta,
   CompSchema,
@@ -14,6 +13,7 @@ import {
   ComponentContext,
   Context,
   CreateCompSchema,
+  Dictionary,
   DrawerContext,
   LinkedComp,
 } from '../model/types'
@@ -27,7 +27,7 @@ import { replace } from '@/lib/change-unmutable'
 interface SchemaDrawerProps {
   values: Record<string, unknown>
   schema: CompSchema | CreateCompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   context: Context
   componentList: Record<string, CompMeta>
 }
@@ -55,7 +55,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const [comps, setComps] = useState<Catalog<Comp | LinkedComp>>(() =>
+  const [comps, setComps] = useState<Dictionary<Comp | LinkedComp>>(() =>
     generateInitComps(props.schema.data, context, props.values)
   )
 
@@ -88,8 +88,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
  * 3. не генерирует ошибки
  */
 interface ComponentFactoryProps {
-  schemas: Catalog<CompSchema>
-  comps: Catalog<Comp | LinkedComp>
+  schemas: Dictionary<CompSchema>
+  comps: Dictionary<Comp | LinkedComp>
   compId: string
   context: DrawerContext
   componentList: Record<string, CompMeta>

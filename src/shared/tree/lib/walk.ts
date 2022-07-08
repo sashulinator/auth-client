@@ -1,4 +1,4 @@
-import { Catalog } from '@/shared/schema-drawer'
+import { Dictionary } from '@/shared/schema-drawer'
 
 interface TreeItem extends Record<string, any> {
   id: string
@@ -7,9 +7,9 @@ interface TreeItem extends Record<string, any> {
 
 export function walk<TItem extends TreeItem>(
   item: TItem,
-  data: Catalog<TItem>,
+  data: Dictionary<TItem>,
   idKey: string | number,
-  cb: (item: TItem, idKeyValue: string | number, data: Catalog<TItem>, parentId?: string) => void,
+  cb: (item: TItem, idKeyValue: string | number, data: Dictionary<TItem>, parentId?: string) => void,
   parentId?: string
 ) {
   cb(item, item[idKey], data, parentId)

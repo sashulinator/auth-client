@@ -1,5 +1,5 @@
 import { isLinkedComp } from '..'
-import { Catalog, Comp, ComponentCompSchema, DrawerContext, LinkedComp } from '../model/types'
+import { Comp, ComponentCompSchema, Dictionary, DrawerContext, LinkedComp } from '../model/types'
 import bindEvents from './bind-events'
 import { emptyFunction } from './empty-function'
 import { onFieldLife, onInit } from './events'
@@ -15,10 +15,10 @@ import { replace } from '@/lib/change-unmutable'
  * Решение: данная функция вычисляет новые значения comps до первого рендеринга
  */
 export function generateInitComps(
-  comps: Catalog<Comp | LinkedComp>,
+  comps: Dictionary<Comp | LinkedComp>,
   rawContext: DrawerContext,
   values: Record<string, unknown>
-): Catalog<Comp | LinkedComp> {
+): Dictionary<Comp | LinkedComp> {
   let newComps = comps
   // создадим фейковую функцию по изменению компонента
   function setComp(newComp: Comp | LinkedComp) {

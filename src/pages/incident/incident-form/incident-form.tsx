@@ -6,11 +6,11 @@ import { Form } from 'react-final-form'
 import { createIncident, updateIncident } from '@/api/incident'
 import componentList from '@/constants/component-list'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
-import SchemaDrawer, { Catalog, CompSchema, hasInstanceId } from '@/shared/schema-drawer'
+import SchemaDrawer, { CompSchema, Dictionary, hasInstanceId } from '@/shared/schema-drawer'
 
 interface IncidentFormProps {
   schema: CompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   incident: any
 }

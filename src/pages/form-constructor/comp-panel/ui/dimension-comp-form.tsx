@@ -6,13 +6,13 @@ import { Field } from 'react-final-form'
 
 import { FormAutosave } from '@/shared/autosave'
 import { Checkbox } from '@/shared/checkbox'
-import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Comp, CompSchema, CreateCompSchema, Dictionary, LinkedComp } from '@/shared/schema-drawer'
 import CustomTextField from '@/shared/textfield'
 
 interface DimensionCompFormProps {
   previewSchema: CompSchema | CreateCompSchema
   schema: CompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']
   context: Record<string, unknown>
   comp: LinkedComp

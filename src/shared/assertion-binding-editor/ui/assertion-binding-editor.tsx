@@ -22,9 +22,9 @@ import SchemaDrawer, {
   AssertionBindingSchema,
   AssertionBindingType,
   BindingSchema,
-  Catalog,
   Comp,
   CompSchema,
+  Dictionary,
   EventToShowError,
   assertionList,
   basicComponentsSchemas,
@@ -37,8 +37,8 @@ export interface AssertionBindingEditorProps {
   // string приходит от final-form при инициализации
   value: AssertionBindingSchema | undefined | string
   comp: Comp
-  comps: Catalog<Comp>
-  schemas: Catalog<CompSchema>
+  comps: Dictionary<Comp>
+  schemas: Dictionary<CompSchema>
   name?: string
   label?: string
   isFocused: boolean

@@ -5,12 +5,12 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 import componentList from '@/constants/component-list'
 import { FormAutosave } from '@/shared/autosave'
-import SchemaDrawer, { Catalog, Comp, CompSchema, CreateCompSchema, isComp } from '@/shared/schema-drawer'
+import SchemaDrawer, { Comp, CompSchema, CreateCompSchema, Dictionary, isComp } from '@/shared/schema-drawer'
 
 interface CompFormProps {
   previewSchema: CompSchema | CreateCompSchema
   schema: CompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   onSubmit: Config<Comp, Comp>['onSubmit']
   context: Record<string, unknown>
   comp: Comp

@@ -2,7 +2,7 @@ import { IPivotProps, PivotItem, Pivot as PivotUI } from '@fluentui/react'
 
 import React from 'react'
 
-import { Catalog, Comp } from '@/shared/schema-drawer'
+import { Comp, Dictionary } from '@/shared/schema-drawer'
 
 type PivotProps = IPivotProps & {
   label: string
@@ -15,7 +15,7 @@ export default function Pivot(props: PivotProps): JSX.Element {
     <PivotUI {...props} styles={{ root: { paddingLeft: `${props.paddingLeft}px` } }}>
       {props.children?.map((child) => {
         // @ts-expect-error because
-        const { compId, comps } = child.props as { compId: string; comps: Catalog<Comp> }
+        const { compId, comps } = child.props as { compId: string; comps: Dictionary<Comp> }
         const comp = comps[compId] as Comp
 
         return (
