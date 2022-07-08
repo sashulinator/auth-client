@@ -29,7 +29,7 @@ export default memo(function Button(props: ButtonProps): JSX.Element {
 
   if (variant === 'action') {
     return (
-      <ActionButton {...restProps} styles={{ ...restProps?.styles, ...actionButtonStyles }}>
+      <ActionButton {...restProps} styles={{ ...actionButtonStyles, ...restProps?.styles }}>
         {t(text).toString()}
       </ActionButton>
     )

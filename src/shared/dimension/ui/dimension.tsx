@@ -1,4 +1,4 @@
-import { ActionButton, IconButton, Panel, PanelType, Text } from '@fluentui/react'
+import { Panel, PanelType, Text } from '@fluentui/react'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import useCollapse from 'react-collapsed'
 
 import { findParents } from '@/lib/entity-actions'
+import { Button } from '@/shared/button'
 import { TreeCheckbox } from '@/shared/checkbox'
 import { CompSchema, FieldComponentContext, LinkedComp, assertLinkedComp } from '@/shared/schema-drawer'
 import Stack from '@/shared/stack'
@@ -59,25 +60,14 @@ export default function Dimension(props: DimensionProps): JSX.Element {
   return (
     <div className="Dimension">
       <Stack horizontal verticalAlign="center">
-        <ActionButton
+        <Button
           {...getToggleProps()}
-          styles={{
-            root: {
-              paddingLeft: '0',
-            },
-            icon: {
-              marginLeft: '0',
-            },
-            label: {
-              color: 'var(--themePrimary)',
-            },
-          }}
+          variant="action"
           iconProps={{ iconName: isExpanded ? 'ChevronDown' : 'ChevronRight' }}
           onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
-        >
-          Классификаторы
-        </ActionButton>
-        <IconButton onClick={() => setOpen(true)} iconProps={{ iconName: 'Edit' }} />
+          text="Классификаторы"
+        />
+        <Button variant="icon" onClick={() => setOpen(true)} iconProps={{ iconName: 'Edit' }} />
       </Stack>
       <div {...getCollapseProps()}>
         <table>

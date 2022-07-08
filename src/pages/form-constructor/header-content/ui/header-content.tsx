@@ -1,4 +1,4 @@
-import { ActionButton, Stack } from '@fluentui/react'
+import { Stack } from '@fluentui/react'
 
 import SchemaContextualMenu from './contextual-menu'
 import SchemaForm from './schema-form'
@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
+import { Button } from '@/shared/button'
 import { CompSchema, CreateCompSchema } from '@/shared/schema-drawer'
 import { HEADER_PORTAL_LEFT_CLASSNAME, HEADER_PORTAL_RIGHT_CLASSNAME } from '@/widgets/header'
 
@@ -30,9 +31,12 @@ export default function HeaderContent(props: HeaderContentProps): null | JSX.Ele
     <>
       {createPortal(
         <Stack horizontal horizontalAlign="start">
-          <ActionButton iconProps={{ iconName: 'ChevronLeft' }} onClick={() => navigate(ROUTES.SCHEMA_LIST.PATH)}>
-            Back
-          </ActionButton>
+          <Button
+            variant="action"
+            iconProps={{ iconName: 'ChevronLeft' }}
+            onClick={() => navigate(ROUTES.SCHEMA_LIST.PATH)}
+            text="t.buttons.back"
+          />
         </Stack>,
         elLeft
       )}
