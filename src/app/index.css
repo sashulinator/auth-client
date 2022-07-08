@@ -9,6 +9,10 @@ body,
   grid-template-columns: 1fr;
 }
 
+html {
+  background-color: var(--neutralLighter);
+}
+
 .RootScrollbar {
   display: grid;
   grid-template-rows: 1fr;
