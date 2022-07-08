@@ -2,10 +2,10 @@ import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { assertCompSchema } from '../lib/assertions'
 import { generateInitComps } from '../lib/generate-init-comps'
+import injectToComp from '../lib/inject-to-comp'
 import { assertNotLinkedComp, isInputType, isLinkedComp } from '../lib/is'
 import { Observer } from '../lib/observer'
 import {
-  Catalog,
   Comp,
   CompMeta,
   CompSchema,
@@ -13,12 +13,13 @@ import {
   ComponentContext,
   Context,
   CreateCompSchema,
+  Dictionary,
   DrawerContext,
   LinkedComp,
 } from '../model/types'
 import ContentComponent from './content-component'
 import FieldComponent from './field-component'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
@@ -26,7 +27,7 @@ import { replace } from '@/lib/change-unmutable'
 interface SchemaDrawerProps {
   values: Record<string, unknown>
   schema: CompSchema | CreateCompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   context: Context
   componentList: Record<string, CompMeta>
 }
@@ -54,7 +55,7 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
     },
   }
 
-  const [comps, setComps] = useState<Catalog<Comp | LinkedComp>>(() =>
+  const [comps, setComps] = useState<Dictionary<Comp | LinkedComp>>(() =>
     generateInitComps(props.schema.data, context, props.values)
   )
 
@@ -87,8 +88,8 @@ export default function SchemaDrawer(props: SchemaDrawerProps): JSX.Element | nu
  * 3. не генерирует ошибки
  */
 interface ComponentFactoryProps {
-  schemas: Catalog<CompSchema>
-  comps: Catalog<Comp | LinkedComp>
+  schemas: Dictionary<CompSchema>
+  comps: Dictionary<Comp | LinkedComp>
   compId: string
   context: DrawerContext
   componentList: Record<string, CompMeta>
@@ -109,14 +110,20 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     return <SchemaDrawer {...props} schema={schema} />
   }
 
-  const schema = props.schemas[comp.compSchemaId] as ComponentCompSchema
+  const injectedComp = injectToComp(comp, props.context)
 
-  const context: ComponentContext = {
-    ...props.context,
-    comp: comp,
-    compSchema: schema,
-    observer: new Observer(),
-  }
+  const schema = props.schemas[injectedComp.compSchemaId] as ComponentCompSchema
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const context: ComponentContext = useMemo(
+    () => ({
+      ...props.context,
+      comp: injectedComp,
+      schema: schema,
+      observer: new Observer(),
+    }),
+    [comp.id]
+  )
 
   // Схема еще не прогрузилась и поэтому undefined
   if (schema === undefined) {
@@ -138,7 +145,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   return isInputType(сomponentItem) ? (
     <FieldComponent
       context={context}
-      comp={comp}
+      comp={injectedComp}
       schema={schema}
       schemas={props.schemas}
       componentList={props.componentList}
@@ -146,7 +153,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   ) : (
     <ContentComponent
       context={context}
-      comp={comp}
+      comp={injectedComp}
       schema={schema}
       schemas={props.schemas}
       comps={props.comps}

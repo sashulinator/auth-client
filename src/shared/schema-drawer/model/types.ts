@@ -3,10 +3,15 @@ import { Meta } from '@savchenko91/schema-validator'
 import { Observer } from '../lib/observer'
 import { FormApi, FormState } from 'final-form'
 
-export type Catalog<T> = Record<string, T>
+export type Dictionary<T> = Record<string, T>
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Package<Data = any> = {
+  data: Data
+}
 
 export interface Schema<TItem> {
-  data: Catalog<TItem>
+  data: Dictionary<TItem>
 }
 
 interface Injection {
@@ -144,10 +149,10 @@ export interface EventBindingSchema extends BindingSchema<EventBinding> {}
 
 export interface EventProps {
   eventBindingSchema: EventBindingSchema
-  eventBindingCatalog: Catalog<EventBinding>
+  eventBindingCatalog: Dictionary<EventBinding>
   eventBinding: EventBinding
   eventBindingMeta: EventPackageProperties
-  actionBindingCatalog: Catalog<EventBinding>
+  actionBindingCatalog: Dictionary<EventBinding>
   context: FieldComponentContext | ContentComponentContext // eslint-disable-next-line @typescript-eslint/no-explicit-any
   emitActions: (value: any) => void
 }
@@ -195,9 +200,9 @@ export type Context = {
 } & Record<string, unknown>
 
 export type DrawerContext = Context & {
-  comps: Catalog<Comp | LinkedComp>
+  comps: Dictionary<Comp | LinkedComp>
   compIds: string[]
-  schemas: Catalog<CompSchema> // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  schemas: Dictionary<CompSchema> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
   fns: {
     setFetchedDataToContext: React.Dispatch<React.SetStateAction<Record<string, unknown>>> // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -208,7 +213,7 @@ export type DrawerContext = Context & {
 export type ComponentContext = DrawerContext & {
   observer: Observer
   comp: Comp
-  compSchema: CompSchema
+  schema: CompSchema
 }
 
 export type ContentComponentContext = ComponentContext & {

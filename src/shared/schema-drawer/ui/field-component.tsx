@@ -5,97 +5,70 @@ import { assertionList } from '../constants/assertion-list'
 import bindAssertions from '../lib/bind-assertions'
 import bindEvents from '../lib/bind-events'
 import { onBlur, onChange, onDestroy, onFocus } from '../lib/events'
-import injectToComp from '../lib/inject-to-comp'
 import isRequired from '../lib/is-required'
 import { registerFieldChangeEvent } from '../lib/register-field-change-event'
-import {
-  Catalog,
-  Comp,
-  CompMeta,
-  CompSchema,
-  ComponentCompSchema,
-  ComponentContext,
-  FieldComponentContext,
-} from '../model/types'
-import React, { memo, useEffect, useMemo } from 'react'
+import { Comp, CompMeta, CompSchema, ComponentCompSchema, ComponentContext, Dictionary } from '../model/types'
+import React, { memo, useEffect } from 'react'
 import { Field } from 'react-final-form'
 
+import { useOnUnmount } from '@/lib/use-on-unmount'
 import FieldError from '@/shared/field-error'
 
 export interface FieldComponentProps {
   comp: Comp
   schema: ComponentCompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   context: ComponentContext
   componentList: Record<string, CompMeta>
 }
 
 const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) {
+  assertNotUndefined(props.comp.name)
+
   const сomponentItem = props.componentList[props.schema.componentName]
   assertNotUndefined(сomponentItem)
 
   const validate = bindAssertions(assertionList, props.comp.assertionBindingSchema?.data)
-
-  // TODO move to ComponentFactory
-  const injectedComp = injectToComp(props.comp, props.context)
-
-  assertNotUndefined(injectedComp.name)
 
   return (
     <Field
       destroyOnUnregister
       validate={(v) => validate?.(v)}
       type={сomponentItem.type}
-      name={injectedComp.name}
-      defaultValue={isCheckbox(сomponentItem) ? injectedComp.defaultValue ?? false : injectedComp.defaultValue}
+      name={props.comp.name}
+      defaultValue={isCheckbox(сomponentItem) ? props.comp.defaultValue ?? false : props.comp.defaultValue}
     >
       {({ input, meta }) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const context = useMemo<FieldComponentContext>(
-          () => ({
-            ...props.context,
-            comp: injectedComp,
-          }),
-          [props.comp.eventBindingSchema?.data]
-        )
-
-        // eslint-disable-next-line react-hooks/rules-of-hooks
         useEffect(() => {
-          context.observer.addEvent(onBlur.name, input.onBlur)
-          context.observer.addEvent(onFocus.name, input.onFocus)
-          context.observer.addEvent(onChange.name, input.onChange)
+          props.context.observer.addEvent(onBlur.name, input.onBlur)
+          props.context.observer.addEvent(onFocus.name, input.onFocus)
+          props.context.observer.addEvent(onChange.name, input.onChange)
 
-          registerFieldChangeEvent(context)
+          registerFieldChangeEvent(props.context)
 
-          bindEvents(context)
+          bindEvents(props.context)
 
-          return context.observer.emitEvent(onDestroy.name)
+          return props.context.observer.emitEvent(onDestroy.name)
         }, [props.comp.eventBindingSchema?.data])
 
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useEffect(
-          () => () => {
-            if (injectedComp.undefinedOnDestroy) {
-              input.onChange(undefined)
-            }
-          },
-          []
-        )
+        useOnUnmount(() => props.comp.undefinedOnDestroy && input.onChange(undefined))
 
         return (
-          <div className="FieldErrorPositionRelative" data-comp-id={injectedComp.id}>
+          <div className="FieldErrorPositionRelative" data-comp-id={props.comp.id}>
             <сomponentItem.component
               {...input}
-              {...injectedComp.props}
+              {...props.comp.props}
               context={props.context}
               required={isRequired(props.comp.assertionBindingSchema?.data)}
-              onBlur={context.observer.emitEvent('onBlur')}
-              onFocus={context.observer.emitEvent('onFocus')}
-              onClick={context.observer.emitEvent('onClick')}
-              onChange={context.observer.emitEvent('onChange')}
+              onBlur={props.context.observer.emitEvent('onBlur')}
+              onFocus={props.context.observer.emitEvent('onFocus')}
+              onClick={props.context.observer.emitEvent('onClick')}
+              onChange={props.context.observer.emitEvent('onChange')}
               validationError={meta.error}
             />
-            <FieldError meta={meta} eventToShowError={injectedComp?.assertionBindingSchema?.eventToShowError} />
+            <FieldError meta={meta} eventToShowError={props.comp?.assertionBindingSchema?.eventToShowError} />
           </div>
         )
       }}

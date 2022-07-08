@@ -10,11 +10,11 @@ import useMoving from '@/lib/use-moving'
 import useMergedRefs from '@/lib/useMergedRefs'
 import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
-import SchemaDrawer, { Catalog, CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
+import SchemaDrawer, { CompSchema, CompSchemaType, CreateCompSchema, Dictionary } from '@/shared/schema-drawer'
 
 interface PreviewProps {
   schema: CompSchema | null | CreateCompSchema
-  schemas: Catalog<CompSchema> | null
+  schemas: Dictionary<CompSchema> | null
   selectedCompIds: string[]
   ref: LegacyRef<HTMLDivElement | null>
   isFocused?: boolean

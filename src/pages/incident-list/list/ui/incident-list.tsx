@@ -3,11 +3,11 @@ import { Stack } from '@fluentui/react'
 import React from 'react'
 
 import componentList from '@/constants/component-list'
-import SchemaDrawer, { Catalog, CompSchema } from '@/shared/schema-drawer'
+import SchemaDrawer, { CompSchema, Dictionary } from '@/shared/schema-drawer'
 
 interface IncidentListProps {
   schema: CompSchema
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
 }
 
 function IncidentList(props: IncidentListProps): JSX.Element {

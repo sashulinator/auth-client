@@ -10,13 +10,13 @@ import PerfectScrollbar from 'react-perfect-scrollbar'
 import withFocus from '@/lib/with-focus'
 import LoadingAria from '@/shared/loading-aria'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp, isLinkedComp } from '@/shared/schema-drawer'
+import { Comp, CompSchema, CreateCompSchema, Dictionary, LinkedComp, isLinkedComp } from '@/shared/schema-drawer'
 
 interface CompPanelProps {
   onSubmit: Config<Comp, Comp>['onSubmit']
   isLoading: boolean
   context: Record<string, unknown>
-  schemas: Catalog<CompSchema> | null
+  schemas: Dictionary<CompSchema> | null
   schema: CompSchema | null
   comp: Comp | LinkedComp | null
   previewSchema: CompSchema | null | CreateCompSchema

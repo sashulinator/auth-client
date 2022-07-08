@@ -10,20 +10,20 @@ import { useRecoilState } from 'recoil'
 import { useDebounce } from '@/lib/use-debaunce'
 import withFocus from '@/lib/with-focus'
 import ResizeTarget from '@/shared/resize-target'
-import { Catalog, Comp, CompSchema, CreateCompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Comp, CompSchema, CreateCompSchema, Dictionary, LinkedComp } from '@/shared/schema-drawer'
 
 interface TreePanelProps {
   toggleCompSelection: (compId: string | string[]) => void
   schema: CompSchema | CreateCompSchema | null
   selectedCompIds: string[]
-  upsertComps: (comps: Catalog<Comp | LinkedComp>) => void
+  upsertComps: (comps: Dictionary<Comp | LinkedComp>) => void
   isLoading: boolean
-  schemas: Catalog<CompSchema> | null
+  schemas: Dictionary<CompSchema> | null
   searchQuery?: string
   updateComp: (comp: Comp) => void
   isCurrentSchemaLoading: boolean
   isDependencySchemasLoading: boolean
-  addNewComps: (comps: Catalog<Comp | LinkedComp>) => void
+  addNewComps: (comps: Dictionary<Comp | LinkedComp>) => void
   isFocused: boolean
   ref: LegacyRef<HTMLDivElement | null>
   removeSelectedComps: () => void

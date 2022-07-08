@@ -6,7 +6,7 @@ import { UseQueryResult, useQuery } from 'react-query'
 
 import { assertsSchema } from '@/common/schemas'
 import ErrorFromObject from '@/lib/error-from-object'
-import { Catalog, CompSchema } from '@/shared/schema-drawer'
+import { CompSchema, Dictionary } from '@/shared/schema-drawer'
 
 const headers = {
   'content-type': 'application/json',
@@ -118,7 +118,7 @@ type GetSchemasParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
-export async function getCompSchemas(params: GetSchemasParams): Promise<Catalog<CompSchema>> {
+export async function getCompSchemas(params: GetSchemasParams): Promise<Dictionary<CompSchema>> {
   const [, ids] = params.queryKey
 
   const response = await fetch(`/api/v1/schemas${stringify({ ids }, { addQueryPrefix: true })}`, {
@@ -137,14 +137,14 @@ export async function getCompSchemas(params: GetSchemasParams): Promise<Catalog<
 
   assertNotNil(schemas)
 
-  return schemas as Catalog<CompSchema>
+  return schemas as Dictionary<CompSchema>
 }
 
 // TODO по сути должен принимать один id так как бэк сам найдет остальные зависимости
-export function useGetDependencySchemas(ids: string[]): UseQueryResult<Catalog<CompSchema> | undefined> {
+export function useGetDependencySchemas(ids: string[]): UseQueryResult<Dictionary<CompSchema> | undefined> {
   return useQuery(['schemasDependencies', ...ids], queryFn)
 
-  async function queryFn(): Promise<Catalog<CompSchema> | undefined> {
+  async function queryFn(): Promise<Dictionary<CompSchema> | undefined> {
     if (isEmpty(ids)) {
       return undefined
     }

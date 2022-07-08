@@ -1,5 +1,5 @@
 import { BasicComponentsNames } from '../constants/basic-components-schemas'
-import { Catalog, Comp, CompSchema, CompSchemaType } from '../model/types'
+import { Comp, CompSchema, CompSchemaType, Dictionary } from '../model/types'
 
 import { ROOT_ID } from '@/constants/common'
 
@@ -10,9 +10,9 @@ type SimpleComp = Omit<Comp, 'title' | 'compSchemaId' | 'children'> & {
 
 export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): CompSchema {
   function simpleCompToComp(
-    acc: Catalog<Comp> | undefined,
+    acc: Dictionary<Comp> | undefined,
     simpleComp: SimpleComp | undefined
-  ): Catalog<Comp> | undefined {
+  ): Dictionary<Comp> | undefined {
     if (simpleComp === undefined) {
       return undefined
     }
@@ -23,7 +23,7 @@ export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): CompSchema
         title: 'hereCouldBeYourAd',
         children: simpleComp.children?.map((eComp) => eComp.id) || [],
       },
-      ...simpleComp.children?.reduce<Catalog<Comp> | undefined>(simpleCompToComp, {}),
+      ...simpleComp.children?.reduce<Dictionary<Comp> | undefined>(simpleCompToComp, {}),
       ...acc,
     }
   }
@@ -42,7 +42,7 @@ export function generateSimpleCompsSchema(simpleComps: SimpleComp[]): CompSchema
         props: { tokens: { padding: '5px', childrenGap: '24px' } },
         compSchemaId: BasicComponentsNames.Stack,
       },
-      ...simpleComps.reduce<Catalog<Comp> | undefined>(simpleCompToComp, {}),
+      ...simpleComps.reduce<Dictionary<Comp> | undefined>(simpleCompToComp, {}),
     },
   }
 

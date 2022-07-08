@@ -3,8 +3,8 @@ import { assertMatchPattern, assertUndefined, assertVisited } from '../lib/event
 import { generateSimpleCompsSchema } from '../lib/generate-simple-comps-schema'
 import {
   AssertionBindingType,
-  Catalog,
   CompSchemaType,
+  Dictionary,
   EventAssertionBindingMeta,
   EventAssertionBindingMetaName,
   EventToShowError,
@@ -179,7 +179,7 @@ const eventAssertionBindingMetaList: EventAssertionBindingMeta[] = [
   },
 ]
 
-const eventAssertionBindingMetaCatalog: Catalog<EventAssertionBindingMeta> = createCatalog(
+const eventAssertionBindingMetaCatalog: Dictionary<EventAssertionBindingMeta> = createCatalog(
   eventAssertionBindingMetaList,
   'name'
 )

@@ -3,8 +3,8 @@ import { createCatalog } from '../lib/create-catalog'
 import {
   ActionBindingMeta,
   AssertionBindingType,
-  Catalog,
   CompSchemaType,
+  Dictionary,
   EventBindingType,
   EventToShowError,
 } from '../model/types'
@@ -362,6 +362,6 @@ export const actionList: ActionBindingMeta[] = [
   },
 ]
 
-export const actionDictionary: Catalog<ActionBindingMeta> = createCatalog(actionList, 'name')
+export const actionDictionary: Dictionary<ActionBindingMeta> = createCatalog(actionList, 'name')
 
 export const actionNameOptions = generateOptionsFromObject(actionDictionary)

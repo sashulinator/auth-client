@@ -16,10 +16,10 @@ import { createNewComp } from '@/entities/schema'
 import { remove } from '@/lib/change-unmutable'
 import { Button } from '@/shared/button'
 import HorizontalLine from '@/shared/horizontal-line'
-import { Catalog, Comp, CompSchema, CompSchemaType, LinkedComp, isInputType } from '@/shared/schema-drawer'
+import { Comp, CompSchema, CompSchemaType, Dictionary, LinkedComp, isInputType } from '@/shared/schema-drawer'
 
 interface PaletteModalProps {
-  addNewComps: (comps: Catalog<Comp | LinkedComp>) => void
+  addNewComps: (comps: Dictionary<Comp | LinkedComp>) => void
   toggleCompSelection: (compId: string | string[]) => void
 }
 

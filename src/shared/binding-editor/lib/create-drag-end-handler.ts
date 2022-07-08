@@ -2,12 +2,12 @@ import { TreeData, TreeDestinationPosition, TreeSourcePosition, moveItemOnTree }
 import { assertNotUndefined } from '@savchenko91/schema-validator'
 
 import { findEntity, moveEntity } from '@/lib/entity-actions'
-import { Binding, BindingSchema, Catalog } from '@/shared/schema-drawer'
+import { Binding, BindingSchema, Dictionary } from '@/shared/schema-drawer'
 
 export function createDragEndHandler<TUnit extends Binding, TSchema extends BindingSchema<TUnit>>(
   schema: TSchema | undefined,
   tree: TreeData | undefined,
-  data: Catalog<Binding> | undefined,
+  data: Dictionary<Binding> | undefined,
   setTree: React.Dispatch<React.SetStateAction<TreeData | undefined>>,
   onChange: (value: TSchema | undefined) => void
 ) {

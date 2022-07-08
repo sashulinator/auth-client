@@ -7,9 +7,9 @@ import uniqid from 'uniqid'
 import { ROOT_ID } from '@/constants/common'
 import { replace } from '@/lib/change-unmutable'
 import { addEntity, findEntity } from '@/lib/entity-actions'
-import { Binding, BindingSchema, Catalog } from '@/shared/schema-drawer'
+import { Binding, BindingSchema, Dictionary } from '@/shared/schema-drawer'
 
-export const defaultCompBindings: Catalog<Binding> = {
+export const defaultCompBindings: Dictionary<Binding> = {
   [ROOT_ID]: {
     id: ROOT_ID,
     name: 'root',

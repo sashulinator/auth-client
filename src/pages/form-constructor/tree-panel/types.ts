@@ -2,7 +2,7 @@ import { RenderItemParams, TreeItem } from '@atlaskit/tree'
 
 import React from 'react'
 
-import { Catalog, Comp, CompSchema, LinkedComp } from '@/shared/schema-drawer'
+import { Comp, CompSchema, Dictionary, LinkedComp } from '@/shared/schema-drawer'
 import { AdditionalData } from '@/shared/tree'
 
 export interface TreeLeafProps extends RenderItemParams {
@@ -15,7 +15,7 @@ export interface TreeAdditionalData extends AdditionalData {
   onItemClick: (e: React.MouseEvent<HTMLElement, MouseEvent>, itemId: string, selectedIds: string[]) => void
   onMouseOver?: (itemId: string | number) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>, itemId: string | number) => void
-  schemas: Catalog<CompSchema> | null
+  schemas: Dictionary<CompSchema> | null
   editId?: string
   onDoubleClick: (compId?: string) => void
   updateComp: (comp: Comp | LinkedComp) => void

@@ -1,7 +1,7 @@
 import { ROOT_ID } from '@/constants/common'
-import { Catalog, EventBinding, EventBindingType } from '@/shared/schema-drawer'
+import { Dictionary, EventBinding, EventBindingType } from '@/shared/schema-drawer'
 
-export const defaultCompBindings: Catalog<EventBinding> = {
+export const defaultCompBindings: Dictionary<EventBinding> = {
   [ROOT_ID]: {
     id: ROOT_ID,
     name: 'root',

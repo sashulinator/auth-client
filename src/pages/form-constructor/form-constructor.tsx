@@ -40,10 +40,10 @@ import {
 } from '@/lib/entity-actions'
 import { useHistoryLinkedList } from '@/lib/use-history-linked-list'
 import {
-  Catalog,
   Comp,
   CompSchema,
   CreateCompSchema,
+  Dictionary,
   LinkedComp,
   assertHasId,
   assertNotLinkedComp,
@@ -139,7 +139,7 @@ const FormConstructor: FC = (): JSX.Element => {
     dll.insertLast([{ ...currentCompSchema, data: newData }, selectedCompIds])
   }
 
-  function updateCompsInCurrentSchemaState(comps: Catalog<Comp | LinkedComp>) {
+  function updateCompsInCurrentSchemaState(comps: Dictionary<Comp | LinkedComp>) {
     assertNotNull(currentCompSchema)
     dll.insertLast([{ ...currentCompSchema, data: comps }, selectedCompIds])
   }
@@ -220,7 +220,7 @@ const FormConstructor: FC = (): JSX.Element => {
   function pasteFromClipboard() {
     const stringifiedComps = localStorage.getItem('copyClipboard') || ''
 
-    const comps = JSON.parse(stringifiedComps) as Catalog<Comp>
+    const comps = JSON.parse(stringifiedComps) as Dictionary<Comp>
 
     schemaValidator.data(comps)
 
@@ -233,7 +233,7 @@ const FormConstructor: FC = (): JSX.Element => {
     }
   }
 
-  function addNewComps(comps: Catalog<Comp | LinkedComp>) {
+  function addNewComps(comps: Dictionary<Comp | LinkedComp>) {
     const copiedComps = copyEntities(comps, ['name'])
 
     const rootCompIds = findRootParentIds(copiedComps)

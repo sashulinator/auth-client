@@ -12,9 +12,9 @@ import { BindingEditor, TreeNode, createRemoveHandler, typeIcons } from '@/share
 import { createDragEndHandler } from '@/shared/binding-editor/lib/create-drag-end-handler'
 import { useBindingStates } from '@/shared/binding-editor/lib/use-binding-states'
 import SchemaDrawer, {
-  Catalog,
   Comp,
   CompSchema,
+  Dictionary,
   EventAssertionBindingMetaName,
   EventBinding,
   EventBindingSchema,
@@ -31,9 +31,9 @@ import Tree, { buildTree } from '@/shared/tree'
 
 export interface BindingSetterProps {
   comp: Comp
-  comps: Catalog<Comp>
+  comps: Dictionary<Comp>
   onChange: (value: EventBindingSchema | undefined) => void
-  schemas: Catalog<CompSchema>
+  schemas: Dictionary<CompSchema>
   value: EventBindingSchema | undefined | string
   name?: string
   label?: string
