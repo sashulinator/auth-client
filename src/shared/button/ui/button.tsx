@@ -1,31 +1,41 @@
-import { ActionButton, IconButton, PrimaryButton } from '@fluentui/react'
+import { ActionButton, IButtonProps, IButtonStyles, IconButton, PrimaryButton } from '@fluentui/react'
 
 import React, { ReactNode, memo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-enum ButtonVariant {
-  primary = 'primary',
-  action = 'action',
-  icon = 'icon',
+const actionButtonStyles: IButtonStyles = {
+  rootHovered: {
+    backgroundColor: 'var(--themePrimary01)',
+  },
+  root: {
+    height: '32px',
+  },
+  label: {
+    color: 'var(--themePrimary)',
+  },
 }
 
-interface ButtonProps {
+interface ButtonProps extends IButtonProps {
   children?: ReactNode
   text?: string
-  variant?: ButtonVariant
+  variant?: 'primary' | 'icon' | 'action'
   iconName?: string
 }
 
 export default memo(function Button(props: ButtonProps): JSX.Element {
-  const { variant = 'primary', text = '', ...restProps } = props
+  const { variant, text = '', ...restProps } = props
 
   const { t } = useTranslation()
 
-  if (variant === ButtonVariant.action) {
-    return <ActionButton {...restProps}>{t(text).toString()}</ActionButton>
+  if (variant === 'action') {
+    return (
+      <ActionButton {...restProps} styles={{ ...restProps?.styles, ...actionButtonStyles }}>
+        {t(text).toString()}
+      </ActionButton>
+    )
   }
 
-  if (variant === ButtonVariant.icon) {
+  if (variant === 'icon') {
     return <IconButton {...restProps}>{t(text).toString()}</IconButton>
   }
 
