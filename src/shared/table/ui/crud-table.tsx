@@ -51,12 +51,14 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
   return (
     <Stack className="CRUDTable" tokens={{ childrenGap: 24 }}>
       <Stack horizontal tokens={{ childrenGap: 12 }}>
-        <SearchBox
-          style={{ width: '250px' }}
-          autoComplete="off"
-          className="searchBox"
-          onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
-        />
+        <Stack maxWidth={250}>
+          <SearchBox
+            style={{ width: '250px' }}
+            autoComplete="off"
+            className="searchBox"
+            onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
+          />
+        </Stack>
         <Dropdown options={columns} onChange={setDropdownValue} value={dropdownValue} style={{ width: '250px' }} />
       </Stack>
       <Table
