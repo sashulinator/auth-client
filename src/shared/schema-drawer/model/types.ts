@@ -5,6 +5,11 @@ import { FormApi, FormState } from 'final-form'
 
 export type Dictionary<T> = Record<string, T>
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Package<Data = any> = {
+  data: Data
+}
+
 export interface Schema<TItem> {
   data: Dictionary<TItem>
 }
