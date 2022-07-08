@@ -47,7 +47,6 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
     }, [])
   }
 
-  console.log(columns)
   return (
     <Stack className="CRUDTable" tokens={{ childrenGap: 24 }}>
       <Stack horizontal tokens={{ childrenGap: 12 }}>
