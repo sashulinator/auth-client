@@ -38,7 +38,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
   const validate = bindAssertions(assertionList, props.comp.assertionBindingSchema?.data)
 
   // TODO move to ComponentFactory
-  const injectedComp = injectToComp(props.comp.injections, props.context, props.comp)
+  const injectedComp = injectToComp(props.comp, props.context)
 
   assertNotUndefined(injectedComp.name)
 
