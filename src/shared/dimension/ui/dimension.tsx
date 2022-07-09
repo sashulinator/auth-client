@@ -1,16 +1,15 @@
-import { Panel, PanelType, Text } from '@fluentui/react'
+import { Panel, PanelType } from '@fluentui/react'
 import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
 import React, { useEffect, useState } from 'react'
-import useCollapse from 'react-collapsed'
 
 import { findParents } from '@/lib/entity-actions'
-import { Button } from '@/shared/button'
+import { isEnter } from '@/lib/key-events'
 import { TreeCheckbox } from '@/shared/checkbox'
+import FieldBorder from '@/shared/field-border.ts'
 import { CompSchema, FieldComponentContext, LinkedComp, assertLinkedComp } from '@/shared/schema-drawer'
-import Stack from '@/shared/stack'
 
 interface DimensionProps {
   value: Record<string, string[]> | string | undefined
@@ -26,10 +25,6 @@ Dimension.defaultValues = {
 export default function Dimension(props: DimensionProps): JSX.Element {
   const [isOpen, setOpen] = useState(false)
   const [value, setValue] = useState(isString(props.value) ? undefined : props.value)
-
-  const { getCollapseProps, getToggleProps, isExpanded, setExpanded } = useCollapse({
-    defaultExpanded: true,
-  })
 
   useEffect(() => setValue(value), [props.value])
 
@@ -58,36 +53,31 @@ export default function Dimension(props: DimensionProps): JSX.Element {
   }
 
   return (
-    <div className="Dimension">
-      <Stack horizontal verticalAlign="center">
-        <Button
-          {...getToggleProps()}
-          variant="action"
-          iconProps={{ iconName: isExpanded ? 'ChevronDown' : 'ChevronRight' }}
-          onClick={() => setExpanded((prevExpanded) => !prevExpanded)}
-          text="Классификаторы"
-        />
-        <Button variant="icon" onClick={() => setOpen(true)} iconProps={{ iconName: 'Edit' }} />
-      </Stack>
-      <div {...getCollapseProps()}>
+    <FieldBorder
+      tabIndex={0}
+      onKeyDown={(e) => isEnter(e) && setOpen(true)}
+      onDoubleClick={() => setOpen(true)}
+      className="Dimension"
+    >
+      <div>
         <table>
-          {compsAndSchemas?.map(([comp, schema]) => {
-            return (
-              <tr key={schema.id}>
-                <Text as="td" key={schema.id} className="column titleColumn">
-                  {comp?.title}:
-                </Text>
-                <td className="column dimensionColumn">
-                  {value?.[schema?.title]?.map((id) => {
-                    const entity = schema.data[id] as LinkedComp
-                    assertNotUndefined(entity)
-                    const parents = (findParents(id, schema.data) || []) as LinkedComp[]
-                    return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
-                  })}
-                </td>
-              </tr>
-            )
-          })}
+          <tbody>
+            {compsAndSchemas?.map(([comp, schema]) => {
+              return (
+                <tr key={schema.id}>
+                  <td>{comp?.title}:</td>
+                  <td className="column dimensionColumn">
+                    {value?.[schema?.title]?.map((id) => {
+                      const entity = schema.data[id] as LinkedComp
+                      assertNotUndefined(entity)
+                      const parents = (findParents(id, schema.data) || []) as LinkedComp[]
+                      return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
+                    })}
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
         </table>
       </div>
       <Panel
@@ -112,6 +102,6 @@ export default function Dimension(props: DimensionProps): JSX.Element {
           })}
         </div>
       </Panel>
-    </div>
+    </FieldBorder>
   )
 }
