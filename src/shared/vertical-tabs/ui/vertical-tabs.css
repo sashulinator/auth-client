@@ -14,8 +14,12 @@
 }
 
 .VerticalTabs .item.selected {
-  color: black;
+  color: var(--white);
   transition: color 100ms;
+}
+
+.VerticalTabs .item .icon {
+  padding: 0 8px 0 0;
 }
 
 .VerticalTabs .selection {

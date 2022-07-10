@@ -1,0 +1,8 @@
+.NavPanel {
+  width: 230px;
+  border-right: 1px solid var(--black02);
+}
+
+.NavPanel .VerticalTabs .item .icon {
+  padding: 0 20px 0 0;
+}

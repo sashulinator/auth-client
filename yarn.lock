@@ -1904,10 +1904,10 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@savchenko91/rc-route-constant@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@savchenko91/rc-route-constant/-/rc-route-constant-4.0.4.tgz#e948b8090bcf05a09a6f69f13a60aaed27c299ea"
-  integrity sha512-9Hw2yv8zNR3YnlvZWUzVv4nxUGOi/tHm5AMG7kryXJU6n6ykLElJolMo4wYGOgiPDdafgUZabRPUcK5pnrn2wQ==
+"@savchenko91/rc-route-constant@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@savchenko91/rc-route-constant/-/rc-route-constant-4.0.5.tgz#d3dbde6003925a812140b6f45a160850a392b780"
+  integrity sha512-2yCRlyjOIWSArw/khkeH7YTNMi/cLzcBPdIwTp6cVtnUZBjm0g8N1qGuXIIlq1QogUL0x3uUgyEnqgsTCM5eAg==
 
 "@savchenko91/schema-validator@0.2.15":
   version "0.2.15"
@@ -3729,7 +3729,7 @@ detect-node@^2.1.0:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.1.0.tgz#c9c70775a49c3d03bc2c06d9a73be550f978f8b1"
   integrity sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==
 
-dictionaryjs@^1.0.9:
+dictionaryjs@1.0.9:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/dictionaryjs/-/dictionaryjs-1.0.9.tgz#e7c034cc17785427df11695e37cbf4765d706069"
   integrity sha512-T2cVczPjEnHd3M33l4VQefvQE1PiRviJpTCV5y6umgbipB1CYXNdzj3OP/SRImqRqpYS1bkJDpiT4e8zNkF/oA==
@@ -8806,7 +8806,7 @@ toidentifier@1.0.0:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
 
-tree-model@^1.0.7:
+tree-model@1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/tree-model/-/tree-model-1.0.7.tgz#45b2307aa2dfc2da8ceb6a631c1e2b15550dce88"
   integrity sha512-oP4LUbCVtD2gcjcRaeI4L5hY60tHzB+AK/bthIJ2Pq1EUUOio5/xFzPWnGoBZlhtqpqbOkhFDzKIwKLOn0kccQ==

@@ -1,5 +1,6 @@
 import { Stack } from '@fluentui/react'
-import { getCurrent } from '@savchenko91/rc-route-constant'
+
+import './nav-panel.css'
 
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -11,13 +12,14 @@ const items: NavItem[] = [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST].map((route) 
   return {
     label: route.NAME,
     key: route.PATH,
+    iconName: route.PAYLOAD?.iconName,
   }
 })
 
 export default function NavPanel(): JSX.Element | null {
   const navigate = useNavigate()
 
-  const currentRoute = getCurrent(ROUTES)
+  const currentRoute = Object.values(ROUTES).find((route) => route.isPartOf(location.pathname))
 
   function onLinkClick(item: NavItem) {
     if (item) {

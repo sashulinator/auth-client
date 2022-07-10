@@ -1,3 +1,5 @@
+import { Icon } from '@fluentui/react'
+
 import clsx from 'clsx'
 import React from 'react'
 
@@ -7,6 +9,7 @@ import { AnyRecord } from '@/types/common'
 export interface TabItem {
   key: string
   label: string
+  iconName?: string
   payload?: AnyRecord
 }
 
@@ -26,6 +29,11 @@ export default function Item(props: ItemProps): JSX.Element {
       className={clsx('item', props.className)}
       area-label={props.item.label}
     >
+      {props.item.iconName && (
+        <div className="icon">
+          <Icon iconName={props.item.iconName} />
+        </div>
+      )}
       {props.item.label}
     </div>
   )

@@ -1,2 +1,8 @@
-.Nav {
+.Nav .VerticalTabs {
+  --itemHeight: 48;
+  position: relative;
+  padding-left: 20px;
+}
+
+.Nav .VerticalTabs .item {
 }
