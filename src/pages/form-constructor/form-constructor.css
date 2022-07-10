@@ -11,7 +11,7 @@
 .TreePanel {
   transform: translate(var(--treePanelWidth_expanded, calc(-100% + 5px)));
   position: fixed;
-  width: calc(var(--treePanelWidth, 300) * 1px);
+  width: calc(var(--treePanelWidth_size, 300) * 1px);
   min-width: 200px;
   max-width: 777px;
   max-height: calc(100% - var(--headerHeight) * 1px);
@@ -37,7 +37,7 @@
   position: fixed;
   max-height: calc(100% - var(--headerHeight) * 1px);
   min-height: calc(100% - var(--headerHeight) * 1px);
-  width: calc(var(--compPanelWidth, 300) * 1px);
+  width: calc(var(--compPanelWidth_size, 300) * 1px);
   min-width: 200px;
   max-width: 777px;
   top: calc(var(--headerHeight) * 1px);

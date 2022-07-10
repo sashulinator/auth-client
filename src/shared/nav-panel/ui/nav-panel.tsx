@@ -30,7 +30,7 @@ export default function NavPanel(): JSX.Element | null {
     <>
       {!ROUTES.LOGIN.isCurrent && !ROUTES.FORM_CONSTRUCTOR.isCurrent && (
         <div className="NavPanel">
-          <ResizeTarget name="navWidth" direction="left" callapsible={true} />
+          <ResizeTarget name="navPanel" direction="left" callapsible={true} />
           <Nav items={items} onChange={onLinkClick} selectedKey={currentRoute?.PATH} />
         </div>
       )}

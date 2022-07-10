@@ -15,6 +15,7 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
   const ref = useRef<null | HTMLDivElement>(null)
 
   const names = {
+    size: `${props.name}_size`,
     changing: `${props.name}_move`,
     userChanging: `${props.name}_usermove`,
     autoChanging: `${props.name}_automove`,
@@ -27,10 +28,10 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
   useLayoutEffect(addEventListener, [])
 
   function init() {
-    const value = localStorage.getItem(props.name)
+    const value = localStorage.getItem(names.size)
 
     if (value) {
-      setCSSVar(props.name, value)
+      setCSSVar(names.size, value)
     }
 
     if (isCollapsed()) {
@@ -103,10 +104,10 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
       return
     }
 
-    localStorage.setItem(props.name, newWidth.toString())
+    localStorage.setItem(names.size, newWidth.toString())
     setCSSVar(names.changing, 'true')
     setCSSVar(names.userChanging, 'true')
-    setCSSVar(props.name, newWidth)
+    setCSSVar(names.size, newWidth)
   }
 
   function isCollapsed() {
