@@ -14,17 +14,19 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
   const [initParentWidth, setInitParentWidth] = useState<number>(0)
   const ref = useRef<null | HTMLDivElement>(null)
 
-  useLayoutEffect(() => {
-    if (!ref.current) {
-      return
-    }
+  const names = {
+    changing: `${props.name}_move`,
+    userChanging: `${props.name}_usermove`,
+    autoChanging: `${props.name}_automove`,
+    collapsed: `${props.name}_collapsed`,
+    expanded: `${props.name}_expanded`,
+    idle: `${props.name}_idle`,
+  }
 
-    ref.current.addEventListener('mousedown', onMouseDown)
+  useLayoutEffect(init, [])
+  useLayoutEffect(addEventListener, [])
 
-    if (props.callapsible) {
-      ref.current.addEventListener('dblclick', dblclick)
-    }
-
+  function init() {
     const value = localStorage.getItem(props.name)
 
     if (value) {
@@ -36,26 +38,29 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     } else {
       setCollapsed(false)
     }
+  }
+
+  function addEventListener() {
+    ref.current?.addEventListener('mousedown', onMouseDown)
+
+    if (props.callapsible) {
+      ref.current?.addEventListener('dblclick', onDoubleClick)
+    }
 
     return () => {
-      if (!ref.current) {
-        return
-      }
-
-      ref.current.removeEventListener('dblclick', dblclick)
-      ref.current.removeEventListener('mousedown', onMouseDown)
+      ref.current?.removeEventListener('dblclick', onDoubleClick)
+      ref.current?.removeEventListener('mousedown', onMouseDown)
     }
-  }, [])
+  }
 
   function onMouseDown() {
     if (isCollapsed()) {
       return
     }
 
-    const resizeEl = ref.current
-    const parent = resizeEl?.parentElement
+    const parent = ref.current?.parentElement
 
-    if (!resizeEl || !parent) {
+    if (!parent) {
       return
     }
 
@@ -71,18 +76,17 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
   function handleMouseUp(): void {
     document.body.style.cursor = 'auto'
     setInitParentWidth(0)
-    removeCSSVar(`${props.name}_move`)
-    removeCSSVar(`${props.name}_usermove`)
+    removeCSSVar(names.changing)
+    removeCSSVar(names.userChanging)
     document.onselectstart = null
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
   }
 
   function handleMouseMove(event: MouseEvent): void {
-    const resizeEl = ref.current
-    const parent = resizeEl?.parentElement
+    const parent = ref.current?.parentElement
 
-    if (!resizeEl || !parent) {
+    if (!parent) {
       return
     }
 
@@ -100,53 +104,42 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     }
 
     localStorage.setItem(props.name, newWidth.toString())
-    setCSSVar(`${props.name}_move`, 'true')
-    setCSSVar(`${props.name}_usermove`, 'true')
+    setCSSVar(names.changing, 'true')
+    setCSSVar(names.userChanging, 'true')
     setCSSVar(props.name, newWidth)
   }
 
   function isCollapsed() {
-    const isCollapsed = localStorage.getItem(`${props.name}_collapsed`)
-    return isCollapsed === 'true'
+    return localStorage.getItem(names.collapsed) === 'true'
   }
 
   function setCollapsed(value: boolean) {
     if (value) {
       ref.current?.parentElement?.classList.add('collapsed')
-      setCSSVar(`${props.name}_collapsed`, 'true')
-      removeCSSVar(`${props.name}_expanded`)
-      localStorage.setItem(`${props.name}_collapsed`, 'true')
-
-      setCSSVar(`${props.name}_move`, 'true')
-      setTimeout(() => removeCSSVar(`${props.name}_move`), 300)
-
-      removeCSSVar(`${props.name}_idle`)
-      setTimeout(() => setCSSVar(`${props.name}_idle`, 'true'), 300)
-
-      setCSSVar(`${props.name}_automove`, 'true')
-      setTimeout(() => removeCSSVar(`${props.name}_automove`), 300)
+      setCSSVar(names.collapsed, 'true')
+      removeCSSVar(names.expanded)
+      localStorage.setItem(names.collapsed, 'true')
     } else {
       ref.current?.parentElement?.classList.remove('collapsed')
-      setCSSVar(`${props.name}_expanded`, 'true')
-      removeCSSVar(`${props.name}_collapsed`)
-      localStorage.removeItem(`${props.name}_collapsed`)
-
-      setCSSVar(`${props.name}_move`, 'true')
-      setTimeout(() => removeCSSVar(`${props.name}_move`), 300)
-
-      removeCSSVar(`${props.name}_idle`)
-      setTimeout(() => setCSSVar(`${props.name}_idle`, 'true'), 300)
-
-      setCSSVar(`${props.name}_automove`, 'true')
-      setTimeout(() => removeCSSVar(`${props.name}_automove`), 300)
+      setCSSVar(names.expanded, 'true')
+      removeCSSVar(names.collapsed)
+      localStorage.removeItem(names.collapsed)
     }
+
+    setCSSVar(names.changing, 'true')
+    setTimeout(() => removeCSSVar(names.changing), 300)
+
+    removeCSSVar(names.idle)
+    setTimeout(() => setCSSVar(names.idle, 'true'), 300)
+
+    setCSSVar(names.autoChanging, 'true')
+    setTimeout(() => removeCSSVar(names.autoChanging), 300)
   }
 
-  function dblclick() {
-    const resizeEl = ref.current
-    const parent = resizeEl?.parentElement
+  function onDoubleClick() {
+    const parent = ref.current?.parentElement
 
-    if (!resizeEl || !parent) {
+    if (!parent) {
       return
     }
 
