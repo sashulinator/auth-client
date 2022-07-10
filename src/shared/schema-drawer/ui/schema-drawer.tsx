@@ -99,6 +99,8 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
   const comp = props.comps[props.compId]
   assertNotUndefined(comp)
 
+  const observer = useMemo(() => new Observer(), [comp.id])
+
   if (isLinkedComp(comp)) {
     const schema = props.schemas[comp.linkedSchemaId]
 
@@ -114,16 +116,12 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   const schema = props.schemas[injectedComp.compSchemaId] as ComponentCompSchema
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const context: ComponentContext = useMemo(
-    () => ({
-      ...props.context,
-      comp: injectedComp,
-      schema: schema,
-      observer: new Observer(),
-    }),
-    [comp.id]
-  )
+  const context: ComponentContext = {
+    ...props.context,
+    comp: injectedComp,
+    schema: schema,
+    observer,
+  }
 
   // Схема еще не прогрузилась и поэтому undefined
   if (schema === undefined) {
