@@ -7,10 +7,13 @@ import { Field, Form } from 'react-final-form'
 import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
+import { useSetLayout } from '@/lib/set-layout'
 import { Button } from '@/shared/button'
 import CustomTextField from '@/shared/textfield'
 
 export default function Login(): JSX.Element {
+  useSetLayout()
+
   const navigate = useNavigate()
   function onSubmit() {
     localStorage.setItem('access_token', 'access_token')

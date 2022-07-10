@@ -15,7 +15,7 @@ import { ToastContainer } from 'react-toastify'
 
 const RootLayer: FC = () => {
   return (
-    <PerfectScrollbar className="RootScrollbar" style={{ zIndex: 300 }}>
+    <PerfectScrollbar className="RootScrollbar" id="Layout" style={{ zIndex: 300 }}>
       <DocumentTitle />
       <RootRoutes />
       <ToastContainer />

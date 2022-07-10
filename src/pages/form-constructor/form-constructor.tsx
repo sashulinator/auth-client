@@ -38,6 +38,7 @@ import {
   findRootParentIds,
   removeEntity,
 } from '@/lib/entity-actions'
+import { LayoutNames, useSetLayout } from '@/lib/set-layout'
 import { useHistoryLinkedList } from '@/lib/use-history-linked-list'
 import {
   Comp,
@@ -53,6 +54,8 @@ import {
 } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
+  useSetLayout(LayoutNames.headerMain)
+
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -303,7 +306,7 @@ const FormConstructor: FC = (): JSX.Element => {
   }
 
   return (
-    <Stack className="headerOnlyLayout">
+    <>
       <HeaderContent
         compSchema={currentCompSchema}
         setCompSchema={setCompSchema}
@@ -354,7 +357,7 @@ const FormConstructor: FC = (): JSX.Element => {
           )}
         />
       </Stack>
-    </Stack>
+    </>
   )
 }
 

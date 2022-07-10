@@ -7,10 +7,13 @@ import { useParams } from 'react-router-dom'
 
 import { useGetDependencySchemas } from '@/api/comp-schema'
 import { getIncident } from '@/api/incident'
+import { LayoutNames, useSetLayout } from '@/lib/set-layout'
 
 const IncidentId = 'd79d37b9-21a5-4017-a13d-27106cf749d8'
 
 export default function Incident(): JSX.Element {
+  useSetLayout(LayoutNames.headerNavMain)
+
   const { id } = useParams()
 
   const { data: schemas } = useGetDependencySchemas([IncidentId])
