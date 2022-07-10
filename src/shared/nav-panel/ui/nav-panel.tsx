@@ -1,6 +1,6 @@
 import './nav-panel.css'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
@@ -17,6 +17,7 @@ const items: NavItem[] = [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST].map((route) 
 
 export default function NavPanel(): JSX.Element | null {
   const navigate = useNavigate()
+  const ref = useRef(null)
 
   const currentRoute = Object.values(ROUTES).find((route) => route.isPartOf(location.pathname))
 
@@ -24,6 +25,7 @@ export default function NavPanel(): JSX.Element | null {
     name: 'navPanel',
     direction: 'left',
     callapsible: true,
+    ref,
   })
 
   function onLinkClick(item: NavItem) {
@@ -35,7 +37,7 @@ export default function NavPanel(): JSX.Element | null {
   return (
     <>
       {!ROUTES.LOGIN.isCurrent && !ROUTES.FORM_CONSTRUCTOR.isCurrent && (
-        <div className="NavPanel">
+        <div className="NavPanel" ref={ref}>
           {ResizeLine}
           <Nav items={items} onChange={onLinkClick} selectedKey={currentRoute?.PATH} />
         </div>

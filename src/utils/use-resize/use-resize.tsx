@@ -6,6 +6,7 @@ interface UseResizeProps {
   name: string
   direction: 'left' | 'right'
   callapsible: boolean
+  ref: { current: null | Element }
 }
 
 export function useResize(props: UseResizeProps) {
@@ -22,8 +23,8 @@ export function useResize(props: UseResizeProps) {
     idle: `${props.name}_idle`,
   }
 
-  useLayoutEffect(init, [])
-  useLayoutEffect(addEventListener, [])
+  useLayoutEffect(init, [props.ref.current])
+  useLayoutEffect(addEventListener, [props.ref.current])
 
   function init() {
     const value = localStorage.getItem(names.size)
@@ -53,17 +54,11 @@ export function useResize(props: UseResizeProps) {
   }
 
   function onMouseDown() {
-    if (isCollapsed()) {
+    if (isCollapsed() || !props.ref.current) {
       return
     }
 
-    const parent = ref.current?.parentElement
-
-    if (!parent) {
-      return
-    }
-
-    const parentRect = parent.getBoundingClientRect()
+    const parentRect = props.ref.current?.getBoundingClientRect()
     setInitParentWidth(Math.round(parentRect.width))
 
     document.body.style.cursor = 'col-resize'
@@ -83,20 +78,18 @@ export function useResize(props: UseResizeProps) {
   }
 
   function handleMouseMove(event: MouseEvent): void {
-    const parent = ref.current?.parentElement
-
-    if (!parent) {
+    if (!props.ref.current) {
       return
     }
 
-    const parentRect = parent.getBoundingClientRect()
+    const parentRect = props.ref.current.getBoundingClientRect()
     const diff =
       props.direction === 'left'
         ? event.clientX - (initParentWidth + parentRect.left)
         : Math.abs(event.clientX - parentRect.right)
 
     const newWidth = Math.round(initParentWidth + diff)
-    const { minWidth, maxWidth } = getComputedStyle(parent)
+    const { minWidth, maxWidth } = getComputedStyle(props.ref.current)
 
     if (newWidth > parseInt(maxWidth) || newWidth < parseInt(minWidth)) {
       return
@@ -114,12 +107,12 @@ export function useResize(props: UseResizeProps) {
 
   function setCollapsed(value: boolean) {
     if (value) {
-      ref.current?.parentElement?.classList.add('collapsed')
+      props.ref.current?.classList.add('collapsed')
       setCSSVar(names.collapsed, 'true')
       removeCSSVar(names.expanded)
       localStorage.setItem(names.collapsed, 'true')
     } else {
-      ref.current?.parentElement?.classList.remove('collapsed')
+      props.ref.current?.classList.remove('collapsed')
       setCSSVar(names.expanded, 'true')
       removeCSSVar(names.collapsed)
       localStorage.removeItem(names.collapsed)
@@ -136,9 +129,7 @@ export function useResize(props: UseResizeProps) {
   }
 
   function onDoubleClick() {
-    const parent = ref.current?.parentElement
-
-    if (!parent) {
+    if (!props.ref.current) {
       return
     }
 
