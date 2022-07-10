@@ -1,8 +1,44 @@
 .NavPanel {
-  width: 300px;
+  --defaultWidth: 333;
+  position: relative;
+  width: calc(var(--navWidth, --defaultWidth) * 1px);
+  min-width: calc(var(--navWidth_automove, var(--navWidth_collapsed, 177px)));
+  max-width: 777px;
   border-right: 1px solid var(--black02);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  user-select: none;
+  transition: width var(--navWidth_idle, 0.3s);
+}
+.Nav {
+  transition: width var(--navWidth_idle, 0.3s);
+  overflow: hidden;
+}
+
+.NavPanel.collapsed,
+.NavPanel.collapsed .Nav {
+  width: 54px;
 }
 
 .NavPanel .VerticalTabs .item .icon {
   padding: 0 20px 0 0;
+}
+
+.NavPanel .Nav {
+  position: fixed;
+  width: calc(var(--navWidth, --defaultWidth) * 1px);
+}
+
+.NavPanel .ResizeTarget {
+  /* position: absolute; */
+  top: 50%;
+  transform: translateY(-50%);
+  height: 100%;
+  right: -5px;
+  width: 5px;
+  z-index: 40000;
+  background-color: transparent;
+  opacity: 0.7;
 }

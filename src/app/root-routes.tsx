@@ -10,8 +10,6 @@ import IncidentFormPage from '@/pages/incident/incident-form'
 import LoginPage from '@/pages/login'
 import SchemaListPage from '@/pages/schema-list/schema-list'
 import UserProfilePage from '@/pages/user-profile/user-profile'
-import Nav from '@/shared/nav-panel'
-import Header from '@/widgets/header'
 
 const RootRoutes: FC = () => {
   const navigate = useNavigate()
@@ -27,8 +25,6 @@ const RootRoutes: FC = () => {
 
   return (
     <>
-      <Nav />
-      <Header />
       <Routes>
         <Route path={ROUTES.FORM_CONSTRUCTOR.PATH} element={<FormConstructor />}>
           <Route path=":id" element={<FormConstructor />} />

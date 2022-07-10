@@ -1,5 +1,3 @@
-import { Stack } from '@fluentui/react'
-
 import './nav-panel.css'
 
 import React from 'react'
@@ -7,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
 import Nav, { NavItem } from '@/shared/nav'
+import ResizeTarget from '@/shared/resize-target'
 
 const items: NavItem[] = [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST].map((route) => {
   return {
@@ -30,9 +29,10 @@ export default function NavPanel(): JSX.Element | null {
   return (
     <>
       {!ROUTES.LOGIN.isCurrent && !ROUTES.FORM_CONSTRUCTOR.isCurrent && (
-        <Stack className="NavPanel">
+        <div className="NavPanel">
+          <ResizeTarget name="navWidth" direction="left" callapsible={true} />
           <Nav items={items} onChange={onLinkClick} selectedKey={currentRoute?.PATH} />
-        </Stack>
+        </div>
       )}
     </>
   )

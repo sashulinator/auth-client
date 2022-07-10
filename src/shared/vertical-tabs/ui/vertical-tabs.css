@@ -11,6 +11,9 @@
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: var(--black);
 }
 
 .VerticalTabs .item.selected {

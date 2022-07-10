@@ -13,10 +13,15 @@ import React, { FC } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import { ToastContainer } from 'react-toastify'
 
+import NavPanel from '@/shared/nav-panel'
+import Header from '@/widgets/header'
+
 const RootLayer: FC = () => {
   return (
     <PerfectScrollbar className="RootScrollbar" id="Layout" style={{ zIndex: 300 }}>
       <DocumentTitle />
+      <Header />
+      <NavPanel />
       <RootRoutes />
       <ToastContainer />
     </PerfectScrollbar>

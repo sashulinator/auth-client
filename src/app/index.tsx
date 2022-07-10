@@ -2,7 +2,7 @@ import { initializeIcons } from '@fluentui/react'
 
 import history from './history'
 import './i18n'
-import RootLayer from './layer'
+import RootLayer from './layout'
 import './register-icons'
 import React, { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'

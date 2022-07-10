@@ -21,9 +21,7 @@ interface ItemProps {
 
 export default function Item(props: ItemProps): JSX.Element {
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
       onKeyDown={(e) => isEnter(e) && props.onChange(props.item)}
       onClick={() => props.onChange(props.item)}
       className={clsx('item', props.className)}
@@ -35,6 +33,6 @@ export default function Item(props: ItemProps): JSX.Element {
         </div>
       )}
       {props.item.label}
-    </div>
+    </button>
   )
 }
