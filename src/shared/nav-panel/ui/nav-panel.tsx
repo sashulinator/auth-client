@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
 import Nav, { NavItem } from '@/shared/nav'
-import ResizeTarget from '@/shared/resize-target'
+import { useResize } from '@/utils/use-resize/use-resize'
 
 const items: NavItem[] = [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST].map((route) => {
   return {
@@ -20,6 +20,12 @@ export default function NavPanel(): JSX.Element | null {
 
   const currentRoute = Object.values(ROUTES).find((route) => route.isPartOf(location.pathname))
 
+  const { ResizeLine } = useResize({
+    name: 'navPanel',
+    direction: 'left',
+    callapsible: true,
+  })
+
   function onLinkClick(item: NavItem) {
     if (item) {
       navigate(item?.key)
@@ -30,7 +36,7 @@ export default function NavPanel(): JSX.Element | null {
     <>
       {!ROUTES.LOGIN.isCurrent && !ROUTES.FORM_CONSTRUCTOR.isCurrent && (
         <div className="NavPanel">
-          <ResizeTarget name="navPanel" direction="left" callapsible={true} />
+          {ResizeLine}
           <Nav items={items} onChange={onLinkClick} selectedKey={currentRoute?.PATH} />
         </div>
       )}
