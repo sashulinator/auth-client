@@ -11,7 +11,7 @@ import IncidentFormPage from '@/pages/incident/incident-form'
 import LoginPage from '@/pages/login'
 import SchemaListPage from '@/pages/schema-list/schema-list'
 import UserProfilePage from '@/pages/user-profile/user-profile'
-import Nav from '@/shared/nav'
+import Nav from '@/shared/nav-panel'
 import Header from '@/widgets/header'
 
 const RootRoutes: FC = () => {
