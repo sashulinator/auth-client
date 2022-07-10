@@ -32,9 +32,9 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     }
 
     if (isCollapsed()) {
-      setCSSVar(`${props.name}_collapsed`, 'true')
+      setCollapsed(true)
     } else {
-      setCSSVar(`${props.name}_expanded`, 'true')
+      setCollapsed(false)
     }
 
     return () => {
@@ -71,6 +71,8 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
   function handleMouseUp(): void {
     document.body.style.cursor = 'auto'
     setInitParentWidth(0)
+    removeCSSVar(`${props.name}_move`)
+    removeCSSVar(`${props.name}_usermove`)
     document.onselectstart = null
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
@@ -98,6 +100,8 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
     }
 
     localStorage.setItem(props.name, newWidth.toString())
+    setCSSVar(`${props.name}_move`, 'true')
+    setCSSVar(`${props.name}_usermove`, 'true')
     setCSSVar(props.name, newWidth)
   }
 
@@ -108,13 +112,33 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
 
   function setCollapsed(value: boolean) {
     if (value) {
+      ref.current?.parentElement?.classList.add('collapsed')
       setCSSVar(`${props.name}_collapsed`, 'true')
       removeCSSVar(`${props.name}_expanded`)
       localStorage.setItem(`${props.name}_collapsed`, 'true')
+
+      setCSSVar(`${props.name}_move`, 'true')
+      setTimeout(() => removeCSSVar(`${props.name}_move`), 300)
+
+      removeCSSVar(`${props.name}_idle`)
+      setTimeout(() => setCSSVar(`${props.name}_idle`, 'true'), 300)
+
+      setCSSVar(`${props.name}_automove`, 'true')
+      setTimeout(() => removeCSSVar(`${props.name}_automove`), 300)
     } else {
+      ref.current?.parentElement?.classList.remove('collapsed')
       setCSSVar(`${props.name}_expanded`, 'true')
       removeCSSVar(`${props.name}_collapsed`)
       localStorage.removeItem(`${props.name}_collapsed`)
+
+      setCSSVar(`${props.name}_move`, 'true')
+      setTimeout(() => removeCSSVar(`${props.name}_move`), 300)
+
+      removeCSSVar(`${props.name}_idle`)
+      setTimeout(() => setCSSVar(`${props.name}_idle`, 'true'), 300)
+
+      setCSSVar(`${props.name}_automove`, 'true')
+      setTimeout(() => removeCSSVar(`${props.name}_automove`), 300)
     }
   }
 
@@ -128,17 +152,8 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
 
     if (isCollapsed()) {
       setCollapsed(false)
-      parent.style.transition = '.3s'
-      parent.style.transform = ''
-      setTimeout(() => {
-        parent.style.transition = ''
-      }, 300)
     } else {
       setCollapsed(true)
-      parent.style.transition = '.3s'
-      setTimeout(() => {
-        parent.style.transition = ''
-      }, 300)
     }
   }
 

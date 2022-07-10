@@ -1,0 +1,36 @@
+.VerticalTabs {
+  position: relative;
+  --itemHeight: 32;
+}
+
+.VerticalTabs .item {
+  font-weight: 600;
+  width: 100%;
+  height: calc(var(--itemHeight) * 1px);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: var(--black);
+}
+
+.VerticalTabs .item.selected {
+  color: var(--white);
+  transition: color 100ms;
+}
+
+.VerticalTabs .item .icon {
+  padding: 0 8px 0 0;
+}
+
+.VerticalTabs .selection {
+  position: absolute;
+  background-color: var(--themePrimary);
+  height: calc(var(--itemHeight) * 1px);
+  width: 100%;
+  left: 0;
+  top: calc(var(--itemHeight) * var(--selectedItemIndex) * 1px);
+  z-index: -1;
+}

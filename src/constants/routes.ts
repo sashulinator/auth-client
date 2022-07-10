@@ -8,13 +8,13 @@ const ROUTES = {
 
   LOGIN: new Route({ name: 'Login', path: '/login' }),
 
-  SCHEMA_LIST: new Route({ name: 'Schemas', path: '/schema-list' }),
+  SCHEMA_LIST: new Route({ name: 'Schemas', path: '/schemas', payload: { iconName: 'Favicon' } }),
 
-  INCIDENT_LIST: new Route({ name: 'Incidents', path: '/incident-list' }),
+  INCIDENT_LIST: new Route({ name: 'Incidents', path: '/incidents', payload: { iconName: 'DiffInline' } }),
 
-  CREATE_INCIDENT: new Route({ name: 'Incident', path: '/incident' }),
+  CREATE_INCIDENT: new Route({ name: 'Incident', path: '/incidents/create' }),
 
-  INCIDENT: new Route({ name: 'Incident', path: '/incident/:id' }),
+  INCIDENT: new Route({ name: 'Incident', path: '/incidents/:id' }),
 
   USER_PROFILE: new Route({ name: 'User profile', path: '/user-profile' }),
   // return id ? `${this.PATH}/${id}` : this.PATH

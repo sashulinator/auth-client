@@ -23,33 +23,36 @@ html {
   z-index: 301;
 }
 
-.headerOnlyLayout {
+/*
+ headerMainLayout
+ */
+.headerMainLayout {
   display: grid;
   grid-template-areas:
     'fakeHeader fakeHeader fakeHeader'
     'main main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
-  grid-template-columns: 230px 1fr;
+  grid-template-columns: auto 1fr;
+}
+.headerMainLayout .NavPanel {
+  display: none;
 }
 
-.mainLayout {
+.headerNavMainLayout {
   display: grid;
   grid-template-areas:
     'fakeHeader fakeHeader fakeHeader'
-    'fakeNav main main';
+    'nav main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
-  grid-template-columns: 230px 1fr;
+  grid-template-columns: auto 1fr;
 }
 
 main {
   grid-area: main;
 }
 
-.Nav {
-  grid-area: fakeNav;
-  position: fixed;
-  left: 0;
-  top: calc(var(--headerHeight) * 1px);
+.NavPanel {
+  grid-area: nav;
   height: 100%;
 }
 
