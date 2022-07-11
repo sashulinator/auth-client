@@ -1,48 +1,22 @@
-import { initializeIcons } from '@fluentui/react'
-
-import history from './history'
-import './i18n'
-import RootLayer from './layout'
-import './register-icons'
-import React, { Suspense } from 'react'
+import GetUser from './get-user'
+import ReactQuery from './react-query'
+import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
 
-import { ThemeProvider } from '@/shared/theme'
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-})
-
-export const App = () => {
-  initializeIcons()
-
-  return (
-    <Suspense>
-      <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
-          <ThemeProvider>
-            <HistoryRouter history={history}>
-              <RootLayer />
-            </HistoryRouter>
-          </ThemeProvider>
-        </RecoilRoot>
-      </QueryClientProvider>
-    </Suspense>
-  )
-}
+const App = lazy(async () => import('./app'))
 
 const rootElement = document.getElementById('root')
 
 if (rootElement) {
   const root = createRoot(rootElement)
-  root.render(<App />)
+
+  root.render(
+    <ReactQuery>
+      <GetUser>
+        <App />
+      </GetUser>
+    </ReactQuery>
+  )
 }
 
 // eslint-disable-next-line import/no-named-as-default-member
