@@ -7,7 +7,11 @@ import { Button } from '@/shared/button'
 import Stack from '@/shared/stack'
 import { HEADER_PORTAL_LEFT_CLASSNAME } from '@/widgets/header'
 
-export default function HeaderContent(): JSX.Element | null {
+interface HeaderContentProps {
+  deleteDisabled: boolean
+}
+
+export default function HeaderContent(props: HeaderContentProps): JSX.Element | null {
   const navigate = useNavigate()
   const el = document.querySelector(HEADER_PORTAL_LEFT_CLASSNAME)
 
@@ -18,19 +22,19 @@ export default function HeaderContent(): JSX.Element | null {
   return (
     <>
       {createPortal(
-        <Stack horizontal horizontalAlign="end" style={{ maxWidth: '100%', paddingRight: '32px' }}>
+        <Stack
+          horizontal
+          horizontalAlign="end"
+          style={{ maxWidth: '100%', paddingRight: '32px' }}
+          tokens={{ childrenGap: 12 }}
+        >
           <Button
             onClick={() => {
               navigate(ROUTES.CREATE_INCIDENT.PATH)
             }}
             text="t.buttons.create"
           />
-        </Stack>,
-        el
-      )}
-      {createPortal(
-        <Stack horizontal horizontalAlign="end" style={{ maxWidth: '100%', paddingRight: '32px' }}>
-          <Button text="t.buttons.delete" />
+          <Button variant="action" text="t.buttons.delete" disabled={props.deleteDisabled} />
         </Stack>,
         el
       )}
