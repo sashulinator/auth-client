@@ -58,7 +58,7 @@ const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(function Preview
                       componentList={componentList}
                       schema={schema}
                       schemas={schemas}
-                      context={{ form: formProps.form }}
+                      context={{ form: formProps.form, formState: formProps.form.getState() }}
                     />
                   </form>
                 )

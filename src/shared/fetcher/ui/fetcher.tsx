@@ -1,3 +1,4 @@
+import get from 'lodash.get'
 import { useEffect } from 'react'
 
 import { DrawerContext } from '@/shared/schema-drawer'
@@ -14,9 +15,16 @@ export default function Fetcher(props: FetcherProps): null {
     fetchData()
   }, [])
 
+  function buildUrl() {
+    return props.url.replaceAll(new RegExp('\\<.+\\>', 'ig'), (match) => {
+      const path = match.replace('<', '').replace('>', '')
+      return get({ context: props.context }, path)
+    })
+  }
+
   async function fetchData() {
     if (props.url && props.name && props.context.fns?.setFetchedDataToContext) {
-      const res = await fetch(props.url, {})
+      const res = await fetch(buildUrl(), {})
       const data = await res.json()
 
       props.context.fns?.setFetchedDataToContext((fetchContext) => {
