@@ -10,6 +10,8 @@ import { Tooltip } from '@/shared/tooltip'
 interface TextFieldProps extends ITextFieldProps {
   autoFocusDelay?: number
   info?: string
+  type?: string
+  canRevealPassword?: boolean
 }
 
 const CustomTextField = forwardRef<HTMLInputElement | null, TextFieldProps>(
@@ -17,7 +19,7 @@ const CustomTextField = forwardRef<HTMLInputElement | null, TextFieldProps>(
     const { t } = useTranslation()
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { autoFocus, label, info, required, ...restProps } = props
+    const { autoFocus, label, info, required, type, ...restProps } = props
     const setRef = useAutoFocus({
       isAutoFocus: autoFocus,
       ref,
@@ -46,6 +48,8 @@ const CustomTextField = forwardRef<HTMLInputElement | null, TextFieldProps>(
           onRenderInput={(inputProps) => {
             return <input {...inputProps} ref={setRef} />
           }}
+          type={props.type}
+          canRevealPassword
         />
       </span>
     )
