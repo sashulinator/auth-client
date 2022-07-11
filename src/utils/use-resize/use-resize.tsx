@@ -7,6 +7,11 @@ interface UseResizeProps {
   direction: 'left' | 'right'
   callapsible: boolean
   ref: { current: null | Element }
+  size: {
+    min: number
+    max: number
+    collapsed: number
+  }
 }
 
 export function useResize(props: UseResizeProps) {
@@ -109,10 +114,12 @@ export function useResize(props: UseResizeProps) {
     if (value) {
       props.ref.current?.classList.add('collapsed')
       setCSSVar(names.collapsed, 'true')
+      setCSSVar(names.size, props.size.collapsed)
       removeCSSVar(names.expanded)
       localStorage.setItem(names.collapsed, 'true')
     } else {
       props.ref.current?.classList.remove('collapsed')
+      setCSSVar(names.size, localStorage.getItem(names.size) || props.size.min)
       setCSSVar(names.expanded, 'true')
       removeCSSVar(names.collapsed)
       localStorage.removeItem(names.collapsed)

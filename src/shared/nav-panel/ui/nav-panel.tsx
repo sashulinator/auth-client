@@ -25,6 +25,11 @@ export default function NavPanel(): JSX.Element | null {
     name: 'navPanel',
     direction: 'left',
     callapsible: true,
+    size: {
+      max: 777,
+      min: 130,
+      collapsed: 54,
+    },
     ref,
   })
 
