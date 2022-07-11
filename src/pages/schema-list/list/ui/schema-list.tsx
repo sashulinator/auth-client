@@ -34,7 +34,10 @@ function List(): JSX.Element {
   const { selection, selectedItems } = useSelection<{ id: string | number }>([], 'id')
   const [dropdownValue, setDropdownValue] = useState(columns[0]?.key || '')
 
-  const items = useMemo(() => buildItems(data?.sort((a, b) => (a.type > b.type ? 1 : -1)) || [], searchQuery), [data])
+  const items = useMemo(() => buildItems(data?.sort((a, b) => (a.type > b.type ? 1 : -1)) || [], searchQuery), [
+    data,
+    searchQuery,
+  ])
 
   function renderItemColumn(item: CompSchema, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof CompSchema] as string
@@ -47,14 +50,6 @@ function List(): JSX.Element {
 
   if (isLoading) {
     return <LoadingAria loading={isLoading} label="Schema loading..." />
-  }
-
-  if (items === undefined || items.length === 0) {
-    return (
-      <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
-        Nothing found
-      </Stack>
-    )
   }
 
   function buildItems(body: AnyRecord[], searchQuery: string): Record<string, unknown>[] {
@@ -89,19 +84,25 @@ function List(): JSX.Element {
         </Stack>
         <Dropdown options={columns} onChange={setDropdownValue} value={dropdownValue} style={{ width: '250px' }} />
       </Stack>
-      <Table
-        columns={columns}
-        setKey="set"
-        items={items}
-        selectionMode={SelectionMode.multiple}
-        selectionPreservedOnEmptyClick={true}
-        ariaLabelForSelectionColumn="Toggle selection"
-        ariaLabelForSelectAllCheckbox="Toggle selection for all items"
-        checkButtonAriaLabel="select row"
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        selection={selection as any}
-        onRenderItemColumn={renderItemColumn}
-      />
+      {items === undefined || items.length === 0 ? (
+        <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
+          Nothing found
+        </Stack>
+      ) : (
+        <Table
+          columns={columns}
+          setKey="set"
+          items={items}
+          selectionMode={SelectionMode.multiple}
+          selectionPreservedOnEmptyClick={true}
+          ariaLabelForSelectionColumn="Toggle selection"
+          ariaLabelForSelectAllCheckbox="Toggle selection for all items"
+          checkButtonAriaLabel="select row"
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          selection={selection as any}
+          onRenderItemColumn={renderItemColumn}
+        />
+      )}
     </Stack>
   )
 }
