@@ -16,11 +16,11 @@ export function setLayout(layoutName?: LayoutNames) {
     layoutEl.classList.remove(iLayoutName)
   })
 
-  layoutName && layoutEl.classList.add(layoutName)
+  layoutName ? layoutEl.classList.add(layoutName) : setTimeout(() => setLayout(layoutName))
 }
 
 export function useSetLayout(layoutName?: LayoutNames) {
   useLayoutEffect(() => {
-    setLayout(layoutName)
+    setTimeout(() => setLayout(layoutName))
   }, [])
 }

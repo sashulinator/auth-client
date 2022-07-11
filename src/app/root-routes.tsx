@@ -2,10 +2,7 @@ import { setPreviousRoute } from '@savchenko91/rc-route-constant'
 
 import ROUTES from '../constants/routes'
 import React, { FC } from 'react'
-import {
-  Route,
-  Routes, //  useNavigate
-} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 
 import FormConstructor from '@/pages/form-constructor/form-constructor'
 import IncidentListPage from '@/pages/incident-list/incident-list'
@@ -16,16 +13,7 @@ import SchemaListPage from '@/pages/schema-list/schema-list'
 import UserProfilePage from '@/pages/user-profile/user-profile'
 
 const RootRoutes: FC = () => {
-  // const navigate = useNavigate()
-
-  // const isToken = localStorage.getItem('access_token')
-
   setPreviousRoute(ROUTES)
-
-  // if (!isToken && !ROUTES.LOGIN.isCurrent) {
-  //   setTimeout(() => navigate(ROUTES.LOGIN.PATH))
-  //   return null
-  // }
 
   return (
     <>
