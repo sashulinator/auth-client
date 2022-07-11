@@ -29,7 +29,7 @@ CRUDTable.defaultProps = {
 
 export default function CRUDTable(props: CRUDTableProps): JSX.Element {
   const { url, name, ...tableProps } = props
-  const { selection } = useSelection<{ id: string | number }>([], props.idKey)
+  const { selection, selectedItems } = useSelection<{ id: string | number }>([], props.idKey)
 
   const { data } = useQuery([name], getData('GET'))
   const [searchQuery, setFilterString] = useState('')
@@ -79,7 +79,7 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
 
   return (
     <Stack className="CRUDTable" tokens={{ childrenGap: 24 }}>
-      <HeaderContent />
+      <HeaderContent deleteDisabled={selectedItems.length === 0} />
       <Stack horizontal tokens={{ childrenGap: 12 }}>
         <Stack maxWidth={250}>
           <SearchBox

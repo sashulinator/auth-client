@@ -7,6 +7,9 @@ const actionButtonStyles: IButtonStyles = {
   rootHovered: {
     backgroundColor: 'var(--themePrimary01)',
   },
+  labelDisabled: {
+    color: 'var(--themePrimary05)',
+  },
   root: {
     height: '32px',
   },
