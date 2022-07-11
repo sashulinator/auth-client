@@ -114,28 +114,28 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
 
   const injectedComp = injectToComp(comp, props.context)
 
-  const schema = props.schemas[injectedComp.compSchemaId] as ComponentCompSchema
+  const compSchema = props.schemas[injectedComp.compSchemaId] as ComponentCompSchema
 
   const context: ComponentContext = {
     ...props.context,
     comp: injectedComp,
-    schema: schema,
+    compSchema,
     observer,
   }
 
   // Схема еще не прогрузилась и поэтому undefined
-  if (schema === undefined) {
+  if (compSchema === undefined) {
     return null
   }
 
-  assertCompSchema(schema)
+  assertCompSchema(compSchema)
 
-  const сomponentItem = props.componentList[schema.componentName]
+  const сomponentItem = props.componentList[compSchema.componentName]
 
   if (!сomponentItem) {
     return (
       <div style={{ backgroundColor: 'red' }}>
-        Похоже вы используете старую версию фронта, в которой {schema.componentName} ещё не существует
+        Похоже вы используете старую версию фронта, в которой {compSchema.componentName} ещё не существует
       </div>
     )
   }
@@ -144,7 +144,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     <FieldComponent
       context={context}
       comp={injectedComp}
-      schema={schema}
+      schema={compSchema}
       schemas={props.schemas}
       componentList={props.componentList}
     />
@@ -152,7 +152,7 @@ export function ComponentFactory(props: ComponentFactoryProps): JSX.Element | nu
     <ContentComponent
       context={context}
       comp={injectedComp}
-      schema={schema}
+      schema={compSchema}
       schemas={props.schemas}
       comps={props.comps}
       componentList={props.componentList}

@@ -55,6 +55,8 @@ export interface LinkedComp {
 }
 
 export interface CompSchema extends Schema<Comp | LinkedComp> {
+  screenReadOnly?: boolean
+  workflowName?: string
   id: string
   title: string
   type: CompSchemaType
@@ -201,6 +203,7 @@ export type Context = {
 
 export type DrawerContext = Context & {
   comps: Dictionary<Comp | LinkedComp>
+  schema: CompSchema | CreateCompSchema
   compIds: string[]
   schemas: Dictionary<CompSchema> // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formStatePrev: FormState<any, any>
@@ -213,7 +216,7 @@ export type DrawerContext = Context & {
 export type ComponentContext = DrawerContext & {
   observer: Observer
   comp: Comp
-  schema: CompSchema
+  compSchema: CompSchema
 }
 
 export type ContentComponentContext = ComponentContext & {

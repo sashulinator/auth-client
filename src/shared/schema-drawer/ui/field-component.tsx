@@ -61,6 +61,7 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               {...input}
               {...props.comp.props}
               context={props.context}
+              disabled={props.context.schema.screenReadOnly}
               required={isRequired(props.comp.assertionBindingSchema?.data)}
               onBlur={props.context.observer.emitEvent('onBlur')}
               onFocus={props.context.observer.emitEvent('onFocus')}

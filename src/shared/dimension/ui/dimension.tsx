@@ -28,7 +28,7 @@ export default function Dimension(props: DimensionProps): JSX.Element {
 
   useEffect(() => setValue(value), [props.value])
 
-  const compsAndSchemas = props.context.comp.children?.reduce<[LinkedComp, CompSchema][]>((acc, id) => {
+  const compsAndSchemas = props.context.comp?.children?.reduce<[LinkedComp, CompSchema][]>((acc, id) => {
     const comp = props.context.comps[id]
     assertLinkedComp(comp)
 

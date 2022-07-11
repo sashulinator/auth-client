@@ -56,7 +56,7 @@ export function generateInitComps(
     const compContext = {
       ...context,
       comp: injectedComp,
-      schema,
+      compSchema: schema,
       observer: new Observer(),
     }
 
