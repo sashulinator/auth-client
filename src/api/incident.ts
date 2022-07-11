@@ -77,9 +77,9 @@ export async function getIncident(params: GetSchemaParams): Promise<CompSchema |
 
   // TODO провалидировать схемы
 
-  assertNotNil(incident)
+  assertNotNil(incident.dataBlock)
 
-  return incident as CompSchema
+  return incident.dataBlock as CompSchema
 }
 
 // type GetSchemaListParams = {

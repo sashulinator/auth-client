@@ -25,6 +25,18 @@ html {
 }
 
 /*
+headerNavMainLayout
+ */
+.headerNavMainLayout {
+  display: grid;
+  grid-template-areas:
+    'fakeHeader fakeHeader fakeHeader'
+    'nav main main';
+  grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
+  grid-template-columns: calc(var(--navPanel_size) * 1px) 1fr;
+}
+
+/*
  headerMainLayout
  */
 .headerMainLayout {
@@ -38,14 +50,20 @@ html {
 .headerMainLayout .NavPanel {
   display: none;
 }
+/*
+ MainLayout
+ */
 
-.headerNavMainLayout {
-  display: grid;
-  grid-template-areas:
-    'fakeHeader fakeHeader fakeHeader'
-    'nav main main';
-  grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
-  grid-template-columns: calc(var(--navPanel_size) * 1px) 1fr;
+.mainLayout {
+  grid-template-areas: 'main';
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+}
+.mainLayout .NavPanel {
+  display: none;
+}
+.mainLayout .Header {
+  display: none;
 }
 
 main {
@@ -57,7 +75,7 @@ main {
   height: 100%;
 }
 
-.Header {
+header {
   position: fixed;
   top: 0;
   left: 0;
