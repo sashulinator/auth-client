@@ -37,6 +37,7 @@ export function useResize(props: UseResizeProps) {
   function init() {
     const size = isCollapsed() ? props.size.collapsed : getSize()
     setCSSVar(names.size, size)
+    isCollapsed() ? setCSSVar(names.collapsed, 'true') : setCSSVar(names.expanded, 'true')
   }
 
   function addEventListener() {
