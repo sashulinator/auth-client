@@ -19,7 +19,8 @@ html {
   grid-template-columns: 1fr;
 }
 
-.RootScrollbar > .ps__rail-y {
+.RootScrollbar > .ps__rail-y,
+.RootScrollbar > .ps__rail-x {
   z-index: 301;
 }
 
@@ -32,7 +33,7 @@ html {
     'fakeHeader fakeHeader fakeHeader'
     'main main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: calc(var(--navPanel_size * 1px)) 1fr;
 }
 .headerMainLayout .NavPanel {
   display: none;
@@ -44,7 +45,7 @@ html {
     'fakeHeader fakeHeader fakeHeader'
     'nav main main';
   grid-template-rows: calc(var(--headerHeight) * 1px) 1fr;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: calc(var(--navPanel_size) * 1px) 1fr;
 }
 
 main {

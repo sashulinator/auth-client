@@ -1,8 +1,9 @@
 .NavPanel {
   --defaultWidth: 333;
-  position: relative;
-  width: calc(var(--navWidth, --defaultWidth) * 1px);
-  min-width: calc(var(--navWidth_automove, var(--navWidth_collapsed, 177px)));
+  z-index: 1;
+  position: fixed;
+  width: calc(var(--navPanel_size, --defaultWidth) * 1px);
+  min-width: calc(var(--navPanel_automove, var(--navPanel_collapsed, 177px)));
   max-width: 777px;
   border-right: 1px solid var(--black02);
   box-sizing: border-box;
@@ -10,10 +11,12 @@
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
   user-select: none;
-  transition: width var(--navWidth_idle, 0.3s);
+  transition: width var(--navPanel_idle, 0.3s);
+  top: calc(var(--headerHeight) * 1px);
+  background-color: var(--white);
 }
 .Nav {
-  transition: width var(--navWidth_idle, 0.3s);
+  transition: width var(--navPanel_idle, 0.3s);
   overflow: hidden;
 }
 
@@ -28,11 +31,10 @@
 
 .NavPanel .Nav {
   position: fixed;
-  width: calc(var(--navWidth, --defaultWidth) * 1px);
+  width: calc(var(--navPanel_size, --defaultWidth) * 1px);
 }
 
 .NavPanel .ResizeTarget {
-  /* position: absolute; */
   top: 50%;
   transform: translateY(-50%);
   height: 100%;
