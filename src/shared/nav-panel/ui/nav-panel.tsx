@@ -27,7 +27,7 @@ export default function NavPanel(): JSX.Element | null {
     callapsible: true,
     size: {
       max: 777,
-      min: 130,
+      min: 230,
       collapsed: 54,
       default: 130,
     },

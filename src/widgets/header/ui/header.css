@@ -1,0 +1,3 @@
+.Header .logo {
+  opacity: var(--navPanel_expanded, 0);
+}
