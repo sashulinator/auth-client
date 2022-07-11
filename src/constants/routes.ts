@@ -16,6 +16,8 @@ const ROUTES = {
 
   INCIDENT: new Route({ name: 'Incident', path: '/incidents/:id' }),
 
+  RISK_LIST: new Route({ name: 'Risks', path: '/risks', payload: { iconName: 'BullseyeTarget' } }),
+
   USER_PROFILE: new Route({ name: 'User profile', path: '/user-profile' }),
   // return id ? `${this.PATH}/${id}` : this.PATH
 }
