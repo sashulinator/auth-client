@@ -29,8 +29,10 @@ export default function NavPanel(): JSX.Element | null {
       max: 777,
       min: 130,
       collapsed: 54,
+      default: 130,
     },
     ref,
+    ms: 333,
   })
 
   function onLinkClick(item: NavItem) {
