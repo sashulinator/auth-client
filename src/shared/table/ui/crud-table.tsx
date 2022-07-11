@@ -35,12 +35,15 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
         method,
         body: params.queryKey[0] ? { id: params.queryKey[0] } : undefined,
       })
-      return body
+      return body.dataBlock
     }
   }
 
   function getElements(body: Record<string, any>[], searchQuery: string): Record<string, unknown>[] {
     return body.reduce<Record<string, unknown>[]>((acc, item) => {
+      if (!item[dropdownValue]) {
+        return acc
+      }
       if (new RegExp(searchQuery, 'i').test(item[dropdownValue] || '')) {
         acc.push(item)
       }
