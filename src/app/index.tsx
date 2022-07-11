@@ -1,3 +1,4 @@
+import GetUser from './get-user'
 import ReactQuery from './react-query'
 import React, { lazy } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -11,7 +12,9 @@ if (rootElement) {
 
   root.render(
     <ReactQuery>
-      <App />
+      <GetUser>
+        <App />
+      </GetUser>
     </ReactQuery>
   )
 }

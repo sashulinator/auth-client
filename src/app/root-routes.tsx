@@ -1,9 +1,12 @@
+import { Spinner, SpinnerSize } from '@fluentui/react'
 import { setPreviousRoute } from '@savchenko91/rc-route-constant'
 
 import ROUTES from '../constants/routes'
-import React, { FC } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useQuery } from 'react-query'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 
+import authApi from '@/api/api-axios'
 import FormConstructor from '@/pages/form-constructor/form-constructor'
 import IncidentListPage from '@/pages/incident-list/incident-list'
 import IncidentFormPage from '@/pages/incident/incident-form'
@@ -12,8 +15,21 @@ import RiskListPage from '@/pages/risk-list/risk-list'
 import SchemaListPage from '@/pages/schema-list/schema-list'
 import UserProfilePage from '@/pages/user-profile/user-profile'
 
-const RootRoutes: FC = () => {
+export default function RootRoutes() {
   setPreviousRoute(ROUTES)
+  const navigate = useNavigate()
+
+  const { isLoading, data, isError } = useQuery(['refresh'], () => authApi.post('/api/auth/refresh'))
+
+  useEffect(() => {
+    if (!data && !isLoading) {
+      navigate(ROUTES.LOGIN.PATH)
+    }
+  }, [data, isLoading, isError])
+
+  if (isLoading && !ROUTES.LOGIN.isCurrent) {
+    return <Spinner size={SpinnerSize.large} />
+  }
 
   return (
     <>
@@ -32,5 +48,3 @@ const RootRoutes: FC = () => {
     </>
   )
 }
-
-export default RootRoutes

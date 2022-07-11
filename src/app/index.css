@@ -62,7 +62,7 @@ headerNavMainLayout
 .mainLayout .NavPanel {
   display: none;
 }
-.mainLayout header {
+.mainLayout .Header {
   display: none;
 }
 
