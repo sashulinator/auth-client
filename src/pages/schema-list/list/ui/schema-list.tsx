@@ -1,17 +1,38 @@
-import { Stack } from '@fluentui/react'
-import { DetailsList, IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList'
+import { SearchBox, Stack } from '@fluentui/react'
+import { IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList'
 
-import React from 'react'
+import HeaderContent from './header-content'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 
 import { getCompSchemaList } from '@/api/comp-schema'
 import ROUTES from '@/constants/routes'
+import { useSelection } from '@/lib/use-selection'
+import { Dropdown } from '@/shared/dropdown'
 import LoadingAria from '@/shared/loading-aria'
 import { CompSchema } from '@/shared/schema-drawer'
+import Table from '@/shared/table'
+import { AnyRecord } from '@/types/common'
 
 function List(): JSX.Element {
+  const columns = [
+    {
+      key: 'title',
+      text: 'Title',
+      name: 'Title',
+      fieldName: 'title',
+      minWidth: 100,
+      maxWidth: 200,
+      isResizable: true,
+    },
+    { key: 'type', text: 'Type', name: 'Type', fieldName: 'type', minWidth: 100 },
+  ]
+
+  const [searchQuery, setFilterString] = useState('')
   const { data, isLoading } = useQuery('schemas', getCompSchemaList)
+  const { selection, selectedItems } = useSelection<{ id: string | number }>([], 'id')
+  const [dropdownValue, setDropdownValue] = useState(columns[0]?.key || '')
 
   function renderItemColumn(item: CompSchema, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof CompSchema] as string
@@ -34,20 +55,49 @@ function List(): JSX.Element {
     )
   }
 
+  function buildItems(body: AnyRecord[], searchQuery: string): Record<string, unknown>[] {
+    return body.reduce<AnyRecord[]>((acc, item) => {
+      if (!item[dropdownValue]) {
+        acc.push(item)
+        return acc
+      }
+
+      if (new RegExp(searchQuery, 'i').test(item[dropdownValue] || '')) {
+        acc.push(item)
+      }
+      return acc
+    }, [])
+  }
+
   return (
-    <Stack className="SchemaList" style={{ maxWidth: '900px' }} tokens={{ padding: '32px 32px 50vh 0' }}>
-      <DetailsList
-        items={data || []}
-        columns={[
-          { key: 'title', name: 'Title', fieldName: 'title', minWidth: 100, maxWidth: 200, isResizable: true },
-          { key: 'description', name: 'Description', fieldName: 'description', minWidth: 100 },
-        ]}
+    <Stack
+      className="SchemaList"
+      style={{ maxWidth: '900px' }}
+      tokens={{ padding: '52px 32px 50vh 20px', childrenGap: 24 }}
+    >
+      <HeaderContent deleteDisabled={selectedItems.length === 0} />
+      <Stack horizontal tokens={{ childrenGap: 12 }}>
+        <Stack maxWidth={250}>
+          <SearchBox
+            style={{ width: '250px' }}
+            autoComplete="off"
+            className="searchBox"
+            onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
+          />
+        </Stack>
+        <Dropdown options={columns} onChange={setDropdownValue} value={dropdownValue} style={{ width: '250px' }} />
+      </Stack>
+      <Table
+        columns={columns}
         setKey="set"
-        selectionMode={SelectionMode.none}
+        items={buildItems(data.sort((a, b) => (a.type > b.type ? 1 : -1)) || [], searchQuery)}
+        selectionMode={SelectionMode.multiple}
         selectionPreservedOnEmptyClick={true}
         ariaLabelForSelectionColumn="Toggle selection"
         ariaLabelForSelectAllCheckbox="Toggle selection for all items"
         checkButtonAriaLabel="select row"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        selection={selection as any}
         onRenderItemColumn={renderItemColumn}
       />
     </Stack>
