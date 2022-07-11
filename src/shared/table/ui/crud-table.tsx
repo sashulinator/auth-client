@@ -1,27 +1,35 @@
-import { SearchBox, Selection, SelectionMode } from '@fluentui/react'
+import { IColumn, SearchBox, Selection, SelectionMode } from '@fluentui/react'
 
 import HeaderContent from './header-content'
 import Table, { TableProps } from './table'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
+import { Link } from 'react-router-dom'
 
 import apiFetch from '@/api/api-fetch'
+import ROUTES from '@/constants/routes'
 import { useSelection } from '@/lib/use-selection'
 import Dropdown from '@/shared/dropdown/ui/dropdown'
 import Stack from '@/shared/stack'
+import { AnyRecord } from '@/types/common'
 
 interface CRUDTableProps extends TableProps {
   url: string
   name: string
+  idKey: string
 }
 
 type GetSchemaListParams = {
   queryKey: (string[] | string | undefined)[]
 }
 
+CRUDTable.defaultProps = {
+  idKey: 'id',
+}
+
 export default function CRUDTable(props: CRUDTableProps): JSX.Element {
   const { url, name, ...tableProps } = props
-  const { selection } = useSelection<{ id: string | number }>()
+  const { selection } = useSelection<{ id: string | number }>([], props.idKey)
 
   const { data } = useQuery([name], getData('GET'))
   const [searchQuery, setFilterString] = useState('')
@@ -33,22 +41,40 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
     return async (params: GetSchemaListParams): Promise<Record<string, unknown>[]> => {
       const { body } = await apiFetch(url, {
         method,
-        body: params.queryKey[0] ? { id: params.queryKey[0] } : undefined,
+        body: params.queryKey[0] ? { [props.idKey]: params.queryKey[0] } : undefined,
       })
       return body.dataBlock
     }
   }
 
-  function getElements(body: Record<string, any>[], searchQuery: string): Record<string, unknown>[] {
-    return body.reduce<Record<string, unknown>[]>((acc, item) => {
+  function buildItems(body: AnyRecord[], searchQuery: string): Record<string, unknown>[] {
+    return body.reduce<AnyRecord[]>((acc, item) => {
       if (!item[dropdownValue]) {
+        acc.push(item)
         return acc
       }
+
       if (new RegExp(searchQuery, 'i').test(item[dropdownValue] || '')) {
         acc.push(item)
       }
       return acc
     }, [])
+  }
+
+  function renderItemColumn(item: AnyRecord, index?: number, column?: IColumn) {
+    const fieldContent = item[column?.fieldName as keyof AnyRecord] as string
+    if (column?.key === columns?.[0]?.key) {
+      return <Link to={ROUTES.INCIDENT.PATH.replace(':id', item[props.idKey])}>{item[column?.key || '']}</Link>
+    }
+    return <span>{fieldContent}</span>
+  }
+
+  if (data === undefined || data.length === 0) {
+    return (
+      <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
+        Nothing found
+      </Stack>
+    )
   }
 
   return (
@@ -67,12 +93,13 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
       </Stack>
       <Table
         {...tableProps}
-        items={getElements(data || [], searchQuery)}
+        items={buildItems(data || [], searchQuery)}
         selectionMode={SelectionMode.multiple}
-        setKey="id"
+        setKey={props.idKey}
         selectionPreservedOnEmptyClick={true}
         enterModalSelectionOnTouch={true}
         selection={selection as Selection}
+        onRenderItemColumn={renderItemColumn}
       />
     </Stack>
   )

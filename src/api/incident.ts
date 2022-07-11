@@ -63,7 +63,7 @@ export async function getIncident(params: GetSchemaParams): Promise<CompSchema |
     return undefined
   }
 
-  const response = await fetch(`/api/v1/incidents/${id}`, {
+  const response = await fetch(`/api/incident/${id}`, {
     headers: {
       accept: 'application/json',
     },
