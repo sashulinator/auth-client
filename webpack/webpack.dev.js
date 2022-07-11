@@ -14,6 +14,8 @@ module.exports = {
       '/api/task': 'http://10.4.40.254:8005',
       '/api/processes': 'http://10.4.40.254:8005',
       '/api/incident': 'http://10.4.40.254:8080',
+      '/api/auth': 'http://10.4.40.254:8088',
+      '/api/user': 'http://10.4.40.254:8088',
     },
   },
   plugins: [

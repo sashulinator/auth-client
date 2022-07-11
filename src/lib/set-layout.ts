@@ -21,6 +21,6 @@ export function setLayout(layoutName?: LayoutNames) {
 
 export function useSetLayout(layoutName?: LayoutNames) {
   useLayoutEffect(() => {
-    setTimeout(() => setLayout(layoutName))
+    setLayout(layoutName)
   }, [])
 }
