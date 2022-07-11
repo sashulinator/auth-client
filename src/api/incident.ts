@@ -20,6 +20,7 @@ export async function createIncident(newFSchema: CreateInputIncident): Promise<U
       accept: 'application/json',
       userRole: 'USER',
       user: 'USER',
+      objAlias: 'Incident',
     },
   })
 
@@ -35,12 +36,15 @@ export async function createIncident(newFSchema: CreateInputIncident): Promise<U
 // UPDATE SCHEMA
 
 export async function updateIncident(newFSchema: UpdateInputIncident): Promise<UpdateInputIncident> {
-  const response = await fetch('/api/v1/incidents', {
+  const response = await fetch(`/api/incident/${newFSchema.instanceId}`, {
     method: 'PUT',
     body: JSON.stringify(newFSchema),
     headers: {
       'content-type': 'application/json',
       accept: 'application/json',
+      userRole: 'USER',
+      user: 'USER',
+      incidentId: newFSchema.instanceId,
     },
   })
 

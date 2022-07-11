@@ -20,8 +20,8 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
     const resData: CreateInputIncident | UpdateInputIncident = {
       ...data,
       status: data.status,
-      validation_state_cd: data.validation_state_cd,
-      source_system_cd: data.source_system_cd,
+      validationStateCd: data.validationStateCd,
+      sourceSystemCd: data.sourceSystemCd,
       name: data.name,
     }
 

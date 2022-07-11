@@ -7,7 +7,7 @@ export function hasId(input: unknown): input is { id: string } {
 }
 
 export function hasInstanceId(input: unknown): input is { instance_id: string } {
-  return isObject(input) && 'instance_id' in input
+  return isObject(input) && 'instanceId' in input
 }
 
 export function assertHasId(input: unknown): asserts input is { id: string } {
