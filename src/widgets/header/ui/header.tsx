@@ -4,7 +4,7 @@ import { Stack } from '@fluentui/react/lib/Stack'
 import './header.css'
 
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
 import LogoutButton from '@/entities/user/ui/logout-button'
@@ -14,6 +14,9 @@ export const HEADER_PORTAL_CENTER_CLASSNAME = '.headerPortalCenter'
 export const HEADER_PORTAL_RIGHT_CLASSNAME = '.headerPortalRight'
 
 export default function Header(): JSX.Element | null {
+  // ререндерит хеадер при смене урла
+  useLocation()
+
   if (ROUTES.LOGIN.isCurrent) {
     return null
   }

@@ -2,23 +2,30 @@ import { Stack, Text } from '@fluentui/react'
 
 import './index.css'
 
+import axios from 'axios'
 import React from 'react'
 import { Field, Form } from 'react-final-form'
 import { useNavigate } from 'react-router-dom'
 
+import { LoginResponse, Transfer } from '@/api/types'
 import ROUTES from '@/constants/routes'
-import { useSetLayout } from '@/lib/set-layout'
+import { LayoutNames, useSetLayout } from '@/lib/set-layout'
 import { Button } from '@/shared/button'
 import CustomTextField from '@/shared/textfield'
+import { errorMessage } from '@/shared/toast'
 
 export default function Login(): JSX.Element {
-  useSetLayout()
+  useSetLayout(LayoutNames.main)
 
   const navigate = useNavigate()
-  function onSubmit() {
-    localStorage.setItem('access_token', 'access_token')
-    localStorage.setItem('refresh_token', 'refresh_token')
-    navigate(ROUTES.INCIDENT_LIST.PATH)
+
+  async function onSubmit(data: Record<string, unknown>) {
+    try {
+      await axios.post<Transfer<LoginResponse>>('api/auth', data)
+      navigate(ROUTES.SCHEMA_LIST.PATH)
+    } catch (e) {
+      errorMessage('Неверный логин или пароль')
+    }
   }
 
   return (
@@ -34,8 +41,12 @@ export default function Login(): JSX.Element {
                     OMS
                   </Text>
                 </Stack>
-                <Field<string> name="username">{({ input }) => <CustomTextField label="username" {...input} />}</Field>
-                <Field<string> name="password">{({ input }) => <CustomTextField label="password" {...input} />}</Field>
+                <Field<string> name="email" required>
+                  {({ input }) => <CustomTextField label="email" {...input} />}
+                </Field>
+                <Field<string> name="password" required>
+                  {({ input }) => <CustomTextField label="password" {...input} />}
+                </Field>
                 <Button type="submit" style={{ margin: '24px 0 0' }} text="t.buttons.login" />
               </Stack>
             </form>
