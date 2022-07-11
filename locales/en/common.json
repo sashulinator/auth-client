@@ -43,6 +43,7 @@
       "toggleSelectionForAll": "Toggle selection for all items",
       "edit": "Edit",
       "create": "Create",
+      "delete": "Delete",
       "filter": "Filter",
       "close": "Close",
       "remove": "Remove",

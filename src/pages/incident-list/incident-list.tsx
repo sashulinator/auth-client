@@ -1,6 +1,5 @@
 import { Stack } from '@fluentui/react'
 
-import HeaderContent from './header-content'
 import List from './list'
 import React from 'react'
 
@@ -18,7 +17,6 @@ export default function SchemaListPage(): JSX.Element {
 
   return (
     <>
-      <HeaderContent />
       <Stack as="main" className="IncidentList">
         {schema && schemas && <List schema={schema} schemas={schemas} />}
       </Stack>
