@@ -116,12 +116,12 @@ export default function ResizeTarget(props: ResizeTargetProps): JSX.Element {
 
   function setCollapsed(value: boolean) {
     if (value) {
-      ref.current?.parentElement?.classList.add('collapsed')
+      document.body.classList.add(names.collapsed)
       setCSSVar(names.collapsed, 'true')
       removeCSSVar(names.expanded)
       localStorage.setItem(names.collapsed, 'true')
     } else {
-      ref.current?.parentElement?.classList.remove('collapsed')
+      document.body.classList.remove(names.collapsed)
       setCSSVar(names.expanded, 'true')
       removeCSSVar(names.collapsed)
       localStorage.removeItem(names.collapsed)

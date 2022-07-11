@@ -37,7 +37,15 @@ export function useResize(props: UseResizeProps) {
   function init() {
     const size = isCollapsed() ? props.size.collapsed : getSize()
     setCSSVar(names.size, size)
-    isCollapsed() ? setCSSVar(names.collapsed, 'true') : setCSSVar(names.expanded, 'true')
+
+    if (isCollapsed()) {
+      setCSSVar(names.collapsed, 'true')
+      document.body?.classList.add(names.collapsed)
+      return
+    }
+
+    document.body?.classList.remove(names.expanded)
+    setCSSVar(names.expanded, 'true')
   }
 
   function addEventListener() {
@@ -108,13 +116,15 @@ export function useResize(props: UseResizeProps) {
     const size = getSize()
 
     if (value) {
-      props.ref.current?.classList.add('collapsed')
+      document.body?.classList.add(names.collapsed)
+      document.body.classList.remove(names.expanded)
       setCSSVar(names.collapsed, 'true')
       removeCSSVar(names.expanded)
       localStorage.setItem(names.collapsed, 'true')
       setCSSWithAnimation(names.size, ms, props.size.collapsed, size)
     } else {
-      props.ref.current?.classList.remove('collapsed')
+      document.body.classList.remove(names.collapsed)
+      document.body.classList.add(names.expanded)
       setCSSVar(names.expanded, 'true')
       removeCSSVar(names.collapsed)
       localStorage.removeItem(names.collapsed)

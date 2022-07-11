@@ -28,10 +28,22 @@ export default function Header(): JSX.Element | null {
         style={{ width: '100%', height: '100%' }}
       >
         <div
-          className="logo"
-          style={{ minWidth: 'calc(var(--navPanel_size) * 1px)', maxWidth: 'calc(var(--navPanel_size) * 1px)' }}
+          style={{
+            minWidth: 'calc(var(--navPanel_size) * 1px)',
+            maxWidth: 'calc(var(--navPanel_size) * 1px)',
+          }}
         >
-          <Icon iconName="DataTech" />
+          <div className="logo">
+            <Icon iconName="Logo" />
+          </div>
+          <div
+            className="miniLogo"
+            style={{
+              transform: 'scale(0.5) translateX(-40px) translateY(-100%)',
+            }}
+          >
+            <Icon iconName="MiniLogo" />
+          </div>
         </div>
         <Stack style={{ width: '100%', background: 'var(--white)' }}>
           <Stack

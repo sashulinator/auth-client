@@ -2,7 +2,7 @@ import { SearchBox, Stack } from '@fluentui/react'
 import { IColumn, SelectionMode } from '@fluentui/react/lib/DetailsList'
 
 import HeaderContent from './header-content'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
 
@@ -34,6 +34,8 @@ function List(): JSX.Element {
   const { selection, selectedItems } = useSelection<{ id: string | number }>([], 'id')
   const [dropdownValue, setDropdownValue] = useState(columns[0]?.key || '')
 
+  const items = useMemo(() => buildItems(data?.sort((a, b) => (a.type > b.type ? 1 : -1)) || [], searchQuery), [data])
+
   function renderItemColumn(item: CompSchema, index?: number, column?: IColumn): JSX.Element {
     const fieldContent = item[column?.fieldName as keyof CompSchema] as string
 
@@ -47,7 +49,7 @@ function List(): JSX.Element {
     return <LoadingAria loading={isLoading} label="Schema loading..." />
   }
 
-  if (data === undefined || data.length === 0) {
+  if (items === undefined || items.length === 0) {
     return (
       <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
         Nothing found
@@ -90,7 +92,7 @@ function List(): JSX.Element {
       <Table
         columns={columns}
         setKey="set"
-        items={buildItems(data.sort((a, b) => (a.type > b.type ? 1 : -1)) || [], searchQuery)}
+        items={items}
         selectionMode={SelectionMode.multiple}
         selectionPreservedOnEmptyClick={true}
         ariaLabelForSelectionColumn="Toggle selection"
