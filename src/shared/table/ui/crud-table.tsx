@@ -1,5 +1,6 @@
 import { SearchBox, Selection, SelectionMode } from '@fluentui/react'
 
+import HeaderContent from '../header-content'
 import Table, { TableProps } from './table'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'
@@ -49,6 +50,7 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
 
   return (
     <Stack className="CRUDTable" tokens={{ childrenGap: 24 }}>
+      <HeaderContent />
       <Stack horizontal tokens={{ childrenGap: 12 }}>
         <Stack maxWidth={250}>
           <SearchBox
