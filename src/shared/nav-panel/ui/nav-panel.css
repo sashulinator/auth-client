@@ -1,28 +1,18 @@
 .NavPanel {
-  --defaultWidth: 333;
   z-index: 1;
   position: fixed;
-  width: calc(var(--navPanel_size, --defaultWidth) * 1px);
-  min-width: calc(var(--navPanel_automove, var(--navPanel_collapsed, 177px)));
-  max-width: 777px;
+  width: calc(var(--navPanel_size) * 1px);
   border-right: 1px solid var(--black02);
   box-sizing: border-box;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
   user-select: none;
-  transition: width var(--navPanel_idle, 0.3s);
   top: calc(var(--headerHeight) * 1px);
   background-color: var(--white);
 }
 .Nav {
-  transition: width var(--navPanel_idle, 0.3s);
   overflow: hidden;
-}
-
-.NavPanel.collapsed,
-.NavPanel.collapsed .Nav {
-  width: 54px;
 }
 
 .NavPanel .VerticalTabs .item .icon {
@@ -31,7 +21,7 @@
 
 .NavPanel .Nav {
   position: fixed;
-  width: calc(var(--navPanel_size, --defaultWidth) * 1px);
+  width: calc(var(--navPanel_size) * 1px);
 }
 
 .NavPanel .ResizeTarget {

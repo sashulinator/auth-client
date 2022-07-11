@@ -1,3 +1,4 @@
+import { animate, quad } from '../animate'
 import React, { useLayoutEffect, useRef, useState } from 'react'
 
 import { removeCSSVar, setCSSVar } from '@/shared/theme'
@@ -10,14 +11,16 @@ interface UseResizeProps {
   size: {
     min: number
     max: number
+    default: number
     collapsed: number
   }
+  ms: number
 }
 
 export function useResize(props: UseResizeProps) {
   const [initParentWidth, setInitParentWidth] = useState<number>(0)
   const ref = useRef<null | HTMLDivElement>(null)
-
+  const ms = props.ms || 333
   const names = {
     size: `${props.name}_size`,
     changing: `${props.name}_move`,
@@ -32,17 +35,8 @@ export function useResize(props: UseResizeProps) {
   useLayoutEffect(addEventListener, [props.ref.current])
 
   function init() {
-    const value = localStorage.getItem(names.size)
-
-    if (value) {
-      setCSSVar(names.size, value)
-    }
-
-    if (isCollapsed()) {
-      setCollapsed(true)
-    } else {
-      setCollapsed(false)
-    }
+    const size = isCollapsed() ? props.size.collapsed : getSize()
+    setCSSVar(names.size, size)
   }
 
   function addEventListener() {
@@ -94,9 +88,8 @@ export function useResize(props: UseResizeProps) {
         : Math.abs(event.clientX - parentRect.right)
 
     const newWidth = Math.round(initParentWidth + diff)
-    const { minWidth, maxWidth } = getComputedStyle(props.ref.current)
 
-    if (newWidth > parseInt(maxWidth) || newWidth < parseInt(minWidth)) {
+    if (newWidth > props.size.max || newWidth < props.size.min) {
       return
     }
 
@@ -111,28 +104,30 @@ export function useResize(props: UseResizeProps) {
   }
 
   function setCollapsed(value: boolean) {
+    const size = getSize()
+
     if (value) {
       props.ref.current?.classList.add('collapsed')
       setCSSVar(names.collapsed, 'true')
-      setCSSVar(names.size, props.size.collapsed)
       removeCSSVar(names.expanded)
       localStorage.setItem(names.collapsed, 'true')
+      setCSSWithAnimation(names.size, ms, props.size.collapsed, size)
     } else {
       props.ref.current?.classList.remove('collapsed')
-      setCSSVar(names.size, localStorage.getItem(names.size) || props.size.min)
       setCSSVar(names.expanded, 'true')
       removeCSSVar(names.collapsed)
       localStorage.removeItem(names.collapsed)
+      setCSSWithAnimation(names.size, ms, size, props.size.collapsed)
     }
 
     setCSSVar(names.changing, 'true')
-    setTimeout(() => removeCSSVar(names.changing), 300)
+    setTimeout(() => removeCSSVar(names.changing), ms)
 
     removeCSSVar(names.idle)
-    setTimeout(() => setCSSVar(names.idle, 'true'), 300)
+    setTimeout(() => setCSSVar(names.idle, 'true'), ms)
 
     setCSSVar(names.autoChanging, 'true')
-    setTimeout(() => removeCSSVar(names.autoChanging), 300)
+    setTimeout(() => removeCSSVar(names.autoChanging), ms)
   }
 
   function onDoubleClick() {
@@ -147,7 +142,27 @@ export function useResize(props: UseResizeProps) {
     }
   }
 
+  function getSize() {
+    return parseInt(localStorage.getItem(names.size) || '') || props.size.default
+  }
+
   return {
     ResizeLine: <div className="ResizeTarget" ref={ref} />,
   }
+}
+
+// Private
+
+function setCSSWithAnimation(name: string, ms: number, from: number, to: number) {
+  animate({
+    timing: quad,
+    duration: ms,
+    draw: (progress) => {
+      const diff = from - to
+      const diffProgress = diff * progress
+      console.log(diff, diffProgress, Math.ceil(diffProgress + to))
+
+      setCSSVar(name, Math.ceil(diffProgress + to))
+    },
+  })
 }
