@@ -1,3 +1,30 @@
-.Header .logo {
-  opacity: var(--navPanel_expanded, 0);
+.Header .logo,
+.Header .miniLogo {
+  transition: opacity 0.3s;
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+}
+
+.navPanel_collapsed .Header .logo {
+  opacity: 0;
+}
+
+.navPanel_expanded .Header .miniLogo {
+  opacity: 0;
+}
+
+.navPanel_collapsed .Header .miniLogo {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+.navPanel_expanded .Header .logo {
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+.Header {
+  position: relative;
 }
