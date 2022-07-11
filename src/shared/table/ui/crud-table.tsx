@@ -1,6 +1,6 @@
 import { SearchBox, Selection, SelectionMode } from '@fluentui/react'
 
-import HeaderContent from '../header-content'
+import HeaderContent from './header-content'
 import Table, { TableProps } from './table'
 import React, { useState } from 'react'
 import { useQuery } from 'react-query'

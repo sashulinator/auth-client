@@ -1,5 +1,7 @@
-import { Persona, PersonaSize } from '@fluentui/react'
+import { Icon, Persona, PersonaSize } from '@fluentui/react'
 import { Stack } from '@fluentui/react/lib/Stack'
+
+import './header.css'
 
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -17,35 +19,36 @@ export default function Header(): JSX.Element | null {
   }
 
   return (
-    <Stack
-      as="header"
-      horizontal
-      horizontalAlign="end"
-      verticalAlign="center"
-      className="Header"
-      tokens={{ padding: '16px 16px' }}
-    >
-      <Stack
-        horizontal
-        className={HEADER_PORTAL_LEFT_CLASSNAME.replace('.', '')}
-        horizontalAlign="start"
-        verticalAlign="center"
-        style={{ width: '100%' }}
-      />
-      <Stack
-        horizontal
-        className={HEADER_PORTAL_CENTER_CLASSNAME.replace('.', '')}
-        horizontalAlign="start"
-        verticalAlign="center"
-        style={{ width: '100%' }}
-      />
-      <Stack
-        horizontal
-        className={HEADER_PORTAL_RIGHT_CLASSNAME.replace('.', '')}
-        horizontalAlign="end"
-        verticalAlign="center"
-        style={{ width: 'fit-content' }}
-      />
+    <Stack as="header" horizontal verticalAlign="center" className="Header" tokens={{ padding: '16px 16px' }}>
+      <div
+        className="logo"
+        style={{ minWidth: 'calc(var(--navPanel_size) * 1px)', maxWidth: 'calc(var(--navPanel_size) * 1px)' }}
+      >
+        <Icon iconName="DataTech" />
+      </div>
+      <Stack style={{ width: '100%', background: 'var(--white)' }}>
+        <Stack
+          horizontal
+          className={HEADER_PORTAL_LEFT_CLASSNAME.replace('.', '')}
+          horizontalAlign="start"
+          verticalAlign="center"
+          style={{ width: '100%' }}
+        />
+        <Stack
+          horizontal
+          className={HEADER_PORTAL_CENTER_CLASSNAME.replace('.', '')}
+          horizontalAlign="start"
+          verticalAlign="center"
+          style={{ width: '100%' }}
+        />
+        <Stack
+          horizontal
+          className={HEADER_PORTAL_RIGHT_CLASSNAME.replace('.', '')}
+          horizontalAlign="end"
+          verticalAlign="center"
+          style={{ width: 'fit-content' }}
+        />
+      </Stack>
       <Stack as="ul" horizontal verticalAlign="center" tokens={{ childrenGap: 16 }}>
         <li>
           <Link to={ROUTES.USER_PROFILE.PATH}>
