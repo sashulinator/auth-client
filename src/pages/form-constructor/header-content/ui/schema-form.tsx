@@ -15,9 +15,9 @@ import useAppMutation from '@/lib/use-mutation'
 import Autosave from '@/shared/autosave'
 import { Button } from '@/shared/button'
 import { Dropdown } from '@/shared/dropdown'
+import EditableText from '@/shared/editable-text'
 import FieldError from '@/shared/field-error'
 import { CompSchema, CompSchemaType, CreateCompSchema } from '@/shared/schema-drawer'
-import CustomTextField from '@/shared/textfield'
 import { successMessage } from '@/shared/toast'
 
 type SchemaFormValues = Pick<CompSchema, 'title' | 'componentName' | 'type'>
@@ -114,7 +114,7 @@ export default function SchemaForm(props: SchemaFormProps): JSX.Element | null {
               {({ input, meta }) => {
                 return (
                   <div className="FieldErrorPositionRelative">
-                    <CustomTextField key="1" label={t(`t.labels.title`)} underlined {...input} />
+                    <EditableText key="1" {...input} />
                     <FieldError key="2" meta={meta} />
                   </div>
                 )

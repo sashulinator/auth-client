@@ -3,7 +3,6 @@ import { Stack } from '@fluentui/react'
 import SchemaContextualMenu from './contextual-menu'
 import SchemaForm from './schema-form'
 import React from 'react'
-import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 
 import ROUTES from '@/constants/routes'
@@ -18,7 +17,7 @@ interface HeaderContentProps {
   copyCompSchema: () => void | Promise<void>
 }
 
-export default function HeaderContent(props: HeaderContentProps): null | JSX.Element {
+export default function Header(props: HeaderContentProps): null | JSX.Element {
   const navigate = useNavigate()
   const elLeft = document.querySelector(HEADER_PORTAL_LEFT_CLASSNAME)
   const elRight = document.querySelector(HEADER_PORTAL_RIGHT_CLASSNAME)
@@ -28,25 +27,21 @@ export default function HeaderContent(props: HeaderContentProps): null | JSX.Ele
   }
 
   return (
-    <>
-      {createPortal(
-        <Stack horizontal horizontalAlign="start">
+    <header>
+      <Stack horizontal verticalAlign="center" style={{ width: '100%', height: '100%' }}>
+        <Stack horizontal horizontalAlign="start" style={{ margin: '0 64px 0 12px' }}>
           <Button
             variant="action"
             iconProps={{ iconName: 'ChevronLeft' }}
             onClick={() => navigate(ROUTES.SCHEMA_LIST.PATH)}
             text="t.buttons.back"
           />
-        </Stack>,
-        elLeft
-      )}
-      {createPortal(
+        </Stack>
         <Stack horizontal verticalAlign="center" tokens={{ childrenGap: 6, padding: '0 32px 0 0' }}>
           <SchemaForm setCompSchema={props.setCompSchema} compSchema={props.compSchema} />
           <SchemaContextualMenu deleteSchema={props.deleteCompSchema} copySchema={props.copyCompSchema} />
-        </Stack>,
-        elRight
-      )}
-    </>
+        </Stack>
+      </Stack>
+    </header>
   )
 }

@@ -54,7 +54,7 @@ import {
 } from '@/shared/schema-drawer'
 
 const FormConstructor: FC = (): JSX.Element => {
-  useSetLayout(LayoutNames.headerMain)
+  useSetLayout(LayoutNames.main)
 
   const { id } = useParams()
   const navigate = useNavigate()
