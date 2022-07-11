@@ -95,10 +95,10 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
         {...tableProps}
         items={buildItems(data || [], searchQuery)}
         selectionMode={SelectionMode.multiple}
+        selection={selection as Selection}
         setKey={props.idKey}
         selectionPreservedOnEmptyClick={true}
         enterModalSelectionOnTouch={true}
-        selection={selection as Selection}
         onRenderItemColumn={renderItemColumn}
       />
     </Stack>

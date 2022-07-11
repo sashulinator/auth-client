@@ -1,4 +1,4 @@
-import { DetailsList, IColumn, IColumnReorderOptions, IDetailsListProps, Label } from '@fluentui/react'
+import { DetailsList, IColumn, IDetailsListProps, Label } from '@fluentui/react'
 
 import './table.css'
 
@@ -10,7 +10,6 @@ import Stack from '@/shared/stack'
 export interface TableProps extends IDetailsListProps {
   items: Record<string, unknown>[]
   columns: IColumn[]
-  columnReorderOptions: IColumnReorderOptions
   label?: string
   children?: React.ReactNode
   'data-comp-id'?: string
@@ -19,8 +18,6 @@ export interface TableProps extends IDetailsListProps {
 export default function Table(props: TableProps): JSX.Element {
   const items = normilize<Record<string, unknown>>(props.items) ?? []
   const columns = normilize<IColumn>(props.columns) ?? []
-
-  const columnReorderOptions = props.columnReorderOptions ?? null
 
   return (
     <Stack data-comp-id={props['data-comp-id']} className="Table">
@@ -31,7 +28,7 @@ export default function Table(props: TableProps): JSX.Element {
         </Stack>
       </Stack>
       <div className="wrapper">
-        <DetailsList {...props} items={items} columns={columns} columnReorderOptions={columnReorderOptions} />
+        <DetailsList {...props} items={items} columns={columns} />
       </div>
     </Stack>
   )
