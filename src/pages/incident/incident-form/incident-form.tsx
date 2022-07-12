@@ -4,8 +4,8 @@ import React from 'react'
 import { Form } from 'react-final-form'
 import { useNavigate } from 'react-router-dom'
 
-import { updateIncident } from '@/api/incident'
 import { useCreateIncidentMutation } from '@/api/incident/create'
+import { useUpdateIncidentMutation } from '@/api/incident/update'
 import componentList from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
@@ -22,10 +22,19 @@ interface IncidentFormProps {
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
   const navigate = useNavigate()
   const { mutate: createIncident } = useCreateIncidentMutation()
+  const { mutate: updateIncident } = useUpdateIncidentMutation()
 
-  async function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
+  function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
     if (hasInstanceId(data)) {
-      await updateIncident(data as UpdateInputIncident)
+      updateIncident(data as UpdateInputIncident, {
+        onSuccess(response) {
+          navigate(ROUTES.INCIDENT.PATH.replace(':id', response.dataBlock.instanceId))
+          successMessage('Рисковое событие обновлено')
+        },
+        onError() {
+          successMessage('При обновлении риского события произошла ошибка')
+        },
+      })
     } else {
       createIncident(data, {
         onSuccess(response) {

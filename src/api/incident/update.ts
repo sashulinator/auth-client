@@ -4,12 +4,16 @@ import { AxiosResponse } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { UseMutationOptions, UseMutationResult, useMutation } from 'react-query'
 
-import { CreateInputIncident, Incident } from '@/entities/incident/model/types'
+import { Incident, UpdateInputIncident } from '@/entities/incident/model/types'
 
-export async function createIncident(incident: CreateInputIncident): Promise<AxiosResponse<Transfer<Incident>>> {
+export async function updateIncident(
+  incident: UpdateInputIncident
+): Promise<AxiosResponse<Transfer<UpdateInputIncident>>> {
   // TODO провалидировать и выкинуть критичную ошибку
 
-  const response = await api.post('/api/incident', incident, { headers: { objAlias: 'Incident' } })
+  const response = await api.put(`/api/incident/${incident.instanceId}`, incident, {
+    headers: { objAlias: 'Incident' },
+  })
 
   if (response.status === 200) {
     // TODO провалидировать и выкинуть критичную ошибку
@@ -18,16 +22,16 @@ export async function createIncident(incident: CreateInputIncident): Promise<Axi
   return response
 }
 
-export function useCreateIncidentMutation(
-  options?: UseMutationOptions<Transfer<Incident>, Error, CreateInputIncident>
-): UseMutationResult<Transfer<Incident>, Error, CreateInputIncident> {
+export function useUpdateIncidentMutation(
+  options?: UseMutationOptions<Transfer<Incident>, Error, UpdateInputIncident>
+): UseMutationResult<Transfer<Incident>, Error, UpdateInputIncident> {
   const { t } = useTranslation()
 
-  return useMutation<Transfer<Incident>, Error, CreateInputIncident>(queryFn, options)
+  return useMutation<Transfer<Incident>, Error, UpdateInputIncident>(queryFn, options)
 
-  async function queryFn(incident: CreateInputIncident): Promise<Transfer<Incident>> {
+  async function queryFn(incident: UpdateInputIncident): Promise<Transfer<Incident>> {
     try {
-      const response = await createIncident(incident)
+      const response = await updateIncident(incident)
 
       if (response.status !== 200) {
         throw new Error(t('errors.responseNot200'))
