@@ -9,11 +9,13 @@ api.defaults.headers.common['Content-Type'] = 'application/json'
 
 export const refreshAccessTokenFn = async () => {
   const response = await api.post<Transfer<LoginResponse>>('api/auth/refresh')
+  localStorage.setItem('userRole', response.data.dataBlock.role)
   return response.data
 }
 
 api.interceptors.response.use(
   (response) => {
+    response.headers['userRole'] = localStorage.getItem('userRole') || 'USER'
     return response
   },
   async (error) => {
