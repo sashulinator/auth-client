@@ -45,7 +45,7 @@ export default function Login(): JSX.Element {
                   {({ input }) => <CustomTextField label="email" {...input} />}
                 </Field>
                 <Field<string> name="password" required>
-                  {({ input }) => <CustomTextField label="password" {...input} />}
+                  {({ input }) => <CustomTextField label="password" type="password" canRevealPassword {...input} />}
                 </Field>
                 <Button type="submit" style={{ margin: '24px 0 0' }} text="t.buttons.login" />
               </Stack>
