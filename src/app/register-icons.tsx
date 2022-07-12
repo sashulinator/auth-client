@@ -16,7 +16,7 @@ registerIcons({
       </svg>
     ),
     MiniLogo: (
-      <svg width="5rem" height="1rem" viewBox="0 0 5rem 1rem" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width="80" height="16" viewBox="0 0 80 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_1301:43)">
           <path
             fillRule="evenodd"
