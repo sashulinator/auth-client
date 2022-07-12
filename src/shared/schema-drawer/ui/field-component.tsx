@@ -55,17 +55,19 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useOnUnmount(() => props.comp.undefinedOnDestroy && input.onChange(undefined))
 
+        const readOnly =
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          !!(props.context?.formState as any)?.values?.instanceId &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (props.context as any)?.fetchedData?.availableActions?.dataBlock?.screenReadOnly
+
         return (
           <div className="FieldErrorPositionRelative" data-comp-id={props.comp.id}>
             <сomponentItem.component
               {...input}
               {...props.comp.props}
               context={props.context}
-              disabled={
-                props.comp.props?.disabled ||
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (props.context as any)?.fetchedData?.availableActions?.dataBlock?.screenReadOnly
-              }
+              disabled={props.comp.props?.disabled || readOnly}
               required={isRequired(props.comp.assertionBindingSchema?.data)}
               onBlur={props.context.observer.emitEvent('onBlur')}
               onFocus={props.context.observer.emitEvent('onFocus')}
