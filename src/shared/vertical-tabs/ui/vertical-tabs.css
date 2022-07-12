@@ -14,6 +14,7 @@
   background: transparent;
   border: 0;
   color: var(--black);
+  white-space: nowrap;
 }
 
 .VerticalTabs .item.selected {

@@ -81,7 +81,7 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
     <Stack className="CRUDTable" tokens={{ childrenGap: 24 }}>
       <HeaderContent deleteDisabled={selectedItems.length === 0} />
       <Stack horizontal tokens={{ childrenGap: 12 }}>
-        <Stack maxWidth={250}>
+        <Stack tokens={{ maxWidth: 250 }}>
           <SearchBox
             style={{ width: '250px' }}
             autoComplete="off"

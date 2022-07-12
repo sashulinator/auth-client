@@ -43,7 +43,7 @@ export default function Incident(): JSX.Element {
   console.log('errorMessage', errorMessage)
 
   return (
-    <Stack as="main" className="Incident" style={{ maxWidth: '900px' }} tokens={{ padding: '32px 32px 50vh 0' }}>
+    <Stack as="main" className="Incident" tokens={{ padding: '32px 32px 50vh 0', maxWidth: '900px' }}>
       <LoadingAria loading={(isIncidentLoading || isDependencySchemasLoading) && !errorMessage} label={buildLabel()}>
         <>
           {errorMessage ? errorMessage : null}

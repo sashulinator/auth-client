@@ -2,7 +2,6 @@ import { assertNotNil } from '@savchenko91/schema-validator'
 
 import { Transfer } from './types'
 
-import { assertsSchema } from '@/common/schemas'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
 import ErrorFromObject from '@/lib/error-from-object'
 import { CompSchema } from '@/shared/schema-drawer'
@@ -50,10 +49,7 @@ export async function updateIncident(newFSchema: UpdateInputIncident): Promise<U
     throw new ErrorFromObject(data)
   }
 
-  assertsSchema(data)
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return data as any
+  return data
 }
 
 // type GetSchemaListParams = {

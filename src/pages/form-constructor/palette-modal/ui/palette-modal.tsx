@@ -77,7 +77,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
     >
       <Pivot aria-label="Palette of components" styles={{ root: { display: 'flex', justifyContent: 'center' } }}>
         <PivotItem headerText="Компоненты">
-          <Stack maxWidth={400} tokens={{ padding: '0 0 0 32px' }}>
+          <Stack tokens={{ padding: '0 0 0 32px', maxWidth: 400 }}>
             <SearchBox
               autoComplete="off"
               className="searchBox"
@@ -106,7 +106,7 @@ export default function PaletteModal(props: PaletteModalProps): JSX.Element {
           </Stack>
         </PivotItem>
         <PivotItem headerText="Пресеты">
-          <Stack maxWidth={400} tokens={{ padding: '0 0 0 32px' }}>
+          <Stack tokens={{ padding: '0 0 0 32px', maxWidth: 400 }}>
             <SearchBox
               autoComplete="off"
               className="searchBox"
