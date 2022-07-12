@@ -1,4 +1,4 @@
-import { ITextFieldProps, Icon, Label, TextField } from '@fluentui/react'
+import { ILabelStyles, ITextFieldProps, Icon, Label, TextField } from '@fluentui/react'
 
 import React, { forwardRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -12,6 +12,7 @@ interface TextFieldProps extends ITextFieldProps {
   info?: string
   type?: string
   canRevealPassword?: boolean
+  color?: string
 }
 
 const CustomTextField = forwardRef<HTMLInputElement | null, TextFieldProps>(
@@ -26,11 +27,19 @@ const CustomTextField = forwardRef<HTMLInputElement | null, TextFieldProps>(
       delay: props.autoFocusDelay,
     })
 
+    const labelStyles: ILabelStyles = {
+      root: {
+        color: props.color,
+      },
+    }
+
     return (
       <span className="f">
         {label && !props.underlined && (
           <Stack horizontal horizontalAlign="space-between" verticalAlign="end">
-            <Label required={required}>{t(label).toString()}</Label>
+            <Label required={required} styles={{ ...labelStyles }}>
+              {t(label).toString()}
+            </Label>
             {info && (
               <Stack style={{ marginBottom: '2px' }}>
                 <Tooltip text={info}>
