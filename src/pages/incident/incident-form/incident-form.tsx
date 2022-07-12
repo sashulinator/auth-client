@@ -20,19 +20,11 @@ interface IncidentFormProps {
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
   const navigate = useNavigate()
   async function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
-    const resData: CreateInputIncident | UpdateInputIncident = {
-      ...data,
-      status: data.status,
-      validationStateCd: data.validationStateCd,
-      sourceSystemCd: data.sourceSystemCd,
-      name: data.name,
-    }
-
-    if (hasInstanceId(resData)) {
-      await updateIncident(resData as UpdateInputIncident)
+    if (hasInstanceId(data)) {
+      await updateIncident(data as UpdateInputIncident)
     } else {
-      const data = await createIncident(resData)
-      navigate(ROUTES.INCIDENT.PATH.replace(':id', data.dataBlock.instanceId))
+      const resData = await createIncident(data)
+      navigate(ROUTES.INCIDENT.PATH.replace(':id', resData.dataBlock.instanceId))
     }
   }
 

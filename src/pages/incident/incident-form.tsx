@@ -48,7 +48,12 @@ export default function Incident(): JSX.Element {
         <>
           {errorMessage ? errorMessage : null}
           {(id ? !!fetchedIncident : true) && fetchedSchemas && schema && !errorMessage && (
-            <IncidentForm key={id} schemas={fetchedSchemas} incident={fetchedIncident} schema={schema} />
+            <IncidentForm
+              key={id}
+              schemas={fetchedSchemas}
+              incident={(fetchedIncident as any)?.dataBlock}
+              schema={schema}
+            />
           )}
         </>
       </LoadingAria>

@@ -61,6 +61,11 @@ const FieldComponent = memo(function FieldComponent(props: FieldComponentProps) 
               {...input}
               {...props.comp.props}
               context={props.context}
+              disabled={
+                props.comp.props?.disabled ||
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (props.context as any)?.fetchedData?.availableActions?.dataBlock?.screenReadOnly
+              }
               required={isRequired(props.comp.assertionBindingSchema?.data)}
               onBlur={props.context.observer.emitEvent('onBlur')}
               onFocus={props.context.observer.emitEvent('onFocus')}
