@@ -19,6 +19,8 @@ export async function getIncident(id: Id): Promise<AxiosResponse<Transfer<Incide
     // TODO провалидировать и выкинуть критичную ошибку
   }
 
+  ;(response.data.dataBlock as any).action = 'save'
+
   return response
 }
 
