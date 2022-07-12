@@ -2,9 +2,11 @@ import './incident-form.css'
 
 import React from 'react'
 import { Form } from 'react-final-form'
+import { useNavigate } from 'react-router-dom'
 
 import { createIncident, updateIncident } from '@/api/incident'
 import componentList from '@/constants/component-list'
+import ROUTES from '@/constants/routes'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
 import SchemaDrawer, { CompSchema, Dictionary, hasInstanceId } from '@/shared/schema-drawer'
 
@@ -16,6 +18,7 @@ interface IncidentFormProps {
 }
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
+  const navigate = useNavigate()
   async function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
     const resData: CreateInputIncident | UpdateInputIncident = {
       ...data,
@@ -28,10 +31,9 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
     if (hasInstanceId(resData)) {
       await updateIncident(resData as UpdateInputIncident)
     } else {
-      await createIncident(resData)
+      const data = await createIncident(resData)
+      navigate(ROUTES.INCIDENT.PATH.replace(':id', data.dataBlock.instanceId))
     }
-
-    console.log('resData', resData)
   }
 
   return (

@@ -1,6 +1,7 @@
 import get from 'lodash.get'
 import { useEffect } from 'react'
 
+import api from '@/api/api-axios'
 import { DrawerContext } from '@/shared/schema-drawer'
 
 interface FetcherProps {
@@ -24,11 +25,10 @@ export default function Fetcher(props: FetcherProps): null {
 
   async function fetchData() {
     if (props.url && props.name && props.context.fns?.setFetchedDataToContext) {
-      const res = await fetch(buildUrl(), {})
-      const data = await res.json()
+      const res = await api(buildUrl(), {})
 
       props.context.fns?.setFetchedDataToContext((fetchContext) => {
-        return { ...fetchContext, [props.name]: data }
+        return { ...fetchContext, [props.name]: res.data }
       })
     }
   }
