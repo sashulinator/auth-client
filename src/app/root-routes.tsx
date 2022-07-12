@@ -6,7 +6,7 @@ import React, { useEffect } from 'react'
 import { useQuery } from 'react-query'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 
-import authApi from '@/api/api-axios'
+import api from '@/api/api-axios'
 import FormConstructor from '@/pages/form-constructor/form-constructor'
 import IncidentListPage from '@/pages/incident-list/incident-list'
 import IncidentFormPage from '@/pages/incident/incident-form'
@@ -19,7 +19,7 @@ export default function RootRoutes() {
   setPreviousRoute(ROUTES)
   const navigate = useNavigate()
 
-  const { isLoading, data, isError } = useQuery(['refresh'], () => authApi.post('/api/auth/refresh'))
+  const { isLoading, data, isError } = useQuery(['refresh'], () => api.post('/api/auth/refresh'))
 
   useEffect(() => {
     if (!data && !isLoading) {

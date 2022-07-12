@@ -1,23 +1,18 @@
-import { LoginResponse, RegisterResponse, Transfer } from './types'
+import { LoginResponse, Transfer } from './types'
 import axios from 'axios'
 
-const authApi = axios.create({
+const api = axios.create({
   withCredentials: true,
 })
 
-authApi.defaults.headers.common['Content-Type'] = 'application/json'
+api.defaults.headers.common['Content-Type'] = 'application/json'
 
 export const refreshAccessTokenFn = async () => {
-  const response = await authApi.post<Transfer<LoginResponse>>('api/auth/refresh')
+  const response = await api.post<Transfer<LoginResponse>>('api/auth/refresh')
   return response.data
 }
 
-export const registerUserFn = async () => {
-  const response = await authApi.post<Transfer<RegisterResponse>>('api/user/register')
-  return response.data
-}
-
-authApi.interceptors.response.use(
+api.interceptors.response.use(
   (response) => {
     return response
   },
@@ -27,10 +22,10 @@ authApi.interceptors.response.use(
     if (code === 403 && !originalRequest._retry) {
       originalRequest._retry = true
       await refreshAccessTokenFn()
-      return authApi(originalRequest)
+      return api(originalRequest)
     }
     return Promise.reject(error)
   }
 )
 
-export default authApi
+export default api
