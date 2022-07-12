@@ -4,11 +4,13 @@ import React from 'react'
 import { Form } from 'react-final-form'
 import { useNavigate } from 'react-router-dom'
 
-import { createIncident, updateIncident } from '@/api/incident'
+import { useCreateIncidentMutation } from '@/api/incident/create'
+import { useUpdateIncidentMutation } from '@/api/incident/update'
 import componentList from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
 import SchemaDrawer, { CompSchema, Dictionary, hasInstanceId } from '@/shared/schema-drawer'
+import { successMessage } from '@/shared/toast'
 
 interface IncidentFormProps {
   schema: CompSchema
@@ -19,12 +21,30 @@ interface IncidentFormProps {
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
   const navigate = useNavigate()
-  async function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
+  const { mutate: createIncident } = useCreateIncidentMutation()
+  const { mutate: updateIncident } = useUpdateIncidentMutation()
+
+  function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
     if (hasInstanceId(data)) {
-      await updateIncident(data as UpdateInputIncident)
+      updateIncident(data as UpdateInputIncident, {
+        onSuccess(response) {
+          navigate(ROUTES.INCIDENT.PATH.replace(':id', response.dataBlock.instanceId))
+          successMessage('Рисковое событие обновлено')
+        },
+        onError() {
+          successMessage('При обновлении риского события произошла ошибка')
+        },
+      })
     } else {
-      const resData = await createIncident(data)
-      navigate(ROUTES.INCIDENT.PATH.replace(':id', resData.dataBlock.instanceId))
+      createIncident(data, {
+        onSuccess(response) {
+          navigate(ROUTES.INCIDENT.PATH.replace(':id', response.dataBlock.instanceId))
+          successMessage('Рисковое событие создано')
+        },
+        onError() {
+          successMessage('При создании риского события произошла ошибка')
+        },
+      })
     }
   }
 

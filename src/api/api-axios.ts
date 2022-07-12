@@ -16,6 +16,7 @@ export const refreshAccessTokenFn = async () => {
 api.interceptors.request.use((request) => {
   if (request.headers) {
     request.headers['userRole'] = localStorage.getItem('userRole') || ''
+    request.headers['user'] = 'USER'
   }
   return request
 })

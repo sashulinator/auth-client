@@ -19,6 +19,8 @@ export async function getIncident(id: Id): Promise<AxiosResponse<Transfer<Incide
     // TODO провалидировать и выкинуть критичную ошибку
   }
 
+  // TODO костыль!
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ;(response.data.dataBlock as any).action = 'save'
 
   return response
