@@ -1,32 +1,8 @@
 import { assertNotNil } from '@savchenko91/schema-validator'
 
-import { Transfer } from './types'
-
-import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
+import { UpdateInputIncident } from '@/entities/incident/model/types'
 import ErrorFromObject from '@/lib/error-from-object'
 import { CompSchema } from '@/shared/schema-drawer'
-
-export async function createIncident(newFSchema: CreateInputIncident): Promise<Transfer<UpdateInputIncident>> {
-  const response = await fetch('/api/incident', {
-    method: 'POST',
-    body: JSON.stringify(newFSchema),
-    headers: {
-      'content-type': 'application/json',
-      accept: 'application/json',
-      userRole: 'USER',
-      user: 'USER',
-      objAlias: 'Incident',
-    },
-  })
-
-  const data = await response.json()
-
-  if (!response.ok) {
-    throw new ErrorFromObject(data)
-  }
-
-  return data
-}
 
 // UPDATE SCHEMA
 
