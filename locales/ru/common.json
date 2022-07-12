@@ -152,6 +152,7 @@
     }
   },
   "errors": {
-    "responseNot200": "Server has returned error!"
+    "responseNot200": "Сервер вернул ошибку!",
+    "TypeError": "Неизвестная ошибка"
   }
 }

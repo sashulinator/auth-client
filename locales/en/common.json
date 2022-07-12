@@ -151,6 +151,7 @@
     }
   },
   "errors": {
-    "responseNot200": "Server has returned error!"
+    "responseNot200": "Server has returned error!",
+    "TypeError": "Unknown error!"
   }
 }

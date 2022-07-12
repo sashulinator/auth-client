@@ -6,6 +6,7 @@ export enum LayoutNames {
   main = 'mainLayout',
   headerMain = 'headerMainLayout',
   headerNavMain = 'headerNavMainLayout',
+  layout = 'layout',
 }
 
 export function setLayout(layoutName?: LayoutNames) {

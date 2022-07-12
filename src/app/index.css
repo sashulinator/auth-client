@@ -24,6 +24,12 @@ html {
   z-index: 301;
 }
 
+.layout .NavPanel,
+.layout .Header,
+.layout main {
+  display: none;
+}
+
 /*
 headerNavMainLayout
  */
@@ -52,7 +58,7 @@ headerNavMainLayout
 }
 /*
  MainLayout
- */
+*/
 
 .mainLayout {
   grid-template-areas: 'main';
