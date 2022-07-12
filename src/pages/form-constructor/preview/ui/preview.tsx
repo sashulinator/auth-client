@@ -1,6 +1,7 @@
 import './preview.css'
 
 import { highlightOnEvents } from '../lib/highlight-on-events'
+import FakeHeader from './fake-header'
 import clsx from 'clsx'
 import React, { LegacyRef, forwardRef, useEffect, useRef } from 'react'
 import { Form } from 'react-final-form'
@@ -42,6 +43,7 @@ const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(function Preview
   return (
     <div className={clsx('Preview', props.isFocused && 'isFocused')} ref={ref}>
       <LoadingAria loading={props.isLoading} label="Components loading...">
+        {props.schema?.type !== CompSchemaType.COMP && <FakeHeader />}
         <div className="wrapper">
           <div className="selectorArea" />
           <div className="hoverArea" />

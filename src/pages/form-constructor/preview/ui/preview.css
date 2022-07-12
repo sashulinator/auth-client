@@ -30,3 +30,20 @@
   border: var(--borderThickness) dashed var(--themePrimary);
   box-sizing: content-box;
 }
+
+.FakeHeader {
+  position: relative;
+  height: calc(var(--headerHeight) * 1px);
+  border-bottom: 2px solid var(--black02);
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.FakeHeader .text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  opacity: 0.5;
+  user-select: none;
+}
