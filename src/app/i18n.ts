@@ -24,4 +24,4 @@ const createI18n = (language: string): i18nInstance => {
   return i18n
 }
 
-export const i18n = createI18n(languages.en)
+export const i18n = createI18n(languages.ru)
