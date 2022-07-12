@@ -1,5 +1,6 @@
 export interface LoginResponse {
   role: string
+  email: string
 }
 
 export interface RegisterResponse {
