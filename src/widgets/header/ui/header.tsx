@@ -4,11 +4,8 @@ import { Stack } from '@fluentui/react/lib/Stack'
 import './header.css'
 
 import React from 'react'
-import { useQuery } from 'react-query'
 import { Link, useLocation } from 'react-router-dom'
 
-import api from '@/api/api-axios'
-import { LoginResponse, Transfer } from '@/api/types'
 import ROUTES from '@/constants/routes'
 import LogoutButton from '@/entities/user/ui/logout-button'
 
@@ -19,7 +16,7 @@ export const HEADER_PORTAL_RIGHT_CLASSNAME = '.headerPortalRight'
 export default function Header(): JSX.Element | null {
   // ререндерит хеадер при смене урла
   useLocation()
-  const { data } = useQuery(['refresh'], () => api.post<Transfer<LoginResponse>>('/api/auth/refresh'))
+  const role = localStorage.getItem('userRole') || ''
 
   if (ROUTES.LOGIN.isCurrent) {
     return null
@@ -79,10 +76,10 @@ export default function Header(): JSX.Element | null {
           <li>
             <Link to={ROUTES.USER_PROFILE.PATH}>
               <Persona
-                text={data?.data.dataBlock.role}
+                text={role}
                 size={PersonaSize.size32}
                 imageUrl={
-                  data?.data.dataBlock.role === 'USER'
+                  role === 'USER'
                     ? 'https://upload.wikimedia.org/wikipedia/ru/thumb/4/4c/%D0%AE%D1%80%D0%B8%D0%B9_%D0%9A%D0%BD%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2.jpg/548px-%D0%AE%D1%80%D0%B8%D0%B9_%D0%9A%D0%BD%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2.jpg'
                     : 'https://lh3.googleusercontent.com/zxWE_cAZikUWIEUG4ISM7FOsB0dB4xpQJryQXyxLz7cJ7XFkp0sSWxH5r52nNOwkXtU'
                 }

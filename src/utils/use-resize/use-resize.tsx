@@ -171,7 +171,6 @@ function setCSSWithAnimation(name: string, ms: number, from: number, to: number)
     draw: (progress) => {
       const diff = from - to
       const diffProgress = diff * progress
-      console.log(diff, diffProgress, Math.ceil(diffProgress + to))
 
       setCSSVar(name, Math.ceil(diffProgress + to))
     },
