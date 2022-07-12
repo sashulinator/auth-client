@@ -7,7 +7,7 @@ import ROUTES from '@/constants/routes'
 import Nav, { NavItem } from '@/shared/nav'
 import { useResize } from '@/utils/use-resize/use-resize'
 
-const items: NavItem[] = [ROUTES.SCHEMA_LIST, ROUTES.INCIDENT_LIST, ROUTES.RISK_LIST].map((route) => {
+const items: NavItem[] = [ROUTES.INCIDENT_LIST, ROUTES.RISK_LIST, ROUTES.SCHEMA_LIST].map((route) => {
   return {
     label: route.NAME,
     key: route.PATH,

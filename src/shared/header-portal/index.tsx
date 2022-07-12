@@ -7,11 +7,17 @@ interface HeaderPortalProps {
 }
 
 export default function Portal(props: HeaderPortalProps): JSX.Element | null {
-  const el = document.querySelector(`.${props.className}`)
+  const els = document.querySelectorAll(`.${props.className}`)
 
-  if (!el) {
+  const arr: JSX.Element[] = []
+
+  els.forEach((el) => {
+    arr.push(<>{createPortal(props.children, el)}</>)
+  })
+
+  if (els.length === 0) {
     return null
   }
 
-  return createPortal(props.children, el)
+  return <>{arr}</>
 }

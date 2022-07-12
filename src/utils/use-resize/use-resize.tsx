@@ -44,7 +44,7 @@ export function useResize(props: UseResizeProps) {
       return
     }
 
-    document.body?.classList.remove(names.expanded)
+    document.body?.classList.add(names.expanded)
     setCSSVar(names.expanded, 'true')
   }
 
