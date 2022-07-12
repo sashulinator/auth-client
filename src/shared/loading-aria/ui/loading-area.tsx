@@ -5,14 +5,18 @@ import './loading-area.css'
 import cx from 'clsx'
 import React, { FC } from 'react'
 
-type LoadingAriaProps = {
+type LoadingAreaProps = {
   loading?: boolean
   top?: string
   children?: React.ReactNode
   label?: string
 }
 
-const LoadingAria: FC<LoadingAriaProps> = ({ loading, label, children, top = '77px' }): JSX.Element => {
+const LoadingArea: FC<LoadingAreaProps> = ({ loading, label, children, top = '77px' }): JSX.Element => {
+  if (!loading) {
+    return <>{children}</>
+  }
+
   return (
     <div className={cx('LoadingAria', loading && 'LoadingAria--loading')}>
       <div className="spinnerContainer" style={{ top }}>
@@ -23,4 +27,4 @@ const LoadingAria: FC<LoadingAriaProps> = ({ loading, label, children, top = '77
   )
 }
 
-export default LoadingAria
+export default LoadingArea

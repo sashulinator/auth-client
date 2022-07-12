@@ -1,17 +1,13 @@
 import { assertNotNil } from '@savchenko91/schema-validator'
 
+import { Transfer } from './types'
+
 import { assertsSchema } from '@/common/schemas'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
 import ErrorFromObject from '@/lib/error-from-object'
 import { CompSchema } from '@/shared/schema-drawer'
 
-type GetSchemaParams = {
-  queryKey: (string | undefined)[]
-}
-
-// CREATE SCHEMA
-
-export async function createIncident(newFSchema: CreateInputIncident): Promise<UpdateInputIncident> {
+export async function createIncident(newFSchema: CreateInputIncident): Promise<Transfer<UpdateInputIncident>> {
   const response = await fetch('/api/incident', {
     method: 'POST',
     body: JSON.stringify(newFSchema),
@@ -58,32 +54,6 @@ export async function updateIncident(newFSchema: UpdateInputIncident): Promise<U
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data as any
-}
-
-export async function getIncident(params: GetSchemaParams): Promise<CompSchema | undefined> {
-  const [, id] = params.queryKey
-
-  if (id === undefined) {
-    return undefined
-  }
-
-  const response = await fetch(`/api/incident/${id}`, {
-    headers: {
-      accept: 'application/json',
-    },
-  })
-
-  if (!response.ok) {
-    // TODO обработать ошибку
-    throw new Error('Problem fetching data')
-  }
-  const incident = await response.json()
-
-  // TODO провалидировать схемы
-
-  assertNotNil(incident.dataBlock)
-
-  return incident.dataBlock as CompSchema
 }
 
 // type GetSchemaListParams = {

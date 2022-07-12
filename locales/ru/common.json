@@ -150,5 +150,9 @@
       "prevYearAriaLabel": "К предыдущему году",
       "nextYearAriaLabel": "К следующему году"
     }
+  },
+  "errors": {
+    "responseNot200": "Сервер вернул ошибку!",
+    "TypeError": "Неизвестная ошибка"
   }
 }

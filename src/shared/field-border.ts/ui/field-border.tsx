@@ -15,8 +15,9 @@ const FieldBorderForwardRef = forwardRef<HTMLDivElement | null, FieldBorderProps
   props,
   ref
 ): JSX.Element {
+  const { isFocused, ...restProps } = props
   return (
-    <div {...props} className={clsx('FieldBorder', props.className, props.isFocused && 'isFocused')} ref={ref}>
+    <div {...restProps} className={clsx('FieldBorder', props.className, isFocused && 'isFocused')} ref={ref}>
       <div className="border" />
       {props.children}
     </div>

@@ -18,7 +18,7 @@ import Header from '@/widgets/header'
 
 const RootLayer: FC = () => {
   return (
-    <PerfectScrollbar className="RootScrollbar" id="Layout" style={{ zIndex: 300 }}>
+    <PerfectScrollbar className="RootScrollbar layout" id="Layout" style={{ zIndex: 300 }}>
       <DocumentTitle />
       <Header />
       <NavPanel />

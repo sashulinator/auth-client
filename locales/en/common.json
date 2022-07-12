@@ -149,5 +149,9 @@
       "prevYearAriaLabel": "Go to previous year",
       "nextYearAriaLabel": "Go to next year"
     }
+  },
+  "errors": {
+    "responseNot200": "Server has returned error!",
+    "TypeError": "Unknown error!"
   }
 }
