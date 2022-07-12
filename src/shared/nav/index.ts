@@ -1,2 +1,2 @@
 export { default } from './ui/nav'
-export { NavItem } from './ui/nav'
+export type { NavItem } from './ui/nav'
