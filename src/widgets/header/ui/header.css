@@ -1,6 +1,6 @@
 .Header .logo,
 .Header .miniLogo {
-  transition: opacity 0.3s;
+  transition: opacity 0.15s;
   position: absolute;
   top: 50%;
   left: 8px;
@@ -17,12 +17,12 @@
 
 .navPanel_collapsed .Header .miniLogo {
   opacity: 1;
-  transition-delay: 0.3s;
+  transition-delay: 0.15s;
 }
 
 .navPanel_expanded .Header .logo {
   opacity: 1;
-  transition-delay: 0.3s;
+  transition-delay: 0.15s;
 }
 
 .Header {
