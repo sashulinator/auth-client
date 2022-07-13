@@ -17,6 +17,7 @@ interface IncidentFormProps {
   schemas: Dictionary<CompSchema>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   incident: any
+  refetch: () => void
 }
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
@@ -27,8 +28,8 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
   function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
     if (hasInstanceId(data)) {
       updateIncident(data as UpdateInputIncident, {
-        onSuccess(response) {
-          navigate(ROUTES.INCIDENT.PATH.replace(':id', response.dataBlock.instanceId))
+        onSuccess() {
+          props.refetch()
           successMessage('Рисковое событие обновлено')
         },
         onError() {
