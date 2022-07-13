@@ -12,5 +12,10 @@
 }
 
 .Dimension.disabled {
-  background-color: var(--black001);
+  background-color: var(--black003);
+  color: var(--black04);
+}
+
+.DimensionModal .rootContainer > div {
+  margin-top: 16px;
 }
