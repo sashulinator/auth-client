@@ -10,7 +10,7 @@ import componentList from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
 import SchemaDrawer, { CompSchema, Dictionary, hasInstanceId } from '@/shared/schema-drawer'
-import { successMessage } from '@/shared/toast'
+import { errorMessage, successMessage } from '@/shared/toast'
 
 interface IncidentFormProps {
   schema: CompSchema
@@ -32,7 +32,7 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
           successMessage('Рисковое событие обновлено')
         },
         onError() {
-          successMessage('При обновлении риского события произошла ошибка')
+          errorMessage('При обновлении риского события произошла ошибка')
         },
       })
     } else {
@@ -42,7 +42,7 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
           successMessage('Рисковое событие создано')
         },
         onError() {
-          successMessage('При создании риского события произошла ошибка')
+          errorMessage('При создании риского события произошла ошибка')
         },
       })
     }
