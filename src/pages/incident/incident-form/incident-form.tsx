@@ -10,13 +10,14 @@ import componentList from '@/constants/component-list'
 import ROUTES from '@/constants/routes'
 import { CreateInputIncident, UpdateInputIncident } from '@/entities/incident/model/types'
 import SchemaDrawer, { CompSchema, Dictionary, hasInstanceId } from '@/shared/schema-drawer'
-import { successMessage } from '@/shared/toast'
+import { errorMessage, successMessage } from '@/shared/toast'
 
 interface IncidentFormProps {
   schema: CompSchema
   schemas: Dictionary<CompSchema>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   incident: any
+  refetch: () => void
 }
 
 export default function IncidentForm(props: IncidentFormProps): JSX.Element {
@@ -27,12 +28,12 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
   function onSubmit(data: UpdateInputIncident | CreateInputIncident) {
     if (hasInstanceId(data)) {
       updateIncident(data as UpdateInputIncident, {
-        onSuccess(response) {
-          navigate(ROUTES.INCIDENT.PATH.replace(':id', response.dataBlock.instanceId))
+        onSuccess() {
+          props.refetch()
           successMessage('Рисковое событие обновлено')
         },
         onError() {
-          successMessage('При обновлении риского события произошла ошибка')
+          errorMessage('При обновлении риского события произошла ошибка')
         },
       })
     } else {
@@ -42,7 +43,7 @@ export default function IncidentForm(props: IncidentFormProps): JSX.Element {
           successMessage('Рисковое событие создано')
         },
         onError() {
-          successMessage('При создании риского события произошла ошибка')
+          errorMessage('При создании риского события произошла ошибка')
         },
       })
     }

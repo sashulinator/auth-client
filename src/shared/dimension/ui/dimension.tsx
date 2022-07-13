@@ -3,6 +3,7 @@ import { assertNotUndefined, isString } from '@savchenko91/schema-validator'
 
 import './dimension.css'
 
+import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 
 import { findParents } from '@/lib/entity-actions'
@@ -16,6 +17,7 @@ interface DimensionProps {
   children: string[]
   context: FieldComponentContext
   onChange: (value: Record<string, string[]>) => void
+  disabled?: boolean
 }
 
 Dimension.defaultValues = {
@@ -56,8 +58,9 @@ export default function Dimension(props: DimensionProps): JSX.Element {
     <FieldBorder
       tabIndex={0}
       onKeyDown={(e) => isEnter(e) && setOpen(true)}
-      onDoubleClick={() => setOpen(true)}
-      className="Dimension"
+      onDoubleClick={() => !props.disabled && setOpen(true)}
+      className={clsx('Dimension', props.disabled && 'disabled')}
+      disabled={props.disabled}
     >
       <div>
         <table>
@@ -71,7 +74,7 @@ export default function Dimension(props: DimensionProps): JSX.Element {
                       const entity = schema.data[id] as LinkedComp
                       assertNotUndefined(entity)
                       const parents = (findParents(id, schema.data) || []) as LinkedComp[]
-                      return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
+                      return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join(' > ')}</div>
                     })}
                   </td>
                 </tr>

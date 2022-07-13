@@ -10,10 +10,7 @@ import {
 
 export default function FakeHeader(): JSX.Element {
   return (
-    <div
-      className="FakeHeader"
-      style={{ height: 'calc(var(--headerHeight) * 1px)', borderBottom: '2px solid var(--black02)' }}
-    >
+    <div className="FakeHeader">
       <div className="text">header</div>
       <Stack
         horizontal

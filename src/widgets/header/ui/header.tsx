@@ -24,17 +24,11 @@ export default function Header(): JSX.Element | null {
 
   return (
     <header>
-      <Stack
-        horizontal
-        verticalAlign="center"
-        className="Header"
-        tokens={{ padding: '16px 16px' }}
-        style={{ width: '100%', height: '100%' }}
-      >
+      <Stack horizontal verticalAlign="center" className="Header" style={{ width: '100%', height: '100%' }}>
         <div
           style={{
-            minWidth: 'calc(var(--navPanel_size) * 1px)',
-            maxWidth: 'calc(var(--navPanel_size) * 1px)',
+            minWidth: 'calc((var(--navPanel_size) - var(--horizontalHeaderPadding)) * 1px)',
+            maxWidth: 'calc((var(--navPanel_size) - var(--horizontalHeaderPadding)) * 1px)',
           }}
         >
           <div className="logo">
