@@ -9,15 +9,20 @@ interface FieldBorderProps extends DetailedHTMLProps<React.HTMLAttributes<HTMLDi
   isFocused?: boolean
   children?: React.ReactNode
   className?: string
+  disabled: boolean | undefined
 }
 
 const FieldBorderForwardRef = forwardRef<HTMLDivElement | null, FieldBorderProps>(function FieldBorder(
   props,
   ref
 ): JSX.Element {
-  const { isFocused, ...restProps } = props
+  const { isFocused, disabled, ...restProps } = props
   return (
-    <div {...restProps} className={clsx('FieldBorder', props.className, isFocused && 'isFocused')} ref={ref}>
+    <div
+      {...restProps}
+      className={clsx('FieldBorder', props.className, isFocused && 'isFocused', disabled && 'disabled')}
+      ref={ref}
+    >
       <div className="border" />
       {props.children}
     </div>

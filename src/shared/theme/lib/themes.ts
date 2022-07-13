@@ -134,6 +134,7 @@ export const themes: AdditionalCSS & PartialTheme = {
       black: defaultBlack.replace('alpha', '1'),
       black02: defaultBlack.replace('alpha', '0.2'),
       black01: defaultBlack.replace('alpha', '0.1'),
+      black001: defaultBlack.replace('alpha', '0.05'),
       white: defaultWhite.replace('alpha', '1'),
       white02: defaultWhite.replace('alpha', '0.2'),
       white01: defaultWhite.replace('alpha', '0.1'),
