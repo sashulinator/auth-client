@@ -25,7 +25,7 @@ export default function HeaderContent(props: HeaderContentProps): JSX.Element | 
         <Stack
           horizontal
           horizontalAlign="end"
-          style={{ maxWidth: '100%', paddingRight: '32px' }}
+          style={{ maxWidth: '100%', padding: '0 32px' }}
           tokens={{ childrenGap: 12 }}
         >
           <Button

@@ -39,6 +39,7 @@ const ContentComponent = memo(function ContentComponent(props: ContentComponentP
       <сomponentItem.component
         data-comp-id={props.comp.id}
         {...props.comp.props}
+        context={props.context}
         disabled={props.comp.props?.disabled || readOnly}
       >
         {props.comp?.props?.children}

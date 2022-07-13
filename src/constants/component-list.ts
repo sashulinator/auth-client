@@ -76,12 +76,6 @@ const componentList: Record<string, CompMeta> = {
     iconName: 'TouchPointer',
   },
 
-  Fetcher: {
-    type: 'input',
-    component: Fetcher,
-    iconName: 'OpenFile',
-  },
-
   JSONEditor: {
     type: 'input',
     component: JSONEditor,
@@ -107,6 +101,12 @@ const componentList: Record<string, CompMeta> = {
   },
 
   // Contents
+
+  Fetcher: {
+    type: 'content',
+    component: Fetcher,
+    iconName: 'OpenFile',
+  },
 
   DimensionNode: {
     type: 'content',
