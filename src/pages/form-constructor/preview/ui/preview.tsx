@@ -43,10 +43,10 @@ const Preview = forwardRef<HTMLDivElement | null, PreviewProps>(function Preview
   return (
     <div className={clsx('Preview', props.isFocused && 'isFocused')} ref={ref}>
       <LoadingAria loading={props.isLoading} label="Components loading...">
-        {props.schema?.type !== CompSchemaType.COMP && <FakeHeader />}
         <div className="wrapper">
           <div className="selectorArea" />
           <div className="hoverArea" />
+          {props.schema?.type === CompSchemaType.FORM && <FakeHeader />}
           {schemas && schema && (
             <Form
               onSubmit={onSubmit}

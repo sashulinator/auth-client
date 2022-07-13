@@ -1,9 +1,14 @@
+.Header {
+  --horizontalHeaderPadding: 16;
+  padding: calc(var(--horizontalHeaderPadding) * 1px);
+}
+
 .Header .logo,
 .Header .miniLogo {
   transition: opacity 0.15s;
   position: absolute;
   top: 50%;
-  left: 8px;
+  left: var(--horizontalHeaderPadding);
   transform: translateY(-50%);
 }
 

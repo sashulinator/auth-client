@@ -69,8 +69,8 @@ function List(): JSX.Element {
   return (
     <Stack
       className="SchemaList"
-      style={{ maxWidth: '900px' }}
-      tokens={{ padding: '52px 32px 50vh 20px', childrenGap: 24 }}
+      style={{ maxWidth: '1024px' }}
+      tokens={{ padding: '32px 32px 50vh 32px', childrenGap: 24 }}
     >
       <HeaderContent deleteDisabled={selectedItems.length === 0} />
       <Stack horizontal tokens={{ childrenGap: 12 }}>
