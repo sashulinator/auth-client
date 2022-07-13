@@ -69,38 +69,38 @@ export default function CRUDTable(props: CRUDTableProps): JSX.Element {
     return <span>{fieldContent}</span>
   }
 
-  if (data === undefined || data.length === 0) {
-    return (
-      <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
-        Nothing found
-      </Stack>
-    )
-  }
-
   return (
     <Stack className="CRUDTable" tokens={{ childrenGap: 24 }}>
       <HeaderContent deleteDisabled={selectedItems.length === 0} />
-      <Stack horizontal tokens={{ childrenGap: 12 }}>
-        <Stack tokens={{ maxWidth: 250 }}>
-          <SearchBox
-            style={{ width: '250px' }}
-            autoComplete="off"
-            className="searchBox"
-            onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
-          />
+      {data === undefined || data.length === 0 ? (
+        <Stack horizontal horizontalAlign="center" verticalAlign="center" style={{ height: '300px' }}>
+          Nothing found
         </Stack>
-        <Dropdown options={columns} onChange={setDropdownValue} value={dropdownValue} style={{ width: '250px' }} />
-      </Stack>
-      <Table
-        {...tableProps}
-        items={buildItems(data || [], searchQuery)}
-        selectionMode={SelectionMode.multiple}
-        selection={selection as Selection}
-        setKey={props.idKey}
-        selectionPreservedOnEmptyClick={true}
-        enterModalSelectionOnTouch={true}
-        onRenderItemColumn={renderItemColumn}
-      />
+      ) : (
+        <>
+          <Stack horizontal tokens={{ childrenGap: 12 }}>
+            <Stack tokens={{ maxWidth: 250 }}>
+              <SearchBox
+                style={{ width: '250px' }}
+                autoComplete="off"
+                className="searchBox"
+                onChange={(ev: unknown, value?: string) => setFilterString(value || '')}
+              />
+            </Stack>
+            <Dropdown options={columns} onChange={setDropdownValue} value={dropdownValue} style={{ width: '250px' }} />
+          </Stack>
+          <Table
+            {...tableProps}
+            items={buildItems(data || [], searchQuery)}
+            selectionMode={SelectionMode.multiple}
+            selection={selection as Selection}
+            setKey={props.idKey}
+            selectionPreservedOnEmptyClick={true}
+            enterModalSelectionOnTouch={true}
+            onRenderItemColumn={renderItemColumn}
+          />
+        </>
+      )}
     </Stack>
   )
 }

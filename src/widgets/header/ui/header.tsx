@@ -80,7 +80,7 @@ export default function Header(): JSX.Element | null {
                 size={PersonaSize.size32}
                 imageUrl={
                   role === 'USER'
-                    ? 'https://upload.wikimedia.org/wikipedia/ru/thumb/4/4c/%D0%AE%D1%80%D0%B8%D0%B9_%D0%9A%D0%BD%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2.jpg/548px-%D0%AE%D1%80%D0%B8%D0%B9_%D0%9A%D0%BD%D0%BE%D1%80%D0%BE%D0%B7%D0%BE%D0%B2.jpg'
+                    ? 'https://alfabank.gcdn.co/media/footer-alfa-logo_1025x1025_common_19-01-2021.svg'
                     : 'https://lh3.googleusercontent.com/zxWE_cAZikUWIEUG4ISM7FOsB0dB4xpQJryQXyxLz7cJ7XFkp0sSWxH5r52nNOwkXtU'
                 }
               />
