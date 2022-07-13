@@ -1,5 +1,5 @@
 import { Spinner, SpinnerSize } from '@fluentui/react'
-import { setPreviousRoute } from '@savchenko91/rc-route-constant'
+import { getCurrent, setPreviousRoute } from '@savchenko91/rc-route-constant'
 
 import ROUTES from '../constants/routes'
 import React, { useEffect } from 'react'
@@ -20,7 +20,7 @@ export default function RootRoutes() {
   setPreviousRoute(ROUTES)
   const navigate = useNavigate()
 
-  const { isLoading, data, isError } = useQuery(['refresh'], () =>
+  const { isLoading, data, isError } = useQuery(['refresh', getCurrent(ROUTES)?.PATH], () =>
     api.post<Transfer<LoginResponse>>('/api/auth/refresh')
   )
 

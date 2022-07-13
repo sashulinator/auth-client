@@ -74,7 +74,7 @@ export default function Header(): JSX.Element | null {
                 size={PersonaSize.size32}
                 imageUrl={
                   role === 'USER'
-                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJFHorPfwVE04rIXlbTCo0GL7koZfZ3cv_WC39KhItBJaeouyovulUbknEU_ZTi3jA0FE&usqp=CAU'
+                    ? 'https://alfabank.gcdn.co/media/footer-alfa-logo_1025x1025_common_19-01-2021.svg'
                     : 'https://lh3.googleusercontent.com/zxWE_cAZikUWIEUG4ISM7FOsB0dB4xpQJryQXyxLz7cJ7XFkp0sSWxH5r52nNOwkXtU'
                 }
               />
