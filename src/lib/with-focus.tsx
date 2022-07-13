@@ -7,6 +7,7 @@ interface FocusProps {
   onBlur?: (...args: any[]) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref?: LegacyRef<Element | null>
+  disabled?: boolean
   isFocused?: boolean
 }
 
@@ -15,10 +16,16 @@ export default function withFocus<P extends FocusProps>(WrappedComponent: React.
   const ComponentWithInterceptedFocus = (props: Omit<P, 'isFocused'>) => {
     const ref = useRef<null | Element>(null)
 
+    console.log('props', props)
+
     const [isFocused, setIsFocused] = useState(false)
 
     useEffect(() => {
       function handleFocus() {
+        if (props.disabled) {
+          return
+        }
+
         props.onFocus?.()
         setIsFocused(true)
       }

@@ -20,3 +20,7 @@
 .FieldBorder.isFocused .border {
   border: 2px solid var(--themePrimary);
 }
+
+.FieldBorder.disabled .border {
+  border: 1px solid var(--black02);
+}

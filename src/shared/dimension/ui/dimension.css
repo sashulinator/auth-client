@@ -10,3 +10,7 @@
 .Dimension td {
   border-top: 1px solid var(--black01);
 }
+
+.Dimension.disabled {
+  background-color: var(--black001);
+}
