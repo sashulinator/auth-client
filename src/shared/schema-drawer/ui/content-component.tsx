@@ -28,9 +28,19 @@ const ContentComponent = memo(function ContentComponent(props: ContentComponentP
   // TODO
   // useEffect(() => handleBindEvents(props.context), [props.comp.bindings, props.schema])
 
+  const readOnly =
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    !!(props.context?.formState as any)?.values?.instanceId &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (props.context as any)?.fetchedData?.availableActions?.dataBlock?.screenReadOnly
+
   if (props.comp.children === undefined) {
     return (
-      <сomponentItem.component data-comp-id={props.comp.id} {...props.comp.props}>
+      <сomponentItem.component
+        data-comp-id={props.comp.id}
+        {...props.comp.props}
+        disabled={props.comp.props?.disabled || readOnly}
+      >
         {props.comp?.props?.children}
       </сomponentItem.component>
     )

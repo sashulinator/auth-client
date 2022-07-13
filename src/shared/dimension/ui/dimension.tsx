@@ -71,7 +71,7 @@ export default function Dimension(props: DimensionProps): JSX.Element {
                       const entity = schema.data[id] as LinkedComp
                       assertNotUndefined(entity)
                       const parents = (findParents(id, schema.data) || []) as LinkedComp[]
-                      return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join('> ')}</div>
+                      return <div key={id}>{[...parents, entity]?.map(({ title }) => title).join(' > ')}</div>
                     })}
                   </td>
                 </tr>

@@ -1,7 +1,7 @@
 import { Stack } from '@fluentui/react'
 
 import IncidentForm from './incident-form/incident-form'
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useGetDependencySchemas } from '@/api/comp-schema'
@@ -13,7 +13,7 @@ const IncidentSchemaId = 'd79d37b9-21a5-4017-a13d-27106cf749d8'
 
 export default function Incident(): JSX.Element {
   useSetLayout(LayoutNames.headerNavMain)
-
+  const [state, setState] = useState('init')
   const { id } = useParams()
 
   const { data: fetchedSchemas, isLoading: isDependencySchemasLoading } = useGetDependencySchemas([IncidentSchemaId])
@@ -36,11 +36,13 @@ export default function Incident(): JSX.Element {
     return `Loading ${entityNames.join(', ')}`
   }
 
+  function reload() {
+    setState(Math.random().toString())
+  }
+
   const schemaErrorMessage = fetchedSchemas instanceof Error && fetchedSchemas.message
   const incidentErrorMessage = fetchedIncident instanceof Error && fetchedIncident.message
   const errorMessage = schemaErrorMessage || incidentErrorMessage
-
-  console.log('errorMessage', errorMessage)
 
   return (
     <Stack as="main" className="Incident" tokens={{ padding: '32px 32px 50vh 0', maxWidth: '900px' }}>
@@ -49,7 +51,8 @@ export default function Incident(): JSX.Element {
           {errorMessage ? errorMessage : null}
           {(id ? !!fetchedIncident : true) && fetchedSchemas && schema && !errorMessage && (
             <IncidentForm
-              key={id}
+              refetch={reload}
+              key={`${id || ''}${state}`}
               schemas={fetchedSchemas}
               incident={(fetchedIncident as any)?.dataBlock}
               schema={schema}
