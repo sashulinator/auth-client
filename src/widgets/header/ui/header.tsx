@@ -37,7 +37,7 @@ export default function Header(): JSX.Element | null {
           <div
             className="miniLogo"
             style={{
-              transform: 'scale(0.5) translateX(-40px) translateY(-100%)',
+              transform: 'scale(0.4) translateX(-65px) translateY(-120%)',
             }}
           >
             <Icon iconName="MiniLogo" />
